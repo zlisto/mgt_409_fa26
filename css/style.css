@@ -406,7 +406,7 @@ img:hover {
   flex: 0 0 200px;
   width: 200px;
   min-width: 180px;
-  background-color: var(--yale-blue-pale);
+  background-color: var(--bg-nav);
   padding: 20px;
   position: sticky;
   top: var(--nav-sticky-offset);
@@ -414,12 +414,12 @@ img:hover {
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 100;
-  border-right: 1px solid var(--border);
+  border-right: 3px solid var(--yale-blue-dark);
 }
 
 .sidebar a {
   display: block;
-  color: var(--yale-blue);
+  color: var(--text-on-blue);
   padding: 10px 0;
   overflow-wrap: break-word;
   text-decoration: none;
