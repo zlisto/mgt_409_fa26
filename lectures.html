@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lectures - AI for Business</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="instructions.html">Instructions</a></li>
+      <li><a href="lectures.html">Lectures</a></li>
+      <li><a href="homeworks.html">Homeworks</a></li>
+      <li><a href="project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+
+  <main>
+    <h1 class="schedule-header">Lectures</h1>
+    <p class="schedule-note"><em>Each session is ~80 minutes. Yap vs vibe coding time flexes by week—complex builds (Slack, MCP, deploy) skew toward coding. Lectures 10–12 focus on apps, connectors, and deployment—light on new grading; in-class time for final project work. Lecture 13 is a forward-looking lecture only. Final project due during finals week.</em></p>
+
+    <div class="accordion-container">
+
+      <div class="accordion">
+        <button class="accordion-btn">Lecture 1: The AI Imperative &amp; Vibe Coding</button>
+        <div class="panel">
+          <p><strong>Time:</strong> ~45 min yap / ~35 min demo</p>
+          <p><strong>Lecture:</strong> How AI is reshaping business strategy and operations; consumer → architect; introduction to vibe coding; course roadmap; preview of token costs.</p>
+          <p><strong>Vibe coding (instructor demo):</strong> Live setup—GitHub, Copilot, API keys, minimal structured JSON from text. Students watch; setup checklist for Lecture 2.</p>
+          <p><strong>Boss fight:</strong> “From zero to a running agent in one session.”</p>
+          <p>Lecture slides: TBD</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn">Lecture 2: PDF → Structured JSON</button>
+        <div class="panel">
+          <p><strong>Time:</strong> ~25 min yap / ~55 min build</p>
+          <p><strong>Lecture:</strong> Prompting with Copilot; app structure (UI → API → model); schemas as business contracts; iterating when code breaks.</p>
+          <p><strong>Vibe coding (build together):</strong> Upload a 10-K or invoice PDF → structured JSON fields (not just a summary).</p>
+          <p><strong>Boss fight:</strong> “CFO needs five fields from this filing in 60 seconds.”</p>
+          <p>Lecture slides: TBD</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn">Lecture 3: Image → Structured JSON</button>
+        <div class="panel">
+          <p><strong>Time:</strong> ~25 min yap / ~55 min build</p>
+          <p><strong>Lecture:</strong> Multimodal AI for business; receipts, ads, charts; extraction vs narrative; accuracy on numbers.</p>
+          <p><strong>Vibe coding (build together):</strong> Upload an image (receipt, product shot, or ad) → structured fields + short narrative.</p>
+          <p><strong>Boss fight:</strong> “Legal flagged this ad—what claims are in the image?”</p>
+          <p>Lecture slides: TBD</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn">Lecture 4: Tools + Web Research Agent</button>
+        <div class="panel">
+          <p><strong>Time:</strong> ~30 min yap / ~50 min build</p>
+          <p><strong>Lecture:</strong> Why chat alone fails; tools as agent skills; competitive intelligence; sourcing discipline; fact vs inference.</p>
+          <p><strong>Vibe coding (build together):</strong> Web-search agent → structured competitor table with source URLs.</p>
+          <p><strong>Boss fight:</strong> “CEO heard a rumor—verify or debunk in ten minutes.”</p>
+          <p>Lecture slides: TBD</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn">Lecture 5: Text RAG — Ingest &amp; Store</button>
+        <div class="panel">
+          <p><strong>Time:</strong> ~40 min yap / ~40 min build</p>
+          <p><strong>Lecture:</strong> RAG vs fine-tuning; chunking, embeddings, vector storage; enterprise knowledge bases.</p>
+          <p><strong>Vibe coding (build together):</strong> Ingest handbook + FAQ PDFs into a searchable text knowledge base.</p>
+          <p><strong>Boss fight:</strong> “Homework 1 was one document—today is a hundred.”</p>
+          <p>Lecture slides: TBD</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn">Lecture 6: Multimodal RAG — Catalog &amp; Visual Search</button>
+        <div class="panel">
+          <p><strong>Time:</strong> ~25 min yap / ~55 min build</p>
+          <p><strong>Lecture:</strong> Text-only RAG vs product catalogs; image embeddings; fashion/retail use cases; optional video frames for inventory audits.</p>
+          <p><strong>Vibe coding (build together):</strong> Ingest product images + metadata; upload a photo → similar items; text questions pull images + policy snippets.</p>
+          <p><strong>Boss fight:</strong> “Customer sends an Instagram photo—find three in-stock matches under $150.”</p>
+          <p>Lecture slides: TBD</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn">Lecture 7: AI Workflows — Process to Agent</button>
+        <div class="panel">
+          <p><strong>Time:</strong> ~30 min yap / ~50 min build</p>
+          <p><strong>Lecture:</strong> Map a business process (swim lanes); find where AI helps vs where humans must stay in the loop; classify steps as automate, assist, or own; pick agent touchpoints using skills from earlier weeks (extract, RAG, research).</p>
+          <p><strong>Vibe coding (build together):</strong> Choose one process (e.g., expense reimbursement, vendor onboarding, lead qualification) → diagram the workflow → build a multi-step agent with structured handoffs and logs.</p>
+          <p><strong>Boss fight:</strong> “Map AP invoice processing and automate everything before the controller’s sign-off.”</p>
+          <p>Lecture slides: TBD</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn">Lecture 8: Tokenomics</button>
+        <div class="panel">
+          <p><strong>Time:</strong> ~50 min yap / ~30 min build</p>
+          <p><strong>Lecture:</strong> Input/output tokens; vision and PDF costs; enterprise bans (e.g. runaway coding agents); unit economics; why the winner may be the cheapest reliable token as models converge.</p>
+          <p><strong>Vibe coding (build together):</strong> Run the same task on two models—compare cost, latency, and quality; simple spreadsheet for $/100 queries.</p>
+          <p><strong>Boss fight:</strong> “CFO asks what this agent costs per month at scale.”</p>
+          <p>Lecture slides: TBD</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn">Lecture 9: Telegram / Slack Customer Service Agent</button>
+        <div class="panel">
+          <p><strong>Time:</strong> ~15 min yap / ~65 min build</p>
+          <p><strong>Lecture:</strong> CS bots in messaging apps; webhooks and bot tokens; PII, tone, escalation; one backend, many surfaces.</p>
+          <p><strong>Vibe coding (build together):</strong> RAG-backed FAQ bot on Telegram (demo) or Slack—handoff when out of scope. Telegram recommended for in-class speed.</p>
+          <p><strong>Boss fight:</strong> “Angry customer DM plus a question not in the KB.”</p>
+          <p>Lecture slides: TBD</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn">Lecture 10: MCP Servers</button>
+        <div class="panel">
+          <p><strong>Time:</strong> ~20 min yap / ~60 min build</p>
+          <p><strong>Lecture:</strong> Model Context Protocol; giving agents real arms and legs; Gmail, Spotify, Canva as business connectors.</p>
+          <p><strong>Vibe coding (build together):</strong> MCP demos—e.g. draft email, pull playlist, mock slide—composed into one workflow.</p>
+          <p><strong>Boss fight:</strong> “Plan my week: email draft + playlist + one Canva asset.”</p>
+          <p><strong>Final project:</strong> In-class time to integrate and polish modules (not a separate graded assignment).</p>
+          <p>Lecture slides: TBD</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn">Lecture 11: Apps with Vite</button>
+        <div class="panel">
+          <p><strong>Time:</strong> ~20 min yap / ~60 min build</p>
+          <p><strong>Lecture:</strong> Why a real frontend beats a demo script; Vite + components; calling your agent API from a web app.</p>
+          <p><strong>Vibe coding (build together):</strong> Vite dashboard with 2–3 tabs wired to prior agents.</p>
+          <p><strong>Boss fight:</strong> “An investor opens this URL—what do they see?”</p>
+          <p><strong>Final project:</strong> In-class time to wire agents into your dashboard.</p>
+          <p>Lecture slides: TBD</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn">Lecture 12: Deploy on Vercel + Mobile</button>
+        <div class="panel">
+          <p><strong>Time:</strong> ~15 min yap / ~65 min build</p>
+          <p><strong>Lecture:</strong> Shipping to production; env vars; live URL as the deliverable; mobile wrapper (Expo/PWA) as distribution.</p>
+          <p><strong>Vibe coding (build together):</strong> Deploy Vite app to Vercel; optional mobile shell for one agent.</p>
+          <p><strong>Boss fight:</strong> “Send me a link that works on your phone.”</p>
+          <p><strong>Final project:</strong> In-class time to deploy and harden your Executive Co-Pilot for the benchmark suite.</p>
+          <p>Lecture slides: TBD</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn">Lecture 13: AI Future &amp; Generative Media Teaser</button>
+        <div class="panel">
+          <p><strong>Time:</strong> ~50 min yap / ~30 min demos</p>
+          <p><strong>Lecture:</strong> Build vs buy; agent governance; where AI is heading; the race to cheap tokens.</p>
+          <p><strong>Demos:</strong> AI movies, music, and creative tools—a teaser for <em>Generative AI and Social Media</em>. No submission; no Demo Day.</p>
+          <p>Final project due during <strong>finals week</strong>. See <a href="project_requirements.html">Final Project requirements</a>.</p>
+          <p>Lecture slides: TBD</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const acc = document.querySelectorAll(".accordion-btn");
+    acc.forEach(btn => {
+      btn.addEventListener("click", function () {
+        this.classList.toggle("active");
+        const panel = this.nextElementSibling;
+        panel.style.display = panel.style.display === "block" ? "none" : "block";
+      });
+    });
+  </script>
+
+  <script src="js/theme.js"></script>
+
+
+  <footer class="site-footer">
+    <p>© 2026 Tauhid Zaman</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Final Project - AI for Business</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .assignment-box { text-align: left; text-align-last: left; }
+    .assignment-box p, .assignment-box li { text-align: justify; }
+    pre.file-tree {
+      background-color: #1a1a2e;
+      border: 1px solid #33ffcc;
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin: 12px 0;
+      overflow-x: auto;
+      font-size: 15px;
+      line-height: 1.5;
+      text-align: left;
+    }
+    pre.file-tree code {
+      background: none;
+      border: none;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="instructions.html">Instructions</a></li>
+      <li><a href="lectures.html">Lectures</a></li>
+      <li><a href="homeworks.html">Homeworks</a></li>
+      <li><a href="project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+
+  <main class="main-narrow">
+    <h1 class="schedule-header">Final Project: Executive Co-Pilot</h1>
+    <p class="page-subtitle"><em>Benchmark edition — integration + prompts + automated tests (no Demo Day)</em></p>
+
+    <div class="assignment-box">
+      <p><strong>One sentence.</strong> Build an <strong>Executive Co-Pilot</strong> that routes business tasks to the right agent modules, with prompts in a <code>prompts/</code> folder, and pass the course benchmark suite.</p>
+      <p>Homeworks teach individual powers (extract, RAG, research, bots, MCP, deploy). The final project is the <strong>exam</strong>: one unified system that must survive instructor-run tests — especially a <strong>hidden</strong> benchmark set you have not seen before submit.</p>
+    </div>
+
+    <h2>Homework vs final project</h2>
+    <table class="report-sections-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Homeworks (6)</th>
+          <th>Final project</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Goal</strong></td>
+          <td>Learn one power at a time</td>
+          <td>Compose powers into one product</td>
+        </tr>
+        <tr>
+          <td><strong>Scope</strong></td>
+          <td>Narrow, creative, industry-specific</td>
+          <td>Fixed spec + benchmark tests</td>
+        </tr>
+        <tr>
+          <td><strong>Grading</strong></td>
+          <td>Features + short memo</td>
+          <td>Pass rate on tests + integration + prompts</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>System architecture</h2>
+    <p>Your submission should behave like a single co-pilot, not six disconnected homework zips:</p>
+    <pre class="file-tree"><code>User question / file upload
+        ↓
+   Router agent (prompt decides: extract | research | KB | decide)
+        ↓
+   Module(s) + tools + RAG
+        ↓
+   Structured response + citations + logs</code></pre>
+    <p>You may extend your <strong>Homework 6</strong> Vite app and deployed URL. You do not need to start from scratch.</p>
+
+    <h2>Required repository structure</h2>
+    <p>This layout makes benchmarking and grading reproducible:</p>
+    <pre class="file-tree"><code>final_project/
+├── README.md              # how to run, env vars, live URL
+├── prompts/
+│   ├── router.txt         # routes tasks to modules
+│   ├── pdf_extract.txt
+│   ├── image_extract.txt
+│   ├── research.txt
+│   ├── rag_qa.txt
+│   └── decision.txt       # multi-step / structured memo
+├── app/                   # Vite frontend and/or bot entrypoint
+├── agents/                # module code
+├── requirements.txt
+└── self_report.json       # optional: your public-suite run before submit</code></pre>
+    <p><strong>Prompts are graded by outcomes.</strong> If <code>pdf_extract.txt</code> fails PDF tests, the prompt and wiring failed — not just a stray bug.</p>
+
+    <h2>What the benchmarks test</h2>
+    <p>Benchmarks map directly to course skills. You will receive a <strong>public practice suite</strong> before submit; the instructor runs an additional <strong>hidden suite</strong> on every submission.</p>
+
+    <table class="report-sections-table">
+      <thead>
+        <tr>
+          <th>Bucket</th>
+          <th>Course skill</th>
+          <th>Example test</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>B1 — PDF → JSON</strong></td>
+          <td>Lectures 1–2</td>
+          <td>Given a 10-K snippet, extract <code>{revenue, fiscal_year, top_risk}</code> within schema</td>
+        </tr>
+        <tr>
+          <td><strong>B2 — Image → JSON</strong></td>
+          <td>Lecture 3</td>
+          <td>Given a receipt or ad image, extract required fields</td>
+        </tr>
+        <tr>
+          <td><strong>B3 — RAG + cite / refuse</strong></td>
+          <td>Lectures 5–6</td>
+          <td>KB questions must cite a source; trap questions must refuse or escalate</td>
+        </tr>
+        <tr>
+          <td><strong>B4 — Web research</strong></td>
+          <td>Lecture 4</td>
+          <td>“Who are 3 competitors in X?” → structured table with ≥3 source URLs</td>
+        </tr>
+        <tr>
+          <td><strong>B5 — Agentic decision</strong></td>
+          <td>Lectures 7–8</td>
+          <td>Scenario → valid JSON matrix + executive summary; schema must validate</td>
+        </tr>
+        <tr>
+          <td><strong>B6 — Integration</strong></td>
+          <td>Lectures 9–12</td>
+          <td>One entrypoint handles ≥3 task types without manual module picking</td>
+        </tr>
+        <tr>
+          <td><strong>B7 — Ops (optional bonus)</strong></td>
+          <td>Lectures 9–10</td>
+          <td>Telegram/Slack response or MCP tool call appears in logged trace</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Public practice benchmarks (sample)</h2>
+    <p>Run these locally before you submit. Hidden tests follow the <strong>same format</strong> with different inputs.</p>
+    <ul>
+      <li><strong>pdf_01</strong> — Extract revenue and fiscal year from a short 10-K excerpt; JSON schema validation</li>
+      <li><strong>image_01</strong> — Extract vendor, total, and date from a receipt image</li>
+      <li><strong>rag_01</strong> — Answer from handbook; must cite <code>employee_handbook.pdf</code></li>
+      <li><strong>rag_trap_01</strong> — Question not in KB; must refuse or hand off (no fabricated policy)</li>
+      <li><strong>research_01</strong> — Three competitors in a named niche; table + ≥3 URLs</li>
+      <li><strong>decision_01</strong> — Vendor selection scenario; JSON comparison matrix + 150-word exec summary</li>
+      <li><strong>router_01</strong> — Upload PDF vs ask KB question vs research query; correct module invoked</li>
+    </ul>
+    <p>Practice command (published before Lecture 13):</p>
+    <pre class="terminal"><code>python run_benchmarks.py --repo . --suite public</code></pre>
+    <p>Each test is a JSON spec. Example:</p>
+    <pre class="terminal"><code>{
+  "id": "rag_trap_01",
+  "type": "rag_qa",
+  "input": {"question": "What is our unlimited refund policy?"},
+  "assert": {
+    "must_refuse": true,
+    "must_not_contain": ["unlimited refund", "100% guarantee"]
+  }
+}</code></pre>
+
+    <h2>Deliverables</h2>
+    <div class="assignment-box">
+      <ol>
+        <li><strong>GitHub repository</strong> — required; clear README; no API keys in repo</li>
+        <li><strong><code>prompts/</code> folder</strong> — required; one file per module plus router</li>
+        <li><strong>Live URL</strong> — strongly encouraged (Vercel or equivalent from Homework 6)</li>
+        <li><strong>Executive memo</strong> — 1 page max: who uses the co-pilot, one workflow, estimated cost per 100 runs (tokenomics)</li>
+        <li><strong>No live presentation</strong> — Lecture 14 is instructor-led; there is no Demo Day</li>
+      </ol>
+    </div>
+
+    <h2>Grading (100 points)</h2>
+    <table class="report-sections-table">
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Pts</th>
+          <th>How it is graded</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Hidden benchmarks</strong></td>
+          <td>50</td>
+          <td>Automated pass/fail on instructor hidden suite</td>
+        </tr>
+        <tr>
+          <td><strong>Public benchmarks</strong></td>
+          <td>10</td>
+          <td>Sanity check; confirms you did not overfit to leaked cases</td>
+        </tr>
+        <tr>
+          <td><strong>Prompt quality (outcome-based)</strong></td>
+          <td>15</td>
+          <td>Partial credit when modules run but cite, refuse, or structure incorrectly</td>
+        </tr>
+        <tr>
+          <td><strong>Integration &amp; architecture</strong></td>
+          <td>15</td>
+          <td>Router works; shared config; readable logs</td>
+        </tr>
+        <tr>
+          <td><strong>Deploy &amp; reproducibility</strong></td>
+          <td>5</td>
+          <td>README runs; env documented; live link works if provided</td>
+        </tr>
+        <tr>
+          <td><strong>Executive memo</strong></td>
+          <td>5</td>
+          <td>Business sense and cost awareness</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Optional bonus (not required for full credit)</h2>
+    <ul>
+      <li>Telegram or Slack bot passes the same benchmarks via chat</li>
+      <li>MCP connector used in at least one workflow (logged trace)</li>
+      <li>Token budget mode: answer under a stated cost ceiling per query</li>
+    </ul>
+
+    <h2>Timeline</h2>
+    <div class="assignment-box">
+      <ul>
+        <li><strong>After Lecture 12</strong> — Public benchmark suite available; continue final project integration after class</li>
+        <li><strong>Lectures 10–12</strong> — MCP, Vite, and deploy sessions include in-class time to work on the Executive Co-Pilot (not separately graded)</li>
+        <li><strong>Lecture 13</strong> — AI future and generative media teaser; no submission</li>
+        <li><strong>Finals week</strong> — Final project due (date TBD on Canvas)</li>
+      </ul>
+      <p>You may work individually or in teams (team policy TBD).</p>
+    </div>
+
+    <h2>What we are not testing</h2>
+    <ul>
+      <li>Novel UI design or picking a unique industry (homeworks already covered creativity)</li>
+      <li>Mobile app as a requirement (stretch only)</li>
+      <li>Long written report — the benchmarks are the exam</li>
+    </ul>
+  </main>
+
+  <script src="js/theme.js"></script>
+
+
+  <footer class="site-footer">
+    <p>© 2026 Tauhid Zaman</p>
+  </footer>
+</body>
+</html>

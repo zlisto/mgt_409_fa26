@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Homework 5 - AI for Business</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .assignment-box { text-align: left; text-align-last: left; }
+    .assignment-box p { text-align: justify; }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul class="navbar">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="instructions.html">Instructions</a></li>
+      <li><a href="lectures.html">Lectures</a></li>
+      <li><a href="homeworks.html">Homeworks</a></li>
+      <li><a href="project_requirements.html">Final Project</a></li>
+    </ul>
+  </nav>
+
+  <main style="max-width: 800px; margin: auto;">
+    <h1 class="schedule-header">Homework 5: Accounting Document Agent</h1>
+    <p><strong>Covers Lectures 9–10</strong> &nbsp;|&nbsp; <strong>Core MBA lens: Accounting</strong></p>
+
+    <div class="assignment-box">
+      <p>Ops finance: turn messy documents into books-ready fields. Optional stretch ties in messaging or MCP from class.</p>
+
+      <h2>Required — Invoice / receipt extractor</h2>
+      <ol>
+        <li>Build an agent that accepts invoice or receipt images/PDFs.</li>
+        <li>Output ledger-ready JSON: vendor, date, line items, total, tax fields.</li>
+        <li>Include a short note on accuracy limits and one failure case.</li>
+      </ol>
+
+      <h2>Optional stretch (+bonus credit)</h2>
+      <ul>
+        <li>Telegram or Slack bot: user sends expense photo → parsed fields returned.</li>
+        <li>Or: MCP workflow (e.g., Gmail + another connector) that supports an accounting or ops task.</li>
+      </ul>
+
+      <h2>Submission</h2>
+      <p>Submit <code>hw5.zip</code> with code, <code>requirements.txt</code>, and sample extracted JSON for at least two documents.</p>
+    </div>
+  </main>
+
+  <script src="js/theme.js"></script>
+
+
+  <footer class="site-footer">
+    <p>© 2026 Tauhid Zaman</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Homework 1 - AI for Business</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .assignment-box { text-align: left; text-align-last: left; }
+    .assignment-box p, .assignment-box li { text-align: justify; }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="instructions.html">Instructions</a></li>
+      <li><a href="lectures.html">Lectures</a></li>
+      <li><a href="homeworks.html">Homeworks</a></li>
+      <li><a href="project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+
+  <main class="main-narrow">
+    <h1 class="schedule-header">Homework 1: Investor Due Diligence Extractor</h1>
+    <p class="page-subtitle"><strong>Covers Lectures 1–2</strong> &nbsp;|&nbsp; <strong>Core MBA lens: Investor</strong></p>
+
+    <div class="assignment-box">
+      <h2>Scenario</h2>
+      <p>
+        You are on the investment team at a growth equity fund. Associates spend hours pulling basic fields out of
+        10-K excerpts and earnings releases before a partner ever reads the memo. Your job: build a
+        <strong>PDF → JSON extractor</strong> that a human investor can audit—not a chatbot that free-associates.
+      </p>
+      <p>
+        You will test on a <strong>public practice PDF</strong> (released on Canvas) and be graded on a
+        <strong>hidden PDF</strong> (same format, different company). Variance comes from schema choices, handling
+        missing data, numeric accuracy, and your written judgment—not from UI polish.
+      </p>
+    </div>
+
+    <h2>What you build</h2>
+    <p>A CLI tool (required) that:</p>
+    <ol>
+      <li>Accepts a PDF path and output JSON path.</li>
+      <li>Extracts investor-relevant fields into <strong>structured JSON</strong> matching your submitted <code>schema.json</code>.</li>
+      <li>Never invents numbers: if a field is not supported by the document, use <code>null</code> and list the field in <code>fields_not_found</code>.</li>
+      <li>Optionally exposes a simple web UI—but the autograder calls the CLI only.</li>
+    </ol>
+
+    <h2>Required submission layout</h2>
+    <p>Submit exactly one file: <code>hw1.zip</code>. Unzipped structure <strong>must match</strong> (names and paths matter for grading):</p>
+    <pre class="file-tree"><code>hw1/
+├── README.md
+├── extract.py
+├── requirements.txt
+├── schema.json
+├── prompts/
+│   └── pdf_extract.txt
+├── memo.md
+└── sample_output/
+    └── public_extract.json</code></pre>
+
+    <h3>File requirements</h3>
+    <table class="grading-table">
+      <thead>
+        <tr><th>File</th><th>Requirement</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>README.md</code></td>
+          <td>Setup steps, env vars (<code>OPENAI_API_KEY</code> or equivalent), and the exact run command below.</td>
+        </tr>
+        <tr>
+          <td><code>extract.py</code></td>
+          <td>CLI entry point. Must support:<br>
+            <code>python extract.py --pdf PATH --out PATH</code><br>
+            Exit code <code>0</code> on success; write valid JSON to <code>--out</code>.</td>
+        </tr>
+        <tr>
+          <td><code>schema.json</code></td>
+          <td>JSON Schema (draft 2020-12 or draft-07) describing your output. Must include all <strong>base fields</strong> below plus <strong>at least 2 custom fields</strong> you define for investors.</td>
+        </tr>
+        <tr>
+          <td><code>prompts/pdf_extract.txt</code></td>
+          <td>The prompt(s) you use for extraction (graded for presence; quality reflected in test scores).</td>
+        </tr>
+        <tr>
+          <td><code>memo.md</code></td>
+          <td>See <strong>Investor memo</strong> below (~400–600 words).</td>
+        </tr>
+        <tr>
+          <td><code>sample_output/public_extract.json</code></td>
+          <td>Your extractor’s output on the <strong>public practice PDF</strong> (Canvas).</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Base JSON output contract</h2>
+    <p>Every submission must produce an object with at least these keys (you may add more via <code>schema.json</code>):</p>
+    <pre class="terminal"><code>{
+  "company_name": "string",
+  "fiscal_period": "string",
+  "total_revenue_usd": number | null,
+  "net_income_usd": number | null,
+  "yoy_revenue_growth_pct": number | null,
+  "risk_factors": ["string", "..."],
+  "management_outlook_one_sentence": "string",
+  "fields_not_found": ["string", "..."],
+  "computed_metric": {
+    "name": "string",
+    "value": number | null,
+    "formula": "string"
+  }
+}</code></pre>
+
+    <h3>Non-AI requirements (designed for variance)</h3>
+    <ul>
+      <li><strong>Custom schema fields (≥2):</strong> You choose fields an investor would want (e.g., <code>guidance_revenue_usd</code>, <code>segment_revenue_usd</code>, <code>debt_to_equity</code>). Poor field choice = weak memo, not full autograder credit on hidden doc.</li>
+      <li><strong><code>fields_not_found</code>:</strong> Must list base fields you could not locate. Hidden PDF will omit at least one field—fabricating a value is a major penalty.</li>
+      <li><strong><code>computed_metric</code>:</strong> Pick one ratio or metric <em>computable from extracted numbers</em> (e.g., net margin = net_income / revenue). Show the formula string. If inputs are <code>null</code>, <code>value</code> must be <code>null</code>—do not divide by zero or guess.</li>
+      <li><strong><code>risk_factors</code>:</strong> At least 3 items; each must be a short phrase grounded in the filing (autograder checks overlap with source text on public/hidden PDFs).</li>
+    </ul>
+
+    <h2>Investor memo (<code>memo.md</code>)</h2>
+    <p>Human-graded. Address all four prompts:</p>
+    <ol>
+      <li><strong>Field you would not trust:</strong> One extracted field you would <em>not</em> rely on for a $10M investment decision—and why ( OCR, footnote, ambiguity, etc.).</li>
+      <li><strong>Custom fields rationale:</strong> Why you added your two schema fields; who on the deal team uses them.</li>
+      <li><strong>False precision:</strong> One example where the model looked confident but was wrong or unverifiable on the public PDF.</li>
+      <li><strong>Decision enabled:</strong> One concrete go / no-go / dig-deeper decision this tool speeds up on the public PDF.</li>
+    </ol>
+
+    <h2>Public practice PDF &amp; self-test</h2>
+    <p>Canvas will provide <code>hw1_public.pdf</code>. Before submitting, run:</p>
+    <pre class="terminal"><code>python extract.py --pdf hw1_public.pdf --out sample_output/public_extract.json</code></pre>
+    <p>Optional self-check (same script the course uses):</p>
+    <pre class="terminal"><code>python homework_graders/hw1/grade_hw1.py --submission hw1/ --pdf hw1_public.pdf --config homework_graders/hw1/config_public.json</code></pre>
+    <p>The hidden grading PDF is not released. Do not hard-code company names or dollar amounts from the public file.</p>
+
+    <h2>Grading breakdown (100 points)</h2>
+    <table class="grading-table">
+      <thead>
+        <tr><th>Component</th><th>Pts</th><th>How it is graded</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Submission format</td>
+          <td>10</td>
+          <td>Exact folder/file names; <code>requirements.txt</code> present; CLI runs as specified.</td>
+        </tr>
+        <tr>
+          <td>Schema &amp; contract</td>
+          <td>10</td>
+          <td><code>schema.json</code> valid; includes all base fields + ≥2 custom fields; output validates.</td>
+        </tr>
+        <tr>
+          <td>Public PDF (automated)</td>
+          <td>25</td>
+          <td>Autograder on <code>hw1_public.pdf</code>: types, required keys, numeric tolerance (±2%), risk-factor grounding.</td>
+        </tr>
+        <tr>
+          <td>Hidden PDF (automated)</td>
+          <td>30</td>
+          <td>Same tests on unreleased PDF; detects hard-coding and hallucinated nulls.</td>
+        </tr>
+        <tr>
+          <td>Missing-data discipline</td>
+          <td>10</td>
+          <td>Hidden doc omits fields; must appear in <code>fields_not_found</code> with <code>null</code> values—not fabricated.</td>
+        </tr>
+        <tr>
+          <td><code>computed_metric</code></td>
+          <td>5</td>
+          <td>Formula correct given extracted numbers; <code>null</code> when inputs missing.</td>
+        </tr>
+        <tr>
+          <td>Investor memo</td>
+          <td>10</td>
+          <td>Rubric below; rewards non-AI judgment.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Memo rubric (10 pts)</h3>
+    <table class="grading-table">
+      <thead>
+        <tr><th>Criterion</th><th>Pts</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Specific, credible “would not trust” field with reasoning</td><td>3</td></tr>
+        <tr><td>Custom fields tied to investor workflow</td><td>2</td></tr>
+        <tr><td>Honest false-precision example from public PDF</td><td>3</td></tr>
+        <tr><td>Concrete investment decision enabled</td><td>2</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Autograder checks (instructor)</h2>
+    <p>For transparency, automated tests include:</p>
+    <ul>
+      <li>CLI exits 0 and produces parseable JSON</li>
+      <li>Output validates against student’s <code>schema.json</code></li>
+      <li>All base fields present with correct JSON types</li>
+      <li>Numeric fields within ±2% of key figures in the test PDF (when present)</li>
+      <li><code>risk_factors</code> length ≥ 3; each item has lexical overlap with PDF text</li>
+      <li>Fields documented as absent in instructor config → must be <code>null</code> and listed in <code>fields_not_found</code></li>
+      <li>Penalty: any non-null value for a field marked absent in the hidden config</li>
+    </ul>
+
+    <h2>Policies</h2>
+    <ul>
+      <li><strong>Vibe coding encouraged</strong> (GitHub Copilot); you must be able to explain and run what you submit.</li>
+      <li><strong>No API keys</strong> in the zip—use environment variables documented in README.</li>
+      <li><strong>Late policy:</strong> per syllabus.</li>
+    </ul>
+
+    <h2>Submit</h2>
+    <p>Upload <code>hw1.zip</code> to Canvas by the due date.</p>
+  </main>
+
+  <script src="js/theme.js"></script>
+
+
+  <footer class="site-footer">
+    <p>© 2026 Tauhid Zaman</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Homework 3 - AI for Business</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .assignment-box { text-align: left; text-align-last: left; }
+    .assignment-box p { text-align: justify; }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul class="navbar">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="instructions.html">Instructions</a></li>
+      <li><a href="lectures.html">Lectures</a></li>
+      <li><a href="homeworks.html">Homeworks</a></li>
+      <li><a href="project_requirements.html">Final Project</a></li>
+    </ul>
+  </nav>
+
+  <main style="max-width: 800px; margin: auto;">
+    <h1 class="schedule-header">Homework 3: Customer Catalog Co-Pilot</h1>
+    <p><strong>Covers Lectures 5–6</strong> &nbsp;|&nbsp; <strong>Core MBA lens: Customer</strong></p>
+
+    <div class="assignment-box">
+      <p>Build a shopper-facing website with multimodal RAG—think fashion retailer, furniture, real estate listings, or any catalog business you know.</p>
+
+      <h2>Requirements</h2>
+      <ol>
+        <li><strong>Text RAG:</strong> Ingest policy or FAQ documents (returns, shipping, sizing). Answers must cite sources and refuse when not in the KB.</li>
+        <li><strong>Image catalog RAG:</strong> Ingest ≥20 product images with metadata (name, price, category).</li>
+        <li><strong>Two query types:</strong> text question → cited answer; image upload → similar in-catalog products.</li>
+        <li><strong>Mini eval:</strong> 5 test queries (3 text, 2 visual)—what worked and what failed.</li>
+      </ol>
+
+      <h2>Submission</h2>
+      <p>Submit <code>hw3.zip</code> with code, <code>requirements.txt</code>, sample catalog files, and your evaluation write-up.</p>
+    </div>
+  </main>
+
+  <script src="js/theme.js"></script>
+
+
+  <footer class="site-footer">
+    <p>© 2026 Tauhid Zaman</p>
+  </footer>
+</body>
+</html>

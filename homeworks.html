@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Homeworks - AI for Business</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="instructions.html">Instructions</a></li>
+      <li><a href="lectures.html">Lectures</a></li>
+      <li><a href="homeworks.html">Homeworks</a></li>
+      <li><a href="project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+
+  <main>
+    <h1 class="schedule-header">Homework Assignments</h1>
+    <p class="schedule-note"><em>Six homeworks (10% each). Each covers two lectures and connects to a Core MBA theme. Lectures 10–12 include in-class final project work. Lecture 13 has no homework. Final project due during finals week.</em></p>
+
+    <div class="accordion-container">
+
+      <div class="accordion">
+        <button class="accordion-btn">Homework 1 — Investor Due Diligence Extractor</button>
+        <div class="panel">
+          <p><strong>Covers:</strong> Lectures 1–2 &nbsp;|&nbsp; <strong>MBA lens:</strong> Investor</p>
+          <p>PDF → structured JSON extractor on a course-provided complex filing. Fixed submission layout, public + hidden autograder tests, investor memo. See details for schema contract and CLI format.</p>
+          <p><a href="hw1.html">Homework details</a></p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn">Homework 2 — Competitor Intelligence Agent</button>
+        <div class="panel">
+          <p><strong>Covers:</strong> Lectures 3–4 &nbsp;|&nbsp; <strong>MBA lens:</strong> Competitor</p>
+          <p>Analyze a competitor product photo or ad → structured claims; then run a web research agent → competitive landscape table with source URLs.</p>
+          <p><a href="hw2.html">Homework details</a></p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn">Homework 3 — Customer Catalog Co-Pilot</button>
+        <div class="panel">
+          <p><strong>Covers:</strong> Lectures 5–6 &nbsp;|&nbsp; <strong>MBA lens:</strong> Customer</p>
+          <p>Build a website with multimodal RAG over text policies and an image product catalog (≥20 items). Support text Q&amp;A with citations and image upload → similar products.</p>
+          <p><a href="hw3.html">Homework details</a></p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn">Homework 4 — AI Workflow Agent</button>
+        <div class="panel">
+          <p><strong>Covers:</strong> Lectures 7–8 &nbsp;|&nbsp; <strong>MBA lens:</strong> Economics</p>
+          <p>Document a business process, build a multi-step AI workflow, and analyze cost per 100 runs (tokenomics).</p>
+          <p><a href="hw4.html">Homework details</a></p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn">Homework 5 — Accounting Document Agent</button>
+        <div class="panel">
+          <p><strong>Covers:</strong> Lectures 9–10 &nbsp;|&nbsp; <strong>MBA lens:</strong> Accounting</p>
+          <p>Invoice/receipt → ledger-ready structured JSON. Optional stretch: Telegram or Slack bot that parses expense photos, or an MCP workflow from class.</p>
+          <p><a href="hw5.html">Homework details</a></p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="accordion-btn">Homework 6 — Investor Demo Site</button>
+        <div class="panel">
+          <p><strong>Covers:</strong> Lectures 11–12 &nbsp;|&nbsp; <strong>MBA lens:</strong> Investor (stakeholder demo)</p>
+          <p>Vite app with ≥2 agent tabs, deployed to Vercel with a working public URL. Include a short note on what business decision the demo enables.</p>
+          <p><a href="hw6.html">Homework details</a></p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const acc = document.querySelectorAll(".accordion-btn");
+    acc.forEach(btn => {
+      btn.addEventListener("click", function () {
+        this.classList.toggle("active");
+        const panel = this.nextElementSibling;
+        panel.style.display = panel.style.display === "block" ? "none" : "block";
+      });
+    });
+  </script>
+
+  <script src="js/theme.js"></script>
+
+
+  <footer class="site-footer">
+    <p>© 2026 Tauhid Zaman</p>
+  </footer>
+</body>
+</html>
