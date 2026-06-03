@@ -566,6 +566,13 @@ pre.file-tree code {
   padding: 0;
   border: none;
   font-size: 16px;
+  color: var(--text-primary);
+  border: none;
+}
+
+[data-theme="dark"] pre.terminal code,
+[data-theme="dark"] pre.file-tree code {
+  color: var(--text-primary);
 }
 
 ol {
