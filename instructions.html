@@ -20,26 +20,32 @@
 
   <div class="wrapper">
     <div class="sidebar">
-      <a href="#cursor">Cursor</a>
+      <a href="#vscode">VS Code</a>
       <a href="#python">Python</a>
       <a href="#react">React + Node.js</a>
       <a href="#github">GitHub</a>
       <a href="#gemini">Gemini</a>
       <a href="#latex">LaTeX</a>
+      <a href="#cursor">Cursor</a>
     </div>
 
     <div class="content">
       <h1>Setup Instructions</h1>
 
-      <h2 id="cursor">Cursor</h2>
+      <h2 id="vscode">VS Code</h2>
+      <p>Visual Studio Code is the free editor many assignments assume. Install it first; later sections also apply to Cursor (which is built on VS Code).</p>
       <ul>
-        <li>Sign up for Cursor using your <code>.edu</code> email for free student access at
-          <a href="https://www.cursor.com" target="_blank" rel="noopener noreferrer">https://www.cursor.com</a>
-          by clicking the <strong>Sign in</strong> button on the top right corner of the website
-          and then signing up with your <code>.edu</code> email.</li>
-        <li>Download <strong>Cursor</strong> by clicking the <strong>Download</strong>
-          button on the <a href="https://www.cursor.com" target="_blank" rel="noopener noreferrer">https://www.cursor.com</a> website.</li>
-        <li>Open the Cursor installer and follow the instructions to install Cursor.</li>
+        <li>Go to <a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer">https://code.visualstudio.com/</a></li>
+        <li>Click <strong>Download for Windows</strong> or <strong>Download for Mac</strong> (the site detects your OS)</li>
+        <li>Run the installer and accept the default options</li>
+        <li>Open VS Code and complete any first-run setup prompts</li>
+        <li><strong>Recommended extensions</strong> (Extensions view: <code>Ctrl+Shift+X</code> / <code>Cmd+Shift+X</code>):
+          <ul>
+            <li><strong>Python</strong> (Microsoft) — run and debug Python homework scripts</li>
+            <li><strong>GitHub Copilot</strong> (optional) — AI assistance if your account includes it</li>
+          </ul>
+        </li>
+        <li>Open a project folder with <strong>File &gt; Open Folder</strong> and use the integrated terminal (<code>Ctrl + `</code> or <code>View &gt; Terminal</code>) for commands in later sections</li>
       </ul>
 
       <h2 id="python">Python</h2>
@@ -61,9 +67,10 @@
         </li>
       </ul>
 
-      <h3>Connect Python to Cursor</h3>
+      <h3>Connect Python to VS Code or Cursor</h3>
       <ul>
-        <li>Open Cursor</li>
+        <li>Open VS Code or Cursor</li>
+        <li>Install the <strong>Python</strong> extension if you have not already (Extensions: <code>Ctrl+Shift+X</code> / <code>Cmd+Shift+X</code>)</li>
         <li>Click <strong>View</strong> in the top menu, then select <strong>Command Palette...</strong></li>
         <li>In the search bar that appears, type <code>Python: Select Interpreter</code> and press Enter</li>
         <li>Choose the Python version from the list, or click "Enter interpreter path" to manually locate it:
@@ -72,7 +79,7 @@
             <li><strong>Mac example:</strong> <code>/usr/local/bin/python3</code> (you can find it by running <code>which python3</code> in Terminal)</li>
           </ul>
         </li>
-        <li>Restart Cursor to apply the new interpreter</li>
+        <li>Restart the editor to apply the new interpreter</li>
       </ul>
 
       <h2 id="react">React + Node.js</h2>
@@ -242,6 +249,19 @@ git config --list</code></pre>
 }</code></pre>
 
       <p>Save the file, reopen your <code>.tex</code> document, and use LaTeX Workshop's build command (or the green "Build LaTeX project" actions in the editor). If the build still fails, open the LaTeX Workshop output/log panel and read the error: it usually means the path is wrong or a LaTeX package is missing from your distribution.</p>
+
+      <h2 id="cursor">Cursor</h2>
+      <p>Cursor is the AI-native editor we use in class for vibe coding. It is optional if you already use VS Code, but recommended for homework and projects.</p>
+      <ul>
+        <li>Sign up for Cursor using your <code>.edu</code> email for free student access at
+          <a href="https://www.cursor.com" target="_blank" rel="noopener noreferrer">https://www.cursor.com</a>
+          by clicking the <strong>Sign in</strong> button on the top right corner of the website
+          and then signing up with your <code>.edu</code> email.</li>
+        <li>Download <strong>Cursor</strong> by clicking the <strong>Download</strong>
+          button on the <a href="https://www.cursor.com" target="_blank" rel="noopener noreferrer">https://www.cursor.com</a> website.</li>
+        <li>Open the Cursor installer and follow the instructions to install Cursor.</li>
+        <li>Cursor shares most VS Code shortcuts and extensions; repeat the Python and GitHub steps above in Cursor if that is your primary editor.</li>
+      </ul>
 
     </div>
   </div>
