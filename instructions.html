@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Instructions - Generative AI and Social Media</title>
+  <title>Instructions - AI Foundations for Managers</title>
   <link rel="stylesheet" href="css/style.css">
   <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
-  
 </head>
 <body>
-  <nav>
+  <nav class="site-nav">
     <ul class="navbar">
       <li><a href="index.html">Home</a></li>
       <li><a href="instructions.html">Instructions</a></li>
@@ -16,144 +15,120 @@
       <li><a href="homeworks.html">Homeworks</a></li>
       <li><a href="project_requirements.html">Final Project</a></li>
     </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
   </nav>
 
   <div class="wrapper">
     <div class="sidebar">
       <a href="#cursor">Cursor</a>
-      <a href="#streamlit">Streamlit</a>
+      <a href="#python">Python</a>
       <a href="#react">React + Node.js</a>
       <a href="#github">GitHub</a>
-      <a href="#elevenlabs">ElevenLabs</a>
       <a href="#gemini">Gemini</a>
       <a href="#latex">LaTeX</a>
     </div>
-    
 
     <div class="content">
       <h1>Setup Instructions</h1>
+
       <h2 id="cursor">Cursor</h2>
-        <ul>
-          <li>Sign up for Cursor using your <code>.edu</code> email for free student access at 
-            <a href="https://www.cursor.com" target="_blank">https://www.cursor.com</a> by 
-            clicking the <strong>Sign in</strong> button on the top right corner of the website 
-            and then signing up with your <code>.edu</code> email.
-          <li>Download <strong>Cursor</strong> by clicking the <strong>Download</strong> 
-            button on the <a href="https://www.cursor.com" target="_blank">https://www.cursor.com</a> website</li>
-          <li>Open the Cursor installer and follow the instructions to install Cursor</li>
-        </ul>
-
-        <h3>Install Python</h3>
-        <ul>
-          <li><strong>Windows:</strong> 
-            <ul>
-              <li>Go to <a href="https://www.python.org/downloads/windows/" target="_blank">python.org/downloads/windows</a></li>
-              <li>Download and run the latest installer</li>
-              <li><strong>Important:</strong> Check the box that says <code>Add Python to PATH</code> before clicking "Install Now"</li>
-            </ul>
-          </li>
-          <li><strong>Mac:</strong>
-            <ul>
-              <li>Go to <a href="https://www.python.org/downloads/mac-osx/" target="_blank">python.org/downloads/mac-osx</a></li>
-              <li>Download the latest macOS <code>.pkg</code> installer</li>
-              <li>Open the installer and follow the installation steps</li>
-            </ul>
-          </li>
-        </ul>
-
-        <h3>Connect Python to Cursor</h3>
-        <ul>
-          <li>Open Cursor</li>
-          <li>Click <strong>View</strong> in the top menu, then select <strong>Command Palette...</strong></li>
-          <li>In the search bar that appears, type <code>Python: Select Interpreter</code> and press Enter</li>
-          <li>Choose the Python version from the list, or click "Enter interpreter path" to manually locate it:
-            <ul>
-              <li><strong>Windows example:</strong> <code>C:\Users\YourName\AppData\Local\Programs\Python\Python3x\python.exe</code></li>
-              <li><strong>Mac example:</strong> <code>/usr/local/bin/python3</code> (you can find it by running <code>which python3</code> in Terminal)</li>
-            </ul>
-          </li>
-          <li>Restart Cursor to apply the new interpreter</li>
-        </ul>
-
-      <h2 id="streamlit">Streamlit Apps</h2>
-      <p>Follow these steps to buid and run a streamlit app in Cursor:</p>
       <ul>
-        <li>In the Cursor agent chat, type in or copy and paste the AI prompt for the streamlit app you 
-          want to run and let it write the code for you.   </li>
+        <li>Sign up for Cursor using your <code>.edu</code> email for free student access at
+          <a href="https://www.cursor.com" target="_blank" rel="noopener noreferrer">https://www.cursor.com</a>
+          by clicking the <strong>Sign in</strong> button on the top right corner of the website
+          and then signing up with your <code>.edu</code> email.</li>
+        <li>Download <strong>Cursor</strong> by clicking the <strong>Download</strong>
+          button on the <a href="https://www.cursor.com" target="_blank" rel="noopener noreferrer">https://www.cursor.com</a> website.</li>
+        <li>Open the Cursor installer and follow the instructions to install Cursor.</li>
+      </ul>
+
+      <h2 id="python">Python</h2>
+      <h3>Install Python</h3>
+      <ul>
+        <li><strong>Windows:</strong>
           <ul>
-            <li>Make sure it writes a file called app.py. </li>
-        </ul>
-        
-        <li>In the Cursor agent chat, ask it to write the requirements file for the app.  
-          <ul>
-            <li>Make sure it write a file called requirements.txt. </li>
+            <li>Go to <a href="https://www.python.org/downloads/windows/" target="_blank" rel="noopener noreferrer">python.org/downloads/windows</a></li>
+            <li>Download and run the latest installer</li>
+            <li><strong>Important:</strong> Check the box that says <code>Add Python to PATH</code> before clicking "Install Now"</li>
           </ul>
-            
-        <li>In the terminal, install the dependencies:</li>
-      </ul>
-      <pre class="terminal"><code>pip install -r requirements.txt</code></pre>
-      <ul>
-        <li>In the terminal, run the app:</li>
-      </ul>
-      <pre class="terminal"><code>streamlit run app.py</code></pre>
-      <ul>
-        <li>The app should run in your web browser at <code>http://localhost:8501</code></li>
+        </li>
+        <li><strong>Mac:</strong>
+          <ul>
+            <li>Go to <a href="https://www.python.org/downloads/mac-osx/" target="_blank" rel="noopener noreferrer">python.org/downloads/mac-osx</a></li>
+            <li>Download the latest macOS <code>.pkg</code> installer</li>
+            <li>Open the installer and follow the installation steps</li>
+          </ul>
+        </li>
       </ul>
 
-    <h2 id="react">React + Node.js</h2>
-    <p>For a video walkthrough on how to install React and Node.js, see <a href="https://www.youtube.com/watch?v=BCX6UVQba4U" target="_blank">this YouTube tutorial</a>.</p>
-    <ul>
-      <li><strong>Install Node.js:</strong>
-        <ul>
-          <li>Go to <a href="https://nodejs.org/" target="_blank">https://nodejs.org/</a></li>
-          <li>Download the **LTS** version for your operating system (recommended)</li>
-          <li>Run the installer and follow the prompts</li>
-          <li><strong>Note:</strong> The installer may offer optional tools for building native modules. If you run into errors during this step, you can safely skip installing those optional tools — React and Node.js will work fine without them.</li>
-        </ul>
-      </li>
-      <li><strong>Verify Node and npm:</strong>
-        <ul>
-          <li>Open a terminal and run:</li>
-        </ul>
-        <pre class="terminal"><code>node -v
+      <h3>Connect Python to Cursor</h3>
+      <ul>
+        <li>Open Cursor</li>
+        <li>Click <strong>View</strong> in the top menu, then select <strong>Command Palette...</strong></li>
+        <li>In the search bar that appears, type <code>Python: Select Interpreter</code> and press Enter</li>
+        <li>Choose the Python version from the list, or click "Enter interpreter path" to manually locate it:
+          <ul>
+            <li><strong>Windows example:</strong> <code>C:\Users\YourName\AppData\Local\Programs\Python\Python3x\python.exe</code></li>
+            <li><strong>Mac example:</strong> <code>/usr/local/bin/python3</code> (you can find it by running <code>which python3</code> in Terminal)</li>
+          </ul>
+        </li>
+        <li>Restart Cursor to apply the new interpreter</li>
+      </ul>
+
+      <h2 id="react">React + Node.js</h2>
+      <p>For a video walkthrough on how to install React and Node.js, see <a href="https://www.youtube.com/watch?v=BCX6UVQba4U" target="_blank" rel="noopener noreferrer">this YouTube tutorial</a>.</p>
+      <ul>
+        <li><strong>Install Node.js:</strong>
+          <ul>
+            <li>Go to <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer">https://nodejs.org/</a></li>
+            <li>Download the <strong>LTS</strong> version for your operating system (recommended)</li>
+            <li>Run the installer and follow the prompts</li>
+            <li><strong>Note:</strong> The installer may offer optional tools for building native modules. If you run into errors during this step, you can safely skip installing those optional tools — React and Node.js will work fine without them.</li>
+          </ul>
+        </li>
+        <li><strong>Verify Node and npm:</strong>
+          <ul>
+            <li>Open a terminal and run:</li>
+          </ul>
+          <pre class="terminal"><code>node -v
 npm -v</code></pre>
-        <ul>
-          <li>You should see version numbers if installation was successful</li>
-        </ul>
-      </li>
-      <li><strong>Create a React App:</strong>
-        <ul>
-          <li>Create a folder for your app (e.g. <code>my-app</code>)</li>
-          <li>Open that folder in Cursor (<strong>File &gt; Open Folder</strong>)</li>
-          <li>In Cursor's terminal, run:</li>
-        </ul>
-        <pre class="terminal"><code>npx create-react-app .</code></pre>
-        <ul>
-          <li>This creates all the React files inside the current folder</li>
-          <li>To run the app, in the terminal run:</li>
-        </ul>
-        <pre class="terminal"><code>npm start</code></pre>
-        <ul>
-          <li>The app will open in your browser at <code>http://localhost:3000</code></li>
-        </ul>
-      </li>
-      <li><strong>Note:</strong> Cursor usually detects Node.js automatically — no need to configure paths.</li>
-    </ul>
+          <ul>
+            <li>You should see version numbers if installation was successful</li>
+          </ul>
+        </li>
+        <li><strong>Create a React App:</strong>
+          <ul>
+            <li>Create a folder for your app (e.g. <code>my-app</code>)</li>
+            <li>Open that folder in Cursor (<strong>File &gt; Open Folder</strong>)</li>
+            <li>In Cursor's terminal, run:</li>
+          </ul>
+          <pre class="terminal"><code>npx create-react-app .</code></pre>
+          <ul>
+            <li>This creates all the React files inside the current folder</li>
+            <li>To run the app, in the terminal run:</li>
+          </ul>
+          <pre class="terminal"><code>npm start</code></pre>
+          <ul>
+            <li>The app will open in your browser at <code>http://localhost:3000</code></li>
+          </ul>
+        </li>
+        <li><strong>Note:</strong> Cursor usually detects Node.js automatically — no need to configure paths.</li>
+      </ul>
 
       <h2 id="github">GitHub</h2>
-      <p>For a video walkthrough on how to install git on a Windows machine, see this <a href="https://www.youtube.com/watch?v=VWbX2B3Q-1g" target="_blank">YouTube tutorial</a>.</p>
-      <p>For a video walkthrough on how to install git on a Mac machine, see this <a href="https://www.youtube.com/watch?v=B4qsvQ5IqWk" target="_blank">YouTube tutorial</a>.</p>      
+      <p>For a video walkthrough on how to install git on a Windows machine, see this <a href="https://www.youtube.com/watch?v=VWbX2B3Q-1g" target="_blank" rel="noopener noreferrer">YouTube tutorial</a>.</p>
+      <p>For a video walkthrough on how to install git on a Mac machine, see this <a href="https://www.youtube.com/watch?v=B4qsvQ5IqWk" target="_blank" rel="noopener noreferrer">YouTube tutorial</a>.</p>
       <ul>
         <li><strong>Create a GitHub Account:</strong>
           <ul>
-            <li>Go to <a href="https://github.com/" target="_blank">https://github.com/</a></li>
+            <li>Go to <a href="https://github.com/" target="_blank" rel="noopener noreferrer">https://github.com/</a></li>
             <li>Click <strong>Sign up</strong> and follow the instructions to create a free account.</li>
             <li>Verify your email address.</li>
           </ul>
         </li>
         <li><strong>Download and Install Git:</strong>
           <ul>
-            <li><strong>Windows:</strong> Go to <a href="https://git-scm.com/download/win" target="_blank">https://git-scm.com/download/win</a> and download the "64-bit Git for Windows Setup." Run the installer and accept the default settings.</li>
+            <li><strong>Windows:</strong> Go to <a href="https://git-scm.com/download/win" target="_blank" rel="noopener noreferrer">https://git-scm.com/download/win</a> and download the "64-bit Git for Windows Setup." Run the installer and accept the default settings.</li>
             <li><strong>Mac:</strong> Simply open your terminal and type <code>git</code>. A popup will appear asking if you want to install the "Command Line Developer Tools." Click <strong>Install</strong>. (Alternatively, use <code>brew install git</code> if you have Homebrew).</li>
           </ul>
         </li>
@@ -182,18 +157,10 @@ git config --list</code></pre>
         </li>
       </ul>
 
-      <h2 id="elevenlabs">ElevenLabs</h2>
-      <ul>
-        <li>Go to <a href="https://elevenlabs.io" target="_blank">elevenlabs.io</a></li>
-        <li>Create a free account</li>
-        <li>Verify your email address</li>
-        <li>Get your API key from the dashboard (needed for assignments)</li>
-      </ul>
-
       <h2 id="gemini">Gemini</h2>
       <p>Please follow these steps to generate your Gemini API key (it takes less than 2 minutes):</p>
       <ol>
-        <li><strong>Access Google AI Studio:</strong> Go to <a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a> and sign in with your Google/Gmail account.</li>
+        <li><strong>Access Google AI Studio:</strong> Go to <a href="https://aistudio.google.com" target="_blank" rel="noopener noreferrer">aistudio.google.com</a> and sign in with your Google/Gmail account.</li>
         <li><strong>Create the key:</strong>
           <ul>
             <li>In the left sidebar, click <strong>Get API key</strong>.</li>
@@ -210,26 +177,26 @@ git config --list</code></pre>
       </ol>
 
       <h2 id="latex">LaTeX (optional for final projects)</h2>
-      <p>You may write your final project report in <strong>LaTeX</strong> instead of a word processor. LaTeX is a document preparation system: you write plain-text <code>.tex</code> files and a <em>distribution</em> (compiler plus packages) turns them into a PDF. Overview: <a href="https://www.latex-project.org/get/" target="_blank">latex-project.org/get</a>.</p>
+      <p>You may write your final project report in <strong>LaTeX</strong> instead of a word processor. LaTeX is a document preparation system: you write plain-text <code>.tex</code> files and a <em>distribution</em> (compiler plus packages) turns them into a PDF. Overview: <a href="https://www.latex-project.org/get/" target="_blank" rel="noopener noreferrer">latex-project.org/get</a>.</p>
 
       <h3>Windows</h3>
       <ul>
         <li><strong>MiKTeX</strong> (widely used on Windows):
           <ul>
-            <li>Go to <a href="https://miktex.org/download" target="_blank">miktex.org/download</a></li>
+            <li>Go to <a href="https://miktex.org/download" target="_blank" rel="noopener noreferrer">miktex.org/download</a></li>
             <li>Download the installer for Windows (64-bit is typical)</li>
             <li>Run the installer and follow the prompts; the default options are fine for most users</li>
             <li>The first time you build a document, MiKTeX may ask to install missing packages automatically—allow that when prompted</li>
           </ul>
         </li>
-        <li><strong>TeX Live</strong> (alternative full distribution): <a href="https://tug.org/texlive/windows.html" target="_blank">tug.org/texlive/windows.html</a> — download the installer and run it (install can take a while and uses several gigabytes of disk space)</li>
+        <li><strong>TeX Live</strong> (alternative full distribution): <a href="https://tug.org/texlive/windows.html" target="_blank" rel="noopener noreferrer">tug.org/texlive/windows.html</a> — download the installer and run it (install can take a while and uses several gigabytes of disk space)</li>
       </ul>
 
       <h3>Mac</h3>
       <ul>
         <li><strong>MacTeX</strong> (full distribution, large download, ~4&nbsp;GB):
           <ul>
-            <li>Go to <a href="https://tug.org/mactex/" target="_blank">tug.org/mactex</a></li>
+            <li>Go to <a href="https://tug.org/mactex/" target="_blank" rel="noopener noreferrer">tug.org/mactex</a></li>
             <li>Download the macOS <code>.pkg</code> file</li>
             <li>Open the package and complete the installation wizard</li>
             <li>After install, you can use the <strong>TeXShop</strong> app (included) or any editor you prefer</li>
@@ -237,13 +204,13 @@ git config --list</code></pre>
         </li>
         <li><strong>BasicTeX</strong> (smaller install; add packages as needed):
           <ul>
-            <li>Download from <a href="https://tug.org/mactex/morepackages.html" target="_blank">tug.org/mactex/morepackages.html</a></li>
+            <li>Download from <a href="https://tug.org/mactex/morepackages.html" target="_blank" rel="noopener noreferrer">tug.org/mactex/morepackages.html</a></li>
             <li>Install the <code>.pkg</code>, then in Terminal install extra packages with <code>sudo tlmgr install &lt;package-name&gt;</code> when a build error says a package is missing</li>
           </ul>
         </li>
       </ul>
 
-      <p><strong>Editors:</strong> You can edit <code>.tex</code> files in Cursor or VS Code (with a LaTeX extension such as LaTeX Workshop), or use a dedicated editor like <a href="https://www.texstudio.org/" target="_blank">TeXstudio</a>. <strong>Online option:</strong> <a href="https://www.overleaf.com/" target="_blank">Overleaf</a> runs LaTeX in the browser with no local install—useful if you prefer not to install a distribution.</p>
+      <p><strong>Editors:</strong> You can edit <code>.tex</code> files in Cursor or VS Code (with a LaTeX extension such as LaTeX Workshop), or use a dedicated editor like <a href="https://www.texstudio.org/" target="_blank" rel="noopener noreferrer">TeXstudio</a>. <strong>Online option:</strong> <a href="https://www.overleaf.com/" target="_blank" rel="noopener noreferrer">Overleaf</a> runs LaTeX in the browser with no local install—useful if you prefer not to install a distribution.</p>
 
       <h3>Running LaTeX in Cursor</h3>
       <p>Cursor is based on VS Code. The usual way to build <code>.tex</code> files inside Cursor is the <strong>LaTeX Workshop</strong> extension, which runs tools such as <code>pdflatex</code> or <code>latexmk</code> for you. Cursor must be able to find those executables—either because their folder is on your <code>PATH</code>, or because you tell LaTeX Workshop where that folder is.</p>
@@ -258,9 +225,9 @@ git config --list</code></pre>
           </ul>
           If you are unsure, use File Explorer or Finder to search for <code>pdflatex.exe</code> (Windows) or open Terminal and run <code>which pdflatex</code> (Mac)—the folder containing that file is the one you need.
         </li>
-        <li><strong>Check that Cursor’s terminal sees LaTeX:</strong> Open the integrated terminal in Cursor and run:
+        <li><strong>Check that Cursor's terminal sees LaTeX:</strong> Open the integrated terminal in Cursor and run:
           <pre class="terminal"><code>pdflatex --version</code></pre>
-          If you see version information, you are done—LaTeX Workshop can usually build without extra configuration. If you get “command not found,” add the bin folder to your system or user <code>PATH</code>, then <strong>fully quit Cursor and open it again</strong> so it picks up the new <code>PATH</code>.</li>
+          If you see version information, you are done—LaTeX Workshop can usually build without extra configuration. If you get "command not found," add the bin folder to your system or user <code>PATH</code>, then <strong>fully quit Cursor and open it again</strong> so it picks up the new <code>PATH</code>.</li>
         <li><strong>If you prefer not to change the system <code>PATH</code>:</strong> Tell LaTeX Workshop to prepend that bin folder when it runs builds. In Cursor, open the Command Palette (<code>Ctrl+Shift+P</code> / <code>Cmd+Shift+P</code>), run <strong>Preferences: Open User Settings (JSON)</strong>, and add the block below inside the outer <code>{ }</code> (add a comma after the previous setting if required so the JSON stays valid). Replace the path with <em>your</em> actual bin folder from step 2 if it differs.</li>
       </ol>
 
@@ -269,22 +236,20 @@ git config --list</code></pre>
   "PATH": "C:/Program Files/MiKTeX/miktex/bin/x64;%PATH%"
 }</code></pre>
 
-      <p><strong>Mac</strong> (prepend MacTeX’s <code>texbin</code>):</p>
+      <p><strong>Mac</strong> (prepend MacTeX's <code>texbin</code>):</p>
       <pre class="terminal"><code>"latex-workshop.latex.env": {
   "PATH": "/Library/TeX/texbin:${env:PATH}"
 }</code></pre>
 
-      <p>Save the file, reopen your <code>.tex</code> document, and use LaTeX Workshop’s build command (or the green “Build LaTeX project” actions in the editor). If the build still fails, open the LaTeX Workshop output/log panel and read the error: it usually means the path is wrong or a LaTeX package is missing from your distribution.</p>
+      <p>Save the file, reopen your <code>.tex</code> document, and use LaTeX Workshop's build command (or the green "Build LaTeX project" actions in the editor). If the build still fails, open the LaTeX Workshop output/log panel and read the error: it usually means the path is wrong or a LaTeX package is missing from your distribution.</p>
 
     </div>
   </div>
 
   <script src="js/theme.js"></script>
 
-
   <footer class="site-footer">
     <p>© 2026 Tauhid Zaman</p>
   </footer>
 </body>
-
 </html>
