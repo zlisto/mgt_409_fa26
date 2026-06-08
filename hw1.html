@@ -23,202 +23,244 @@
   </nav>
 
   <main class="main-narrow">
-    <h1 class="schedule-header">Homework 1: AI Earnings Screen</h1>
-    <p class="page-subtitle"><strong>Covers Lectures 1–2</strong> &nbsp;|&nbsp; <strong>Core MBA lens: Investor</strong></p>
+    <h1 class="schedule-header">Homework 1: Small Business Valuation Agent</h1>
+    <p class="page-subtitle"><strong>Covers Lectures 1–2</strong> &nbsp;|&nbsp; <strong>Core MBA lenses: Accounting &amp; Investor</strong></p>
 
     <div class="assignment-box">
       <h2>Scenario</h2>
       <p>
-        You are on the investment team covering the <strong>AI semiconductor stack</strong>. Five companies just filed
-        quarterly earnings press releases (SEC Form 8-K, Exhibit 99.1). Your associate pasted PDFs into a folder;
-        your job is to turn unstructured earnings prose and tables into <strong>auditable JSON</strong>, then produce a
-        <strong>comparison webpage</strong> a partner can read in five minutes—not a chat summary with invented numbers.
+        <strong>Spoke &amp; Wrench Bicycle Repair</strong> is a sole-proprietor bike shop in New Haven run by Jordan Lee.
+        A buyer is kicking the tires on an acquisition. The “data room” is a shoebox: PDF receipts, a bank statement,
+        a credit card statement, a lease summary, a handwritten IOU, an eBay confirmation, and a few customer emails—not
+        a clean QuickBooks export.
       </p>
       <p>
-        Canvas provides five PDFs: <strong>NVDA, AMD, AVGO, MU, QCOM</strong>. Fiscal quarters do not line up perfectly
-        across filers; strong submissions say so explicitly instead of pretending the comparison is same-quarter.
+        Your job: build an <strong>AI document agent</strong> that turns this mess into structured accounting records,
+        then produces a <strong>valuation webpage</strong>. Strong work separates business from personal, knows what is
+        <em>not</em> on the January books (future orders in email, off-books receivables, intangibles), and does not
+        invent numbers.
+      </p>
+      <p>
+        This homework is inspired by Yale Accounting core pre-work (Prof. Rick Antle’s small-business valuation exercise).
       </p>
     </div>
 
-    <h2>What you build</h2>
-    <p>Two deliverables:</p>
-    <ol>
-      <li><strong>Extractor (CLI):</strong> One PDF in → one JSON file out with the required fields below.</li>
-      <li><strong>Comparison report (HTML):</strong> Reads your five JSON files and renders a single webpage that summarizes the data and gives an <strong>investment-style analysis</strong> (who looks strongest, what you would dig into next, what you do not trust).</li>
-    </ol>
-    <p>Vibe coding is encouraged; you must be able to run and explain what you submit.</p>
-
-    <h2>Course PDFs (from Canvas)</h2>
+    <h2>Course document pack (Canvas)</h2>
+    <p>Canvas provides <code>hw1_spoke_and_wrench.zip</code> with:</p>
     <table class="grading-table">
       <thead>
-        <tr><th>Ticker</th><th>Company</th><th>Filename (example)</th></tr>
+        <tr><th>Type</th><th>Files</th></tr>
       </thead>
       <tbody>
-        <tr><td>NVDA</td><td>NVIDIA</td><td><code>nvda-99.1.pdf</code></td></tr>
-        <tr><td>AMD</td><td>Advanced Micro Devices</td><td><code>amd-99.1.pdf</code></td></tr>
-        <tr><td>AVGO</td><td>Broadcom</td><td><code>avgo-99.1.pdf</code></td></tr>
-        <tr><td>MU</td><td>Micron</td><td><code>mu-99.1.pdf</code></td></tr>
-        <tr><td>QCOM</td><td>Qualcomm</td><td><code>qcom-99.1.pdf</code></td></tr>
+        <tr>
+          <td>PDFs</td>
+          <td>Lease, bank statement, credit card statement, 4 receipts, handwritten IOU, eBay order confirmation</td>
+        </tr>
+        <tr>
+          <td>Emails (.txt)</td>
+          <td>3 messages describing <strong>future</strong> customer orders (not January revenue)</td>
+        </tr>
+        <tr>
+          <td><code>manifest.json</code></td>
+          <td>Business name, owner, accounting period</td>
+        </tr>
       </tbody>
     </table>
 
-    <h2>Required fields (per company JSON)</h2>
-    <p>Each company file must be a JSON object with <strong>exactly these keys</strong> (use <code>null</code> when the press release does not state a value; never guess):</p>
-    <pre class="terminal"><code>{
-  "ticker": "NVDA",
-  "company_name": "NVIDIA Corporation",
-  "fiscal_period": "Q4 FY2026",
-  "period_end_date": "2026-01-26",
-  "revenue_usd": 39300000000,
-  "revenue_yoy_pct": 78.0,
-  "net_income_usd": null,
-  "gaap_eps": 1.62,
-  "non_gaap_eps": null,
-  "ai_highlights": [
-    "Short bullet grounded in the PDF",
-    "Another bullet"
-  ],
-  "guidance_summary": "One sentence on forward guidance, or null",
-  "fields_not_found": ["non_gaap_eps"],
-  "computed_metric": {
-    "name": "net_margin_pct",
-    "value": null,
-    "formula": "net_income_usd / revenue_usd * 100"
-  }
-}</code></pre>
+    <h2>What you build</h2>
+    <ol>
+      <li><strong>Document agent (CLI):</strong> Ingest PDFs and emails → structured JSON artifacts (see below).</li>
+      <li><strong>Valuation report (HTML):</strong> Summarize January economics, add pipeline and off-books items, and state a defensible <strong>valuation range</strong> for the shop.</li>
+    </ol>
 
-    <h3>Field rules</h3>
+    <h2>Pipeline tasks (what the agent must do)</h2>
+    <table class="grading-table">
+      <thead>
+        <tr><th>Task</th><th>Input</th><th>Output</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Receipt ledger</td>
+          <td>All receipt PDFs + eBay PDF</td>
+          <td>List of line items with <code>vendor</code>, <code>date</code>, <code>description</code>, <code>amount_usd</code>, <code>category</code></td>
+        </tr>
+        <tr>
+          <td>Bank split</td>
+          <td>Bank statement PDF</td>
+          <td>Transactions tagged <code>business</code> or <code>personal</code>; deposits classified as revenue vs owner movement</td>
+        </tr>
+        <tr>
+          <td>Card split</td>
+          <td>Credit card PDF</td>
+          <td>Charges tagged <code>business</code> or <code>personal</code> with expense category for business rows</td>
+        </tr>
+        <tr>
+          <td>January P&amp;L (simplified)</td>
+          <td>Your classified data + lease PDF</td>
+          <td>Revenue, expense buckets, net income for January 2026 only</td>
+        </tr>
+        <tr>
+          <td>Valuation inputs</td>
+          <td>Emails + IOU + your P&amp;L</td>
+          <td>Pipeline revenue, off-books receivables, and what you exclude (intangibles, etc.)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Receipt categories (minimum set)</h3>
+    <p>Use these <code>category</code> values (add sub-notes in <code>description</code> if needed):</p>
     <ul>
-      <li><strong>Dollars:</strong> Store full USD amounts as numbers (not strings). If the release states billions, convert to dollars (e.g., $39.3B → <code>39300000000</code>).</li>
-      <li><strong>Percentages:</strong> Store as numbers (e.g., <code>78.0</code> for 78% YoY revenue growth).</li>
-      <li><strong>GAAP vs non-GAAP:</strong> Put GAAP EPS in <code>gaap_eps</code>; non-GAAP only in <code>non_gaap_eps</code>. Do not mix them.</li>
-      <li><strong><code>ai_highlights</code>:</strong> At least 2 short bullets that mention AI/data center/on-device AI themes and are traceable to the PDF wording.</li>
-      <li><strong><code>fields_not_found</code>:</strong> List every required key above (except <code>computed_metric</code>) that you could not locate. If inputs for <code>computed_metric</code> are missing, set <code>value</code> to <code>null</code>.</li>
-      <li><strong><code>computed_metric</code>:</strong> Use the net margin formula shown, or another metric <em>computable only from your extracted numbers</em>—document the formula string. No divide-by-zero; no fabricated inputs.</li>
+      <li><code>cogs_parts</code> — inventory / parts for customer jobs</li>
+      <li><code>tools_equipment</code> — durable shop tools (eBay stand, Park Tool)</li>
+      <li><code>shop_supplies</code> — consumables, cleaning, bins</li>
+      <li><code>shipping</code></li>
+      <li><code>marketing</code></li>
+      <li><code>rent_occupancy</code> — from lease / rent payment</li>
+      <li><code>utilities</code></li>
+      <li><code>insurance</code></li>
+      <li><code>software</code></li>
+      <li><code>uncategorized</code> — only if the PDF truly does not support a label; explain in memo</li>
     </ul>
 
-    <h2>Comparison webpage requirements</h2>
-    <p>Submit a single HTML file (no server required) that you generate from your JSON, e.g. <code>sample_output/comparison.html</code>. It must include:</p>
+    <h2>Required JSON outputs</h2>
+    <pre class="terminal"><code>sample_output/
+├── receipts.json
+├── bank_transactions.json
+├── credit_card_transactions.json
+├── income_statement_jan2026.json
+├── valuation_inputs.json
+└── valuation.html</code></pre>
+
+    <h3><code>receipts.json</code></h3>
+    <pre class="terminal"><code>{
+  "source_documents": ["receipt_park_tool.pdf", "..."],
+  "line_items": [
+    {
+      "vendor": "Park Tool Company",
+      "date": "2026-01-06",
+      "description": "Chain whip, lock tool, apron",
+      "amount_usd": 88.70,
+      "category": "tools_equipment",
+      "source_file": "receipt_park_tool.pdf"
+    }
+  ],
+  "fields_not_found": []
+}</code></pre>
+
+    <h3><code>bank_transactions.json</code></h3>
+    <pre class="terminal"><code>{
+  "account": "Business Checking ****7124",
+  "period": "2026-01",
+  "transactions": [
+    {
+      "date": "2026-01-03",
+      "description": "POS DEPOSIT — Square walk-in tune-ups",
+      "amount_usd": 420.00,
+      "direction": "credit",
+      "classification": "business",
+      "accounting_label": "revenue"
+    }
+  ]
+}</code></pre>
+
+    <h3><code>credit_card_transactions.json</code></h3>
+    <p>Same pattern; <code>classification</code> is <code>business</code> or <code>personal</code>. Business rows include <code>expense_category</code>.</p>
+
+    <h3><code>income_statement_jan2026.json</code></h3>
+    <pre class="terminal"><code>{
+  "period": "2026-01",
+  "revenue_usd": 0,
+  "expense_lines": [
+    { "label": "rent", "amount_usd": 0, "sources": ["bank_statement_jan2026.pdf"] }
+  ],
+  "net_income_usd": 0,
+  "assumptions": ["One sentence on how you treated owner draws, etc."]
+}</code></pre>
+
+    <h3><code>valuation_inputs.json</code></h3>
+    <pre class="terminal"><code>{
+  "booked_january_net_income_usd": 0,
+  "off_books_receivables": [
+    { "description": "Mike Smith IOU", "amount_usd": 180, "source": "iou_mike_smith.pdf" }
+  ],
+  "pipeline_orders": [
+    {
+      "customer": "Hartford Mutual",
+      "amount_usd": 6800,
+      "expected_timing": "March 2026",
+      "source": "email_fleet_wellness.txt",
+      "in_january_books": false
+    }
+  ],
+  "excluded_from_valuation": [
+    "Owner skill / reputation",
+    "Customer list as intangible"
+  ],
+  "valuation_range_usd": { "low": 0, "high": 0, "method": "Explain multiple or SDE logic" }
+}</code></pre>
+
+    <h2>Valuation webpage (<code>valuation.html</code>)</h2>
+    <p>Single static HTML file (no server). Must include:</p>
     <ol>
-      <li><strong>Summary table</strong> — all five companies, columns for ticker, fiscal period, revenue, revenue YoY %, GAAP EPS, and your computed metric.</li>
-      <li><strong>Rankings</strong> — you choose <strong>two metrics</strong> (e.g., revenue YoY % and net margin) and rank all five companies best → worst for each.</li>
-      <li><strong>Comparability caveat</strong> — a short paragraph on whether these quarters are apples-to-apples; if not, how you still use the screen.</li>
-      <li><strong>Analysis</strong> — 2–3 paragraphs: which name looks most attractive for an AI-infrastructure allocation, what risks the PDFs surface, and one field you would not trust without manual verification.</li>
+      <li><strong>January snapshot</strong> — simplified P&amp;L table from your JSON.</li>
+      <li><strong>Personal vs business</strong> — summary of what you reclassified from bank/card.</li>
+      <li><strong>Pipeline table</strong> — future orders from emails (clearly labeled not booked in January).</li>
+      <li><strong>Valuation section</strong> — your range, method in plain English, and 2–3 drivers.</li>
+      <li><strong>What’s missing</strong> — bullet list of what a buyer would still need (intangibles, insurance detail, etc.).</li>
     </ol>
-    <p>Styling is up to you; clarity matters more than design awards.</p>
 
     <h2>Required submission layout</h2>
-    <p>Submit exactly one file: <code>hw1.zip</code>. Unzipped structure <strong>must match</strong>:</p>
+    <p>Submit <code>hw1.zip</code>:</p>
     <pre class="file-tree"><code>hw1/
 ├── README.md
-├── extract.py
+├── agent.py
 ├── report.py
 ├── requirements.txt
 ├── prompts/
-│   └── pdf_extract.txt
+│   ├── pdf_extract.txt
+│   └── email_extract.txt
 ├── memo.md
 └── sample_output/
-    ├── nvda.json
-    ├── amd.json
-    ├── avgo.json
-    ├── mu.json
-    ├── qcom.json
-    └── comparison.html</code></pre>
+    ├── receipts.json
+    ├── bank_transactions.json
+    ├── credit_card_transactions.json
+    ├── income_statement_jan2026.json
+    ├── valuation_inputs.json
+    └── valuation.html</code></pre>
 
-    <h3>File requirements</h3>
-    <table class="grading-table">
-      <thead>
-        <tr><th>File</th><th>Requirement</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><code>README.md</code></td>
-          <td>Setup, environment variables (<code>OPENAI_API_KEY</code> or equivalent), and commands to reproduce extraction + HTML report.</td>
-        </tr>
-        <tr>
-          <td><code>extract.py</code></td>
-          <td>CLI: <code>python extract.py --pdf PATH --out PATH</code> — exits <code>0</code> and writes valid JSON.</td>
-        </tr>
-        <tr>
-          <td><code>report.py</code></td>
-          <td>CLI: <code>python report.py --json-dir sample_output --out sample_output/comparison.html</code> — builds the comparison page from your five JSON files.</td>
-        </tr>
-        <tr>
-          <td><code>prompts/pdf_extract.txt</code></td>
-          <td>Prompt(s) used for PDF → JSON extraction.</td>
-        </tr>
-        <tr>
-          <td><code>memo.md</code></td>
-          <td>Short reflection (~300–500 words); see below.</td>
-        </tr>
-        <tr>
-          <td><code>sample_output/*.json</code></td>
-          <td>Your extractor output for all five Canvas PDFs.</td>
-        </tr>
-        <tr>
-          <td><code>sample_output/comparison.html</code></td>
-          <td>Your generated summary and analysis page.</td>
-        </tr>
-      </tbody>
-    </table>
+    <h3>CLI contract</h3>
+    <pre class="terminal"><code>python agent.py --docs-dir PATH_TO_UNZIPPED_PACK --out-dir sample_output
+python report.py --json-dir sample_output --out sample_output/valuation.html</code></pre>
+    <p><code>agent.py</code> reads all PDFs in the pack plus <code>emails/*.txt</code> and writes the five JSON files. <code>report.py</code> builds the HTML from those JSON files only (no re-parsing PDFs).</p>
 
-    <h2>How to run (before you submit)</h2>
-    <p>With the Canvas PDFs in a folder, e.g. <code>pdfs/</code>:</p>
-    <pre class="terminal"><code>python extract.py --pdf pdfs/nvda-99.1.pdf --out sample_output/nvda.json
-python extract.py --pdf pdfs/amd-99.1.pdf --out sample_output/amd.json
-python extract.py --pdf pdfs/avgo-99.1.pdf --out sample_output/avgo.json
-python extract.py --pdf pdfs/mu-99.1.pdf --out sample_output/mu.json
-python extract.py --pdf pdfs/qcom-99.1.pdf --out sample_output/qcom.json
-python report.py --json-dir sample_output --out sample_output/comparison.html</code></pre>
-    <p>Open <code>comparison.html</code> in a browser to proofread numbers and narrative against the PDFs.</p>
-
-    <h2>Memo (<code>memo.md</code>)</h2>
-    <p>Address all three prompts:</p>
+    <h2>Memo (<code>memo.md</code>, ~400–600 words)</h2>
     <ol>
-      <li><strong>Hardest field:</strong> Which required field was hardest to extract reliably, and why (tables, GAAP/non-GAAP, units, etc.)?</li>
-      <li><strong>Comparability:</strong> How did fiscal-period mismatch affect your rankings or analysis?</li>
-      <li><strong>Tooling:</strong> One thing you would change in your prompt or pipeline before showing this to a portfolio manager.</li>
+      <li><strong>Hardest classification:</strong> One transaction you struggled to label business vs personal, and why.</li>
+      <li><strong>Not in the books:</strong> What the emails and IOU add to valuation that January financials alone miss.</li>
+      <li><strong>What you would not trust:</strong> One field your agent could hallucinate; how you guarded against it.</li>
+      <li><strong>Buyer diligence:</strong> If you were acquiring Spoke &amp; Wrench, one follow-up document you would demand.</li>
     </ol>
 
-    <h2>Grading breakdown (100 points)</h2>
+    <h2>Grading (100 points)</h2>
     <table class="grading-table">
       <thead>
-        <tr><th>Component</th><th>Pts</th><th>How it is graded</th></tr>
+        <tr><th>Component</th><th>Pts</th></tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Submission format &amp; CLI</td>
-          <td>15</td>
-          <td>Correct folder layout; <code>extract.py</code> and <code>report.py</code> run as documented.</td>
-        </tr>
-        <tr>
-          <td>JSON extraction (5 companies)</td>
-          <td>40</td>
-          <td>Required keys and types; numeric accuracy vs. PDFs (±2% where applicable); <code>null</code> discipline; grounded <code>ai_highlights</code>.</td>
-        </tr>
-        <tr>
-          <td><code>computed_metric</code></td>
-          <td>10</td>
-          <td>Formula correct from your numbers; <code>null</code> when inputs missing.</td>
-        </tr>
-        <tr>
-          <td>Comparison HTML</td>
-          <td>25</td>
-          <td>Table, two ranking blocks, comparability caveat, analysis consistent with your JSON (not invented numbers).</td>
-        </tr>
-        <tr>
-          <td>Memo</td>
-          <td>10</td>
-          <td>Specific, honest answers to the three prompts.</td>
-        </tr>
+        <tr><td>Submission format &amp; CLI runs</td><td>15</td></tr>
+        <tr><td>Receipt ledger (categories, amounts, sources)</td><td>20</td></tr>
+        <tr><td>Bank &amp; card business/personal split</td><td>20</td></tr>
+        <tr><td>January income statement (internally consistent)</td><td>15</td></tr>
+        <tr><td>Valuation inputs + pipeline from emails</td><td>15</td></tr>
+        <tr><td><code>valuation.html</code> + memo quality</td><td>15</td></tr>
       </tbody>
     </table>
 
     <h2>Policies</h2>
     <ul>
-      <li><strong>Vibe coding encouraged</strong> (GitHub Copilot, Cursor); you must be able to explain and run what you submit.</li>
-      <li><strong>No API keys</strong> in the zip—use environment variables documented in README.</li>
-      <li><strong>Do not hard-code</strong> the five public JSON files; extraction must run from the PDFs.</li>
+      <li><strong>Vibe coding encouraged</strong>; you must run and explain what you submit.</li>
+      <li><strong>No API keys</strong> in the zip.</li>
+      <li><strong>No fabricated amounts</strong> — use <code>null</code> and <code>fields_not_found</code> when the source is silent.</li>
       <li><strong>Late policy:</strong> per syllabus.</li>
     </ul>
 
