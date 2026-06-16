@@ -171,6 +171,35 @@
 
     <h3><code>credit_card_transactions.json</code></h3>
     <p>Each row is labeled business or personal. Business rows also include an expense type.</p>
+    <pre class="terminal"><code>{
+  "account": "Chase Ink Business Preferred ****4821",
+  "period": "2026-01",
+  "transactions": [
+    {
+      "date": "2026-01-09",
+      "merchant": "INSTACART *WHOLE FOODS",
+      "description": "Groceries (personal)",
+      "amount_usd": 64.22,
+      "classification": "personal"
+    },
+    {
+      "date": "2026-01-25",
+      "merchant": "NEW HAVEN BIKE PARTS",
+      "description": "Inventory — tubes, tires",
+      "amount_usd": 218.40,
+      "classification": "business",
+      "expense_category": "parts"
+    },
+    {
+      "date": "2026-01-17",
+      "merchant": "SPEEDY COURIER NH",
+      "description": "Shipping — same-day tubes",
+      "amount_usd": 28.00,
+      "classification": "business",
+      "expense_category": "shipping"
+    }
+  ]
+}</code></pre>
 
     <h3><code>income_statement_jan2026.json</code></h3>
     <pre class="terminal"><code>{
