@@ -21,19 +21,19 @@
   <div class="wrapper">
     <div class="sidebar">
       <a href="#vscode">VS Code</a>
+      <a href="#portkey-codex">Portkey &amp; Codex</a>
       <a href="#python">Python</a>
       <a href="#react">React + Node.js</a>
       <a href="#github">GitHub</a>
       <a href="#gemini">Gemini</a>
-      <a href="#latex">LaTeX</a>
-      <a href="#cursor">Cursor</a>
+      <a href="#cursor">Cursor (optional)</a>
     </div>
 
     <div class="content">
       <h1>Setup Instructions</h1>
 
       <h2 id="vscode">VS Code</h2>
-      <p>Visual Studio Code is the free editor many assignments assume. Install it first; later sections also apply to Cursor (which is built on VS Code).</p>
+      <p>Visual Studio Code is the editor we use in class. Install it first; the sections below assume you are working in VS Code.</p>
       <ul>
         <li>Go to <a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer">https://code.visualstudio.com/</a></li>
         <li>Click <strong>Download for Windows</strong> or <strong>Download for Mac</strong> (the site detects your OS)</li>
@@ -41,6 +41,22 @@
         <li>Open VS Code and complete any first-run setup prompts</li>
         <li>Open a project folder with <strong>File &gt; Open Folder</strong> and use the integrated terminal (<code>Ctrl + `</code> or <code>View &gt; Terminal</code>) for commands in later sections</li>
       </ul>
+
+      <h2 id="portkey-codex">Portkey &amp; Codex</h2>
+      <p>
+        Yale provides access to OpenAI Codex (OpenAI’s coding agent) through Portkey, Yale’s AI gateway.
+        This lets you use Codex inside VS Code without a personal ChatGPT subscription. Follow Yale’s
+        step-by-step guide to install the Codex extension, request a Portkey API key, and configure your
+        editor:
+      </p>
+      <p>
+        <a href="https://yaleits.atlassian.net/wiki/spaces/AISD/pages/6198394881/OpenAI+Codex+with+Portkey" target="_blank" rel="noopener noreferrer">OpenAI Codex with Portkey — Yale AI Platforms documentation</a>
+      </p>
+      <p>
+        Do this after installing VS Code. You will need a Portkey workspace and API key; the guide walks
+        through creating <code>config.toml</code> and setting the <code>PORTKEY_API_KEY</code> environment
+        variable. Restart VS Code when you are done.
+      </p>
 
       <h2 id="python">Python</h2>
       <h3>Install Python</h3>
@@ -61,9 +77,9 @@
         </li>
       </ul>
 
-      <h3>Connect Python to VS Code or Cursor</h3>
+      <h3>Connect Python to VS Code</h3>
       <ul>
-        <li>Open VS Code or Cursor</li>
+        <li>Open VS Code</li>
         <li>Install the <strong>Python</strong> extension if you have not already (Extensions: <code>Ctrl+Shift+X</code> / <code>Cmd+Shift+X</code>)</li>
         <li>Click <strong>View</strong> in the top menu, then select <strong>Command Palette...</strong></li>
         <li>In the search bar that appears, type <code>Python: Select Interpreter</code> and press Enter</li>
@@ -100,8 +116,8 @@ npm -v</code></pre>
         <li><strong>Create a React App:</strong>
           <ul>
             <li>Create a folder for your app (e.g. <code>my-app</code>)</li>
-            <li>Open that folder in Cursor (<strong>File &gt; Open Folder</strong>)</li>
-            <li>In Cursor's terminal, run:</li>
+            <li>Open that folder in VS Code (<strong>File &gt; Open Folder</strong>)</li>
+            <li>In VS Code's integrated terminal, run:</li>
           </ul>
           <pre class="terminal"><code>npx create-react-app .</code></pre>
           <ul>
@@ -113,7 +129,7 @@ npm -v</code></pre>
             <li>The app will open in your browser at <code>http://localhost:3000</code></li>
           </ul>
         </li>
-        <li><strong>Note:</strong> Cursor usually detects Node.js automatically — no need to configure paths.</li>
+        <li><strong>Note:</strong> VS Code usually detects Node.js automatically — no need to configure paths.</li>
       </ul>
 
       <h2 id="github">GitHub</h2>
@@ -133,16 +149,16 @@ npm -v</code></pre>
             <li><strong>Mac:</strong> Simply open your terminal and type <code>git</code>. A popup will appear asking if you want to install the "Command Line Developer Tools." Click <strong>Install</strong>. (Alternatively, use <code>brew install git</code> if you have Homebrew).</li>
           </ul>
         </li>
-        <li><strong>Integrate GitHub with Cursor:</strong>
+        <li><strong>Integrate GitHub with VS Code:</strong>
           <ul>
-            <li>Open <strong>Cursor</strong>.</li>
+            <li>Open <strong>VS Code</strong>.</li>
             <li>Open the integrated terminal (<code>Ctrl + `</code> or <code>View &gt; Terminal</code>).</li>
             <li>Set your Git identity (this attaches your name to your code changes):</li>
           </ul>
           <pre class="terminal"><code>git config --global user.name "Your Name"
 git config --global user.email "your@email.com"</code></pre>
           <ul>
-            <li><strong>Authentication:</strong> The easiest way is to click the <strong>Accounts icon</strong> (bottom-left corner of Cursor) and select <strong>"Sign in with GitHub"</strong>. This handles the security tokens for you.</li>
+            <li><strong>Authentication:</strong> The easiest way is to click the <strong>Accounts icon</strong> (bottom-left corner of VS Code) and select <strong>"Sign in with GitHub"</strong>. This handles the security tokens for you.</li>
             <li>Alternatively, you can authenticate via the terminal by trying to clone a repository:</li>
           </ul>
           <pre class="terminal"><code>git clone https://github.com/your-username/your-repo.git</code></pre>
@@ -153,7 +169,7 @@ git config --global user.email "your@email.com"</code></pre>
           <pre class="terminal"><code>git --version
 git config --list</code></pre>
           <ul>
-            <li><strong>Pro Tip:</strong> You can now use the <strong>Source Control tab</strong> (the branch icon on the left sidebar) in Cursor to stage and commit changes without typing commands!</li>
+            <li><strong>Pro Tip:</strong> You can use the <strong>Source Control tab</strong> (the branch icon on the left sidebar) in VS Code to stage and commit changes without typing commands.</li>
           </ul>
         </li>
       </ul>
@@ -177,84 +193,17 @@ git config --list</code></pre>
         </li>
       </ol>
 
-      <h2 id="latex">LaTeX (optional for final projects)</h2>
-      <p>You may write your final project report in <strong>LaTeX</strong> instead of a word processor. LaTeX is a document preparation system: you write plain-text <code>.tex</code> files and a <em>distribution</em> (compiler plus packages) turns them into a PDF. Overview: <a href="https://www.latex-project.org/get/" target="_blank" rel="noopener noreferrer">latex-project.org/get</a>.</p>
-
-      <h3>Windows</h3>
+      <h2 id="cursor">Cursor (optional)</h2>
+      <p>
+        Cursor is an another AI vibe coding tool built on VS Code with some additional features.  
+      </p>
+      <p>If you want to try it on your own:</p>
       <ul>
-        <li><strong>MiKTeX</strong> (widely used on Windows):
-          <ul>
-            <li>Go to <a href="https://miktex.org/download" target="_blank" rel="noopener noreferrer">miktex.org/download</a></li>
-            <li>Download the installer for Windows (64-bit is typical)</li>
-            <li>Run the installer and follow the prompts; the default options are fine for most users</li>
-            <li>The first time you build a document, MiKTeX may ask to install missing packages automatically—allow that when prompted</li>
-          </ul>
-        </li>
-        <li><strong>TeX Live</strong> (alternative full distribution): <a href="https://tug.org/texlive/windows.html" target="_blank" rel="noopener noreferrer">tug.org/texlive/windows.html</a> — download the installer and run it (install can take a while and uses several gigabytes of disk space)</li>
-      </ul>
-
-      <h3>Mac</h3>
-      <ul>
-        <li><strong>MacTeX</strong> (full distribution, large download, ~4&nbsp;GB):
-          <ul>
-            <li>Go to <a href="https://tug.org/mactex/" target="_blank" rel="noopener noreferrer">tug.org/mactex</a></li>
-            <li>Download the macOS <code>.pkg</code> file</li>
-            <li>Open the package and complete the installation wizard</li>
-            <li>After install, you can use the <strong>TeXShop</strong> app (included) or any editor you prefer</li>
-          </ul>
-        </li>
-        <li><strong>BasicTeX</strong> (smaller install; add packages as needed):
-          <ul>
-            <li>Download from <a href="https://tug.org/mactex/morepackages.html" target="_blank" rel="noopener noreferrer">tug.org/mactex/morepackages.html</a></li>
-            <li>Install the <code>.pkg</code>, then in Terminal install extra packages with <code>sudo tlmgr install &lt;package-name&gt;</code> when a build error says a package is missing</li>
-          </ul>
-        </li>
-      </ul>
-
-      <p><strong>Editors:</strong> You can edit <code>.tex</code> files in Cursor or VS Code (with a LaTeX extension such as LaTeX Workshop), or use a dedicated editor like <a href="https://www.texstudio.org/" target="_blank" rel="noopener noreferrer">TeXstudio</a>. <strong>Online option:</strong> <a href="https://www.overleaf.com/" target="_blank" rel="noopener noreferrer">Overleaf</a> runs LaTeX in the browser with no local install—useful if you prefer not to install a distribution.</p>
-
-      <h3>Running LaTeX in Cursor</h3>
-      <p>Cursor is based on VS Code. The usual way to build <code>.tex</code> files inside Cursor is the <strong>LaTeX Workshop</strong> extension, which runs tools such as <code>pdflatex</code> or <code>latexmk</code> for you. Cursor must be able to find those executables—either because their folder is on your <code>PATH</code>, or because you tell LaTeX Workshop where that folder is.</p>
-
-      <ol>
-        <li><strong>Install the extension:</strong> In Cursor, open the Extensions view (<code>Ctrl+Shift+X</code> on Windows / <code>Cmd+Shift+X</code> on Mac), search for <strong>LaTeX Workshop</strong> (by James Yu), and install it.</li>
-        <li><strong>Find the folder that contains the LaTeX programs:</strong> You want the <em>bin</em> directory that holds <code>pdflatex</code> (and often <code>latexmk</code>). Typical locations:
-          <ul>
-            <li><strong>Windows (MiKTeX):</strong> often <code>C:\Program Files\MiKTeX\miktex\bin\x64\</code> or <code>%LOCALAPPDATA%\Programs\MiKTeX\miktex\bin\x64\</code> (paste <code>%LOCALAPPDATA%</code> into the File Explorer address bar to open that folder).</li>
-            <li><strong>Windows (TeX Live):</strong> often something like <code>C:\texlive\2024\bin\windows\</code> (the year may differ).</li>
-            <li><strong>Mac (MacTeX / BasicTeX):</strong> usually <code>/Library/TeX/texbin</code> (this is a single folder that already points at the right binaries).</li>
-          </ul>
-          If you are unsure, use File Explorer or Finder to search for <code>pdflatex.exe</code> (Windows) or open Terminal and run <code>which pdflatex</code> (Mac)—the folder containing that file is the one you need.
-        </li>
-        <li><strong>Check that Cursor's terminal sees LaTeX:</strong> Open the integrated terminal in Cursor and run:
-          <pre class="terminal"><code>pdflatex --version</code></pre>
-          If you see version information, you are done—LaTeX Workshop can usually build without extra configuration. If you get "command not found," add the bin folder to your system or user <code>PATH</code>, then <strong>fully quit Cursor and open it again</strong> so it picks up the new <code>PATH</code>.</li>
-        <li><strong>If you prefer not to change the system <code>PATH</code>:</strong> Tell LaTeX Workshop to prepend that bin folder when it runs builds. In Cursor, open the Command Palette (<code>Ctrl+Shift+P</code> / <code>Cmd+Shift+P</code>), run <strong>Preferences: Open User Settings (JSON)</strong>, and add the block below inside the outer <code>{ }</code> (add a comma after the previous setting if required so the JSON stays valid). Replace the path with <em>your</em> actual bin folder from step 2 if it differs.</li>
-      </ol>
-
-      <p><strong>Windows</strong> (prepend MiKTeX <code>x64</code> bin; keep the rest of <code>PATH</code>). You can use forward slashes in the path—Windows accepts them and they are easier to paste into JSON:</p>
-      <pre class="terminal"><code>"latex-workshop.latex.env": {
-  "PATH": "C:/Program Files/MiKTeX/miktex/bin/x64;%PATH%"
-}</code></pre>
-
-      <p><strong>Mac</strong> (prepend MacTeX's <code>texbin</code>):</p>
-      <pre class="terminal"><code>"latex-workshop.latex.env": {
-  "PATH": "/Library/TeX/texbin:${env:PATH}"
-}</code></pre>
-
-      <p>Save the file, reopen your <code>.tex</code> document, and use LaTeX Workshop's build command (or the green "Build LaTeX project" actions in the editor). If the build still fails, open the LaTeX Workshop output/log panel and read the error: it usually means the path is wrong or a LaTeX package is missing from your distribution.</p>
-
-      <h2 id="cursor">Cursor</h2>
-      <p>Cursor is the AI-native editor we use in class for vibe coding. It is optional if you already use VS Code, but recommended for homework and projects.</p>
-      <ul>
-        <li>Sign up for Cursor using your <code>.edu</code> email for free student access at
+        <li>Sign up at
           <a href="https://www.cursor.com" target="_blank" rel="noopener noreferrer">https://www.cursor.com</a>
-          by clicking the <strong>Sign in</strong> button on the top right corner of the website
-          and then signing up with your <code>.edu</code> email.</li>
-        <li>Download <strong>Cursor</strong> by clicking the <strong>Download</strong>
-          button on the <a href="https://www.cursor.com" target="_blank" rel="noopener noreferrer">https://www.cursor.com</a> website.</li>
-        <li>Open the Cursor installer and follow the instructions to install Cursor.</li>
-        <li>Cursor shares most VS Code shortcuts and extensions; repeat the Python and GitHub steps above in Cursor if that is your primary editor.</li>
+          with your <code>.edu</code> email for free student access.</li>
+        <li>Download and install Cursor from the same site.</li>
+        <li>Most VS Code extensions and shortcuts work in Cursor; the Python and GitHub steps above apply the same way.</li>
       </ul>
 
     </div>
