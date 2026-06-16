@@ -43,10 +43,10 @@
       </p>
     </div>
 
-    <p><strong>Submit:</strong> one file, <code>hw1.zip</code> (structure at the bottom of this page).</p>
+    <p><strong>Submit:</strong> one zip file, <code>hw1.zip</code> — see Problem 8.</p>
 
     <div class="problem">
-      <h2>Problem 1 — Set up your project <span class="pts">(15 points)</span></h2>
+      <h2>Problem 1 — Set up your project <span class="pts">(10 points)</span></h2>
       <p>
         Turn in a Python project we can run from the terminal. It must include two files—<code>agent.py</code>
         (reads the Canvas documents and writes your data files) and <code>report.py</code> (builds the valuation
@@ -132,6 +132,33 @@
         might get wrong and how you checked it. Finally, name one document you would still want before signing a
         deal, and why.
       </p>
+    </div>
+
+    <div class="problem">
+      <h2>Problem 8 — Submission format <span class="pts">(5 points)</span></h2>
+      <p>
+        Create a folder on your computer named <code>hw1</code>. Put all of your homework files inside that folder
+        using the layout below—same folder names, same file names. When everything is in place, zip the entire
+        <code>hw1</code> folder (not the individual files on their own) and upload the resulting
+        <code>hw1.zip</code> to Canvas. When we unzip your submission, we should see one top-level folder called
+        <code>hw1</code> containing your code, prompts, memo, and completed <code>sample_output</code> files.
+      </p>
+      <pre class="file-tree"><code>hw1/
+├── README.md
+├── agent.py
+├── report.py
+├── requirements.txt
+├── prompts/
+│   ├── pdf_extract.txt
+│   └── email_extract.txt
+├── memo.md
+└── sample_output/
+    ├── receipts.json
+    ├── bank_transactions.json
+    ├── credit_card_transactions.json
+    ├── income_statement_jan2026.json
+    ├── valuation_inputs.json
+    └── valuation.html</code></pre>
     </div>
 
     <h2>Data file formats (examples)</h2>
@@ -231,25 +258,6 @@
   "valuation_range_usd": { "low": 0, "high": 0, "method": "Explain SDE or multiple logic" }
 }</code></pre>
 
-    <h2>What to put in your zip file</h2>
-    <p>Unzip your project so the folder layout looks exactly like this before you re-zip it as <code>hw1.zip</code>:</p>
-    <pre class="file-tree"><code>hw1/
-├── README.md
-├── agent.py
-├── report.py
-├── requirements.txt
-├── prompts/
-│   ├── pdf_extract.txt
-│   └── email_extract.txt
-├── memo.md
-└── sample_output/
-    ├── receipts.json
-    ├── bank_transactions.json
-    ├── credit_card_transactions.json
-    ├── income_statement_jan2026.json
-    ├── valuation_inputs.json
-    └── valuation.html</code></pre>
-
     <h2>Policies</h2>
     <p>
       Using AI coding tools (such as Copilot or Cursor) is encouraged, but you must be able to run and explain
@@ -257,7 +265,7 @@
     </p>
 
     <h2>Submit</h2>
-    <p>Upload <code>hw1.zip</code> to Canvas by the due date.</p>
+    <p>Upload <code>hw1.zip</code> to Canvas by the due date (see Problem 8).</p>
   </main>
 
   <script src="js/theme.js"></script>
