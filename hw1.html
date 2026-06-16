@@ -45,65 +45,93 @@
     <p><strong>Submit:</strong> one file, <code>hw1.zip</code> (structure at the bottom of this page).</p>
 
     <div class="problem">
-      <h2>Problem 1 — Agent setup &amp; CLI <span class="pts">(15 pts)</span></h2>
-      <p>Ship a runnable Python project with <code>agent.py</code> and <code>report.py</code>, <code>requirements.txt</code>, <code>README.md</code>, and prompts in <code>prompts/</code>.</p>
-      <ul>
-        <li><code>python agent.py --docs-dir PATH --out-dir sample_output</code> — reads the unzipped pack and writes all JSON outputs.</li>
-        <li><code>python report.py --json-dir sample_output --out sample_output/valuation.html</code> — builds HTML from JSON only.</li>
-        <li>Both commands exit <code>0</code> on success. No API keys in the zip.</li>
-      </ul>
+      <h2>Problem 1 — Agent setup and CLI <span class="pts">(15 points)</span></h2>
+      <p>
+        Submit a runnable Python project that includes <code>agent.py</code>, <code>report.py</code>,
+        <code>requirements.txt</code>, <code>README.md</code>, and your extraction prompts under
+        <code>prompts/</code>. When we run
+        <code>python agent.py --docs-dir PATH --out-dir sample_output</code>, your agent should read the
+        unzipped document pack and write every JSON file required below. When we run
+        <code>python report.py --json-dir sample_output --out sample_output/valuation.html</code>, your
+        report script should build the valuation page from those JSON files alone, without re-reading the PDFs.
+        Both commands must exit with code <code>0</code> on success, and you must not include API keys in the zip.
+      </p>
     </div>
 
     <div class="problem">
-      <h2>Problem 2 — Receipt ledger <span class="pts">(20 pts)</span></h2>
-      <p>Parse all receipt PDFs plus the eBay confirmation. Write <code>sample_output/receipts.json</code>.</p>
-      <ul>
-        <li>One row per receipt/eBay document with <code>vendor</code>, <code>date</code>, <code>description</code>, <code>amount_usd</code>, <code>category</code>, <code>source_file</code>.</li>
-        <li>Choose a sensible <code>category</code> per line (e.g. parts, tools, supplies, shipping, marketing).</li>
-        <li>List missing fields in <code>fields_not_found</code>; do not guess amounts.</li>
-      </ul>
+      <h2>Problem 2 — Receipt ledger <span class="pts">(20 points)</span></h2>
+      <p>
+        Extract structured data from each receipt PDF and the eBay confirmation, and write the result to
+        <code>sample_output/receipts.json</code>. Each document should appear as at least one line item with
+        <code>vendor</code>, <code>date</code>, <code>description</code>, <code>amount_usd</code>,
+        <code>category</code>, and <code>source_file</code>. Assign each line a category that reflects how an
+        accountant would treat the purchase (for example, parts, tools, supplies, shipping, or marketing). If
+        the PDF does not support a field, leave the value as <code>null</code> and record the field name in
+        <code>fields_not_found</code> rather than guessing.
+      </p>
     </div>
 
     <div class="problem">
-      <h2>Problem 3 — Bank &amp; credit card split <span class="pts">(20 pts)</span></h2>
-      <p>Parse the bank statement and credit card statement PDFs.</p>
-      <ul>
-        <li><code>bank_transactions.json</code> — every row tagged <code>business</code> or <code>personal</code>. Deposits labeled <code>revenue</code> vs <code>owner_movement</code> where applicable.</li>
-        <li><code>credit_card_transactions.json</code> — each charge <code>business</code> or <code>personal</code>; business rows include <code>expense_category</code>.</li>
-        <li>Jordan mixes personal and business on one card—your split is graded.</li>
-      </ul>
+      <h2>Problem 3 — Bank and credit card classification <span class="pts">(20 points)</span></h2>
+      <p>
+        Parse the bank statement and credit card statement PDFs and write
+        <code>sample_output/bank_transactions.json</code> and
+        <code>sample_output/credit_card_transactions.json</code>. Every transaction must be tagged
+        <code>business</code> or <code>personal</code>. On the bank side, classify deposits as
+        <code>revenue</code> or <code>owner_movement</code> where the statement supports that distinction.
+        On the credit card side, add an <code>expense_category</code> for each business charge. Jordan uses one
+        card for both shop and personal spending, so the quality of your split is an important part of the grade.
+      </p>
     </div>
 
     <div class="problem">
-      <h2>Problem 4 — January income statement <span class="pts">(15 pts)</span></h2>
-      <p>From your classified bank/card data (and lease), write <code>income_statement_jan2026.json</code> for January 2026 only.</p>
-      <ul>
-        <li><code>revenue_usd</code>, <code>expense_lines</code>, <code>net_income_usd</code> must be internally consistent.</li>
-        <li>Include <code>assumptions</code> (e.g. how you treated owner draws, double-counting risk).</li>
-      </ul>
+      <h2>Problem 4 — January income statement <span class="pts">(15 points)</span></h2>
+      <p>
+        Using your classified bank and credit card transactions together with the lease PDF, produce a simplified
+        profit-and-loss statement for January 2026 in
+        <code>sample_output/income_statement_jan2026.json</code>. The file should report
+        <code>revenue_usd</code>, an <code>expense_lines</code> array, and <code>net_income_usd</code>, and
+        the three must agree arithmetically. Include an <code>assumptions</code> array that explains non-obvious
+        choices, such as how you treated owner draws and whether you avoided double-counting the same purchase
+        across receipts and statements.
+      </p>
     </div>
 
     <div class="problem">
-      <h2>Problem 5 — Valuation inputs <span class="pts">(15 pts)</span></h2>
-      <p>Write <code>valuation_inputs.json</code> using emails, the IOU PDF, and your January P&amp;L.</p>
-      <ul>
-        <li><code>pipeline_orders</code> from the three emails — future work, <strong>not</strong> January revenue (<code>in_january_books: false</code>).</li>
-        <li><code>off_books_receivables</code> (e.g. IOU).</li>
-        <li><code>excluded_from_valuation</code> — intangibles and gaps (owner skill, customer list, etc.).</li>
-        <li><code>valuation_range_usd</code> with <code>low</code>, <code>high</code>, and a plain-English <code>method</code>.</li>
-      </ul>
+      <h2>Problem 5 — Valuation inputs <span class="pts">(10 points)</span></h2>
+      <p>
+        Write <code>sample_output/valuation_inputs.json</code> by combining your January P&amp;L with the customer
+        emails and the IOU PDF. The file should list <code>pipeline_orders</code> drawn from the three emails;
+        each order represents future work and must be marked with <code>in_january_books: false</code>. Record
+        any off-books receivables (such as the IOU) separately. State what you would exclude from a formal
+        valuation—owner skill, customer relationships, and similar intangibles—in
+        <code>excluded_from_valuation</code>. Close with a <code>valuation_range_usd</code> object that gives a
+        low bound, a high bound, and a plain-English explanation of your method.
+      </p>
     </div>
 
     <div class="problem">
-      <h2>Problem 6 — Valuation report &amp; memo <span class="pts">(15 pts)</span></h2>
-      <p><code>sample_output/valuation.html</code> (static HTML, no server) must include:</p>
-      <ol>
-        <li>January P&amp;L table from your JSON.</li>
-        <li>Summary of personal vs business reclassifications.</li>
-        <li>Pipeline table (labeled not booked in January).</li>
-        <li>Valuation range, method, and what is still missing from the data room.</li>
-      </ol>
-      <p><code>memo.md</code> (~400–600 words): (1) hardest business/personal call, (2) what emails/IOU add beyond January books, (3) one hallucination risk and your guardrail, (4) one follow-up document you would request as a buyer.</p>
+      <h2>Problem 6 — Valuation report <span class="pts">(10 points)</span></h2>
+      <p>
+        Generate a static HTML file at <code>sample_output/valuation.html</code> (no server required) from your
+        JSON outputs. The page should present a January P&amp;L table, a summary of how you separated personal
+        from business activity on the bank and card statements, a pipeline table for future orders that makes
+        clear they were not booked in January, and a valuation section with your range, your method, and a short
+        list of what is still missing from this data room. The numbers on the page must match your JSON files; do
+        not introduce new figures in the HTML.
+      </p>
+    </div>
+
+    <div class="problem">
+      <h2>Problem 7 — Investment memo <span class="pts">(10 points)</span></h2>
+      <p>
+        Write <code>memo.md</code> (approximately 400–600 words) addressed to a skeptical buyer. Identify the
+        transaction you found hardest to classify as business or personal and explain your reasoning. Describe
+        what the customer emails and the IOU add to a valuation that January financial statements alone cannot
+        capture. Name one field your agent could plausibly hallucinate and explain the guardrail you built into
+        your pipeline. Finally, state one additional document you would request before making an acquisition
+        decision and why it matters.
+      </p>
     </div>
 
     <h2>JSON output reference</h2>
