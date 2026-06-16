@@ -8,6 +8,9 @@
   <style>
     .assignment-box { text-align: left; text-align-last: left; }
     .assignment-box p, .assignment-box li { text-align: justify; }
+    .problem { margin: 1.75rem 0; }
+    .problem h2 { margin-bottom: 0.35rem; }
+    .problem .pts { color: var(--text-muted); font-weight: normal; font-size: 0.95em; }
   </style>
 </head>
 <body>
@@ -24,112 +27,88 @@
 
   <main class="main-narrow">
     <h1 class="schedule-header">Homework 1: Small Business Valuation Agent</h1>
-    <p class="page-subtitle"><strong>Covers Lectures 1–2</strong> &nbsp;|&nbsp; <strong>Core MBA lenses: Accounting &amp; Investor</strong></p>
+    <p class="page-subtitle"><strong>Covers Lectures 1–2</strong> &nbsp;|&nbsp; <strong>Core MBA lenses: Accounting &amp; Investor</strong> &nbsp;|&nbsp; <strong>100 points</strong></p>
 
     <div class="assignment-box">
       <h2>Scenario</h2>
       <p>
         <strong>Spoke &amp; Wrench Bicycle Repair</strong> is a sole-proprietor bike shop in New Haven run by Jordan Lee.
-        A buyer is kicking the tires on an acquisition. The “data room” is a shoebox: PDF receipts, a bank statement,
-        a credit card statement, a lease summary, a handwritten IOU, an eBay confirmation, and a few customer emails—not
-        a clean QuickBooks export.
+        A buyer is evaluating an acquisition. The data room is a shoebox: PDF receipts, bank and credit card statements,
+        a lease summary, a handwritten IOU, an eBay confirmation, and customer emails—not a QuickBooks export.
       </p>
       <p>
-        Your job: build an <strong>AI document agent</strong> that turns this mess into structured accounting records,
-        then produces a <strong>valuation webpage</strong>. Strong work separates business from personal, knows what is
-        <em>not</em> on the January books (future orders in email, off-books receivables, intangibles), and does not
-        invent numbers.
-      </p>
-      <p>
-        This homework is inspired by Yale Accounting core pre-work (Prof. Rick Antle’s small-business valuation exercise).
+        Build an <strong>AI document agent</strong> that converts these sources into structured JSON, then a
+        <strong>valuation webpage</strong>. Do not invent numbers; use <code>null</code> when a source is silent.
       </p>
     </div>
 
-    <h2>Course document pack (Canvas)</h2>
-    <p>Canvas provides <code>hw1_spoke_and_wrench.zip</code> with:</p>
-    <table class="grading-table">
-      <thead>
-        <tr><th>Type</th><th>Files</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>PDFs</td>
-          <td>Lease, bank statement, credit card statement, 4 receipts, handwritten IOU, eBay order confirmation</td>
-        </tr>
-        <tr>
-          <td>Emails (.txt)</td>
-          <td>3 messages describing <strong>future</strong> customer orders (not January revenue)</td>
-        </tr>
-        <tr>
-          <td><code>manifest.json</code></td>
-          <td>Business name, owner, accounting period</td>
-        </tr>
-      </tbody>
-    </table>
+    <p><strong>Data:</strong> Canvas provides <code>hw1_spoke_and_wrench.zip</code> (PDFs, <code>emails/*.txt</code>, <code>manifest.json</code>).</p>
+    <p><strong>Submit:</strong> one file, <code>hw1.zip</code> (structure at the bottom of this page).</p>
 
-    <h2>What you build</h2>
-    <ol>
-      <li><strong>Document agent (CLI):</strong> Ingest PDFs and emails → structured JSON artifacts (see below).</li>
-      <li><strong>Valuation report (HTML):</strong> Summarize January economics, add pipeline and off-books items, and state a defensible <strong>valuation range</strong> for the shop.</li>
-    </ol>
+    <div class="problem">
+      <h2>Problem 1 — Agent setup &amp; CLI <span class="pts">(15 pts)</span></h2>
+      <p>Ship a runnable Python project with <code>agent.py</code> and <code>report.py</code>, <code>requirements.txt</code>, <code>README.md</code>, and prompts in <code>prompts/</code>.</p>
+      <ul>
+        <li><code>python agent.py --docs-dir PATH --out-dir sample_output</code> — reads the unzipped pack and writes all JSON outputs.</li>
+        <li><code>python report.py --json-dir sample_output --out sample_output/valuation.html</code> — builds HTML from JSON only.</li>
+        <li>Both commands exit <code>0</code> on success. No API keys in the zip.</li>
+      </ul>
+    </div>
 
-    <h2>Pipeline tasks (what the agent must do)</h2>
-    <table class="grading-table">
-      <thead>
-        <tr><th>Task</th><th>Input</th><th>Output</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Receipt ledger</td>
-          <td>All receipt PDFs + eBay PDF</td>
-          <td>List of line items with <code>vendor</code>, <code>date</code>, <code>description</code>, <code>amount_usd</code>, <code>category</code></td>
-        </tr>
-        <tr>
-          <td>Bank split</td>
-          <td>Bank statement PDF</td>
-          <td>Transactions tagged <code>business</code> or <code>personal</code>; deposits classified as revenue vs owner movement</td>
-        </tr>
-        <tr>
-          <td>Card split</td>
-          <td>Credit card PDF</td>
-          <td>Charges tagged <code>business</code> or <code>personal</code> with expense category for business rows</td>
-        </tr>
-        <tr>
-          <td>January P&amp;L (simplified)</td>
-          <td>Your classified data + lease PDF</td>
-          <td>Revenue, expense buckets, net income for January 2026 only</td>
-        </tr>
-        <tr>
-          <td>Valuation inputs</td>
-          <td>Emails + IOU + your P&amp;L</td>
-          <td>Pipeline revenue, off-books receivables, and what you exclude (intangibles, etc.)</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="problem">
+      <h2>Problem 2 — Receipt ledger <span class="pts">(20 pts)</span></h2>
+      <p>Parse all receipt PDFs plus the eBay confirmation. Write <code>sample_output/receipts.json</code>.</p>
+      <ul>
+        <li>One row per receipt/eBay document with <code>vendor</code>, <code>date</code>, <code>description</code>, <code>amount_usd</code>, <code>category</code>, <code>source_file</code>.</li>
+        <li>Choose a sensible <code>category</code> per line (e.g. parts, tools, supplies, shipping, marketing).</li>
+        <li>List missing fields in <code>fields_not_found</code>; do not guess amounts.</li>
+      </ul>
+    </div>
 
-    <h3>Receipt categories (minimum set)</h3>
-    <p>Use these <code>category</code> values (add sub-notes in <code>description</code> if needed):</p>
-    <ul>
-      <li><code>cogs_parts</code> — inventory / parts for customer jobs</li>
-      <li><code>tools_equipment</code> — durable shop tools (eBay stand, Park Tool)</li>
-      <li><code>shop_supplies</code> — consumables, cleaning, bins</li>
-      <li><code>shipping</code></li>
-      <li><code>marketing</code></li>
-      <li><code>rent_occupancy</code> — from lease / rent payment</li>
-      <li><code>utilities</code></li>
-      <li><code>insurance</code></li>
-      <li><code>software</code></li>
-      <li><code>uncategorized</code> — only if the PDF truly does not support a label; explain in memo</li>
-    </ul>
+    <div class="problem">
+      <h2>Problem 3 — Bank &amp; credit card split <span class="pts">(20 pts)</span></h2>
+      <p>Parse the bank statement and credit card statement PDFs.</p>
+      <ul>
+        <li><code>bank_transactions.json</code> — every row tagged <code>business</code> or <code>personal</code>. Deposits labeled <code>revenue</code> vs <code>owner_movement</code> where applicable.</li>
+        <li><code>credit_card_transactions.json</code> — each charge <code>business</code> or <code>personal</code>; business rows include <code>expense_category</code>.</li>
+        <li>Jordan mixes personal and business on one card—your split is graded.</li>
+      </ul>
+    </div>
 
-    <h2>Required JSON outputs</h2>
-    <pre class="terminal"><code>sample_output/
-├── receipts.json
-├── bank_transactions.json
-├── credit_card_transactions.json
-├── income_statement_jan2026.json
-├── valuation_inputs.json
-└── valuation.html</code></pre>
+    <div class="problem">
+      <h2>Problem 4 — January income statement <span class="pts">(15 pts)</span></h2>
+      <p>From your classified bank/card data (and lease), write <code>income_statement_jan2026.json</code> for January 2026 only.</p>
+      <ul>
+        <li><code>revenue_usd</code>, <code>expense_lines</code>, <code>net_income_usd</code> must be internally consistent.</li>
+        <li>Include <code>assumptions</code> (e.g. how you treated owner draws, double-counting risk).</li>
+      </ul>
+    </div>
+
+    <div class="problem">
+      <h2>Problem 5 — Valuation inputs <span class="pts">(15 pts)</span></h2>
+      <p>Write <code>valuation_inputs.json</code> using emails, the IOU PDF, and your January P&amp;L.</p>
+      <ul>
+        <li><code>pipeline_orders</code> from the three emails — future work, <strong>not</strong> January revenue (<code>in_january_books: false</code>).</li>
+        <li><code>off_books_receivables</code> (e.g. IOU).</li>
+        <li><code>excluded_from_valuation</code> — intangibles and gaps (owner skill, customer list, etc.).</li>
+        <li><code>valuation_range_usd</code> with <code>low</code>, <code>high</code>, and a plain-English <code>method</code>.</li>
+      </ul>
+    </div>
+
+    <div class="problem">
+      <h2>Problem 6 — Valuation report &amp; memo <span class="pts">(15 pts)</span></h2>
+      <p><code>sample_output/valuation.html</code> (static HTML, no server) must include:</p>
+      <ol>
+        <li>January P&amp;L table from your JSON.</li>
+        <li>Summary of personal vs business reclassifications.</li>
+        <li>Pipeline table (labeled not booked in January).</li>
+        <li>Valuation range, method, and what is still missing from the data room.</li>
+      </ol>
+      <p><code>memo.md</code> (~400–600 words): (1) hardest business/personal call, (2) what emails/IOU add beyond January books, (3) one hallucination risk and your guardrail, (4) one follow-up document you would request as a buyer.</p>
+    </div>
+
+    <h2>JSON output reference</h2>
+    <p>Your files must match these shapes (values are illustrative):</p>
 
     <h3><code>receipts.json</code></h3>
     <pre class="terminal"><code>{
@@ -164,7 +143,7 @@
 }</code></pre>
 
     <h3><code>credit_card_transactions.json</code></h3>
-    <p>Same pattern; <code>classification</code> is <code>business</code> or <code>personal</code>. Business rows include <code>expense_category</code>.</p>
+    <p><code>classification</code>: <code>business</code> | <code>personal</code>. Business rows include <code>expense_category</code>.</p>
 
     <h3><code>income_statement_jan2026.json</code></h3>
     <pre class="terminal"><code>{
@@ -174,7 +153,7 @@
     { "label": "rent", "amount_usd": 0, "sources": ["bank_statement_jan2026.pdf"] }
   ],
   "net_income_usd": 0,
-  "assumptions": ["One sentence on how you treated owner draws, etc."]
+  "assumptions": ["How you treated owner draws, etc."]
 }</code></pre>
 
     <h3><code>valuation_inputs.json</code></h3>
@@ -192,25 +171,11 @@
       "in_january_books": false
     }
   ],
-  "excluded_from_valuation": [
-    "Owner skill / reputation",
-    "Customer list as intangible"
-  ],
-  "valuation_range_usd": { "low": 0, "high": 0, "method": "Explain multiple or SDE logic" }
+  "excluded_from_valuation": ["Owner skill / reputation"],
+  "valuation_range_usd": { "low": 0, "high": 0, "method": "Explain SDE or multiple logic" }
 }</code></pre>
 
-    <h2>Valuation webpage (<code>valuation.html</code>)</h2>
-    <p>Single static HTML file (no server). Must include:</p>
-    <ol>
-      <li><strong>January snapshot</strong> — simplified P&amp;L table from your JSON.</li>
-      <li><strong>Personal vs business</strong> — summary of what you reclassified from bank/card.</li>
-      <li><strong>Pipeline table</strong> — future orders from emails (clearly labeled not booked in January).</li>
-      <li><strong>Valuation section</strong> — your range, method in plain English, and 2–3 drivers.</li>
-      <li><strong>What’s missing</strong> — bullet list of what a buyer would still need (intangibles, insurance detail, etc.).</li>
-    </ol>
-
-    <h2>Required submission layout</h2>
-    <p>Submit <code>hw1.zip</code>:</p>
+    <h2>Submission layout (<code>hw1.zip</code>)</h2>
     <pre class="file-tree"><code>hw1/
 ├── README.md
 ├── agent.py
@@ -228,40 +193,11 @@
     ├── valuation_inputs.json
     └── valuation.html</code></pre>
 
-    <h3>CLI contract</h3>
-    <pre class="terminal"><code>python agent.py --docs-dir PATH_TO_UNZIPPED_PACK --out-dir sample_output
-python report.py --json-dir sample_output --out sample_output/valuation.html</code></pre>
-    <p><code>agent.py</code> reads all PDFs in the pack plus <code>emails/*.txt</code> and writes the five JSON files. <code>report.py</code> builds the HTML from those JSON files only (no re-parsing PDFs).</p>
-
-    <h2>Memo (<code>memo.md</code>, ~400–600 words)</h2>
-    <ol>
-      <li><strong>Hardest classification:</strong> One transaction you struggled to label business vs personal, and why.</li>
-      <li><strong>Not in the books:</strong> What the emails and IOU add to valuation that January financials alone miss.</li>
-      <li><strong>What you would not trust:</strong> One field your agent could hallucinate; how you guarded against it.</li>
-      <li><strong>Buyer diligence:</strong> If you were acquiring Spoke &amp; Wrench, one follow-up document you would demand.</li>
-    </ol>
-
-    <h2>Grading (100 points)</h2>
-    <table class="grading-table">
-      <thead>
-        <tr><th>Component</th><th>Pts</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Submission format &amp; CLI runs</td><td>15</td></tr>
-        <tr><td>Receipt ledger (categories, amounts, sources)</td><td>20</td></tr>
-        <tr><td>Bank &amp; card business/personal split</td><td>20</td></tr>
-        <tr><td>January income statement (internally consistent)</td><td>15</td></tr>
-        <tr><td>Valuation inputs + pipeline from emails</td><td>15</td></tr>
-        <tr><td><code>valuation.html</code> + memo quality</td><td>15</td></tr>
-      </tbody>
-    </table>
-
     <h2>Policies</h2>
     <ul>
-      <li><strong>Vibe coding encouraged</strong>; you must run and explain what you submit.</li>
-      <li><strong>No API keys</strong> in the zip.</li>
-      <li><strong>No fabricated amounts</strong> — use <code>null</code> and <code>fields_not_found</code> when the source is silent.</li>
-      <li><strong>Late policy:</strong> per syllabus.</li>
+      <li>Vibe coding encouraged; you must run and explain what you submit.</li>
+      <li>No fabricated amounts — <code>null</code> + <code>fields_not_found</code> when the source is silent.</li>
+      <li>Late policy: per syllabus.</li>
     </ul>
 
     <h2>Submit</h2>
