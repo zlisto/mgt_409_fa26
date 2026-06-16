@@ -37,106 +37,106 @@
         business emails.
       </p>
       <p>
-        In this assignment you will build an AI document agent that reads those sources, produces structured
-        accounting outputs, and supports a brief valuation of the shop. You will submit your code, JSON
-        artifacts, a valuation webpage, and a short memo.
+        In this assignment you will use AI to read those documents, organize the financial information, estimate
+        what the business may be worth, and present your work as data files, a simple webpage, and a short memo.
+        You will submit everything in one zip file as described at the bottom of this page.
       </p>
     </div>
 
     <p><strong>Submit:</strong> one file, <code>hw1.zip</code> (structure at the bottom of this page).</p>
 
     <div class="problem">
-      <h2>Problem 1 — Agent setup and CLI <span class="pts">(15 points)</span></h2>
+      <h2>Problem 1 — Set up your project <span class="pts">(15 points)</span></h2>
       <p>
-        Submit a runnable Python project that includes <code>agent.py</code>, <code>report.py</code>,
-        <code>requirements.txt</code>, <code>README.md</code>, and your extraction prompts under
-        <code>prompts/</code>. When we run
-        <code>python agent.py --docs-dir PATH --out-dir sample_output</code>, your agent should read the
-        unzipped document pack and write every JSON file required below. When we run
-        <code>python report.py --json-dir sample_output --out sample_output/valuation.html</code>, your
-        report script should build the valuation page from those JSON files alone, without re-reading the PDFs.
-        Both commands must exit with code <code>0</code> on success, and you must not include API keys in the zip.
+        Turn in a Python project we can run from the terminal. It must include two programs—<code>agent.py</code>
+        (reads the Canvas documents and writes your data files) and <code>report.py</code> (builds the valuation
+        webpage from those data files). Also include <code>requirements.txt</code> (lists any Python packages
+        needed), <code>README.md</code> (step-by-step instructions for installing and running your code), and a
+        folder called <code>prompts</code> containing plain-text files with the instructions you give to your AI
+        tool when extracting data from PDFs and emails.
+      </p>
+      <p>
+        We will unzip your submission, install dependencies, and run two commands. First,
+        <code>python agent.py --docs-dir PATH --out-dir sample_output</code>, where <code>PATH</code> is the
+        unzipped Canvas folder. That should create the data files in a folder called <code>sample_output</code>.
+        Second, <code>python report.py --json-dir sample_output --out sample_output/valuation.html</code>, which
+        should create the webpage from those data files without opening the PDFs again. Both steps should complete
+        without errors. Do not put API keys in your zip; use environment variables and explain them in your README.
       </p>
     </div>
 
     <div class="problem">
       <h2>Problem 2 — Receipt ledger <span class="pts">(20 points)</span></h2>
       <p>
-        Extract structured data from each receipt PDF and the eBay confirmation, and write the result to
-        <code>sample_output/receipts.json</code>. Each document should appear as at least one line item with
-        <code>vendor</code>, <code>date</code>, <code>description</code>, <code>amount_usd</code>,
-        <code>category</code>, and <code>source_file</code>. Assign each line a category that reflects how an
-        accountant would treat the purchase (for example, parts, tools, supplies, shipping, or marketing). If
-        the PDF does not support a field, leave the value as <code>null</code> and record the field name in
-        <code>fields_not_found</code> rather than guessing.
+        Read the receipt PDFs and the eBay confirmation, and save a tidy list of purchases in
+        <code>sample_output/receipts.json</code>. For each receipt, record who you paid (<code>vendor</code>),
+        the date, a short description, the dollar amount, what type of expense it was (<code>category</code>—for
+        example parts, tools, or supplies), and which PDF it came from (<code>source_file</code>). See the format
+        example below. If something is missing from the PDF, say so in <code>fields_not_found</code> instead of
+        filling in a guess.
       </p>
     </div>
 
     <div class="problem">
       <h2>Problem 3 — Bank and credit card classification <span class="pts">(20 points)</span></h2>
       <p>
-        Parse the bank statement and credit card statement PDFs and write
-        <code>sample_output/bank_transactions.json</code> and
-        <code>sample_output/credit_card_transactions.json</code>. Every transaction must be tagged
-        <code>business</code> or <code>personal</code>. On the bank side, classify deposits as
-        <code>revenue</code> or <code>owner_movement</code> where the statement supports that distinction.
-        On the credit card side, add an <code>expense_category</code> for each business charge. Jordan uses one
-        card for both shop and personal spending, so the quality of your split is an important part of the grade.
+        Read the bank statement PDF and the credit card statement PDF. Save two data files in
+        <code>sample_output</code>: <code>bank_transactions.json</code> and
+        <code>credit_card_transactions.json</code>. For every line on each statement, label it
+        <strong>business</strong> or <strong>personal</strong>. For bank deposits, also say whether the money
+        looks like <strong>shop revenue</strong> or an <strong>owner withdrawal</strong>. For business charges on
+        the credit card, add a short label for the type of expense. The owner mixes personal and shop spending on
+        one card, so thoughtfulness here matters for your grade.
       </p>
     </div>
 
     <div class="problem">
       <h2>Problem 4 — January income statement <span class="pts">(15 points)</span></h2>
       <p>
-        Using your classified bank and credit card transactions together with the lease PDF, produce a simplified
-        profit-and-loss statement for January 2026 in
-        <code>sample_output/income_statement_jan2026.json</code>. The file should report
-        <code>revenue_usd</code>, an <code>expense_lines</code> array, and <code>net_income_usd</code>, and
-        the three must agree arithmetically. Include an <code>assumptions</code> array that explains non-obvious
-        choices, such as how you treated owner draws and whether you avoided double-counting the same purchase
-        across receipts and statements.
+        Using your work from Problem 3 (and the lease PDF), build a simple January 2026 profit-and-loss summary in
+        <code>sample_output/income_statement_jan2026.json</code>. Report total revenue, a list of expense lines,
+        and net income for the month. The math must add up. In an <code>assumptions</code> section, explain any
+        judgment calls—for example, how you treated money the owner took out of the business, or whether you
+        counted the same purchase twice on a receipt and a statement.
       </p>
     </div>
 
     <div class="problem">
       <h2>Problem 5 — Valuation inputs <span class="pts">(10 points)</span></h2>
       <p>
-        Write <code>sample_output/valuation_inputs.json</code> by combining your January P&amp;L with the customer
-        emails and the IOU PDF. The file should list <code>pipeline_orders</code> drawn from the three emails;
-        each order represents future work and must be marked with <code>in_january_books: false</code>. Record
-        any off-books receivables (such as the IOU) separately. State what you would exclude from a formal
-        valuation—owner skill, customer relationships, and similar intangibles—in
-        <code>excluded_from_valuation</code>. Close with a <code>valuation_range_usd</code> object that gives a
-        low bound, a high bound, and a plain-English explanation of your method.
+        Save <code>sample_output/valuation_inputs.json</code> combining your January results with the business
+        emails and the IOU PDF. List future jobs mentioned in the emails as
+        <code>pipeline_orders</code>—these are <em>not</em> January revenue. List money owed to the shop but not
+        on the bank statement (such as the IOU) under <code>off_books_receivables</code>. Note what a buyer could
+        not learn from these PDFs alone—things like the owner’s reputation—in
+        <code>excluded_from_valuation</code>. End with a low and high estimate of business value and a short
+        explanation of how you got there.
       </p>
     </div>
 
     <div class="problem">
-      <h2>Problem 6 — Valuation report <span class="pts">(10 points)</span></h2>
+      <h2>Problem 6 — Valuation webpage <span class="pts">(10 points)</span></h2>
       <p>
-        Generate a static HTML file at <code>sample_output/valuation.html</code> (no server required) from your
-        JSON outputs. The page should present a January P&amp;L table, a summary of how you separated personal
-        from business activity on the bank and card statements, a pipeline table for future orders that makes
-        clear they were not booked in January, and a valuation section with your range, your method, and a short
-        list of what is still missing from this data room. The numbers on the page must match your JSON files; do
-        not introduce new figures in the HTML.
+        Create <code>sample_output/valuation.html</code>, a webpage you can open in any browser (no hosting
+        required). It should summarize your January profit and loss, show how you split personal vs business
+        spending, list future orders from the emails, state your valuation range, and note what documents are
+        still missing. Use the same numbers as your data files; do not add new figures on the webpage.
       </p>
     </div>
 
     <div class="problem">
       <h2>Problem 7 — Investment memo <span class="pts">(10 points)</span></h2>
       <p>
-        Write <code>memo.md</code> (approximately 400–600 words) addressed to a skeptical buyer. Identify the
-        transaction you found hardest to classify as business or personal and explain your reasoning. Describe
-        what the customer emails and the IOU add to a valuation that January financial statements alone cannot
-        capture. Name one field your agent could plausibly hallucinate and explain the guardrail you built into
-        your pipeline. Finally, state one additional document you would request before making an acquisition
-        decision and why it matters.
+        Write <code>memo.md</code> (about 400–600 words) as if you were advising someone thinking of buying the
+        shop. Describe the one transaction you found hardest to call business vs personal, and why. Explain what
+        the emails and IOU add to your valuation that January statements alone do not show. Name one number your AI
+        might get wrong and how you checked it. Finally, name one document you would still want before signing a
+        deal, and why.
       </p>
     </div>
 
-    <h2>JSON output reference</h2>
-    <p>Your files must match these shapes (values are illustrative):</p>
+    <h2>Data file formats (examples)</h2>
+    <p>Your output files should follow these structures. The numbers below are examples only.</p>
 
     <h3><code>receipts.json</code></h3>
     <pre class="terminal"><code>{
@@ -171,7 +171,7 @@
 }</code></pre>
 
     <h3><code>credit_card_transactions.json</code></h3>
-    <p><code>classification</code>: <code>business</code> | <code>personal</code>. Business rows include <code>expense_category</code>.</p>
+    <p>Each row is labeled business or personal. Business rows also include an expense type.</p>
 
     <h3><code>income_statement_jan2026.json</code></h3>
     <pre class="terminal"><code>{
@@ -203,7 +203,8 @@
   "valuation_range_usd": { "low": 0, "high": 0, "method": "Explain SDE or multiple logic" }
 }</code></pre>
 
-    <h2>Submission layout (<code>hw1.zip</code>)</h2>
+    <h2>What to put in your zip file</h2>
+    <p>Unzip your project so the folder layout looks exactly like this before you re-zip it as <code>hw1.zip</code>:</p>
     <pre class="file-tree"><code>hw1/
 ├── README.md
 ├── agent.py
@@ -222,11 +223,10 @@
     └── valuation.html</code></pre>
 
     <h2>Policies</h2>
-    <ul>
-      <li>Vibe coding encouraged; you must run and explain what you submit.</li>
-      <li>No fabricated amounts — <code>null</code> + <code>fields_not_found</code> when the source is silent.</li>
-      <li>Late policy: per syllabus.</li>
-    </ul>
+    <p>
+      Using AI coding tools (such as Copilot or Cursor) is encouraged, but you must be able to run and explain
+      what you submit. Do not include API keys in your zip. Late submissions follow the syllabus.
+    </p>
 
     <h2>Submit</h2>
     <p>Upload <code>hw1.zip</code> to Canvas by the due date.</p>
