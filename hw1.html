@@ -48,12 +48,11 @@
     <div class="problem">
       <h2>Problem 1 — Set up your project <span class="pts">(15 points)</span></h2>
       <p>
-        Turn in a Python project we can run from the terminal. It must include two programs—<code>agent.py</code>
+        Turn in a Python project we can run from the terminal. It must include two files—<code>agent.py</code>
         (reads the Canvas documents and writes your data files) and <code>report.py</code> (builds the valuation
         webpage from those data files). Also include <code>requirements.txt</code> (lists any Python packages
         needed), <code>README.md</code> (step-by-step instructions for installing and running your code), and a
-        folder called <code>prompts</code> containing plain-text files with the instructions you give to your AI
-        tool when extracting data from PDFs and emails.
+        folder called <code>prompts</code> containing plain-text files with the instructions you give to your AI agent when extracting data from PDFs and emails.
       </p>
       <p>
         We will unzip your submission, install dependencies, and run two commands. First,
@@ -61,7 +60,7 @@
         unzipped Canvas folder. That should create the data files in a folder called <code>sample_output</code>.
         Second, <code>python report.py --json-dir sample_output --out sample_output/valuation.html</code>, which
         should create the webpage from those data files without opening the PDFs again. Both steps should complete
-        without errors. Do not put API keys in your zip; use environment variables and explain them in your README.
+        without errors. Do not put API keys in your zip; use environment variables and explain them in your README for other users who want to utilize your agent.
       </p>
     </div>
 
@@ -80,13 +79,13 @@
     <div class="problem">
       <h2>Problem 3 — Bank and credit card classification <span class="pts">(20 points)</span></h2>
       <p>
-        Read the bank statement PDF and the credit card statement PDF. Save two data files in
+        Read the bank statement PDF and the credit card statement PDF. Save two data files in the folder
         <code>sample_output</code>: <code>bank_transactions.json</code> and
         <code>credit_card_transactions.json</code>. For every line on each statement, label it
         <strong>business</strong> or <strong>personal</strong>. For bank deposits, also say whether the money
         looks like <strong>shop revenue</strong> or an <strong>owner withdrawal</strong>. For business charges on
-        the credit card, add a short label for the type of expense. The owner mixes personal and shop spending on
-        one card, so thoughtfulness here matters for your grade.
+        the credit card, add a short label for the type of expense (for example, parts or shipping). The owner
+        mixes personal and shop spending on one card, so thoughtfulness here matters for your grade.
       </p>
     </div>
 
