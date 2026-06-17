@@ -31,118 +31,307 @@
     <div class="assignment-box">
       <h2>Scenario</h2>
       <p>
-        <strong>Spoke &amp; Wrench Bicycle Repair</strong> is a small New Haven business whose records arrive in
-        many formats—not as a clean export from accounting software. Download the document pack
-        (<a href="data/hw1/hw1_spoke_and_wrench.zip">hw1_spoke_and_wrench.zip</a>) containing PDFs of
-        various business documents and a set of business emails.
+        <strong>Spoke &amp; Wrench Bicycle Repair</strong> is a small New Haven shop. The owner keeps
+        messy records—PDF receipts, bank and card statements, a lease, emails, and handwritten notes—not
+        a clean QuickBooks export. Download the document pack
+        (<a href="data/hw1/hw1_spoke_and_wrench.zip">hw1_spoke_and_wrench.zip</a>) and use AI to extract
+        and organize what you can.
       </p>
       <p>
-        In this assignment you will use AI to read those documents, organize the financial information, estimate
-        what the business may be worth, and present your work as data files, a simple webpage, and a short memo.
-        You will submit everything in one zip file as described at the bottom of this page.
+        <strong>Your job is not just to build a pipeline.</strong> The documents disagree, overlap, and
+        leave things out. You must reconcile conflicts, make defensible business-vs-personal calls, build
+        January books, estimate value under multiple scenarios, and explain where your agent was wrong or
+        unsure. AI-maxxing is encouraged; grades reward judgment and verification, not a one-shot zip of
+        JSON files.
       </p>
     </div>
 
     <p><strong>Download data:</strong> <a href="data/hw1/hw1_spoke_and_wrench.zip">hw1_spoke_and_wrench.zip</a> (unzip before running your agent).</p>
-    <p><strong>Submit:</strong> one zip file, <code>hw1.zip</code> — see Problem 8.</p>
+    <p><strong>Submit:</strong> one zip file, <code>hw1.zip</code> — see Problem 10.</p>
 
     <div class="problem">
       <h2>Problem 1 — Set up your project <span class="pts">(10 points)</span></h2>
       <p>
-        Turn in a Python project we can run from the terminal. It must include two files—<code>agent.py</code>
-        (reads the downloaded documents and writes your data files) and <code>report.py</code> (builds the valuation
-        webpage from those data files). Also include <code>requirements.txt</code> (lists any Python packages
-        needed), <code>README.md</code> (step-by-step instructions for installing and running your code), and a
-        folder called <code>prompts</code> containing plain-text files with the instructions you give to your AI agent when extracting data from PDFs and emails.
+        Turn in a Python project we can run from the terminal: <code>agent.py</code> (reads documents and
+        writes data files), <code>report.py</code> (builds the valuation webpage from those files),
+        <code>requirements.txt</code>, <code>README.md</code>, and a <code>prompts/</code> folder with the
+        plain-text instructions you give your AI when extracting from PDFs and emails.
       </p>
       <p>
-        We will unzip your submission, install dependencies, and run two commands. First,
-        <code>python agent.py --docs-dir PATH --out-dir sample_output</code>, where <code>PATH</code> is the
-        unzipped document pack. That should create the data files in a folder called <code>sample_output</code>.
-        Second, <code>python report.py --json-dir sample_output --out sample_output/valuation.html</code>, which
-        should create the webpage from those data files without opening the PDFs again. Both steps should complete
-        without errors. Do not put API keys in your zip; use environment variables and explain them in your README for other users who want to utilize your agent.
-      </p>
-    </div>
-
-    <div class="problem">
-      <h2>Problem 2 — Receipt ledger <span class="pts">(20 points)</span></h2>
-      <p>
-        Read the receipt PDFs and the eBay confirmation, and save a tidy list of purchases in
-        <code>sample_output/receipts.json</code>. For each receipt, record who you paid (<code>vendor</code>),
-        the date, a short description, the dollar amount, what type of expense it was (<code>category</code>—for
-        example parts, tools, or supplies), and which PDF it came from (<code>source_file</code>). See the format
-        example below. If something is missing from the PDF, say so in <code>fields_not_found</code> instead of
-        filling in a guess.
+        We will run:
+        <code>python agent.py --docs-dir PATH --out-dir output</code>
+        then
+        <code>python report.py --json-dir output --out output/valuation.html</code>.
+        Both must complete without errors. Do not put API keys in your zip; use environment variables and
+        document them in your README.
       </p>
     </div>
 
     <div class="problem">
-      <h2>Problem 3 — Bank and credit card classification <span class="pts">(20 points)</span></h2>
+      <h2>Problem 2 — Receipt ledger <span class="pts">(12 points)</span></h2>
       <p>
-        Read the bank statement PDF and the credit card statement PDF. Save two data files in the folder
-        <code>sample_output</code>: <code>bank_transactions.json</code> and
-        <code>credit_card_transactions.json</code>. For every line on each statement, label it
-        <strong>business</strong> or <strong>personal</strong>. For bank deposits, also say whether the money
-        looks like <strong>shop revenue</strong> or an <strong>owner withdrawal</strong>. For business charges on
-        the credit card, add a short label for the type of expense (for example, parts or shipping). The owner
-        mixes personal and shop spending on one card, so thoughtfulness here matters for your grade.
+        Build <code>output/receipts.json</code> from the <strong>purchase receipt PDFs</strong> in the
+        document pack: Park Tool, New Haven Bike Parts, Home Depot, Speedy Courier, Amazon headphones, and the
+        eBay repair-stand confirmation. These are proof-of-purchase documents—not the bank statement, credit
+        card statement, lease, IOU, or Hartford Mutual quote.
+      </p>
+      <p>
+        For each line item, record <code>vendor</code>, <code>date</code>, <code>description</code>,
+        <code>amount_usd</code>, <code>category</code> (your best tag, e.g. <code>tools_equipment</code>,
+        <code>shipping</code>, <code>personal_electronics</code>), and <code>source_file</code>. If a field is
+        missing from the PDF, list it under <code>fields_not_found</code>—do not invent values.
+      </p>
+      <p>
+        The receipt ledger is a <strong>catalog of what each document says</strong>. Several amounts also appear
+        on the bank or card statements; note that in your data if helpful, but <strong>do not decide here</strong>
+        whether something is business vs personal or whether it hits January profit and loss—that is Problems 3
+        and 4.
       </p>
     </div>
 
     <div class="problem">
-      <h2>Problem 4 — January income statement <span class="pts">(15 points)</span></h2>
+      <h2>Problem 3 — Bank and credit card classification <span class="pts">(12 points)</span></h2>
       <p>
-        Using your work from Problem 3 (and the lease PDF), build a simple January 2026 profit-and-loss summary in
-        <code>sample_output/income_statement_jan2026.json</code>. Report total revenue, a list of expense lines,
-        and net income for the month. The math must add up. In an <code>assumptions</code> section, explain any
-        judgment calls—for example, how you treated money the owner took out of the business, or whether you
-        counted the same purchase twice on a receipt and a statement.
+        Read the January bank statement and credit card statement in the document pack. Turn each posted
+        line into structured data you can use later for reconciliation and the profit and loss statement
+        (P&amp;L)—also called an <strong>income statement</strong>: revenue minus expenses for the month.
+      </p>
+      <p>
+        <strong>Bank transactions.</strong> Extract every line from <code>bank_statement_jan2026.pdf</code>.
+        For each deposit or withdrawal, record the date, description, amount, whether it is business or
+        personal, and how you would book it (revenue, expense, owner draw, and so on). Save the result as
+        <code>output/bank_transactions.json</code>.
+      </p>
+      <p>
+        <strong>Credit card transactions.</strong> Extract every charge from <code>credit_card_jan2026.pdf</code>.
+        For each line, record the date, merchant, amount, whether it is business or personal, and—if
+        business—what type of shop expense it is. Save the result as
+        <code>output/credit_card_transactions.json</code>.
+      </p>
+      <p><strong>Both files — every row:</strong></p>
+      <ul>
+        <li><code>classification</code>: <strong>business</strong> or <strong>personal</strong></li>
+      </ul>
+      <p><strong>Bank rows — also include:</strong></p>
+      <ul>
+        <li><code>direction</code>: <code>credit</code> (deposit) or <code>debit</code> (withdrawal)</li>
+        <li><code>accounting_label</code> — for <strong>credits</strong>: <code>revenue</code>,
+          <code>owner_contribution</code>, <code>transfer</code>, or <code>other</code>; for
+          <strong>debits</strong>: <code>expense</code>, <code>owner_draw</code>, <code>transfer</code>, or
+          <code>other</code></li>
+        <li><code>expense_type</code> — when <code>accounting_label</code> is <code>expense</code>, a short
+          label (e.g. <code>rent</code>, <code>utilities</code>, <code>cogs_parts</code>)</li>
+      </ul>
+      <p><strong>Credit card rows — also include:</strong></p>
+      <ul>
+        <li><code>expense_category</code> — for rows you classified <strong>business</strong> (e.g.
+          <code>shipping</code>, <code>tools_equipment</code>); omit or set null for personal rows</li>
+      </ul>
+      <p>
+        Issuer categories on the card statement (e.g. “Grocery stores,” “Gas stations”) are automated MCC
+        labels—they do <strong>not</strong> tell you business vs personal. You must cross-check statements
+        against <strong>other documents in the pack</strong>, including:
+      </p>
+      <ul>
+        <li><strong>Your receipt ledger</strong> (<code>receipts.json</code> from Problem 2) — match amounts and items to card or bank lines (e.g. Amazon headphones ↔ 01/04 card charge). Re-read a receipt PDF only if something is missing from the ledger.</li>
+        <li><strong>Emails</strong> — especially <code>email_owner_voice_memo.txt</code>, where Jordan explains mixed Square deposits, REI apparel, Home Depot supplies, and personal Amazon purchases</li>
+      </ul>
+    </div>
+
+    <div class="problem">
+      <h2>Problem 4 — Reconciliation log <span class="pts">(18 points)</span></h2>
+      <p>
+        Reconcile your receipt ledger (Problem 2) with your bank and credit card transactions
+        (Problem 3). Cross-check emails and other documents in the pack when amounts or categories
+        do not line up. Save the result as <code>output/reconciliation_log.json</code>.
+      </p>
+      <p>
+        List every amount that appears in more than one place. Some rows will have unclear categories
+        or different dollar amounts across sources—record what each source shows, whether it belongs
+        in January profit and loss (P&amp;L), and the single amount you will use. For each item include:
+      </p>
+      <ul>
+        <li><code>id</code> — short label you choose</li>
+        <li><code>sources</code> — file names where you saw it</li>
+        <li><code>amounts_seen</code> — what each source shows</li>
+        <li><code>included_in_january_p_and_l</code> — <code>yes</code> if this item is a business
+          revenue or expense for January 2026 that belongs on your income statement (Problem 6);
+          <code>no</code> if you exclude it (e.g. personal spending, future pipeline work, or
+          off-books items not in January books)</li>
+        <li><code>amount_used_in_p_and_l</code> — the single dollar amount you count in January
+          P&amp;L when <code>included_in_january_p_and_l</code> is <code>yes</code>; use <code>0</code>
+          when <code>no</code></li>
+        <li><code>resolution</code> — plain English: what you did and why</li>
+      </ul>
+    </div>
+
+    <div class="problem">
+      <h2>Problem 5 — Judgment calls <span class="pts">(10 points)</span></h2>
+      <p>
+        Some reconciliation rows need a <strong>judgment call</strong>—the documents do not settle on
+        their own whether an amount belongs in January P&amp;L or how much to count. After reconciling
+        (Problem 4), pick <strong>three rows</strong> where you found it hardest to set
+        <code>included_in_january_p_and_l</code> or <code>amount_used_in_p_and_l</code>, and explain
+        why. Save the result as <code>output/judgment_calls.json</code>.
+      </p>
+      <p>For each of the three judgment calls, include:</p>
+      <ul>
+        <li><code>transaction_id</code> — use the <code>id</code> from that row in your reconciliation
+          log</li>
+        <li><code>included_in_january_p_and_l</code> — your decision: <code>yes</code> or <code>no</code></li>
+        <li><code>amount_used_in_p_and_l</code> — the dollar amount you count in January P&amp;L, or
+          <code>0</code> if excluded</li>
+        <li><code>evidence_for</code> — bullet list of facts and document names that support your
+          decision</li>
+        <li><code>confidence</code> — how sure you are: <code>high</code>, <code>medium</code>, or
+          <code>low</code> (at least one of your three calls must be <code>low</code>)</li>
+      </ul>
+    </div>
+
+    <div class="problem">
+      <h2>Problem 6 — January income statement <span class="pts">(10 points)</span></h2>
+      <p>
+        Build the shop’s January 2026 profit and loss (P&amp;L)—also called an <strong>income
+        statement</strong>: total business revenue, expense lines, and net income. Save the result as
+        <code>output/income_statement_jan2026.json</code>.
+      </p>
+      <p>
+        Build your income statement from <code>reconciliation_log.json</code> (Problem 4). For each row
+        where <code>included_in_january_p_and_l</code> is <code>yes</code>, use
+        <code>amount_used_in_p_and_l</code> and roll it into revenue or expense lines.
+      </p>
+      <p>Your JSON must include:</p>
+      <ul>
+        <li><code>period</code> — <code>2026-01</code></li>
+        <li><code>revenue_usd</code> — total January business revenue</li>
+        <li><code>expense_lines</code> — array of expense rows; each row needs:
+          <ul>
+            <li><code>label</code> — short name for the line (e.g. <code>rent</code>,
+              <code>card_tools_equipment</code>)</li>
+            <li><code>amount_usd</code> — dollars for this line</li>
+            <li><code>category</code> — expense type (e.g. <code>rent_occupancy</code>,
+              <code>tools_equipment</code>, <code>cogs_parts</code>, <code>shipping</code>)</li>
+            <li><code>sources</code> — file names backing this line (e.g.
+              <code>bank_statement_jan2026.pdf</code>, <code>credit_card_jan2026.pdf</code>)</li>
+          </ul>
+        </li>
+        <li><code>total_expenses_usd</code> — sum of all expense lines</li>
+        <li><code>net_income_usd</code> — <code>revenue_usd</code> minus <code>total_expenses_usd</code></li>
+      </ul>
+    </div>
+
+    <div class="problem">
+      <h2>Problem 7 — Valuation scenarios <span class="pts">(12 points)</span></h2>
+      <p>
+        You have rebuilt January books. The next question is different: <strong>what is this business
+        worth?</strong> There is no single correct number. Value depends on who is asking and what they
+        believe about future cash the shop can generate.
+      </p>
+      <p>
+        For a small shop like this, a common approach is <strong>annualized profit × a multiplier</strong>.
+        Take January net income from Problem 6, multiply by 12 for a rough full-year earnings figure, then
+        apply a multiple (e.g. 2×–3.5×) to get a <strong>purchase price range</strong>. In each scenario,
+        <code>low_usd</code> and <code>high_usd</code> are what someone might pay to <strong>buy the whole
+        business</strong>—not monthly or annual profit. Explain your multiple and any add-ons in
+        <code>method</code>.
+      </p>
+      <p>
+        Different readers trust the numbers differently. A <strong>buyer</strong> weighs earnings quality,
+        future jobs not yet collected, and downside risk. A <strong>bank</strong> focuses on reliable cash
+        flow, collateral, and personal spending mixed with the business. An <strong>owner</strong> may
+        count reputation and booked work that is not in January revenue. Your three scenarios—
+        <code>books_only</code>, <code>adjusted</code>, and <code>skeptical_buyer</code>—should reflect
+        those different levels of trust.
+      </p>
+      <p>
+        Save the result as <code>output/valuation_inputs.json</code>. Required sections:
+      </p>
+      <ul>
+        <li><code>booked_january_net_income_usd</code> — <code>net_income_usd</code> from your January
+          income statement (Problem 6)</li>
+        <li><code>annualized_net_income_usd</code> — that figure × 12; the earnings base for your
+          multiplier math</li>
+        <li><code>off_books_receivables</code> — money customers already owe for <strong>work
+          completed</strong> but not yet deposited (e.g. an IOU or unpaid invoice)</li>
+        <li><code>pipeline_orders</code> — <strong>future</strong> jobs from customer emails (not January
+          revenue); note when sources disagree on price or timing</li>
+        <li><code>excluded_from_valuation</code> — intangibles, missing documents, or risks a buyer or
+          lender would still ask about</li>
+        <li><code>valuation_scenarios</code> — three scenario objects. Each includes:
+          <ul>
+            <li><code>low_usd</code> — the low end of what someone might pay to buy the shop</li>
+            <li><code>high_usd</code> — the high end of that purchase-price range</li>
+            <li><code>method</code> — plain English showing your math: annualized net income, multiple,
+              and any receivables, pipeline, or discounts you added</li>
+          </ul>
+          Name the three scenarios:
+          <ul>
+            <li><code>books_only</code> — annualized net income × multiple only</li>
+            <li><code>adjusted</code> — add receivables and probability-weighted pipeline</li>
+            <li><code>skeptical_buyer</code> — lower multiple, heavier discounts</li>
+          </ul>
+        </li>
+        <li><code>assumptions</code> — pipeline probabilities and other shared judgments (list once
+          here); each scenario’s <code>method</code> shows how you applied them to get that scenario’s
+          range</li>
+      </ul>
+      <p>
+        For <code>adjusted</code>, assign each pipeline order a probability between <code>0</code> and
+        <code>1</code>: your estimate that the job will happen and pay roughly the emailed amount (e.g.
+        0.75 probability on a $4,000 job would be counted as $3,000). Show the math in each scenario’s
+        <code>method</code>. A single unexplained range is not enough.
       </p>
     </div>
 
     <div class="problem">
-      <h2>Problem 5 — Valuation inputs <span class="pts">(10 points)</span></h2>
+      <h2>Problem 8 — Valuation webpage <span class="pts">(5 points)</span></h2>
       <p>
-        Save <code>sample_output/valuation_inputs.json</code> combining your January results with the business
-        emails and the IOU PDF. List future jobs mentioned in the emails as
-        <code>pipeline_orders</code>—these are <em>not</em> January revenue. List money owed to the shop but not
-        on the bank statement (such as the IOU) under <code>off_books_receivables</code>. Note what a buyer could
-        not learn from these PDFs alone—things like the owner’s reputation—in
-        <code>excluded_from_valuation</code>. End with a low and high estimate of business value and a short
-        explanation of how you got there.
+        Your JSON files hold the analysis; a buyer or banker will not read raw JSON. Turn your work into
+        a one-page <strong>valuation briefing</strong> they can open in any browser—a readable summary of
+        what you found and what you think the shop is worth.
+      </p>
+      <p>
+        <code>report.py</code> should read your <code>output/</code> JSON files and build that page.
+        Save the result as <code>output/valuation.html</code>. Use the same numbers as your JSON—do
+        not hand-edit totals in the HTML.
+      </p>
+      <p>The page should include:</p>
+      <ul>
+        <li><strong>January P&amp;L</strong> — revenue, expenses, and net income from your income
+          statement</li>
+        <li><strong>Personal vs business</strong> — bank and card rows you classified as personal (what
+          you excluded from the shop books)</li>
+        <li><strong>Pipeline orders</strong> — future jobs from Problem 7</li>
+        <li><strong>Valuation scenarios</strong> — your three purchase-price ranges
+          (<code>books_only</code>, <code>adjusted</code>, <code>skeptical_buyer</code>) with methods</li>
+        <li><strong>Missing documents and risks</strong> — items from <code>excluded_from_valuation</code></li>
+      </ul>
+    </div>
+
+    <div class="problem">
+      <h2>Problem 9 — Memos <span class="pts">(8 points)</span></h2>
+      <p>
+        Your JSON and webpage summarize the numbers; a real deal still needs a written recommendation.
+        Write two short memos (about 250–400 words each) for different readers who would use your
+        analysis differently.
+      </p>
+      <p>
+        <strong>Buyer memo.</strong> Save as <code>output/memo_buyer.md</code>. You are advising a potential
+        acquirer: How strong is January earnings? What pipeline orders add upside? What is the top risk
+        if they buy the shop?
+      </p>
+      <p>
+        <strong>Bank memo.</strong> Save as <code>output/memo_bank.md</code>. You are advising a lender
+        considering a loan to the business: Is personal spending mixed with the shop? How large are owner
+        draws? What collateral or financial detail is <em>not</em> in these PDFs?
       </p>
     </div>
 
     <div class="problem">
-      <h2>Problem 6 — Valuation webpage <span class="pts">(10 points)</span></h2>
+      <h2>Problem 10 — Submission format <span class="pts">(3 points)</span></h2>
       <p>
-        Create <code>sample_output/valuation.html</code>, a webpage you can open in any browser (no hosting
-        required). It should summarize your January profit and loss, show how you split personal vs business
-        spending, list future orders from the emails, state your valuation range, and note what documents are
-        still missing. Use the same numbers as your data files; do not add new figures on the webpage.
-      </p>
-    </div>
-
-    <div class="problem">
-      <h2>Problem 7 — Investment memo <span class="pts">(10 points)</span></h2>
-      <p>
-        Write <code>memo.md</code> (about 400–600 words) as if you were advising someone thinking of buying the
-        shop. Describe the one transaction you found hardest to call business vs personal, and why. Explain what
-        the emails and IOU add to your valuation that January statements alone do not show. Name one number your AI
-        might get wrong and how you checked it. Finally, name one document you would still want before signing a
-        deal, and why.
-      </p>
-    </div>
-
-    <div class="problem">
-      <h2>Problem 8 — Submission format <span class="pts">(5 points)</span></h2>
-      <p>
-        Create a folder on your computer named <code>hw1</code>. Put all of your homework files inside that folder
-        using the layout below—same folder names, same file names. When everything is in place, zip the entire
-        <code>hw1</code> folder (not the individual files on their own) and upload the resulting
-        <code>hw1.zip</code> to Canvas. When we unzip your submission, we should see one top-level folder called
-        <code>hw1</code> containing your code, prompts, memo, and completed <code>sample_output</code> files.
+        Put everything in a folder named <code>hw1</code>, zip it as <code>hw1.zip</code>, upload to Canvas.
+        When we unzip, we should see one top-level <code>hw1/</code> folder with the layout below.
       </p>
       <pre class="file-tree"><code>hw1/
 ├── README.md
@@ -152,117 +341,48 @@
 ├── prompts/
 │   ├── pdf_extract.txt
 │   └── email_extract.txt
-├── memo.md
-└── sample_output/
+└── output/
     ├── receipts.json
     ├── bank_transactions.json
     ├── credit_card_transactions.json
+    ├── reconciliation_log.json
+    ├── judgment_calls.json
     ├── income_statement_jan2026.json
     ├── valuation_inputs.json
-    └── valuation.html</code></pre>
+    ├── valuation.html
+    ├── memo_buyer.md
+    └── memo_bank.md</code></pre>
     </div>
 
-    <h2>Data file formats (examples)</h2>
-    <p>Your output files should follow these structures. The numbers below are examples only.</p>
-
-    <h3><code>receipts.json</code></h3>
-    <pre class="terminal"><code>{
-  "source_documents": ["receipt_park_tool.pdf", "..."],
-  "line_items": [
-    {
-      "vendor": "Park Tool Company",
-      "date": "2026-01-06",
-      "description": "Chain whip, lock tool, apron",
-      "amount_usd": 88.70,
-      "category": "tools_equipment",
-      "source_file": "receipt_park_tool.pdf"
-    }
-  ],
-  "fields_not_found": []
-}</code></pre>
-
-    <h3><code>bank_transactions.json</code></h3>
-    <pre class="terminal"><code>{
-  "account": "Business Checking ****7124",
-  "period": "2026-01",
-  "transactions": [
-    {
-      "date": "2026-01-03",
-      "description": "POS DEPOSIT — Square walk-in tune-ups",
-      "amount_usd": 420.00,
-      "direction": "credit",
-      "classification": "business",
-      "accounting_label": "revenue"
-    }
-  ]
-}</code></pre>
-
-    <h3><code>credit_card_transactions.json</code></h3>
-    <p>Each row is labeled business or personal. Business rows also include an expense type.</p>
-    <pre class="terminal"><code>{
-  "account": "Chase Ink Business Preferred ****4821",
-  "period": "2026-01",
-  "transactions": [
-    {
-      "date": "2026-01-09",
-      "merchant": "INSTACART *WHOLE FOODS",
-      "description": "Groceries (personal)",
-      "amount_usd": 64.22,
-      "classification": "personal"
-    },
-    {
-      "date": "2026-01-25",
-      "merchant": "NEW HAVEN BIKE PARTS",
-      "description": "Inventory — tubes, tires",
-      "amount_usd": 218.40,
-      "classification": "business",
-      "expense_category": "parts"
-    },
-    {
-      "date": "2026-01-17",
-      "merchant": "SPEEDY COURIER NH",
-      "description": "Shipping — same-day tubes",
-      "amount_usd": 28.00,
-      "classification": "business",
-      "expense_category": "shipping"
-    }
-  ]
-}</code></pre>
-
-    <h3><code>income_statement_jan2026.json</code></h3>
-    <pre class="terminal"><code>{
-  "period": "2026-01",
-  "revenue_usd": 0,
-  "expense_lines": [
-    { "label": "rent", "amount_usd": 0, "sources": ["bank_statement_jan2026.pdf"] }
-  ],
-  "net_income_usd": 0,
-  "assumptions": ["How you treated owner draws, etc."]
-}</code></pre>
-
-    <h3><code>valuation_inputs.json</code></h3>
-    <pre class="terminal"><code>{
-  "booked_january_net_income_usd": 0,
-  "off_books_receivables": [
-    { "description": "Mike Smith IOU", "amount_usd": 180, "source": "iou_mike_smith.pdf" }
-  ],
-  "pipeline_orders": [
-    {
-      "customer": "Hartford Mutual",
-      "amount_usd": 6800,
-      "expected_timing": "March 2026",
-      "source": "email_fleet_wellness.txt",
-      "in_january_books": false
-    }
-  ],
-  "excluded_from_valuation": ["Owner skill / reputation"],
-  "valuation_range_usd": { "low": 0, "high": 0, "method": "Explain SDE or multiple logic" }
-}</code></pre>
+    <h2>Required JSON fields (summary)</h2>
+    <p>
+      Schemas are not fully spelled out here—you must design structures that fit the problems above and
+      document any non-obvious keys in your README. Graders will check that required content exists and
+      that numbers reconcile across files.
+    </p>
+    <ul>
+      <li><code>reconciliation_log.json</code> — array <code>items</code> with the six fields listed in Problem 4</li>
+      <li><code>judgment_calls.json</code> — three objects with <code>transaction_id</code>,
+        <code>included_in_january_p_and_l</code>, <code>amount_used_in_p_and_l</code>,
+        <code>evidence_for</code>, and <code>confidence</code> (Problem 5)</li>
+      <li><code>income_statement_jan2026.json</code> — <code>period</code>, <code>revenue_usd</code>,
+        <code>expense_lines</code> (each with <code>label</code>, <code>amount_usd</code>,
+        <code>category</code>, <code>sources</code>), <code>total_expenses_usd</code>,
+        <code>net_income_usd</code> (Problem 6)</li>
+      <li><code>valuation_inputs.json</code> — <code>booked_january_net_income_usd</code>,
+        <code>annualized_net_income_usd</code>, <code>off_books_receivables</code>,
+        <code>pipeline_orders</code>, <code>excluded_from_valuation</code>, <code>assumptions</code>,
+        and <code>valuation_scenarios</code> with <code>books_only</code>, <code>adjusted</code>,
+        <code>skeptical_buyer</code> (each: <code>low_usd</code>, <code>high_usd</code>,
+        <code>method</code>) (Problem 7)</li>
+      <li><code>bank_transactions.json</code> — each row: <code>classification</code>, <code>direction</code>, <code>accounting_label</code>; add <code>expense_type</code> for bank expenses (Problem 3)</li>
+      <li><code>credit_card_transactions.json</code> — each row: <code>classification</code>; add <code>expense_category</code> for business charges (Problem 3)</li>
+    </ul>
 
     <h2>Policies</h2>
     <p>
-      AI-maxxing is encouraged, but you must be able to run and explain
-      what you submit. Do not include API keys in your zip. 
+      AI-maxxing is encouraged. You must be able to run and defend what you submit. We may ask you to
+      walk through one reconciliation row or judgment call in class. Do not include API keys in your zip.
     </p>
 
     <h2>Submit</h2>
