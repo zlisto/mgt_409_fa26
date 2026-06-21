@@ -523,6 +523,31 @@ img:hover {
   color: var(--text-primary);
 }
 
+[data-theme="dark"] .assignment-box {
+  border-left-color: var(--yale-blue-light);
+}
+
+[data-theme="dark"] .assignment-box h2 {
+  color: var(--text-heading);
+}
+
+[data-theme="dark"] .assignment-box strong {
+  color: #a8cce8;
+}
+
+[data-theme="dark"] .assignment-box p,
+[data-theme="dark"] .assignment-box li {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .assignment-box a {
+  color: #9ec5f0;
+}
+
+[data-theme="dark"] .assignment-box a:hover {
+  color: var(--text-on-blue);
+}
+
 .colab-link img {
   height: 20px;
   vertical-align: middle;
