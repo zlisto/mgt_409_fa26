@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lecture Editor - AI for Business</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .editor-toolbar {
+      margin: 24px auto 0;
+      max-width: 760px;
+      padding: 16px 18px;
+      background: var(--bg-surface-raised);
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+
+    .editor-toolbar p {
+      margin: 0 0 12px;
+      color: var(--text-secondary);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .editor-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .editor-actions button,
+    .editor-actions a.btn-link {
+      appearance: none;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-panel);
+      color: var(--text-heading);
+      border-radius: 6px;
+      padding: 8px 14px;
+      font: inherit;
+      font-size: 15px;
+      cursor: pointer;
+      text-decoration: none;
+      line-height: 1.4;
+    }
+
+    .editor-actions button:hover,
+    .editor-actions a.btn-link:hover {
+      background: var(--yale-blue-pale);
+      color: var(--link-hover);
+    }
+
+    .editor-status {
+      margin-top: 10px;
+      min-height: 1.2em;
+      font-size: 14px;
+      color: var(--text-muted, var(--text-secondary));
+    }
+
+    .accordion-container.editor-list {
+      max-width: 760px;
+    }
+
+    .lecture-card {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+    }
+
+    .lecture-card.drag-over {
+      outline: 2px dashed var(--yale-blue-light, #286dc0);
+      outline-offset: 2px;
+    }
+
+    .lecture-card.dragging {
+      opacity: 0.55;
+    }
+
+    .drag-handle {
+      flex: 0 0 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-right: 1px solid var(--border);
+      background: var(--bg-panel);
+      color: var(--text-secondary);
+      cursor: grab;
+      font-size: 18px;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .drag-handle:active {
+      cursor: grabbing;
+    }
+
+    .lecture-card-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .lecture-card .accordion-btn {
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .lecture-label {
+      margin-right: 0.35em;
+      color: var(--text-secondary);
+      font-weight: 700;
+    }
+
+    .lecture-title[contenteditable="true"] {
+      outline: none;
+      border-bottom: 1px dashed transparent;
+    }
+
+    .lecture-title[contenteditable="true"]:hover,
+    .lecture-title[contenteditable="true"]:focus {
+      border-bottom-color: var(--yale-blue-light, #286dc0);
+    }
+
+    .panel [contenteditable="true"] {
+      outline: none;
+      min-height: 1.5em;
+      padding: 4px 6px;
+      border-radius: 4px;
+    }
+
+    .panel [contenteditable="true"]:hover,
+    .panel [contenteditable="true"]:focus {
+      background: var(--bg-surface-raised);
+      box-shadow: inset 0 0 0 1px var(--border-strong);
+    }
+
+    .card-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 0 15px 12px;
+      background: var(--bg-panel);
+      border-top: 1px solid var(--border);
+    }
+
+    .card-actions button {
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font: inherit;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 4px 0;
+    }
+
+    .card-actions button:hover {
+      color: var(--link-hover);
+    }
+
+    .card-actions .delete-btn:hover {
+      color: #b42318;
+    }
+
+    #export-output {
+      display: none;
+      width: 100%;
+      min-height: 180px;
+      margin-top: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.45;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-panel);
+      color: var(--text-heading);
+      resize: vertical;
+    }
+
+    #export-output.visible {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="instructions.html">Instructions</a></li>
+      <li><a href="lectures.html">Lectures</a></li>
+      <li><a href="homeworks.html">Homeworks</a></li>
+      <li><a href="project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+
+  <main>
+    <h1 class="schedule-header">Lecture Schedule Editor</h1>
+
+    <div class="editor-toolbar">
+      <p>
+        Click titles and panel text to edit. Drag the <strong>⠿</strong> handle to reorder.
+        Lecture numbers update automatically. Changes save in this browser via localStorage.
+      </p>
+      <div class="editor-actions">
+        <button type="button" id="add-lecture">+ Add lecture</button>
+        <button type="button" id="export-html">Copy HTML for lectures.html</button>
+        <button type="button" id="export-json">Copy JSON</button>
+        <button type="button" id="reset-defaults">Reset to defaults</button>
+        <a class="btn-link" href="lectures.html">View public page</a>
+      </div>
+      <div class="editor-status" id="status" aria-live="polite"></div>
+      <textarea id="export-output" readonly spellcheck="false"></textarea>
+    </div>
+
+    <div class="accordion-container editor-list" id="lecture-list"></div>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "mgt409-lectures-editor-v1";
+
+    const DEFAULT_LECTURES = [
+      { title: "AI and Vibe Coding", body: "Lecture slides: TBD" },
+      { title: "PDF → Structured JSON", body: "Lecture slides: TBD" },
+      { title: "Image → Structured JSON", body: "Lecture slides: TBD" },
+      { title: "Tools + Web Research Agent", body: "Lecture slides: TBD" },
+      { title: "Text RAG — Ingest & Store", body: "Lecture slides: TBD" },
+      { title: "Multimodal RAG — Catalog & Visual Search", body: "Lecture slides: TBD" },
+      { title: "AI Workflows — Process to Agent", body: "Lecture slides: TBD" },
+      { title: "Tokenomics", body: "Lecture slides: TBD" },
+      { title: "Telegram / Slack Customer Service Agent", body: "Lecture slides: TBD" },
+      { title: "MCP Servers", body: "Lecture slides: TBD" },
+      { title: "Apps with Vite", body: "Lecture slides: TBD" },
+      { title: "Deploy on Vercel + Mobile", body: "Lecture slides: TBD" },
+      { title: "The Future of AI", body: "Lecture slides: TBD" }
+    ];
+
+    const listEl = document.getElementById("lecture-list");
+    const statusEl = document.getElementById("status");
+    const exportOutput = document.getElementById("export-output");
+
+    let dragSrc = null;
+
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function setStatus(message) {
+      statusEl.textContent = message;
+      if (message) {
+        window.clearTimeout(setStatus._timer);
+        setStatus._timer = window.setTimeout(() => {
+          statusEl.textContent = "";
+        }, 3200);
+      }
+    }
+
+    function readCards() {
+      return [...listEl.querySelectorAll(".lecture-card")].map((card) => ({
+        title: card.querySelector(".lecture-title").textContent.trim(),
+        body: card.querySelector(".panel-body").textContent.trim()
+      }));
+    }
+
+    function saveToStorage() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(readCards()));
+    }
+
+    function renumber() {
+      listEl.querySelectorAll(".lecture-card").forEach((card, index) => {
+        card.querySelector(".lecture-label").textContent = `Lecture ${index + 1}:`;
+      });
+    }
+
+    function bindAccordion(card) {
+      const btn = card.querySelector(".accordion-btn");
+      const panel = card.querySelector(".panel");
+      btn.addEventListener("click", () => {
+        btn.classList.toggle("active");
+        panel.style.display = panel.style.display === "block" ? "none" : "block";
+      });
+    }
+
+    function bindEditable(card) {
+      card.querySelectorAll("[contenteditable]").forEach((el) => {
+        el.addEventListener("input", saveToStorage);
+        el.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" && el.classList.contains("lecture-title")) {
+            event.preventDefault();
+            el.blur();
+          }
+        });
+      });
+    }
+
+    function bindDrag(card) {
+      const handle = card.querySelector(".drag-handle");
+
+      handle.addEventListener("dragstart", (event) => {
+        dragSrc = card;
+        card.classList.add("dragging");
+        event.dataTransfer.effectAllowed = "move";
+        event.dataTransfer.setData("text/plain", card.dataset.id || "lecture");
+      });
+
+      handle.addEventListener("dragend", () => {
+        card.classList.remove("dragging");
+        listEl.querySelectorAll(".lecture-card").forEach((item) => {
+          item.classList.remove("drag-over");
+        });
+        dragSrc = null;
+      });
+
+      card.addEventListener("dragover", (event) => {
+        event.preventDefault();
+        if (!dragSrc || dragSrc === card) return;
+        card.classList.add("drag-over");
+      });
+
+      card.addEventListener("dragleave", () => {
+        card.classList.remove("drag-over");
+      });
+
+      card.addEventListener("drop", (event) => {
+        event.preventDefault();
+        card.classList.remove("drag-over");
+        if (!dragSrc || dragSrc === card) return;
+
+        const cards = [...listEl.querySelectorAll(".lecture-card")];
+        const srcIndex = cards.indexOf(dragSrc);
+        const targetIndex = cards.indexOf(card);
+        if (srcIndex < targetIndex) {
+          card.after(dragSrc);
+        } else {
+          card.before(dragSrc);
+        }
+
+        renumber();
+        saveToStorage();
+        setStatus("Order updated.");
+      });
+    }
+
+    function createCard(lecture, index) {
+      const card = document.createElement("div");
+      card.className = "accordion lecture-card";
+      card.dataset.id = `lecture-${Date.now()}-${index}`;
+
+      card.innerHTML = `
+        <button type="button" class="drag-handle" draggable="true" aria-label="Drag to reorder">⠿</button>
+        <div class="lecture-card-body">
+          <button type="button" class="accordion-btn">
+            <span class="lecture-label">Lecture ${index + 1}:</span>
+            <span class="lecture-title" contenteditable="true" spellcheck="true">${escapeHtml(lecture.title)}</span>
+          </button>
+          <div class="panel" style="display: block;">
+            <p class="panel-body" contenteditable="true" spellcheck="true">${escapeHtml(lecture.body)}</p>
+          </div>
+          <div class="card-actions">
+            <button type="button" class="delete-btn">Delete</button>
+          </div>
+        </div>
+      `;
+
+      card.querySelector(".delete-btn").addEventListener("click", () => {
+        if (!window.confirm("Delete this lecture?")) return;
+        card.remove();
+        renumber();
+        saveToStorage();
+        setStatus("Lecture deleted.");
+      });
+
+      bindAccordion(card);
+      bindEditable(card);
+      bindDrag(card);
+      return card;
+    }
+
+    function render(lectures) {
+      listEl.innerHTML = "";
+      lectures.forEach((lecture, index) => {
+        listEl.appendChild(createCard(lecture, index));
+      });
+      renumber();
+    }
+
+    function loadLectures() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+        if (Array.isArray(saved) && saved.length) return saved;
+      } catch (_) {}
+      return DEFAULT_LECTURES.slice();
+    }
+
+    function buildHtmlSnippet(lectures) {
+      return lectures.map((lecture, index) => {
+        const title = escapeHtml(lecture.title);
+        const body = escapeHtml(lecture.body);
+        return `
+      <div class="accordion">
+        <button class="accordion-btn">Lecture ${index + 1}: ${title}</button>
+        <div class="panel">
+          <p>${body}</p>
+        </div>
+      </div>`;
+      }).join("\n");
+    }
+
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+      exportOutput.value = text;
+      exportOutput.classList.add("visible");
+      exportOutput.focus();
+      exportOutput.select();
+      document.execCommand("copy");
+    }
+
+    document.getElementById("add-lecture").addEventListener("click", () => {
+      const count = listEl.querySelectorAll(".lecture-card").length;
+      listEl.appendChild(createCard({ title: "New lecture", body: "Lecture slides: TBD" }, count));
+      renumber();
+      saveToStorage();
+      setStatus("Lecture added.");
+    });
+
+    document.getElementById("export-html").addEventListener("click", async () => {
+      const lectures = readCards();
+      const html = buildHtmlSnippet(lectures);
+      await copyText(html.trim());
+      exportOutput.value = html.trim();
+      exportOutput.classList.add("visible");
+      setStatus("HTML copied. Paste into lectures.html inside .accordion-container.");
+    });
+
+    document.getElementById("export-json").addEventListener("click", async () => {
+      const json = JSON.stringify(readCards(), null, 2);
+      await copyText(json);
+      exportOutput.value = json;
+      exportOutput.classList.add("visible");
+      setStatus("JSON copied.");
+    });
+
+    document.getElementById("reset-defaults").addEventListener("click", () => {
+      if (!window.confirm("Reset to the original 13 lectures? This clears your saved edits.")) return;
+      localStorage.removeItem(STORAGE_KEY);
+      render(DEFAULT_LECTURES.slice());
+      exportOutput.classList.remove("visible");
+      exportOutput.value = "";
+      setStatus("Reset to defaults.");
+    });
+
+    render(loadLectures());
+  </script>
+
+  <script src="js/theme.js"></script>
+
+  <footer class="site-footer">
+    <p>© 2026 Tauhid Zaman</p>
+  </footer>
+</body>
+</html>
