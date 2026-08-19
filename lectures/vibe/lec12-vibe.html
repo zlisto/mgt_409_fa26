@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 12 Vibe Coding — Tokenomics</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/vibe-session.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .vibe-header h1 { font-size: 2rem; }
+    .vibe-goal {
+      background: linear-gradient(90deg, #e8f8ee, #e8eef4);
+      border-left-color: #2f9e44;
+    }
+    .joke {
+      margin: 0.85rem 0;
+      padding: 0.7rem 0.95rem;
+      background: #fff4cc;
+      border-left: 5px solid #f4c430;
+      border-radius: 0 8px 8px 0;
+      font-weight: 650;
+    }
+    [data-theme="dark"] .joke {
+      background: #3a2e0a;
+      color: #ffe9a8;
+    }
+    .rates {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.6rem 0 1rem;
+      font-size: 0.95rem;
+    }
+    .rates th, .rates td {
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.55rem;
+      text-align: left;
+    }
+    .clock {
+      display: inline-block;
+      background: #00356b;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      margin-left: 0.35rem;
+      vertical-align: middle;
+    }
+    .vibe-clock {
+      background: #e8eef4;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      margin: 0.85rem 0 1.1rem;
+      font-size: 0.95rem;
+    }
+    [data-theme="dark"] .vibe-clock { background: #132a45; }
+    .vibe-clock ol { margin: 0.35rem 0 0 1.2rem; padding: 0; }
+    .vibe-clock li { margin: 0.2rem 0; }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <main class="vibe-main">
+    <div class="vibe-header">
+      <h1>Lecture 12: Tokenomics</h1>
+      <p class="meta">
+        <a href="../slides/lec12-slides.html">← Slides</a>
+        <a href="../../lectures.html">All lectures</a>
+        · 40 minutes in class
+      </p>
+    </div>
+    <div class="vibe-goal"><strong>In-class goal:</strong> Put a real meter on the chat loop — log tokens and USD on allowed calls only, then compare Luna vs Terra on a tiny FAQ set. This is the Homework 6 pattern, not the whole assignment.</div>
+    <p class="vibe-download"><strong>Start from:</strong> your Homework 4/6 chat loop, or <a href="../../data/hw6/hw6_csmh_pilot.zip">hw6_csmh_pilot.zip</a>. You need <code>usage_template.csv</code> column names.</p>
+    <p class="joke">If Codex offers to “just run all 21 economics queries and write the memo,” that is Homework 6 — screenshot <em>one</em> problem card later. Today we wire the meter.</p>
+
+    <div class="vibe-clock">
+      <strong>40-minute clock</strong> (instructor: call time at the marks)
+      <ol>
+        <li><strong>0–6</strong> — pricing table + estimator (no API)</li>
+        <li><strong>6–14</strong> — wrap a real LLM call</li>
+        <li><strong>14–18</strong> — blocked traffic is free</li>
+        <li><strong>18–30</strong> — tiny Luna vs Terra bake-off (six calls)</li>
+        <li><strong>30–37</strong> — economics brief + cheaper architecture (cache = a sentence)</li>
+        <li><strong>37–40</strong> — <code>AI_prompts.md</code></li>
+      </ol>
+    </div>
+
+    <p>Use OpenAI <strong>short-context list prices after the July 30, 2026 cut</strong> (verify if your Portkey sheet differs; document the rates in the README later):</p>
+    <table class="rates">
+      <tr><th>Model id</th><th>Input / 1M</th><th>Cached input / 1M</th><th>Cache write / 1M</th><th>Output / 1M</th></tr>
+      <tr><td><code>gpt-5.6-luna</code></td><td>$0.20</td><td>$0.02</td><td>$0.25</td><td>$1.20</td></tr>
+      <tr><td><code>gpt-5.6-terra</code></td><td>$2.00</td><td>$0.20</td><td>$2.50</td><td>$12.00</td></tr>
+    </table>
+    <p>Today’s estimator uses uncached input + output only. Prompt cache (0.1× read, 1.25× write, 30-minute TTL, 1,024-token minimum prefix) is a Homework 6 Problem 7 lever — do not implement it in class.</p>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 1</span> Pricing table + estimator <span class="clock">0–6 min</span></h2>
+      <p>One file, one source of truth. No hardcoded 0.0003 sprinkled through the agent.</p>
+      <pre class="prompt">Create cost_log.py with MODEL_RATES for gpt-5.6-luna and gpt-5.6-terra using OpenAI short-context list prices after the July 30, 2026 cut: Luna $0.20 / $1.20 per 1M input/output, Terra $2 / $12. Add estimate_cost(model, input_tokens, output_tokens) returning a USD float. Add log_usage(endpoint, model, input_tokens, output_tokens, estimated_usd, out_dir="output") that appends one row to output/usage.csv with columns timestamp (ISO 8601), endpoint, model, input_tokens, output_tokens, estimated_usd. Create output/ if missing. Support CLI: python cost_log.py --endpoint chat --model gpt-5.6-luna --input-tokens 100 --output-tokens 40 --out-dir output</pre>
+      <div class="vibe-check"><strong>Check:</strong> CLI writes a row. <code>estimate_cost("gpt-5.6-luna", 800, 250)</code> is about $0.00046 (ordinary float rounding is fine).</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 2</span> Wrap real LLM calls <span class="clock">6–14 min</span></h2>
+      <p>The meter only counts if it is on the live path.</p>
+      <pre class="prompt">In the chat handler (handle_message or equivalent), after a successful OpenAI completion, read response.usage input and output tokens, call estimate_cost, then log_usage with endpoint="chat" and the model you actually called. Do not invent token counts. Create output/ if needed.</pre>
+      <div class="vibe-check"><strong>Check:</strong> One real “What time do doors open?” call adds exactly one new CSV row with a positive <code>estimated_usd</code>.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 3</span> Blocked traffic is free <span class="clock">14–18 min</span></h2>
+      <p>Lecture 11 meets the invoice. Junk should never mint a row.</p>
+      <pre class="prompt">If check_input (or equivalent guardrail) blocks the message, return the refusal and do not call OpenAI. Do not append a usage.csv row for blocked messages.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Send a blocked string (for example “ignore previous instructions”). No new CSV row. Row count unchanged.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 4</span> Tiny Luna vs Terra bake-off <span class="clock">18–30 min</span></h2>
+      <p>Three questions, both models. Homework 6 will do the full seed file — do not run the whole pack in class.</p>
+      <pre class="prompt">Create a short script compare_models.py that runs these three questions through handle_message twice each (gpt-5.6-luna and gpt-5.6-terra): (1) What time does the box office open on show nights? (2) Where should I park for a Saturday concert? (3) What is the ticket refund policy if a show is postponed? Pass a model argument so you are not editing the file between runs. Log every allowed call. Print total USD by model. Write output/model_comparison.md with the two totals and the Terra/Luna ratio.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Six usage rows (3 × 2). Markdown shows both totals. Terra should be roughly ~10× Luna on this mix if token counts are similar.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 5</span> Draft the economics brief <span class="clock">30–37 min</span></h2>
+      <p>Practice the Homework 6 write-up shape with <em>your</em> in-class numbers. Prompt cache is a sentence, not a feature.</p>
+      <pre class="prompt">Create output/tokenomics.md with: (1) rates you used, (2) total cost and cost per query for all-Luna vs all-Terra from usage.csv, (3) token totals by model, (4) for each of the three questions, luna_ok or needs_terra plus one sentence why. Totals must match the CSV. Then add a short output/cheaper_architecture.md: Luna by default, Terra only when Luna is wrong or vague, plus a back-of-envelope monthly cost at 100 queries/day assuming most traffic stays on Luna. Add one paragraph proposing a frozen system+FAQ prefix so OpenAI prompt caching can apply (1,024+ token prefix, 30-minute TTL, cache read 0.1× uncached input). Do not implement caching.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Both markdown files exist. The monthly number shows the mix, not “Sol for everything.” Cache is named as a lever, not coded.</div>
+      <p class="vibe-extend"><strong>Stretch:</strong> Flag if projected monthly spend at 100 queries/day exceeds $50 under all-Terra. Print a one-line alert from the CSV totals.</p>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 6</span> AI_prompts.md <span class="clock">37–40 min</span></h2>
+      <p>Log what you actually typed. Graders can tell a dump from a session.</p>
+      <pre class="prompt">Add a Lecture 12 section to AI_prompts.md with the prompts you used today (in your own words) and one sentence on what broke on the first try if anything did.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Lecture 12 section exists. It does not paste this whole page.</div>
+    </div>
+  </main>
+  <script src="../../js/theme.js"></script>
+  <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
+</body>
+</html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 13 Slides — Future Directions</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .slide-deck-body > .site-nav,
+    .slide-deck-body > .slide-deck-header,
+    .slide-deck-body > .slide-deck-footer,
+    .slide-deck-body > .slide-hint { flex-shrink: 0; }
+    .slide { max-width: 980px; max-height: calc(100vh - 210px); }
+    .slide h1 { font-size: clamp(2rem, 4.6vw, 2.75rem); }
+    .slide p, .slide li { font-size: clamp(1.1rem, 2.3vw, 1.32rem); }
+    .slide.title-slide h1 {
+      font-size: clamp(2.4rem, 5.5vw, 3.2rem);
+      color: var(--yale-blue);
+    }
+    [data-theme="dark"] .slide.title-slide h1 { color: #7ec8ff; }
+    .kicker {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--yale-blue);
+      padding: 0.22rem 0.7rem;
+      border-radius: 999px;
+      margin-bottom: 0.6rem;
+    }
+    .slide .takeaway {
+      background: linear-gradient(90deg, #e8eef4, #ecfeff);
+      border-left-color: #286dc0;
+    }
+    [data-theme="dark"] .slide .takeaway { background: #132a45; }
+    .instructor-banner {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: #c98900;
+      color: #fff;
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      margin: 0 0 0.7rem;
+    }
+    .pace-table { font-size: 0.92rem !important; }
+    .pace-table th, .pace-table td { padding: 0.28rem 0.5rem; }
+    .pace-table td:first-child {
+      font-weight: 800;
+      white-space: nowrap;
+      color: var(--yale-blue);
+    }
+    [data-theme="dark"] .pace-table td:first-child { color: #7ec8ff; }
+    .news-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      border: 2px solid var(--yale-blue-light);
+      border-radius: 12px;
+      padding: 0.85rem 1rem;
+      margin: 0.5rem 0 0.35rem;
+      background: var(--yale-blue-pale);
+    }
+    [data-theme="dark"] .news-card { background: #102038; border-color: #6ba3e0; }
+    .news-card .outlet {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--yale-blue-light);
+      margin-bottom: 0.3rem;
+    }
+    .news-card p { margin: 0; font-size: 1.02rem !important; }
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.4rem;
+      margin: 0.7rem 0;
+    }
+    .stack-cell {
+      text-align: center;
+      padding: 0.55rem 0.3rem;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.82rem !important;
+      line-height: 1.2;
+    }
+    .stack-cell span { display: block; font-size: 0.68rem; font-weight: 600; opacity: 0.9; margin-top: 0.2rem; }
+    .horizon {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem;
+    }
+    .horizon div {
+      border-radius: 12px;
+      padding: 0.8rem 0.9rem;
+      color: #fff;
+      font-size: 1.02rem !important;
+    }
+    .horizon h3 { margin: 0 0 0.35rem; font-size: 1.05rem; color: #fff; }
+    .big-num {
+      font-size: 3rem !important;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--yale-blue);
+    }
+    [data-theme="dark"] .big-num { color: #7ec8ff; }
+    .quote-xl {
+      font-size: 1.4rem !important;
+      font-weight: 800;
+      line-height: 1.3;
+      color: var(--yale-blue);
+      margin: 0.2rem 0;
+    }
+    [data-theme="dark"] .quote-xl { color: #7ec8ff; }
+    @media (max-width: 720px) {
+      .stack-grid, .horizon { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body class="slide-deck-body">
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <header class="slide-deck-header">
+    <a href="../../lectures.html">← Lectures</a>
+    <span>Lecture 13: Future Directions</span>
+    <span class="slide-counter">1 / 14</span>
+  </header>
+  <div class="slide-viewport">
+
+      <section class="slide active title-slide" data-slide="1">
+        <p class="kicker">Last class · wrap + kickoff</p>
+        <h1>Future Directions</h1>
+        <p class="subtitle">MGT 409 · Lecture 13 · Tauhid Zaman</p>
+        <p class="takeaway">Models will keep shipping. The exam is a co-pilot you can eval, cost, and govern — for a business you can explain.</p>
+        <p class="speaker-note">40 min lecture, then 40 min project kickoff. No founder-beef recap. Skip slide 2 in class.</p>
+      </section>
+
+      <section class="slide" data-slide="2">
+        <p class="instructor-banner">Instructor outline — remove before class.</p>
+        <h1>40-minute lecture</h1>
+        <table class="pace-table">
+          <tr><th>Min</th><th>Beat</th><th>Say this</th></tr>
+          <tr><td>0–2</td><td>Hook</td><td>Waiting for the next SKU is not a strategy. Slide 1, then skip this one.</td></tr>
+          <tr><td>2–6</td><td>Stack wrap</td><td>HW1–6 is one product. The final is the integrator exam (40%).</td></tr>
+          <tr><td>6–9</td><td>L1 / L4 only</td><td>Riemann <em>progress</em> + sandbox-escape. Do not retell. Gates were L11–12.</td></tr>
+          <tr><td>9–13</td><td>Frontier</td><td>CASRAI snapshot: no single model. Which SKU, which effort, which task.</td></tr>
+          <tr><td>13–16</td><td>Procurement</td><td>Adaptive effort + HW6 memo practice. Flagship OCR = a board slide.</td></tr>
+          <tr><td>16–20</td><td>$2.59T</td><td>Gartner: infra dwarfs models. MBA job is integrate a messy workflow.</td></tr>
+          <tr><td>20–24</td><td>Build vs buy</td><td>Copilot Studio / Agentforce vs your docs. Hybrid is the adult answer.</td></tr>
+          <tr><td>24–29</td><td>Computer use</td><td>OSWorld 42% → 85%. Click Send = click Wire. HITL is the last box.</td></tr>
+          <tr><td>29–32</td><td>Tickets</td><td>EU AI Act powers (2 Aug 2026) + IBM AI-enabled breaches. Section G.</td></tr>
+          <tr><td>32–36</td><td>Evals</td><td>Public zip you iterate; hidden suite grades you. Demos ≠ software.</td></tr>
+          <tr><td>36–39</td><td>Exam shape</td><td>Router + four modules + guard. 65 / 15 / 20. Timeline through Canvas.</td></tr>
+          <tr><td>39–40</td><td>Handoff</td><td>Vibe is a 40-min kickoff, not a 90-min workshop. Then walk the room.</td></tr>
+        </table>
+      </section>
+
+      <section class="slide" data-slide="3">
+        <h1>You already built the stack</h1>
+        <div class="stack-grid">
+          <div class="stack-cell" style="background:#00356b">HW1<span>Extract</span></div>
+          <div class="stack-cell" style="background:#286dc0">HW2<span>Research</span></div>
+          <div class="stack-cell" style="background:#0b6b5a">HW3<span>Search + vision</span></div>
+          <div class="stack-cell" style="background:#c98900">HW4<span>Router</span></div>
+          <div class="stack-cell" style="background:#7c3aed">HW5<span>Ship a URL</span></div>
+          <div class="stack-cell" style="background:#be185d">HW6<span>$ + locks</span></div>
+        </div>
+        <svg class="flow-svg" viewBox="0 0 640 118" aria-label="Course stack becomes co-pilot">
+          <rect x="8" y="38" width="90" height="44" rx="8" fill="#00356b"/>
+          <text class="on-dark" x="53" y="65" text-anchor="middle" font-size="13">Docs</text>
+          <rect x="112" y="38" width="90" height="44" rx="8" fill="#286dc0"/>
+          <text class="on-dark" x="157" y="65" text-anchor="middle" font-size="13">Agents</text>
+          <rect x="216" y="38" width="90" height="44" rx="8" fill="#0b6b5a"/>
+          <text class="on-dark" x="261" y="65" text-anchor="middle" font-size="13">Multimodal</text>
+          <rect x="320" y="38" width="90" height="44" rx="8" fill="#7c3aed"/>
+          <text class="on-dark" x="365" y="65" text-anchor="middle" font-size="13">App</text>
+          <rect x="424" y="38" width="90" height="44" rx="8" fill="#be185d"/>
+          <text class="on-dark" x="469" y="65" text-anchor="middle" font-size="13">Govern</text>
+          <rect x="528" y="28" width="104" height="64" rx="10" fill="#111827"/>
+          <text class="on-dark" x="580" y="56" text-anchor="middle" font-size="12">Co-Pilot</text>
+          <text class="on-dark" x="580" y="74" text-anchor="middle" font-size="11">40% grade</text>
+        </svg>
+        <p class="takeaway">The final is an integrator exam: one product, one router, your industry.</p>
+      </section>
+
+      <section class="slide" data-slide="4">
+        <h1>Two headlines you already have</h1>
+        <ul>
+          <li><strong>Lecture 4.</strong> An agent swarm made <em>progress</em> on Riemann. Not a proof. The news is the workflow.</li>
+          <li><strong>Lecture 1.</strong> Sandbox-escape coverage. If the model can act outside the box, that is a control failure.</li>
+        </ul>
+        <p class="takeaway">Capability without a gate is not a product. Lectures 11–12 were the gates. Use them in the co-pilot.</p>
+      </section>
+
+      <section class="slide" data-slide="5">
+        <h1>Frontier, mid-August 2026</h1>
+        <a class="news-card" href="https://casrai.org/news/frontier-llm-landscape-august-2026" target="_blank" rel="noopener">
+          <span class="outlet">CASRAI · 16 Aug 2026</span>
+          <p>No single model fits every institutional use. Opus 5 / Fable 5 lead many benches; GPT-5.6 and Grok 4.6 sit close; Kimi K3 is the self-host option.</p>
+        </a>
+        <table>
+          <tr><th>Model</th><th>Manager takeaway</th></tr>
+          <tr><td>Claude Opus 5 / Fable 5</td><td>Pay for hard reasoning</td></tr>
+          <tr><td>GPT-5.6 Luna / Terra / Sol</td><td>Don’t pick one SKU for every step</td></tr>
+          <tr><td>Grok 4.6 · Kimi K3</td><td>Budget agents · data residency</td></tr>
+        </table>
+        <p class="source-note"><a href="https://venturebeat.com/technology/spacexai-debuts-grok-4-6-overtaking-kimi-k3s-performance-and-matching-gpt-5-6-sol-for-worlds-third-best-on-artificial-analysis">VentureBeat on Grok 4.6</a>. Latency is a product feature too: Gemini 3.7 Flash is live; GPT-5.6 Sol Ultrafast is still invite-only.</p>
+      </section>
+
+      <section class="slide" data-slide="6">
+        <h1>The procurement question</h1>
+        <p class="quote-xl">Not “which model?”</p>
+        <p class="quote-xl">“Which model, at which effort, for which task?”</p>
+        <ul>
+          <li>Opus 5 and GPT-5.6 expose <strong>adaptive effort</strong> — same name, very different cost and latency.</li>
+          <li>Your HW6 memo already practiced this. The final memo must do it for <em>your</em> workflow.</li>
+        </ul>
+        <p class="takeaway">Buying the flagship SKU for invoice OCR is how a token bill becomes a board slide.</p>
+      </section>
+
+      <section class="slide" data-slide="7">
+        <h1>Most of the money is not the chatbot</h1>
+        <p class="big-num">$2.59T</p>
+        <p>Worldwide AI spending in 2026, <strong>+47%</strong> YoY — Gartner. Models themselves: ~$33B.</p>
+        <div class="chart-bar-chart">
+          <div class="chart-row">
+            <span>Infra</span>
+            <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+            <span class="pct">$1,432B</span>
+          </div>
+          <div class="chart-row">
+            <span>Services</span>
+            <div class="bar-track"><div class="bar-fill" style="width:41%;background:#286dc0"></div></div>
+            <span class="pct">$586B</span>
+          </div>
+          <div class="chart-row">
+            <span>Software</span>
+            <div class="bar-track"><div class="bar-fill" style="width:32%;background:#c98900"></div></div>
+            <span class="pct">$453B</span>
+          </div>
+          <div class="chart-row">
+            <span>Models</span>
+            <div class="bar-track"><div class="bar-fill muted" style="width:8%"></div></div>
+            <span class="pct">$33B</span>
+          </div>
+        </div>
+        <p class="source-note"><a href="https://www.morningstar.com/news/business-wire/20260519405832/gartner-forecasts-worldwide-ai-spending-to-grow-47-in-2026">Gartner via Business Wire</a>. You will not out-capex NVIDIA. You can out-integrate a messy workflow.</p>
+      </section>
+
+      <section class="slide" data-slide="8">
+        <h1>Build vs buy</h1>
+        <div class="two-col">
+          <div class="compare-box">
+            <h3>Buy / embed</h3>
+            <p>Microsoft Copilot Studio: 160k+ orgs. Salesforce Agentforce: ~$800M ARR. Fast, vendor roadmap, their data gravity.</p>
+          </div>
+          <div class="compare-box">
+            <h3>Build (this course)</h3>
+            <p>Your router + your docs + your guardrails. Ugly PDFs, odd SKUs, a process no CRM tab was designed for.</p>
+          </div>
+        </div>
+        <ul>
+          <li><strong>Buy</strong> when the work already lives in M365 or Salesforce.</li>
+          <li><strong>Build</strong> when the gold is proprietary documents + tools.</li>
+          <li><strong>Hybrid</strong> is the usual adult answer: vendor LLM, your RAG, your evals, your kill switch.</li>
+        </ul>
+      </section>
+
+      <section class="slide" data-slide="9">
+        <h1>Horizon: agents that click</h1>
+        <p>a16z, summer 2026: best computer-use score on OSWorld-Verified went <strong>42% → 85%</strong> — above the ~72% humans score.</p>
+        <div class="horizon">
+          <div style="background:#00356b">
+            <h3>Do</h3>
+            Sandbox the VM. Log every click. Human token for money, email, delete.
+          </div>
+          <div style="background:#be185d">
+            <h3>Don’t</h3>
+            Give the agent the CEO’s laptop because a demo hit 85%. That is 15 disasters per 100 tasks.
+          </div>
+        </div>
+        <p class="source-note"><a href="https://a16z.com/can-agents-use-a-computer-yet-weve-got-the-data/">a16z: Can Agents Use a Computer Yet?</a> Same lesson as L1’s sandbox news: blast radius scales with what the agent can touch.</p>
+      </section>
+
+      <section class="slide" data-slide="10">
+        <h1>Horizon: tickets and attackers</h1>
+        <ul>
+          <li>EU AI Act <strong>enforcement powers</strong> start <strong>2 August 2026</strong>. GPAI: transparency, copyright, systemic-risk safety. Fines up to <strong>€15M or 3%</strong> of global turnover.</li>
+          <li>IBM Cost of a Data Breach 2026: about <strong>1 in 4</strong> malicious breaches are AI-enabled (~$6M vs ~$5.0M overall).</li>
+        </ul>
+        <p class="source-note"><a href="https://digital-strategy.ec.europa.eu/en/policies/enforcement-ai-act">European Commission</a> · <a href="https://newsroom.ibm.com/2026-07-29-ibm-study-one-in-four-malicious-breaches-are-ai-enabled,-costing-companies-6-million-on-average">IBM, 29 Jul 2026</a></p>
+        <p class="takeaway">Section G is not extra-credit personality. It is the cheapest insurance in the repo.</p>
+      </section>
+
+      <section class="slide" data-slide="11">
+        <h1>Evals: demos are not the exam</h1>
+        <svg class="flow-svg" viewBox="0 0 640 168" aria-label="Eval pyramid">
+          <polygon points="320,12 500,58 140,58" fill="#be185d"/>
+          <text class="on-dark" x="320" y="42" text-anchor="middle" font-size="15">Hidden suite — grades you</text>
+          <rect x="90" y="70" width="460" height="42" rx="6" fill="#7c3aed"/>
+          <text class="on-dark" x="320" y="97" text-anchor="middle" font-size="15">Public practice zip — you iterate</text>
+          <rect x="40" y="122" width="560" height="42" rx="6" fill="#00356b"/>
+          <text class="on-dark" x="320" y="149" text-anchor="middle" font-size="15">HW1–6 goldens — the building blocks</text>
+        </svg>
+        <p>A live demo is one lucky path. Passing public is necessary, not sufficient. Hidden cases use the same modules, different PDFs and traps.</p>
+        <p class="takeaway">If it only works when you hover the mouse just so, that is a demo. We grade software.</p>
+      </section>
+
+      <section class="slide" data-slide="12">
+        <h1>Co-pilot shape (non-negotiable)</h1>
+        <svg class="flow-svg" viewBox="0 0 640 175" aria-label="Final project architecture">
+          <rect x="10" y="68" width="100" height="44" rx="8" fill="#286dc0"/>
+          <text class="on-dark" x="60" y="95" text-anchor="middle" font-size="13">Web UI</text>
+          <rect x="140" y="55" width="120" height="70" rx="10" fill="#7c3aed"/>
+          <text class="on-dark" x="200" y="85" text-anchor="middle" font-size="14">Router</text>
+          <text class="on-dark" x="200" y="104" text-anchor="middle" font-size="11">prompts/router.md</text>
+          <rect x="290" y="8" width="110" height="36" rx="6" fill="#00356b"/>
+          <text class="on-dark" x="345" y="31" text-anchor="middle" font-size="12">Extract</text>
+          <rect x="290" y="50" width="110" height="36" rx="6" fill="#c98900"/>
+          <text class="on-dark" x="345" y="73" text-anchor="middle" font-size="12">KB Q&amp;A</text>
+          <rect x="290" y="92" width="110" height="36" rx="6" fill="#0b6b5a"/>
+          <text class="on-dark" x="345" y="115" text-anchor="middle" font-size="12">Research</text>
+          <rect x="290" y="134" width="110" height="36" rx="6" fill="#286dc0"/>
+          <text class="on-dark" x="345" y="157" text-anchor="middle" font-size="12">Decision</text>
+          <rect x="430" y="55" width="90" height="70" rx="10" fill="#be185d"/>
+          <text class="on-dark" x="475" y="95" text-anchor="middle" font-size="13">Guard</text>
+          <rect x="540" y="68" width="90" height="44" rx="8" fill="#111827"/>
+          <text class="on-dark" x="585" y="95" text-anchor="middle" font-size="12">JSON+$</text>
+        </svg>
+        <div class="stat-grid">
+          <div class="stat-box"><div class="num">65</div><div class="label">A–G · public + hidden</div></div>
+          <div class="stat-box"><div class="num">15</div><div class="label">Memo + prompts</div></div>
+          <div class="stat-box"><div class="num">20</div><div class="label">Stretch — optional</div></div>
+        </div>
+        <p><a href="../../project_requirements.html">Full requirements →</a> · CLI grades functions. Pretty UI is for humans.</p>
+      </section>
+
+      <section class="slide" data-slide="13">
+        <h1>Timeline</h1>
+        <ol>
+          <li><strong>Today (40 min vibe):</strong> business + README + module map + router stub. Not the whole repo.</li>
+          <li><strong>This week:</strong> run the public suite; list honest red/yellow/green.</li>
+          <li><strong>Next:</strong> fix extract + refuse path; log cost per 100 runs.</li>
+          <li><strong>Week before due:</strong> deploy URL, red-team injection, memo draft.</li>
+          <li><strong>Canvas:</strong> <code>final_project.zip</code> + live URL. No live pitch. The suite is the pitch.</li>
+        </ol>
+        <p class="takeaway">Work section by section. One mega-prompt from the assignment URL fails the hidden suite <em>and</em> the vibe-coding policy.</p>
+      </section>
+
+      <section class="slide section-slide" data-slide="14">
+        <h1>→ Vibe: kick the project (40 min)</h1>
+        <p>Pick a business. Map modules. Stub the router. Write how you’ll run the public suite. Stop there.</p>
+        <p><a href="../vibe/lec13-vibe.html">Open timed prompts →</a></p>
+        <p class="takeaway">The moat is not the next Ultrafast SKU. It is your data, your evals, and a workflow nobody else wired.</p>
+      </section>
+
+  </div>
+  <p class="slide-hint">Arrow keys, Space, or buttons to advance</p>
+  <footer class="slide-deck-footer">
+    <button type="button" id="prev" aria-label="Previous slide">← Previous</button>
+    <button type="button" id="next" aria-label="Next slide">Next →</button>
+  </footer>
+  <script src="../../js/slides.js"></script>
+  <script src="../../js/theme.js"></script>
+</body>
+</html>

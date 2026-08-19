@@ -1,0 +1,41 @@
+{
+  "description": "Run every case through your supervisor. Do not drop or rewrite the queries. The pack plants at least one case where exhibit copy and visitor policy disagree; the supervisor must not silently merge those tools into one visitor-facing yes.",
+  "cases": [
+    {
+      "id": "sunday_hours",
+      "query": "Are you open on Sunday, and what time do you close?",
+      "expect_conflict": false,
+      "hint": "Hours/ticketing tool should be enough."
+    },
+    {
+      "id": "free_admission",
+      "query": "Do I need a ticket, and is general admission free?",
+      "expect_conflict": false,
+      "hint": "Hours/ticketing tool should be enough."
+    },
+    {
+      "id": "burke_on_view",
+      "query": "What will I see in Burke Hall of Dinosaurs?",
+      "expect_conflict": false,
+      "hint": "Exhibits tool should be enough."
+    },
+    {
+      "id": "egypt_funerary",
+      "query": "Does the Egypt and Mesopotamia gallery include funerary items?",
+      "expect_conflict": false,
+      "hint": "Exhibits tool; visitor photography rule is a separate question."
+    },
+    {
+      "id": "sunday_and_burke",
+      "query": "If I come Sunday afternoon, can I still see Burke Hall of Dinosaurs?",
+      "expect_conflict": false,
+      "hint": "May need both specialists; tools should agree."
+    },
+    {
+      "id": "members_night_flash_bag",
+      "query": "For Members Night in Burke Hall on Friday October 16 2026, can I stay after 5 pm with my camera bag and use flash on a tripod?",
+      "expect_conflict": true,
+      "hint": "This query hits exhibit program copy and visitor-policy rules. Those tools are not written as one policy. Do not invent a blended yes."
+    }
+  ]
+}

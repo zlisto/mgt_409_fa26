@@ -1,0 +1,51 @@
+{
+  "name": "peabody_visitor_ops",
+  "version": "2026-08",
+  "description": "Mock MCP server for Yale Peabody Museum visitor operations (course data only).",
+  "tools": [
+    {
+      "name": "get_hours_and_tickets",
+      "description": "Public hours, holiday closures, admission, membership FAQ, and group-reservation rules.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "description": "Optional focus: hours, holidays, admission, membership, groups, parking."
+          },
+          "date": {
+            "type": "string",
+            "description": "Optional ISO date (YYYY-MM-DD) to resolve a specific day."
+          }
+        }
+      }
+    },
+    {
+      "name": "get_exhibit_info",
+      "description": "Gallery descriptions, what is on view, and exhibit-desk public programs.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Gallery name, topic, or program name to look up."
+          }
+        },
+        "required": ["query"]
+      }
+    },
+    {
+      "name": "get_visitor_policy",
+      "description": "Visitor-services handbook: bags, photography, food, after-hours access.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "description": "Optional focus: bags, photography, food, after_hours, general."
+          }
+        }
+      }
+    }
+  ]
+}

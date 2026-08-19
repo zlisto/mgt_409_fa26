@@ -21,10 +21,10 @@
   <div class="wrapper">
     <div class="sidebar">
       <a href="#vscode">VS Code</a>
+      <a href="#codex">Codex + Portkey</a>
       <a href="#python">Python</a>
       <a href="#react">React + Node.js</a>
       <a href="#github">GitHub</a>
-      <a href="#gemini">Gemini</a>
       <a href="#cursor">Cursor (optional)</a>
     </div>
 
@@ -39,6 +39,15 @@
         <li>Run the installer and accept the default options</li>
         <li>Open VS Code and complete any first-run setup prompts</li>
         <li>Open a project folder with <strong>File &gt; Open Folder</strong> and use the integrated terminal (<code>Ctrl + `</code> or <code>View &gt; Terminal</code>) for commands in later sections</li>
+        <li>Connect Codex to Yale Portkey using <a href="codex-portkey-setup.html">this class setup page</a>. Open <code>config.toml</code> from the Codex chat on the right: gear → Configuration → Open config.toml.</li>
+      </ul>
+
+      <h2 id="codex">Codex + Portkey</h2>
+      <p>Class vibe coding uses the OpenAI Codex extension in VS Code, routed through Yale Portkey. You do not need a personal ChatGPT subscription.</p>
+      <ul>
+        <li>Follow <a href="codex-portkey-setup.html">Connect Codex to the Yale Portkey API</a>.</li>
+        <li>After the Codex extension is installed, open the Codex chat on the right, click the gear, click <strong>Configuration</strong>, then click <strong>Open config.toml</strong>. Paste the class block and put your Portkey key in that file.</li>
+        <li>Fully quit VS Code and reopen it. If Codex still asks you to log into ChatGPT, the key or settings file is wrong. Ask a TA before creating a personal OpenAI key.</li>
       </ul>
 
       <h2 id="python">Python</h2>
@@ -156,25 +165,6 @@ git config --list</code></pre>
           </ul>
         </li>
       </ul>
-
-      <h2 id="gemini">Gemini</h2>
-      <p>Please follow these steps to generate your Gemini API key (it takes less than 2 minutes):</p>
-      <ol>
-        <li><strong>Access Google AI Studio:</strong> Go to <a href="https://aistudio.google.com" target="_blank" rel="noopener noreferrer">aistudio.google.com</a> and sign in with your Google/Gmail account.</li>
-        <li><strong>Create the key:</strong>
-          <ul>
-            <li>In the left sidebar, click <strong>Get API key</strong>.</li>
-            <li>Click the blue <strong>Create API key</strong> button.</li>
-            <li><strong>Note:</strong> If your school account restricts Cloud projects, choose <strong>Create API key in new project</strong>.</li>
-          </ul>
-        </li>
-        <li><strong>Copy and secure your key:</strong>
-          <ul>
-            <li>When the key is generated, copy it immediately.</li>
-            <li><strong>Important:</strong> Treat this key like a password. Do not share it or post it publicly (for example, on GitHub).</li>
-          </ul>
-        </li>
-      </ol>
 
       <h2 id="cursor">Cursor (optional)</h2>
       <p>

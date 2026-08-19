@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 10 Slides — Agent Orchestration</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    body.slide-deck-body {
+      padding: 0;
+      overflow: hidden;
+    }
+    nav.site-nav {
+      position: relative;
+      flex-shrink: 0;
+    }
+    body.slide-deck-body.lec10 {
+      --yale-blue: #0b3d91;
+      --yale-blue-light: #1f8ef0;
+      --accent-hot: #ff3d7f;
+      --accent-teal: #00c2b8;
+      --accent-gold: #ffc53d;
+      --accent-violet: #7c5cff;
+    }
+    .lec10 .slide h1 {
+      font-size: clamp(2.15rem, 5.2vw, 3rem);
+      line-height: 1.12;
+    }
+    .lec10 .slide.title-slide h1 {
+      font-size: clamp(2.5rem, 6vw, 3.4rem);
+      background: linear-gradient(90deg, #0b3d91, #1f8ef0, #00c2b8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    [data-theme="dark"] .lec10 .slide.title-slide h1 {
+      background: linear-gradient(90deg, #7ec8ff, #00c2b8, #ffc53d);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .lec10 .slide p, .lec10 .slide li {
+      font-size: clamp(1.12rem, 2.4vw, 1.38rem);
+    }
+    .lec10 .joke {
+      margin-top: 1rem;
+      padding: 0.9rem 1.15rem;
+      background: linear-gradient(90deg, #fff3c4, #ffe0ef);
+      border-left: 6px solid var(--accent-hot);
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #1a2e42;
+    }
+    [data-theme="dark"] .lec10 .joke {
+      background: linear-gradient(90deg, #3d2a12, #3a1730);
+      color: #ffe9c7;
+    }
+    .lec10 .news-card {
+      border: 2px solid var(--accent-teal);
+      border-radius: 12px;
+      padding: 0.9rem 1.1rem;
+      margin: 0.7rem 0;
+      background: #f3fffd;
+    }
+    [data-theme="dark"] .lec10 .news-card { background: #0d2a2a; border-color: #00c2b8; }
+    .lec10 .news-card h3 { margin: 0 0 0.35rem; font-size: 1.15rem; color: #0b3d91; }
+    [data-theme="dark"] .lec10 .news-card h3 { color: #7ec8ff; }
+    .lec10 .news-card a { font-weight: 700; }
+    .lec10 img.hero {
+      width: 100%;
+      max-height: 42vh;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 14px 36px rgba(11, 61, 145, 0.28);
+      margin: 0.4rem 0 0.75rem;
+    }
+    .lec10 .stat-box { border-top: 5px solid var(--accent-teal); }
+    .lec10 .stat-box:nth-child(2) { border-top-color: var(--accent-gold); }
+    .lec10 .stat-box:nth-child(3) { border-top-color: var(--accent-hot); }
+    .lec10 .slide .takeaway {
+      background: linear-gradient(90deg, #e8f4ff, #e6fff9);
+      border-left-color: var(--accent-teal);
+      font-size: 1.15rem;
+    }
+    [data-theme="dark"] .lec10 .slide .takeaway {
+      background: #123044;
+    }
+    .lec10 .caption {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-top: -0.35rem;
+    }
+    .lec10 .slide svg.flow-svg { max-height: 260px; }
+    .lec10 .instructor-banner {
+      display: inline-block;
+      background: #ff3d7f;
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+      padding: 0.35rem 0.8rem;
+      border-radius: 8px;
+      margin: 0 0 0.85rem;
+    }
+    .lec10 .pace-list {
+      list-style: none;
+      padding: 0;
+      margin: 0.35rem 0 0;
+    }
+    .lec10 .pace-list li {
+      display: flex;
+      gap: 0.9rem;
+      align-items: baseline;
+      padding: 0.38rem 0;
+      border-bottom: 1px solid rgba(11, 61, 145, 0.12);
+      font-size: clamp(1.02rem, 2.1vw, 1.22rem);
+    }
+    [data-theme="dark"] .lec10 .pace-list li { border-bottom-color: rgba(126, 200, 255, 0.18); }
+    .lec10 .pace-list .t {
+      flex: 0 0 4.6rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: #0b3d91;
+    }
+    [data-theme="dark"] .lec10 .pace-list .t { color: #7ec8ff; }
+    .lec10 .pace-total {
+      margin-top: 0.85rem;
+      font-weight: 800;
+      color: #0b3d91;
+    }
+    [data-theme="dark"] .lec10 .pace-total { color: #ffc53d; }
+  </style>
+</head>
+<body class="slide-deck-body lec10">
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <header class="slide-deck-header">
+    <a href="../../lectures.html">← Lectures</a>
+    <span>Lecture 10: Agent Orchestration</span>
+    <span class="slide-counter">1 / 14</span>
+  </header>
+  <div class="slide-viewport">
+
+      <section class="slide active title-slide" data-slide="1">
+        <h1>Agent Orchestration</h1>
+        <p class="subtitle">MGT 409 · Lecture 10 · Tauhid Zaman</p>
+        <p class="subtitle">One LLM. Several MCP tools. Refuse when they clash.</p>
+        <p class="speaker-note">40 min talk, then 40 min coffee-cart vibe. Homework 5 is Peabody — do not solve it in class.</p>
+      </section>
+
+      <section class="slide" data-slide="2">
+        <p class="instructor-banner">Instructor outline — remove before class.</p>
+        <h1>40-minute story</h1>
+        <ul class="pace-list">
+          <li><span class="t">0–4</span> Cold open: last week’s plug vs today’s manager-agent</li>
+          <li><span class="t">4–10</span> One guest, three desks, architecture</li>
+          <li><span class="t">10–16</span> Two verbs + the loop you own</li>
+          <li><span class="t">16–24</span> Sunday + Burke (agree) then refuse on clash</li>
+          <li><span class="t">24–30</span> Traces as the receipt + what you decide</li>
+          <li><span class="t">30–35</span> Aug 2026 news: stateless MCP, Agent Plugins</li>
+          <li><span class="t">35–40</span> HW5 map (P4–P5) and vibe handoff</li>
+        </ul>
+        <p class="pace-total">Lecture ~40 min · vibe ~40 min · skip this slide in class</p>
+      </section>
+
+      <section class="slide" data-slide="3">
+        <h1>Last time vs today</h1>
+        <div class="two-col">
+          <div class="compare-box">
+            <h3>Lecture 9 — MCP servers</h3>
+            <p>Wrap each system as a tool with a schema. <code>list_tools</code> + <code>call_tool</code>. USB-C for agents.</p>
+          </div>
+          <div class="compare-box">
+            <h3>Lecture 10 — Orchestrator</h3>
+            <p>A manager-agent that <strong>chooses</strong> tools, <strong>orders</strong> them, reads results, and either answers or stops.</p>
+          </div>
+        </div>
+        <p class="takeaway">Lecture 4’s Riemann swarm ran hundreds of attempts in parallel and kept what survived. Today the orchestrator is sequential: pick the next desk, and if two desks contradict, refuse.</p>
+      </section>
+
+      <section class="slide" data-slide="4">
+        <h1>Why one tool is not enough</h1>
+        <img class="hero" src="../images/lec10/orchestrator-conductor.png" alt="Cartoon conductor in a museum hall directing three colorful information desks">
+        <p class="caption">Hours, exhibits, and policy still sit at separate desks. The model only decides whom to ask, and whether the answers are consistent.</p>
+        <ul>
+          <li><em>“If I come Sunday afternoon, can I still see Burke Hall of Dinosaurs?”</em> is hours <strong>plus</strong> exhibits.</li>
+          <li>Homework 5 exists because Peabody facts live on <strong>three desks</strong>, not one wiki. Course JSON is fiction — do not email the museum.</li>
+        </ul>
+        <p class="takeaway">A two-desk question answered from one tool is a confident wrong answer at the front desk.</p>
+      </section>
+
+      <section class="slide" data-slide="5">
+        <h1>Architecture: guest → orchestrator → MCP</h1>
+        <svg class="flow-svg" viewBox="0 0 640 210" aria-label="Guest to orchestrator to MCP tools">
+          <defs>
+            <marker id="l10a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" class="arrow"/>
+            </marker>
+          </defs>
+          <rect class="box-light" x="12" y="78" width="110" height="50" rx="8"/>
+          <text x="67" y="100" text-anchor="middle" font-size="13" font-weight="700">Guest</text>
+          <text x="67" y="116" text-anchor="middle" font-size="10">messy question</text>
+          <line x1="122" y1="103" x2="158" y2="103" stroke="#1f8ef0" stroke-width="3" marker-end="url(#l10a)"/>
+          <rect class="box-dark" x="160" y="62" width="150" height="82" rx="8"/>
+          <text class="on-dark" x="235" y="90" text-anchor="middle" font-size="13" font-weight="700">Orchestrator</text>
+          <text class="on-dark" x="235" y="110" text-anchor="middle" font-size="11">LLM + loop</text>
+          <text class="on-dark" x="235" y="126" text-anchor="middle" font-size="10">answer or refuse</text>
+          <line x1="310" y1="103" x2="348" y2="103" stroke="#1f8ef0" stroke-width="3" marker-end="url(#l10a)"/>
+          <rect class="box-light" x="350" y="70" width="120" height="66" rx="8"/>
+          <text x="410" y="96" text-anchor="middle" font-size="12" font-weight="700">MCP server</text>
+          <text x="410" y="114" text-anchor="middle" font-size="10">list / call</text>
+          <line x1="470" y1="80" x2="508" y2="38" stroke="#00c2b8" stroke-width="3" marker-end="url(#l10a)"/>
+          <line x1="470" y1="103" x2="508" y2="103" stroke="#ffc53d" stroke-width="3" marker-end="url(#l10a)"/>
+          <line x1="470" y1="126" x2="508" y2="168" stroke="#ff3d7f" stroke-width="3" marker-end="url(#l10a)"/>
+          <rect class="box-light" x="510" y="12" width="118" height="40" rx="8"/>
+          <text x="569" y="37" text-anchor="middle" font-size="11">Hours / tickets</text>
+          <rect class="box-light" x="510" y="82" width="118" height="40" rx="8"/>
+          <text x="569" y="107" text-anchor="middle" font-size="11">Exhibits</text>
+          <rect class="box-light" x="510" y="152" width="118" height="40" rx="8"/>
+          <text x="569" y="177" text-anchor="middle" font-size="11">Visitor policy</text>
+        </svg>
+        <p class="takeaway">MCP is the plug. The orchestrator decides <em>which</em> plugs to use, in what order, and when to stop.</p>
+      </section>
+
+      <section class="slide" data-slide="6">
+        <h1>The only contract that matters</h1>
+        <table>
+          <tr><th>Call</th><th>You get</th><th>Manager use</th></tr>
+          <tr><td><code>list_tools()</code></td><td>Names, descriptions, JSON schemas</td><td>What can this agent even do?</td></tr>
+          <tr><td><code>call_tool(name, args)</code></td><td>Structured result from that desk</td><td>Evidence, not memory of peabody.yale.edu</td></tr>
+        </table>
+        <ul>
+          <li>Import those functions. Do not copy museum JSON into the agent file.</li>
+          <li>Unknown tool names return an error, not a guessed payload.</li>
+        </ul>
+        <p class="takeaway">If the answer is not in a tool result, it is not a museum fact. It is a hallucination with a visitor-facing tone.</p>
+      </section>
+
+      <section class="slide" data-slide="7">
+        <h1>Orchestrator loop</h1>
+        <svg class="flow-svg" viewBox="0 0 640 175" aria-label="Orchestrator observe decide act loop">
+          <defs>
+            <marker id="l10b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" class="arrow"/>
+            </marker>
+          </defs>
+          <rect class="box-light" x="20" y="20" width="130" height="48" rx="8"/>
+          <text x="85" y="42" text-anchor="middle" font-size="12" font-weight="700">1. Observe</text>
+          <text x="85" y="58" text-anchor="middle" font-size="10">query + trace so far</text>
+          <line x1="150" y1="44" x2="188" y2="44" stroke="#1f8ef0" stroke-width="3" marker-end="url(#l10b)"/>
+          <rect class="box-dark" x="190" y="12" width="150" height="64" rx="8"/>
+          <text class="on-dark" x="265" y="38" text-anchor="middle" font-size="12" font-weight="700">2. Decide</text>
+          <text class="on-dark" x="265" y="56" text-anchor="middle" font-size="10">tool, answer, or refuse</text>
+          <line x1="340" y1="44" x2="378" y2="44" stroke="#1f8ef0" stroke-width="3" marker-end="url(#l10b)"/>
+          <rect class="box-light" x="380" y="20" width="130" height="48" rx="8"/>
+          <text x="445" y="42" text-anchor="middle" font-size="12" font-weight="700">3. Act</text>
+          <text x="445" y="58" text-anchor="middle" font-size="10">call_tool via MCP</text>
+          <line x1="510" y1="44" x2="548" y2="44" stroke="#1f8ef0" stroke-width="3" marker-end="url(#l10b)"/>
+          <rect class="box-light" x="550" y="20" width="78" height="48" rx="8"/>
+          <text x="589" y="50" text-anchor="middle" font-size="11">Append trace</text>
+          <line x1="265" y1="76" x2="265" y2="118" stroke="#ff3d7f" stroke-width="3" marker-end="url(#l10b)"/>
+          <rect class="box-dark" x="175" y="120" width="180" height="44" rx="8"/>
+          <text class="on-dark" x="265" y="147" text-anchor="middle" font-size="12">Stop: answer or refuse</text>
+        </svg>
+        <p>You own the loop. The model only proposes the next move. Cap the steps so it cannot wander forever.</p>
+      </section>
+
+      <section class="slide" data-slide="8">
+        <h1>Happy path: Sunday + Burke</h1>
+        <svg class="flow-svg" viewBox="0 0 640 195" aria-label="Multi-tool flow for Sunday Burke question">
+          <defs>
+            <marker id="l10c" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" class="arrow"/>
+            </marker>
+          </defs>
+          <rect class="box-dark" x="20" y="70" width="120" height="54" rx="8"/>
+          <text class="on-dark" x="80" y="93" text-anchor="middle" font-size="11">Orchestrator</text>
+          <text class="on-dark" x="80" y="110" text-anchor="middle" font-size="10">reads query</text>
+          <line x1="140" y1="85" x2="188" y2="40" stroke="#00c2b8" stroke-width="3" marker-end="url(#l10c)"/>
+          <line x1="140" y1="110" x2="188" y2="150" stroke="#ffc53d" stroke-width="3" marker-end="url(#l10c)"/>
+          <rect class="box-light" x="190" y="12" width="170" height="54" rx="8"/>
+          <text x="275" y="34" text-anchor="middle" font-size="11" font-weight="700">get_hours_and_tickets</text>
+          <text x="275" y="52" text-anchor="middle" font-size="10">topic=hours, date=Sunday</text>
+          <rect class="box-light" x="190" y="128" width="170" height="54" rx="8"/>
+          <text x="275" y="150" text-anchor="middle" font-size="11" font-weight="700">get_exhibit_info</text>
+          <text x="275" y="168" text-anchor="middle" font-size="10">query=Burke Hall</text>
+          <line x1="360" y1="39" x2="418" y2="85" stroke="#00c2b8" stroke-width="3" marker-end="url(#l10c)"/>
+          <line x1="360" y1="155" x2="418" y2="110" stroke="#ffc53d" stroke-width="3" marker-end="url(#l10c)"/>
+          <rect class="box-dark" x="420" y="70" width="200" height="54" rx="8"/>
+          <text class="on-dark" x="520" y="93" text-anchor="middle" font-size="12">Compare results</text>
+          <text class="on-dark" x="520" y="110" text-anchor="middle" font-size="10">agree → answer · clash → refuse</text>
+        </svg>
+        <p>List tools first. Hours first is a good default: if you are closed, the gallery question is moot. If both desks agree, answer with both facts.</p>
+      </section>
+
+      <section class="slide" data-slide="9">
+        <h1>When tools disagree: refuse</h1>
+        <img class="hero" src="../images/lec10/tools-disagree.png" alt="Two clipboards colliding with a referee whistle between them">
+        <div class="stat-grid">
+          <div class="stat-box">
+            <div class="num">Agree</div>
+            <div class="label"><code>action: answer</code></div>
+          </div>
+          <div class="stat-box">
+            <div class="num">Clash</div>
+            <div class="label"><code>action: refuse</code></div>
+          </div>
+          <div class="stat-box">
+            <div class="num">Unsure</div>
+            <div class="label">Still refuse — no blend</div>
+          </div>
+        </div>
+        <p class="joke">Do not split the difference. “Let me get a human” is a product feature. HW5 plants at least one clash; graders will check it.</p>
+      </section>
+
+      <section class="slide" data-slide="10">
+        <h1>If you did not trace it, it did not happen</h1>
+        <div class="diagram">{
+  "query": "...",
+  "action": "answer" | "refuse",
+  "answer": "visitor text or empty",
+  "tool_trace": [
+    { "name": "get_hours_and_tickets",
+      "arguments": { "topic": "hours" },
+      "result_summary": "Sunday close 5pm" }
+  ],
+  "conflict": { "detected": false, "summary": "" }
+}</div>
+        <p>Managers audit traces. Models rewrite history. Your <code>tool_trace</code> is the receipt. JSON also needs <code>conflict.detected</code> and a short <code>summary</code>.</p>
+      </section>
+
+      <section class="slide" data-slide="11">
+        <h1>What you actually decide</h1>
+        <table>
+          <tr><th>Decision</th><th>Bad default</th><th>Better default</th></tr>
+          <tr><td>Who owns each tool?</td><td>One mega-wiki</td><td>One desk, one MCP tool, one owner</td></tr>
+          <tr><td>When tools clash?</td><td>Model “splits the difference”</td><td>Refuse + human</td></tr>
+          <tr><td>How do we audit?</td><td>Chat screenshot</td><td>Ordered <code>tool_trace</code></td></tr>
+          <tr><td>Where does the LLM live?</td><td>Inside every tool</td><td>Orchestrator only (tools stay dumb JSON)</td></tr>
+        </table>
+        <p class="takeaway">Buying an SDK does not buy agreement between Marketing’s PDF and Legal’s PDF. You still own refusal and traces.</p>
+      </section>
+
+      <section class="slide" data-slide="12">
+        <h1>News: the plug got boring on purpose</h1>
+        <div class="news-card">
+          <h3>28 Jul 2026 — MCP spec <code>2026-07-28</code></h3>
+          <p>No <code>initialize</code> handshake, no <code>Mcp-Session-Id</code>. Each <code>tools/call</code> is a self-contained HTTP request.</p>
+          <p><a href="https://blog.modelcontextprotocol.io/posts/2026-07-28/" target="_blank" rel="noopener">blog.modelcontextprotocol.io/posts/2026-07-28</a></p>
+        </div>
+        <div class="news-card">
+          <h3>6 Aug 2026 — Agent Plugins 1.0</h3>
+          <p>One folder: <code>plugin.json</code> + optional <code>mcp.json</code> + skills. ChatGPT, Codex, Cursor, Copilot, VS Code load the same package.</p>
+          <p><a href="https://vercel.com/blog/introducing-agent-plugins" target="_blank" rel="noopener">vercel.com/blog/introducing-agent-plugins</a> · <a href="https://agent-plugins.org/" target="_blank" rel="noopener">agent-plugins.org</a></p>
+        </div>
+        <p class="takeaway">MCP looks like ordinary HTTP. The fight is who owns the tools, not who owns the chat window.</p>
+      </section>
+
+      <section class="slide" data-slide="13">
+        <h1>Homework 5 · then vibe (~40 min)</h1>
+        <ul>
+          <li>P2–P3 — MCP server, catalog, one real call per tool (last week)</li>
+          <li>P4 — <code>orchestrator.py</code> imports MCP; multi-tool sample; refuse on clash</li>
+          <li>P5 — run every shipped supervisor case</li>
+          <li>P6–P7 — judgment calls + pipeline diagram</li>
+        </ul>
+        <p><a href="../../hw5/p1.html">Homework 5: Peabody MCP and Orchestrator →</a></p>
+        <p>Vibe is a toy coffee-cart so the museum pack stays for the assignment.</p>
+        <p><a href="../vibe/lec10-vibe.html">Open the 40-minute prompts →</a></p>
+      </section>
+
+      <section class="slide" data-slide="14">
+        <h1>Summary</h1>
+        <ul>
+          <li>MCP = standard plug. Orchestrator = who calls which tool, in what order.</li>
+          <li>Guest questions that span desks need <strong>more than one</strong> tool.</li>
+          <li>If two tools disagree: <code>refuse</code>. Never invent a blended policy.</li>
+          <li>Traces are the audit. August 2026: spec is stateless; plugins are portable.</li>
+        </ul>
+        <p>Next: <strong>security and guardrails</strong> — what happens when the guest is actually an attacker.</p>
+      </section>
+
+  </div>
+  <p class="slide-hint">Arrow keys, Space, or buttons to advance</p>
+  <footer class="slide-deck-footer">
+    <button type="button" id="prev" aria-label="Previous slide">← Previous</button>
+    <button type="button" id="next" aria-label="Next slide">Next →</button>
+  </footer>
+  <script src="../../js/slides.js"></script>
+  <script src="../../js/theme.js"></script>
+</body>
+</html>

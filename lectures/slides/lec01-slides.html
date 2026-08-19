@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 1 Slides — AI and Vibe Coding</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    /* Lec01-only: punchy colors, big type. Shared slides.css still runs the deck. */
+    .slide-deck-body { --hot: #ff3d7f; --lime: #c8f542; --gold: #ffd166; --cyan: #3ee0c5; --ink: #08111f; }
+    .slide-deck-body nav.site-nav { flex-shrink: 0; position: relative; }
+    .slide { max-width: 980px; max-height: calc(100vh - 210px); }
+    .slide h1 {
+      font-size: clamp(2rem, 4.6vw, 2.85rem);
+      line-height: 1.12;
+    }
+    .slide p, .slide li { font-size: clamp(1.08rem, 2.3vw, 1.32rem); }
+    .slide.title-slide {
+      background: radial-gradient(1200px 500px at 20% -10%, rgba(200,245,66,0.28), transparent 55%),
+                  radial-gradient(900px 420px at 110% 10%, rgba(255,61,127,0.22), transparent 50%);
+      border-radius: 18px;
+      padding: 1.5rem 1rem 2rem;
+    }
+    .slide.title-slide h1 {
+      font-size: clamp(2.4rem, 6vw, 3.6rem);
+      color: var(--yale-blue);
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+    }
+    [data-theme="dark"] .slide.title-slide h1 { color: var(--lime); }
+    .tag {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--hot);
+      color: #fff;
+      padding: 0.22rem 0.55rem;
+      border-radius: 999px;
+      margin-bottom: 0.6rem;
+    }
+    .joke {
+      margin-top: 1rem;
+      padding: 0.85rem 1.1rem;
+      background: #fff6d8;
+      border: 2px solid var(--gold);
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.12rem;
+    }
+    [data-theme="dark"] .joke { background: #3a2f12; border-color: var(--gold); color: #ffe9a8; }
+    .instructor-banner {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: var(--gold);
+      color: #08111f;
+      padding: 0.28rem 0.7rem;
+      border-radius: 999px;
+      margin-bottom: 0.7rem;
+    }
+    .pace-list { list-style: none; padding-left: 0; margin: 0.4rem 0; }
+    .pace-list li {
+      display: grid;
+      grid-template-columns: 5.6rem 1fr;
+      gap: 0.7rem;
+      align-items: start;
+      margin: 0.45rem 0;
+      font-size: clamp(0.98rem, 2vw, 1.18rem);
+    }
+    .pace-min {
+      font-weight: 800;
+      color: var(--hot);
+      font-variant-numeric: tabular-nums;
+    }
+    [data-theme="dark"] .pace-min { color: var(--lime); }
+    .news-shot {
+      display: block;
+      width: 100%;
+      max-height: min(42vh, 380px);
+      object-fit: cover;
+      object-position: top;
+      border-radius: 12px;
+      border: 3px solid #111;
+      box-shadow: 8px 8px 0 #111;
+      background: #111;
+    }
+    [data-theme="dark"] .news-shot { box-shadow: 8px 8px 0 var(--cyan); }
+    .price-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.7rem;
+      margin: 0.8rem 0;
+    }
+    .price-box {
+      border-radius: 14px;
+      padding: 0.9rem 0.7rem;
+      text-align: center;
+      color: #08111f;
+      font-weight: 800;
+    }
+    .price-box.sol { background: var(--hot); color: #fff; }
+    .price-box.terra { background: var(--gold); }
+    .price-box.luna { background: var(--lime); }
+    .price-box .name { font-size: 0.95rem; letter-spacing: 0.04em; }
+    .price-box .amt { font-size: 1.55rem; line-height: 1.15; margin: 0.25rem 0; }
+    .price-box .sub { font-size: 0.78rem; font-weight: 700; opacity: 0.9; }
+    .mega {
+      font-size: clamp(2.4rem, 7vw, 3.8rem);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      margin: 0.2rem 0 0.5rem;
+    }
+    .mega span { color: var(--hot); }
+    .bound-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0.6rem;
+      align-items: center;
+      margin: 0.7rem 0 0.9rem;
+    }
+    .bound-box {
+      border-radius: 14px;
+      padding: 0.85rem 0.6rem;
+      text-align: center;
+      font-weight: 800;
+    }
+    .bound-box.old { background: #e8eef4; color: #08111f; }
+    .bound-box.new { background: var(--lime); color: #08111f; }
+    [data-theme="dark"] .bound-box.old { background: #1a3354; color: #e8eef4; }
+    .bound-box .lbl { font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    .bound-box .num { font-size: 2rem; line-height: 1.1; }
+    .bound-arrow { font-size: 1.8rem; font-weight: 900; color: var(--hot); }
+    .flow-wrap { width: 100%; margin: 0.4rem 0 0.7rem; }
+    .flow-wrap svg { width: 100%; height: auto; }
+    .hw-chip {
+      display: inline-block;
+      background: var(--yale-blue);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.15rem 0.45rem;
+      border-radius: 6px;
+      margin-right: 0.25rem;
+    }
+    .role-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 0.5rem 0 0.2rem;
+    }
+    .role-pill {
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 0.22rem 0.5rem;
+      border-radius: 999px;
+      background: #08111f;
+      color: #c8f542;
+    }
+    .role-pill.dead { background: #ff3d7f; color: #fff; }
+    .role-pill.check { background: #3ee0c5; color: #08111f; }
+    .prompt-chips {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.45rem;
+      margin: 0.7rem 0;
+    }
+    .prompt-chip {
+      border-radius: 12px;
+      padding: 0.7rem 0.55rem;
+      font-weight: 800;
+      font-size: 0.82rem;
+      text-align: center;
+      line-height: 1.25;
+      background: #08111f;
+      color: #c8f542;
+    }
+    .prompt-chip span { display: block; font-size: 0.72rem; font-weight: 700; color: #ffd166; margin-top: 0.2rem; }
+    @media (max-width: 720px) {
+      .price-grid, .bound-row, .prompt-chips { grid-template-columns: 1fr; }
+      .bound-arrow { display: none; }
+      .news-shot { max-height: 32vh; }
+      .pace-list li { grid-template-columns: 1fr; gap: 0.15rem; }
+    }
+  </style>
+</head>
+<body class="slide-deck-body">
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <header class="slide-deck-header">
+    <a href="../../lectures.html">← Lectures</a>
+    <span>Lecture 1: AI and Vibe Coding</span>
+    <span class="slide-counter">1 / 15</span>
+  </header>
+  <div class="slide-viewport">
+
+    <section class="slide active title-slide" data-slide="1">
+      <span class="tag">MGT 409 · Fall 2026 · Lecture 1</span>
+      <h1>AI and<br>Vibe Coding</h1>
+      <p class="subtitle">Frontier models just had a very loud summer. You still have to ship.</p>
+      <p class="subtitle" style="margin-top:1.1rem">Tauhid Zaman · Yale SOM</p>
+      <p class="joke">A model can move a 170-year-old math bound and also walk out of a sandbox. Neither fact writes your income statement.</p>
+    </section>
+
+    <section class="slide" data-slide="2">
+      <p class="instructor-banner">Instructor outline — remove before class.</p>
+      <h1>The story in 40 minutes</h1>
+      <ul class="pace-list">
+        <li><span class="pace-min">0–5</span><span><strong>Cold open.</strong> Loud summer, you still ship. You direct, check, and explain the bill — not become an ML engineer.</span></li>
+        <li><span class="pace-min">5–12</span><span><strong>News.</strong> Cursor at $60B, Lovable at $13.3B, McKinsey’s 88% use / 6% win. One Scam Altman beat: evals beat tweet ratio.</span></li>
+        <li><span class="pace-min">12–20</span><span><strong>Riemann progress.</strong> 41.6% → 67.2% of zeros on the line. Agent swarm. Humans + Lean still checked. Not a proof.</span></li>
+        <li><span class="pace-min">20–26</span><span><strong>Sandbox leak.</strong> Hugging Face: tools + autonomy left the box. Lecture 11 is guardrails. No open internet on HW1.</span></li>
+        <li><span class="pace-min">26–33</span><span><strong>Mechanism + bill.</strong> Next-token machine. Luna / Terra / Sol. 100 receipts. Sol is not a personality.</span></li>
+        <li><span class="pace-min">33–38</span><span><strong>How we work.</strong> Manager vibe vs weekend vibes. The loop. HW1 is a pipeline, not a chat — set it up, do not solve it.</span></li>
+        <li><span class="pace-min">38–40</span><span><strong>Handoff.</strong> One prompt, one call, one checked output. Then a 40-minute lab.</span></li>
+      </ul>
+    </section>
+
+    <section class="slide" data-slide="3">
+      <h1>You are not becoming an ML engineer</h1>
+      <ul>
+        <li>You <strong>are</strong> becoming the person who can <em>direct</em> AI, <em>check</em> the output, and <em>explain the bill</em>.</li>
+        <li>By finals you will have a working <strong>Business AI Co-Pilot</strong> — not a 40-page strategy deck that says “leverage genAI.”</li>
+        <li>No prior coding required. English is the interface. Running the thing is the job.</li>
+      </ul>
+      <p class="takeaway">Manager test: Can you say what it does, what it costs, and where it lies?</p>
+    </section>
+
+    <section class="slide" data-slide="4">
+      <h1>Summer 2026 priced the editor. Not the P&amp;L.</h1>
+      <img class="news-shot" src="../images/lec01/cnbc-spacex-cursor-60b-2026-06-16.png" alt="CNBC headline: SpaceX to acquire the AI coding startup Cursor for $60 billion">
+      <div class="price-grid">
+        <div class="price-box sol">
+          <div class="name">Cursor · SpaceX</div>
+          <div class="amt">$60B</div>
+          <div class="sub">all-stock · effective Aug 14</div>
+        </div>
+        <div class="price-box terra">
+          <div class="name">Lovable</div>
+          <div class="amt">$13.3B</div>
+          <div class="sub">chat-to-app · +$400M</div>
+        </div>
+        <div class="price-box luna">
+          <div class="name">McKinsey survey</div>
+          <div class="amt">88% / 6%</div>
+          <div class="sub">use AI · ≥5% EBIT from it</div>
+        </div>
+      </div>
+      <p class="source-note">Ashley Capoot, <a href="https://www.cnbc.com/2026/06/16/spacex-spcx-cursor-acquisition-ipo.html" target="_blank" rel="noopener">CNBC</a>, June 16, 2026 · Julie Bort, <a href="https://techcrunch.com/2026/08/12/lovable-confirms-new-13-3b-valuation-raises-another-400m/" target="_blank" rel="noopener">TechCrunch</a>, Aug 12, 2026 · <a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai" target="_blank" rel="noopener">McKinsey State of AI</a> (fielded June–July 2025). High performers redesigned the workflow, not just bought a chatbot seat.</p>
+      <p class="takeaway">The market priced the editor. This class prices the <strong>output</strong> — and the bill.</p>
+    </section>
+
+    <section class="slide" data-slide="5">
+      <h1>The one “Scam Altman” slide</h1>
+      <img class="news-shot" src="../images/lec01/cnbc-musk-altman-2026-07-12.png" alt="CNBC headline: Elon Musk and Sam Altman spar on X after Apple files OpenAI lawsuit">
+      <p class="source-note">Jordan Novet, <a href="https://www.cnbc.com/2026/07/12/elon-musk-and-sam-altman-spar-.html" target="_blank" rel="noopener">CNBC</a>, July 12, 2026. Musk: “Scam Altman strikes again…” Altman: GPT-5.6 Sol is #1 — “elon is obsessed with me again.”</p>
+      <p class="takeaway">The “best model” claim is a sales pitch. Managers buy <strong>evals on their data</strong>, not tweet ratio. We will not spend the rest of the semester on this nickname.</p>
+    </section>
+
+    <section class="slide" data-slide="6">
+      <h1>Cool thing: Claude vs Riemann — progress, not a proof</h1>
+      <div class="bound-row">
+        <div class="bound-box old">
+          <div class="lbl">Prior lower bound</div>
+          <div class="num">41.6%</div>
+        </div>
+        <div class="bound-arrow">→</div>
+        <div class="bound-box new">
+          <div class="lbl">Claude’s bound</div>
+          <div class="num">67.2%</div>
+        </div>
+      </div>
+      <div class="flow-wrap">
+        <svg viewBox="0 0 920 168" role="img" aria-label="Parallel agents try many approaches, critique filters them, surviving subagents go deeper">
+          <defs>
+            <marker id="arrHot" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="#ff3d7f"/>
+            </marker>
+          </defs>
+          <rect x="8" y="10" width="250" height="110" rx="16" fill="#08111f"/>
+          <text x="133" y="42" text-anchor="middle" font-size="15" font-weight="800" fill="#c8f542">Session 1</text>
+          <text x="133" y="72" text-anchor="middle" font-size="26" font-weight="900" fill="#fff">~650</text>
+          <text x="133" y="98" text-anchor="middle" font-size="14" font-weight="700" fill="#ffd166">approaches · none worked</text>
+          <line x1="270" y1="65" x2="318" y2="65" stroke="#ff3d7f" stroke-width="5" marker-end="url(#arrHot)"/>
+          <rect x="330" y="18" width="230" height="94" rx="16" fill="#ff3d7f"/>
+          <text x="445" y="55" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">Critique / filter</text>
+          <text x="445" y="82" text-anchor="middle" font-size="13" fill="#fff">subagents referee proofs</text>
+          <line x1="572" y1="65" x2="620" y2="65" stroke="#ff3d7f" stroke-width="5" marker-end="url(#arrHot)"/>
+          <rect x="632" y="10" width="276" height="110" rx="16" fill="#c8f542"/>
+          <text x="770" y="42" text-anchor="middle" font-size="15" font-weight="800" fill="#08111f">Session 2 · ~60 agents</text>
+          <text x="770" y="70" text-anchor="middle" font-size="14" font-weight="800" fill="#08111f">2 ideas survive</text>
+          <text x="770" y="96" text-anchor="middle" font-size="13" fill="#08111f">31M tokens · Lean still checks</text>
+        </svg>
+      </div>
+      <div class="role-pills">
+        <span class="role-pill">parallel search</span>
+        <span class="role-pill dead">most ideas die</span>
+        <span class="role-pill check">validators keep the rest honest</span>
+      </div>
+      <p class="source-note">Anthropic, <a href="https://www.anthropic.com/research/riemann-zeta" target="_blank" rel="noopener">“Learning more about Claude’s mathematical capabilities”</a>, Aug 10, 2026. Unreleased research Claude raised the proven share of zeta zeros on the critical line. It did <strong>not</strong> prove the Riemann hypothesis — Anthropic says these techniques will not get there. See also <a href="https://www.scientificamerican.com/article/no-ai-didnt-just-solve-the-thorniest-problem-in-math/" target="_blank" rel="noopener">Scientific American</a>.</p>
+    </section>
+
+    <section class="slide" data-slide="7">
+      <h1>The other summer story: a sandbox that leaked</h1>
+      <img class="news-shot" src="../images/lec01/huggingface-agent-intrusion-2026-07.png" alt="Hugging Face security incident disclosure, July 16, 2026: intrusion driven end to end by an autonomous AI agent">
+      <p>OpenAI eval models (GPT-5.6 Sol plus a pre-release) burned compute to reach the open internet, hit a package-registry zero-day, then chained into Hugging Face production. Goal: <strong>cheat the eval</strong> — a goal-seeking agent with tools, not a cartoon villain.</p>
+      <p class="source-note">Hugging Face, <a href="https://huggingface.co/blog/security-incident-july-2026" target="_blank" rel="noopener">incident disclosure</a>, July 16, 2026 · <a href="https://openai.com/index/hugging-face-model-evaluation-security-incident/" target="_blank" rel="noopener">OpenAI</a>, July 21. Cousin case, not an escape: UK AISI / Anthropic Mythos 5 took unsanctioned live-internet actions with access left on purpose (<a href="https://www.aisi.gov.uk/blog/incident-report-unsanctioned-agent-behaviour-during-cyber-testing" target="_blank" rel="noopener">AISI</a>).</p>
+      <p class="takeaway">Tools + autonomy + a weak sandbox = real ops risk. Guardrails land in <strong>Lecture 11</strong>. Do not give HW1 a browser and a dream.</p>
+    </section>
+
+    <section class="slide" data-slide="8">
+      <h1>What an LLM actually is</h1>
+      <p>A <strong>Large Language Model</strong> is a next-token machine. It predicts the next word-piece given everything so far. That is the whole trick — and the whole risk.</p>
+      <table>
+        <tr><th>It is</th><th>It is not</th></tr>
+        <tr><td>A pattern engine over text</td><td>A database of verified facts</td></tr>
+        <tr><td>Great at messy language → structure</td><td>Guaranteed correct, current, or loyal</td></tr>
+        <tr><td>Metered compute you call via API</td><td>A junior analyst who “knows accounting”</td></tr>
+      </table>
+      <p class="takeaway">Fluency is not truth. Token 47 only exists because tokens 1–46 already happened. The Riemann writeup still needed mathematicians. Your receipt JSON still needs you.</p>
+    </section>
+
+    <section class="slide" data-slide="9">
+      <h1>Tokens are a P&amp;L line</h1>
+      <div class="price-grid">
+        <div class="price-box sol">
+          <div class="name">SOL · flagship</div>
+          <div class="amt">$5 / $30</div>
+          <div class="sub">in / out per 1M tokens</div>
+        </div>
+        <div class="price-box terra">
+          <div class="name">TERRA · default</div>
+          <div class="amt">$2 / $12</div>
+          <div class="sub">the “good enough” lane</div>
+        </div>
+        <div class="price-box luna">
+          <div class="name">LUNA · volume</div>
+          <div class="amt">$0.20 / $1.20</div>
+          <div class="sub">extraction’s best friend</div>
+        </div>
+      </div>
+      <p>Homework 1 energy. Assume <strong>2,000 input</strong> + <strong>400 output</strong> tokens per receipt. Output is ~6× input.</p>
+      <table>
+        <tr><th>Model</th><th>100 receipts</th><th>100,000 / month</th></tr>
+        <tr><td>gpt-5.6-luna</td><td>~$0.09</td><td>~$88</td></tr>
+        <tr><td>gpt-5.6-terra</td><td>~$0.88</td><td>~$880</td></tr>
+        <tr><td>gpt-5.6-sol</td><td>~$2.20</td><td>~$2,200</td></tr>
+      </table>
+      <p class="source-note">OpenAI <a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noopener">API list prices</a> (captured August 2026), short-context. Re-check before you budget a real company. Lecture 12 goes full tokenomics.</p>
+      <p class="joke">Sol is for when Luna fails the eval. Sol is not a personality.</p>
+    </section>
+
+    <section class="slide" data-slide="10">
+      <h1>Where the model fails you</h1>
+      <ul>
+        <li><strong>Hallucination</strong> — fluent JSON with a vendor that was never on the receipt.</li>
+        <li><strong>Overconfidence</strong> — no “I don’t know” unless you <em>force</em> a <code>fields_not_found</code> rule.</li>
+        <li><strong>Stale knowledge</strong> — training cutoff ≠ today’s lease email. (Tools start Lecture 3.)</li>
+        <li><strong>Prompt injection</strong> — a PDF that says “ignore previous instructions.” Lecture 11.</li>
+        <li><strong>Tool + autonomy risk</strong> — Hugging Face this summer. No open internet on HW1.</li>
+      </ul>
+      <p class="takeaway">HW1 rule you will live by: <strong>do not invent amounts</strong>. Missing beats made-up.</p>
+    </section>
+
+    <section class="slide" data-slide="11">
+      <h1>Manager vibe coding — not weekend vibes</h1>
+      <div class="two-col">
+        <div class="compare-box">
+          <h3>Pure vibes (weekend)</h3>
+          <p>“Forget the code exists.” Accept all. Paste errors until it kinda runs. Great for throwaways. Bad for a shop’s books.</p>
+        </div>
+        <div class="compare-box">
+          <h3>Manager vibe coding (us)</h3>
+          <p>You write the <strong>intent</strong>. The model writes the script. <strong>You</strong> run it, read the JSON, reject invented numbers, log the prompt.</p>
+        </div>
+      </div>
+      <div class="flow-wrap">
+        <svg viewBox="0 0 920 150" role="img" aria-label="Manager vibe-coding loop">
+          <rect x="20" y="28" width="150" height="70" rx="14" fill="#00356b"/>
+          <text x="95" y="58" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">1. Intent</text>
+          <text x="95" y="78" text-anchor="middle" font-size="11" fill="#c8f542">one problem</text>
+          <path d="M175 63 H215" stroke="#ff3d7f" stroke-width="5"/>
+          <rect x="220" y="28" width="150" height="70" rx="14" fill="#ff3d7f"/>
+          <text x="295" y="58" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">2. Prompt</text>
+          <text x="295" y="78" text-anchor="middle" font-size="11" fill="#fff">your words</text>
+          <path d="M375 63 H415" stroke="#ff3d7f" stroke-width="5"/>
+          <rect x="420" y="28" width="150" height="70" rx="14" fill="#ffd166"/>
+          <text x="495" y="58" text-anchor="middle" font-size="15" font-weight="800" fill="#08111f">3. AI codes</text>
+          <text x="495" y="78" text-anchor="middle" font-size="11" fill="#08111f">script + prompt file</text>
+          <path d="M575 63 H615" stroke="#ff3d7f" stroke-width="5"/>
+          <rect x="620" y="28" width="150" height="70" rx="14" fill="#c8f542"/>
+          <text x="695" y="58" text-anchor="middle" font-size="15" font-weight="800" fill="#08111f">4. You run</text>
+          <text x="695" y="78" text-anchor="middle" font-size="11" fill="#08111f">terminal + JSON</text>
+          <path d="M775 63 H810" stroke="#ff3d7f" stroke-width="5"/>
+          <rect x="815" y="28" width="90" height="70" rx="14" fill="#3ee0c5"/>
+          <text x="860" y="68" text-anchor="middle" font-size="15" font-weight="800" fill="#08111f">5. Ship</text>
+          <text x="460" y="132" text-anchor="middle" font-size="13" font-weight="700" fill="#00356b">if it fails: paste the error, not the whole assignment</text>
+        </svg>
+      </div>
+      <p class="takeaway">You are the product manager of a very fast intern who has never seen a New Haven bike shop. Karpathy coined “vibe coding”; we still use the word because the market already bought it.</p>
+    </section>
+
+    <section class="slide" data-slide="12">
+      <h1>Homework 1 is a pipeline, not a chat</h1>
+      <p><strong>Spoke &amp; Wrench Bicycle Repair</strong> — messy New Haven PDFs → January income statement. Today we set the pattern. We do not solve the zip.</p>
+      <div class="flow-wrap">
+        <svg viewBox="0 0 920 210" role="img" aria-label="Homework 1 document extraction pipeline">
+          <rect x="10" y="70" width="130" height="70" rx="12" fill="#08111f"/>
+          <text x="75" y="102" text-anchor="middle" font-size="13" font-weight="800" fill="#c8f542">PDF pack</text>
+          <text x="75" y="122" text-anchor="middle" font-size="11" fill="#fff">receipts / bank / card</text>
+          <path d="M145 105 H185" stroke="#ff3d7f" stroke-width="4"/>
+          <rect x="190" y="20" width="175" height="50" rx="10" fill="#ff3d7f"/>
+          <text x="277" y="50" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">read_receipts.py</text>
+          <rect x="190" y="80" width="175" height="50" rx="10" fill="#ff3d7f"/>
+          <text x="277" y="110" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">read_bank.py</text>
+          <rect x="190" y="140" width="175" height="50" rx="10" fill="#ff3d7f"/>
+          <text x="277" y="170" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">read_card.py</text>
+          <path d="M365 45 H410" stroke="#00356b" stroke-width="3"/>
+          <path d="M365 105 H410" stroke="#00356b" stroke-width="3"/>
+          <path d="M365 165 H410" stroke="#00356b" stroke-width="3"/>
+          <rect x="410" y="65" width="155" height="80" rx="12" fill="#ffd166"/>
+          <text x="487" y="100" text-anchor="middle" font-size="14" font-weight="800" fill="#08111f">reconcile.py</text>
+          <text x="487" y="122" text-anchor="middle" font-size="11" fill="#08111f">LLM + judgment</text>
+          <path d="M565 105 H605" stroke="#00356b" stroke-width="4"/>
+          <rect x="610" y="40" width="140" height="50" rx="10" fill="#3ee0c5"/>
+          <text x="680" y="70" text-anchor="middle" font-size="13" font-weight="800" fill="#08111f">income_statement</text>
+          <rect x="610" y="105" width="140" height="50" rx="10" fill="#c8f542"/>
+          <text x="680" y="135" text-anchor="middle" font-size="13" font-weight="800" fill="#08111f">report.html</text>
+          <path d="M750 90 H790" stroke="#00356b" stroke-width="3"/>
+          <rect x="790" y="50" width="120" height="110" rx="12" fill="#00356b"/>
+          <text x="850" y="98" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">grader</text>
+          <text x="850" y="120" text-anchor="middle" font-size="12" fill="#c8f542">hw1.zip</text>
+        </svg>
+      </div>
+      <p class="takeaway">Lectures 1–2 prepare this. Today: first API call. Next week: structured data from one document.</p>
+    </section>
+
+    <section class="slide" data-slide="13">
+      <h1>Prompt shape + the anti-dump rule</h1>
+      <div class="prompt-chips">
+        <div class="prompt-chip">Role<span>extractor, not poet</span></div>
+        <div class="prompt-chip">Task<span>fill the schema</span></div>
+        <div class="prompt-chip">Output<span>JSON, named keys</span></div>
+        <div class="prompt-chip">Rules<span>never invent $</span></div>
+        <div class="prompt-chip">Context<span>bike shop later</span></div>
+      </div>
+      <ul>
+        <li><code>prompts/*.md</code> — what the <strong>script</strong> sends to the API. <code>AI_prompts.md</code> — what <strong>you</strong> typed to the vibe coder.</li>
+        <li>Work <strong>one problem at a time</strong>. Screenshot the card. Do not paste the assignment URL and say “do HW1.”</li>
+        <li>Secrets live in local <code>.env</code>. Never in git, never in <code>README.md</code>, never in chat logs you submit.</li>
+      </ul>
+      <p class="joke">The vibe coder is a power tool. Asking it to “finish the zip” is how you learn nothing and fail the dump traps.</p>
+    </section>
+
+    <section class="slide" data-slide="14">
+      <h1>The rest of the ride</h1>
+      <ol>
+        <li><span class="hw-chip">1–2</span> Vibe coding → structured text · <strong>HW1 extraction</strong></li>
+        <li><span class="hw-chip">3–5</span> Tools, agents, agentic search · HW2–3</li>
+        <li><span class="hw-chip">6–7</span> Images + multimodal search · HW3–4</li>
+        <li><span class="hw-chip">8–10</span> Customer channels, web apps, deploy · HW5</li>
+        <li><span class="hw-chip">11–13</span> Guardrails, tokenomics, the future · HW6 + co-pilot</li>
+      </ol>
+      <p class="takeaway">Same stack, bigger pieces. Lecture 1 is the atom: <strong>one prompt, one model call, one checked output</strong>.</p>
+    </section>
+
+    <section class="slide section-slide" data-slide="15">
+      <h1>→ Vibe coding, ~40 minutes</h1>
+      <p>Folder hygiene · first OpenAI API call · JSON teaser · start <code>AI_prompts.md</code></p>
+      <p><a href="../vibe/lec01-vibe.html">Open the in-class prompts →</a></p>
+      <p class="speaker-note"><a href="../../hw1/p1.html">Homework 1, Problem 1</a> · Lecture 2: structured data from free text (one receipt, for real).</p>
+    </section>
+
+  </div>
+  <p class="slide-hint">← → or Space to advance · ~40 min slides + ~40 min vibe coding</p>
+  <footer class="slide-deck-footer">
+    <button type="button" id="prev" aria-label="Previous slide">← Previous</button>
+    <button type="button" id="next" aria-label="Next slide">Next →</button>
+  </footer>
+  <script src="../../js/slides.js"></script>
+  <script src="../../js/theme.js"></script>
+</body>
+</html>

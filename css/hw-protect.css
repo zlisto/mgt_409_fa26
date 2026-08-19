@@ -1,0 +1,188 @@
+/* Homework pages: block easy copy-paste and print. Problem stepper is HTML (one card per file). */
+
+html[data-mgt409],
+html[data-mgt409] body,
+html[data-mgt409] main,
+html[data-mgt409] .assignment-box,
+html[data-mgt409] .problem,
+html[data-mgt409] details,
+html[data-mgt409] summary,
+html[data-mgt409] p,
+html[data-mgt409] li,
+html[data-mgt409] h1,
+html[data-mgt409] h2,
+html[data-mgt409] h3,
+html[data-mgt409] pre,
+html[data-mgt409] code,
+html[data-mgt409] span,
+html[data-mgt409] a {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+html[data-mgt409] ::selection,
+html[data-mgt409] ::-moz-selection {
+  background: transparent;
+  color: inherit;
+}
+
+html[data-mgt409] img,
+html[data-mgt409] pre,
+html[data-mgt409] code {
+  -webkit-user-drag: none;
+}
+
+html[data-mgt409] .hw-honeypot {
+  display: none !important;
+}
+
+.hw-brief {
+  margin: 0 0 1.25rem;
+  background-color: var(--yale-blue-pale);
+  border: 1px solid var(--yale-blue-pale-border);
+  border-left: 4px solid var(--yale-blue);
+  border-radius: 10px;
+  padding: 0 1rem;
+  box-shadow: 0 2px 10px var(--shadow);
+}
+
+.hw-brief > summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--text-heading);
+  padding: 0.7rem 0.15rem;
+  user-select: none;
+  list-style: none;
+}
+
+.hw-brief > summary::-webkit-details-marker {
+  display: none;
+}
+
+.hw-brief > summary::before {
+  content: "▸ ";
+  color: var(--yale-blue);
+  font-weight: 700;
+}
+
+.hw-brief[open] > summary::before {
+  content: "▾ ";
+}
+
+.hw-brief[open] > summary {
+  border-bottom: 1px solid var(--yale-blue-pale-border);
+  margin-bottom: 0.35rem;
+}
+
+.hw-brief .assignment-box {
+  margin: 0 0 0.85rem;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0.15rem 0.15rem 0.55rem;
+}
+
+[data-theme="dark"] .hw-brief {
+  border-left-color: var(--yale-blue-light);
+}
+
+[data-theme="dark"] .hw-brief > summary::before {
+  color: var(--yale-blue-light);
+}
+
+.hw-stepper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 1rem;
+  align-items: center;
+}
+
+.hw-stepper-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-right: 0.35rem;
+}
+
+.hw-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-surface);
+  color: var(--text-heading);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0 0.55rem;
+  text-decoration: none;
+}
+
+a.hw-step:visited {
+  color: var(--text-heading);
+}
+
+.hw-step.is-current {
+  background: var(--yale-blue);
+  color: var(--text-on-blue);
+  border-color: var(--yale-blue);
+  cursor: default;
+}
+
+a.hw-step.is-current,
+a.hw-step.is-current:visited {
+  color: var(--text-on-blue);
+}
+
+.hw-nav {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.15rem;
+}
+
+.hw-nav button,
+.hw-nav a {
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.95rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--yale-blue);
+  color: var(--text-on-blue);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.hw-nav a:visited {
+  color: var(--text-on-blue);
+}
+
+.hw-nav button:disabled,
+.hw-nav a[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media print {
+  html[data-mgt409] body > * {
+    display: none !important;
+  }
+  html[data-mgt409] body::after {
+    content: "Screenshot the one problem card you are working on. Do not print this assignment.";
+    display: block;
+    padding: 2rem;
+    font-size: 1.2rem;
+  }
+}

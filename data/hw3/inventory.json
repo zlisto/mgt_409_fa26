@@ -1,0 +1,637 @@
+{
+  "store": "Campus Customs / Yale Bulldog Blue",
+  "store_url": "https://yalebulldogblue.com/",
+  "collection_url": "https://yalebulldogblue.com/collections/clothing-t-shirts-tops",
+  "note": "Course inventory pack for MGT 409 Homework 3 (curated 20 SKUs). Prices and images from the public Yale Bulldog Blue t-shirt collection for teaching. qty_by_size is synthetic course stock, not live store inventory. Not an official partnership.",
+  "products": [
+    {
+      "sku": "YBB-390811",
+      "handle": "big-yale-t-shirt",
+      "name": "Big Yale T-Shirt",
+      "price_usd": 18.99,
+      "colors": [
+        "Athletic Heather",
+        "Navy",
+        "White"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "qty_by_size": {
+        "L": 2,
+        "M": 3,
+        "S": 1,
+        "XL": 2,
+        "XXL": 2
+      },
+      "image": "products/big-yale-t-shirt.jpg",
+      "source_url": "https://yalebulldogblue.com/products/big-yale-t-shirt",
+      "vendor": "Sanmar",
+      "product_type": "T-Shirt",
+      "tags": [
+        "Make"
+      ]
+    },
+    {
+      "sku": "YBB-680155",
+      "handle": "yale-crest-t-shirt",
+      "name": "Yale Crest T-Shirt",
+      "price_usd": 18.99,
+      "colors": [
+        "Athletic Heather",
+        "Navy",
+        "White"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL",
+        "3XL"
+      ],
+      "qty_by_size": {
+        "3XL": 7,
+        "L": 4,
+        "M": 5,
+        "S": 3,
+        "XL": 4,
+        "XXL": 4
+      },
+      "image": "products/yale-crest-t-shirt.jpg",
+      "source_url": "https://yalebulldogblue.com/products/yale-crest-t-shirt",
+      "vendor": "Sanmar",
+      "product_type": "T-Shirt",
+      "tags": [
+        "Make",
+        "Not in Square"
+      ]
+    },
+    {
+      "sku": "YBB-501211",
+      "handle": "district-tri-blend-t-shirt-vintage-sitting-bulldog",
+      "name": "Vintage Sitting Bulldog T-Shirt",
+      "price_usd": 29.99,
+      "colors": [
+        "Grey Frost"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "qty_by_size": {
+        "L": 0,
+        "M": 8,
+        "S": 0,
+        "XL": 7,
+        "XXL": 7
+      },
+      "image": "products/district-tri-blend-t-shirt-vintage-sitting-bulldog.jpg",
+      "source_url": "https://yalebulldogblue.com/products/district-tri-blend-t-shirt-vintage-sitting-bulldog",
+      "vendor": "Sanmar",
+      "product_type": "T-Shirt",
+      "tags": [
+        "Make"
+      ]
+    },
+    {
+      "sku": "YBB-897883",
+      "handle": "district-tri-blend-t-shirt-vintage-shield",
+      "name": "Vintage Shield T-Shirt",
+      "price_usd": 29.99,
+      "colors": [
+        "Grey Frost"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "qty_by_size": {
+        "L": 3,
+        "M": 4,
+        "S": 2,
+        "XL": 3,
+        "XXL": 3
+      },
+      "image": "products/district-tri-blend-t-shirt-vintage-shield.jpg",
+      "source_url": "https://yalebulldogblue.com/products/district-tri-blend-t-shirt-vintage-shield",
+      "vendor": "Sanmar",
+      "product_type": "T-Shirt",
+      "tags": [
+        "Make"
+      ]
+    },
+    {
+      "sku": "YBB-608155",
+      "handle": "boola-boola-t-shirt",
+      "name": "Boola Boola T-Shirt",
+      "price_usd": 24.99,
+      "colors": [
+        "New Navy"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "qty_by_size": {
+        "L": 5,
+        "M": 6,
+        "S": 4,
+        "XL": 5,
+        "XXL": 5
+      },
+      "image": "products/boola-boola-t-shirt.jpg",
+      "source_url": "https://yalebulldogblue.com/products/boola-boola-t-shirt",
+      "vendor": "Sanmar",
+      "product_type": "T-Shirt",
+      "tags": [
+        "Make",
+        "Not in Square"
+      ]
+    },
+    {
+      "sku": "YBB-170651",
+      "handle": "large-handsome-dan-t-shirt",
+      "name": "Handsome Dan T-Shirt",
+      "price_usd": 24.99,
+      "colors": [
+        "New Navy"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "qty_by_size": {
+        "L": 2,
+        "M": 3,
+        "S": 1,
+        "XL": 2,
+        "XXL": 2
+      },
+      "image": "products/large-handsome-dan-t-shirt.jpg",
+      "source_url": "https://yalebulldogblue.com/products/large-handsome-dan-t-shirt",
+      "vendor": "Sanmar",
+      "product_type": "T-Shirt",
+      "tags": [
+        "Make",
+        "Not in Square"
+      ]
+    },
+    {
+      "sku": "YBB-275803",
+      "handle": "t-felt-y-heavyweight",
+      "name": "Felt Y Heavyweight T-Shirt",
+      "price_usd": 44.99,
+      "colors": [
+        "Greige"
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "qty_by_size": {
+        "L": 7,
+        "M": 8,
+        "S": 6,
+        "XL": 7,
+        "XS": 6,
+        "XXL": 7
+      },
+      "image": "products/t-felt-y-heavyweight.jpg",
+      "source_url": "https://yalebulldogblue.com/products/t-felt-y-heavyweight",
+      "vendor": "Sanmar",
+      "product_type": "",
+      "tags": [
+        "Make"
+      ]
+    },
+    {
+      "sku": "YBB-346075",
+      "handle": "tie-dye-yale-t-shirt-big-yale",
+      "name": "Big Yale Tie Dye T-Shirt",
+      "price_usd": 32.99,
+      "colors": [
+        "Rainbow"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL",
+        "3XL"
+      ],
+      "qty_by_size": {
+        "3XL": 6,
+        "L": 3,
+        "M": 0,
+        "S": 2,
+        "XL": 3,
+        "XXL": 0
+      },
+      "image": "products/tie-dye-yale-t-shirt-big-yale.jpg",
+      "source_url": "https://yalebulldogblue.com/products/tie-dye-yale-t-shirt-big-yale",
+      "vendor": "Sanmar",
+      "product_type": "Tie Dye T-Shirt",
+      "tags": [
+        "Make"
+      ]
+    },
+    {
+      "sku": "YBB-983963",
+      "handle": "dry-zone-long-sleeve",
+      "name": "Yale Bulldogs Performance Long Sleeve Shirt",
+      "price_usd": 34.99,
+      "colors": [
+        "True Navy"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "qty_by_size": {
+        "L": 7,
+        "M": 8,
+        "S": 6,
+        "XL": 7,
+        "XXL": 7
+      },
+      "image": "products/dry-zone-long-sleeve.jpg",
+      "source_url": "https://yalebulldogblue.com/products/dry-zone-long-sleeve",
+      "vendor": "Sanmar",
+      "product_type": "Long Sleeve",
+      "tags": [
+        "Make",
+        "Not in Square"
+      ]
+    },
+    {
+      "sku": "YBB-465563",
+      "handle": "long-sleeve-striped-rugby-yale-w-crest",
+      "name": "Yale Crest Rugby Long Sleeve Shirt",
+      "price_usd": 74.99,
+      "colors": [
+        "Rich Navy/White"
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "qty_by_size": {
+        "L": 4,
+        "M": 5,
+        "S": 3,
+        "XL": 4,
+        "XS": 3,
+        "XXL": 4
+      },
+      "image": "products/long-sleeve-striped-rugby-yale-w-crest.jpg",
+      "source_url": "https://yalebulldogblue.com/products/long-sleeve-striped-rugby-yale-w-crest",
+      "vendor": "Charles River",
+      "product_type": "Rugby Tee",
+      "tags": [
+        "Make"
+      ]
+    },
+    {
+      "sku": "YBB-722651",
+      "handle": "school-of-management-crest-t-shirt",
+      "name": "Graduate & Professional Schools Crest T-Shirt - School of Management",
+      "price_usd": 29.99,
+      "colors": [
+        "New Navy"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "qty_by_size": {
+        "L": 5,
+        "M": 0,
+        "S": 4,
+        "XL": 5,
+        "XXL": 0
+      },
+      "image": "products/school-of-management-crest-t-shirt.jpg",
+      "source_url": "https://yalebulldogblue.com/products/school-of-management-crest-t-shirt",
+      "vendor": "Sanmar",
+      "product_type": "T-Shirt",
+      "tags": [
+        "Make"
+      ]
+    },
+    {
+      "sku": "YBB-843355",
+      "handle": "school-of-law-crest-t-shirt",
+      "name": "Graduate & Professional Schools Crest T-Shirt - Law School",
+      "price_usd": 29.99,
+      "colors": [
+        "New Navy"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "qty_by_size": {
+        "L": 2,
+        "M": 3,
+        "S": 1,
+        "XL": 2,
+        "XXL": 2
+      },
+      "image": "products/school-of-law-crest-t-shirt.jpg",
+      "source_url": "https://yalebulldogblue.com/products/school-of-law-crest-t-shirt",
+      "vendor": "Sanmar",
+      "product_type": "T-Shirt",
+      "tags": [
+        "Make"
+      ]
+    },
+    {
+      "sku": "YBB-637787",
+      "handle": "grace-hopper-logo-t-shirt",
+      "name": "Residential College T-Shirt - Grace Hopper",
+      "price_usd": 29.99,
+      "colors": [
+        "Light Heather Grey"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "qty_by_size": {
+        "L": 2,
+        "M": 3,
+        "S": 1,
+        "XL": 2,
+        "XXL": 2
+      },
+      "image": "products/grace-hopper-logo-t-shirt.jpg",
+      "source_url": "https://yalebulldogblue.com/products/grace-hopper-logo-t-shirt",
+      "vendor": "Sanmar",
+      "product_type": "T-Shirt",
+      "tags": [
+        "Make",
+        "Not in Square"
+      ]
+    },
+    {
+      "sku": "YBB-803611",
+      "handle": "pauli-murray-logo-t-shirt",
+      "name": "Residential College T-Shirt - Pauli Murray",
+      "price_usd": 29.99,
+      "colors": [
+        "Light Heather Grey"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "qty_by_size": {
+        "L": 3,
+        "M": 4,
+        "S": 2,
+        "XL": 3,
+        "XXL": 3
+      },
+      "image": "products/pauli-murray-logo-t-shirt.jpg",
+      "source_url": "https://yalebulldogblue.com/products/pauli-murray-logo-t-shirt",
+      "vendor": "Sanmar",
+      "product_type": "T-Shirt",
+      "tags": [
+        "Make",
+        "Not in Square"
+      ]
+    },
+    {
+      "sku": "YBB-784859",
+      "handle": "football-left-chest-t-shirt",
+      "name": "Yale Sports Left Chest T-Shirt - Football",
+      "price_usd": 29.99,
+      "colors": [
+        "New Navy"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "qty_by_size": {
+        "L": 0,
+        "M": 2,
+        "S": 0,
+        "XL": 1,
+        "XXL": 1
+      },
+      "image": "products/football-left-chest-t-shirt.jpg",
+      "source_url": "https://yalebulldogblue.com/products/football-left-chest-t-shirt",
+      "vendor": "Sanmar",
+      "product_type": "T-Shirt",
+      "tags": [
+        "Make",
+        "Not in Square"
+      ]
+    },
+    {
+      "sku": "YBB-456539",
+      "handle": "tri-blend-sports-basketball-t-shirt",
+      "name": "Yale Sports T-Shirt - Basketball",
+      "price_usd": 29.99,
+      "colors": [
+        "Heathered Grey",
+        "New Navy"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "qty_by_size": {
+        "L": 1,
+        "M": 2,
+        "S": 8,
+        "XL": 1,
+        "XXL": 1
+      },
+      "image": "products/tri-blend-sports-basketball-t-shirt.jpg",
+      "source_url": "https://yalebulldogblue.com/products/tri-blend-sports-basketball-t-shirt",
+      "vendor": "Sanmar",
+      "product_type": "T-Shirt",
+      "tags": [
+        "Make"
+      ]
+    },
+    {
+      "sku": "YBB-227035",
+      "handle": "yale-dad-t-shirt",
+      "name": "Yale Relative T-Shirt - Dad",
+      "price_usd": 29.99,
+      "colors": [
+        "Athletic Heather",
+        "New Navy"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "qty_by_size": {
+        "L": 1,
+        "M": 2,
+        "S": 8,
+        "XL": 1,
+        "XXL": 1
+      },
+      "image": "products/yale-dad-t-shirt.jpg",
+      "source_url": "https://yalebulldogblue.com/products/yale-dad-t-shirt",
+      "vendor": "Sanmar",
+      "product_type": "T-Shirt",
+      "tags": [
+        "Make"
+      ]
+    },
+    {
+      "sku": "YBB-863771",
+      "handle": "2025-yale-vs-harvard-t-shirt",
+      "name": "2025 Yale vs Harvard Distressed T-Shirt",
+      "price_usd": 29.99,
+      "colors": [
+        "Graphite Heather"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL",
+        "3XL"
+      ],
+      "qty_by_size": {
+        "3XL": 6,
+        "L": 3,
+        "M": 4,
+        "S": 2,
+        "XL": 3,
+        "XXL": 3
+      },
+      "image": "products/2025-yale-vs-harvard-t-shirt.jpg",
+      "source_url": "https://yalebulldogblue.com/products/2025-yale-vs-harvard-t-shirt",
+      "vendor": "Sanmar",
+      "product_type": "T-Shirt",
+      "tags": [
+        "Make"
+      ]
+    },
+    {
+      "sku": "YBB-456731",
+      "handle": "yale-bowl-t-shirt",
+      "name": "Yale Bowl T-Shirt",
+      "price_usd": 49.99,
+      "colors": [
+        "Vintage White/Navy"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "qty_by_size": {
+        "L": 3,
+        "M": 4,
+        "S": 2,
+        "XL": 3,
+        "XXL": 3
+      },
+      "image": "products/yale-bowl-t-shirt.jpg",
+      "source_url": "https://yalebulldogblue.com/products/yale-bowl-t-shirt",
+      "vendor": "Uscape Apparel",
+      "product_type": "",
+      "tags": [
+        "Buy",
+        "PUR SKU"
+      ]
+    },
+    {
+      "sku": "YBB-243483",
+      "handle": "the-game-t-shirt",
+      "name": "THE GAME T-Shirt",
+      "price_usd": 29.99,
+      "colors": [
+        "White Onyx"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL",
+        "3XL",
+        "4XL"
+      ],
+      "qty_by_size": {
+        "3XL": 1,
+        "4XL": 2,
+        "L": 6,
+        "M": 7,
+        "S": 5,
+        "XL": 6,
+        "XXL": 6
+      },
+      "image": "products/the-game-t-shirt.jpg",
+      "source_url": "https://yalebulldogblue.com/products/the-game-t-shirt",
+      "vendor": "Sanmar",
+      "product_type": "",
+      "tags": [
+        "Make"
+      ]
+    }
+  ],
+  "product_count": 20
+}

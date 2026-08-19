@@ -1,0 +1,59 @@
+{
+  "tool": "get_exhibit_info",
+  "source": "Exhibits desk — gallery copy and public-program feed (course mock)",
+  "museum": "Yale Peabody Museum",
+  "galleries": [
+    {
+      "id": "lobby",
+      "name": "Lobby",
+      "floor": 1,
+      "summary": "Check-in, coat and bag drop, maps. Pteranodon family overhead."
+    },
+    {
+      "id": "burke_hall",
+      "name": "Burke Hall of Dinosaurs",
+      "floor": 1,
+      "summary": "Ancient oceans and life among dinosaurs, including large fossil mounts in Burke Hall."
+    },
+    {
+      "id": "central_gallery",
+      "name": "The Central Gallery",
+      "floor": 1,
+      "summary": "Giant fossil reptiles, plants, rotating Yale research displays, and seating."
+    },
+    {
+      "id": "egypt_mesopotamia",
+      "name": "Egypt and Mesopotamia",
+      "floor": 2,
+      "summary": "Objects from ancient Egypt and Mesopotamia. Funerary and burial items may be on display."
+    },
+    {
+      "id": "minerals",
+      "name": "Minerals, Earth & Space",
+      "floor": 3,
+      "summary": "Earth history, minerals, and planetary science."
+    },
+    {
+      "id": "living_lab",
+      "name": "Living Lab",
+      "floor": 3,
+      "summary": "Live plants and animals, hands-on activities, and collection highlights."
+    }
+  ],
+  "programs": [
+    {
+      "id": "prog_amuse",
+      "title": "Amuse digital guide",
+      "when": "During public hours",
+      "where": "All floors",
+      "copy": "Free digital guide with highlights, trivia, and an interactive map."
+    },
+    {
+      "id": "prog_members_night_burke",
+      "title": "Members Night in Burke Hall",
+      "when": "Friday, 16 October 2026, 6:00 pm–8:00 pm",
+      "where": "Burke Hall of Dinosaurs",
+      "copy": "Exhibit marketing: doors stay open for members after public closing. Flash photography is welcome for social posts. Camera bags and compact tripods are allowed in Burke Hall for this program so guests can photograph the mounts."
+    }
+  ]
+}

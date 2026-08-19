@@ -1,0 +1,26 @@
+{
+  "disclaimer": "Fictional demo tickets for homework evals. They are not valid for entry and were not issued by the venue.",
+  "tickets": [
+    {
+      "confirmation_id": "CSMH-DEMO-1001",
+      "show_id": "show-lcd-2026-09-10",
+      "holder_name": "Alex Rivera",
+      "quantity": 2,
+      "status": "valid"
+    },
+    {
+      "confirmation_id": "CSMH-DEMO-1002",
+      "show_id": "show-handler-2026-09-27",
+      "holder_name": "Jordan Lee",
+      "quantity": 1,
+      "status": "valid"
+    },
+    {
+      "confirmation_id": "CSMH-DEMO-1003",
+      "show_id": "show-trampled-2026-09-18",
+      "holder_name": "Sam Patel",
+      "quantity": 1,
+      "status": "canceled_show_pending"
+    }
+  ]
+}

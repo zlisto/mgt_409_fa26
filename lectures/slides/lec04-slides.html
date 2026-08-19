@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 4 Slides — Agents</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .slide-deck-body { overflow: hidden; }
+    .slide-deck-body .site-nav { flex-shrink: 0; }
+    .slide { max-width: 980px; }
+    .slide h1 { font-size: clamp(1.95rem, 4.4vw, 2.7rem); }
+    .slide p, .slide li { font-size: clamp(1.08rem, 2.3vw, 1.32rem); }
+    .punch { font-size: clamp(1.25rem, 2.8vw, 1.7rem); font-weight: 800; line-height: 1.3; margin: 0.35rem 0 1rem; }
+    .caveat {
+      margin-top: 0.85rem; padding: 0.7rem 0.95rem; border-radius: 10px;
+      background: #fff3c4; border-left: 5px solid #bd9b60; font-weight: 700; font-size: 1.02rem;
+    }
+    [data-theme="dark"] .caveat { background: #3a2a12; color: #ffe8c8; }
+    .news-card {
+      display: grid; grid-template-columns: 240px 1fr; gap: 1rem; align-items: center;
+      margin: 0.65rem 0; padding: 0.7rem; border-radius: 14px;
+      background: #fff; border: 2px solid #286dc0; text-decoration: none; color: inherit;
+    }
+    .news-card img { width: 100%; height: 128px; object-fit: cover; border-radius: 10px; background: #0b1220; }
+    .news-card .kicker { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #286dc0; margin: 0 0 0.25rem; }
+    .news-card h3 { margin: 0 0 0.35rem; font-size: 1.12rem; color: var(--yale-blue); line-height: 1.25; }
+    .news-card p { margin: 0; font-size: 0.95rem; }
+    [data-theme="dark"] .news-card { background: #1a2433; border-color: #7c5cff; }
+    [data-theme="dark"] .news-card h3 { color: #fff; }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.75rem 0 0.25rem; }
+    .chip { background: #00356b; color: #fff; font-weight: 800; font-size: 0.95rem; padding: 0.4rem 0.75rem; border-radius: 999px; }
+    .chip.orange { background: #f4633a; }
+    .chip.gold { background: #bd9b60; color: #1a1208; }
+    .chip.green { background: #0f7b4a; }
+    .chip.pink { background: #c73e82; }
+    .big-no {
+      display: inline-block; background: #c73e82; color: #fff; font-weight: 800;
+      padding: 0.15rem 0.55rem; border-radius: 8px;
+    }
+    .hw-flow { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.4rem; margin: 0.85rem 0; }
+    .hw-flow div {
+      background: #e8eef4; border-radius: 10px; padding: 0.55rem 0.4rem; text-align: center;
+      font-weight: 800; font-size: 0.78rem; line-height: 1.25; color: #00356b;
+    }
+    .hw-flow .stop { background: #c73e82; color: #fff; }
+    [data-theme="dark"] .hw-flow div { background: #132a45; color: #d6e6f5; }
+    .role-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.45rem; margin: 0.7rem 0 0.2rem; }
+    .role-grid div {
+      border-radius: 10px; padding: 0.55rem 0.4rem; text-align: center;
+      color: #fff; font-weight: 800; font-size: 0.78rem; line-height: 1.25;
+    }
+    .role-grid .n { display: block; font-size: 1.35rem; line-height: 1.1; margin-bottom: 0.15rem; }
+    .r-key { background: #0f7b4a; }
+    .r-help { background: #bd9b60; color: #1a1208; }
+    .r-dead { background: #5c7086; }
+    .r-val { background: #286dc0; }
+    .r-write { background: #f4633a; }
+    .bound-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.6rem; align-items: center; margin: 0.7rem 0; }
+    .bound-box { border-radius: 12px; padding: 0.7rem 0.8rem; text-align: center; }
+    .bound-box .n { font-size: 2rem; font-weight: 800; line-height: 1; }
+    .bound-old { background: #e8eef4; color: #00356b; }
+    .bound-new { background: #0f7b4a; color: #fff; }
+    .bound-row .arrow { font-size: 1.6rem; font-weight: 800; color: #286dc0; text-align: center; }
+    [data-theme="dark"] .bound-old { background: #132a45; color: #d6e6f5; }
+    .slide svg.swarm-svg { width: 100%; max-height: 168px; margin: 0.35rem 0 0.15rem; }
+    .instructor-banner {
+      display: inline-block; background: #bd9b60; color: #1a1208; font-weight: 800;
+      font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.28rem 0.7rem; border-radius: 999px; margin: 0 0 0.7rem;
+    }
+    .pace-list { list-style: none; padding-left: 0; margin: 0.4rem 0; }
+    .pace-list li {
+      display: grid; grid-template-columns: 5.6rem 1fr; gap: 0.7rem;
+      align-items: start; margin: 0.45rem 0;
+      font-size: clamp(0.98rem, 2vw, 1.18rem);
+    }
+    .pace-min { font-weight: 800; color: #c73e82; font-variant-numeric: tabular-nums; }
+    [data-theme="dark"] .pace-min { color: #ffd166; }
+    .cost-pills { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0.65rem 0 0.35rem; }
+    .cost-pills span {
+      background: #e8eef4; color: #00356b; font-weight: 800; font-size: 0.88rem;
+      padding: 0.4rem 0.7rem; border-radius: 999px;
+    }
+    .cost-pills .hot { background: #c73e82; color: #fff; }
+    [data-theme="dark"] .cost-pills span { background: #132a45; color: #d6e6f5; }
+    @media (max-width: 720px) {
+      .news-card { grid-template-columns: 1fr; }
+      .hw-flow, .role-grid { grid-template-columns: 1fr 1fr; }
+      .bound-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="slide-deck-body">
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <header class="slide-deck-header">
+    <a href="../../lectures.html">← Lectures</a>
+    <span>Lecture 4: Agents</span>
+    <span class="slide-counter">1 / 14</span>
+  </header>
+  <div class="slide-viewport">
+
+      <section class="slide active title-slide" data-slide="1">
+        <h1>Agents</h1>
+        <p class="subtitle">MGT 409 · Lecture 4 · Tauhid Zaman</p>
+        <p class="punch">Same tools as last week. Now they loop.<br>You still own the stop condition.</p>
+        <p class="takeaway">Syllabus: multi-step agents that call tools in a loop — and limits on what they may do without a human.</p>
+      </section>
+
+      <section class="slide" data-slide="2">
+        <p class="instructor-banner">Instructor outline — remove before class.</p>
+        <h1>The story in 40 minutes</h1>
+        <ul class="pace-list">
+          <li><span class="pace-min">0–2</span><span><strong>Cold open.</strong> Same tools, now they loop. You own the brakes.</span></li>
+          <li><span class="pace-min">2–6</span><span><strong>One-shot vs loop.</strong> L3 one call vs L4 observe → decide → act. HW1 path vs HW2 palette.</span></li>
+          <li><span class="pace-min">6–14</span><span><strong>The loop + stops.</strong> max_steps, finish schema, hard denylist. No send.</span></li>
+          <li><span class="pace-min">14–24</span><span><strong>Riemann swarm (2 slides).</strong> Progress not proof. ~650 approaches → critique → ~60 subagents.</span></li>
+          <li><span class="pace-min">24–31</span><span><strong>HW2.</strong> Draft, don’t send. Short palette; <code>send_email</code> is not in it.</span></li>
+          <li><span class="pace-min">31–37</span><span><strong>Traces + dial.</strong> JSONL, looping cost, autonomy: search auto, send is a human click.</span></li>
+          <li><span class="pace-min">37–40</span><span><strong>Handoff.</strong> 5-step scout. Then a 40-minute lab.</span></li>
+        </ul>
+      </section>
+
+      <section class="slide" data-slide="3">
+        <h1>Last week vs. this week</h1>
+        <div class="two-col">
+          <div class="compare-box">
+            <h3>Lecture 3 · one call</h3>
+            <p>The model asks for <code>search_web</code>. Your Python runs it. Done. HW1 energy: you write the path; cost is predictable.</p>
+          </div>
+          <div class="compare-box">
+            <h3>Lecture 4 · a loop</h3>
+            <p>Same tools, inside observe → decide → act until a stop fires. HW2 energy: you write the <em>palette</em> and the <em>brakes</em>. Path varies. So does the bill.</p>
+          </div>
+        </div>
+        <p class="takeaway">Scripts scale because the path is known. Agents need stop conditions because the path is not.</p>
+      </section>
+
+      <section class="slide" data-slide="4">
+        <h1>The loop you actually ship</h1>
+        <svg class="flow-svg" viewBox="0 0 720 210" aria-label="Agent loop: observe, decide, act, stop">
+          <defs>
+            <marker id="a4g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0f7b4a"/></marker>
+            <marker id="a4r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c73e82"/></marker>
+            <marker id="a4b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#286dc0"/></marker>
+          </defs>
+          <rect x="250" y="12" width="220" height="52" rx="12" fill="#00356b"/>
+          <text x="360" y="34" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">LLM planner</text>
+          <text x="360" y="52" text-anchor="middle" font-size="11" fill="#cde4ff">observe goal + history</text>
+          <line x1="360" y1="64" x2="360" y2="88" stroke="#286dc0" stroke-width="3" marker-end="url(#a4b)"/>
+          <rect x="230" y="90" width="260" height="44" rx="10" fill="#fff3c4" stroke="#bd9b60" stroke-width="2"/>
+          <text x="360" y="118" text-anchor="middle" font-size="14" fill="#00356b" font-weight="700">Tool call, ask human, or FINISH?</text>
+          <line x1="230" y1="112" x2="118" y2="112" stroke="#0f7b4a" stroke-width="3" marker-end="url(#a4g)"/>
+          <rect x="18" y="90" width="100" height="44" rx="10" fill="#0f7b4a"/>
+          <text x="68" y="118" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">Act / tool</text>
+          <line x1="68" y1="134" x2="68" y2="178" stroke="#0f7b4a" stroke-width="3"/>
+          <line x1="68" y1="178" x2="360" y2="178" stroke="#0f7b4a" stroke-width="3"/>
+          <line x1="360" y1="178" x2="360" y2="64" stroke="#0f7b4a" stroke-width="3" marker-end="url(#a4g)"/>
+          <text x="200" y="198" font-size="11" fill="#0f7b4a" font-weight="700">append result · loop</text>
+          <line x1="490" y1="112" x2="590" y2="112" stroke="#c73e82" stroke-width="3" marker-end="url(#a4r)"/>
+          <rect x="590" y="90" width="116" height="44" rx="10" fill="#c73e82"/>
+          <text x="648" y="118" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">STOP</text>
+        </svg>
+        <p><strong>Observe</strong> goal + history + “no send.” <strong>Decide</strong> next tool, escalate, or finish. <strong>Act</strong> in <em>your</em> runtime — auth, logs, budget. The model proposes; you execute.</p>
+      </section>
+
+      <section class="slide" data-slide="5">
+        <h1>Stop conditions (non-negotiable)</h1>
+        <div class="chip-row">
+          <span class="chip">max_steps</span>
+          <span class="chip gold">finish tool</span>
+          <span class="chip green">valid schema</span>
+          <span class="chip orange">$ budget</span>
+          <span class="chip pink">human gate</span>
+        </div>
+        <ul>
+          <li><strong>max_steps</strong> — 5–10 for class; production adds wall-clock and USD (Lecture 12).</li>
+          <li><strong>finish(JSON)</strong> — the only legal exit. Invalid schema? Return an error to the model. Do not crash-send.</li>
+          <li><strong>Hard denylist</strong> — no <code>send_email</code>, no <code>buy</code>, no <code>rm -rf</code> unless a human clicked yes.</li>
+        </ul>
+        <p class="takeaway">An agent without max_steps is a liability with an API key.</p>
+      </section>
+
+      <section class="slide" data-slide="6">
+        <h1>This summer: progress, not a proof</h1>
+        <a class="news-card" href="https://www.anthropic.com/research/riemann-zeta" target="_blank" rel="noopener noreferrer">
+          <img src="../images/lec04/news-riemann.svg" alt="Anthropic research card: Claude improved a Riemann zeta bound, not a proof of the hypothesis">
+          <div>
+            <p class="kicker">Anthropic · 10 Aug 2026</p>
+            <h3>Claude did not prove the Riemann hypothesis. It moved a related bound.</h3>
+            <p>An unreleased research Claude improved the proven share of zeta zeros on the critical line from <strong>41.6% to 67.2%</strong>.</p>
+          </div>
+        </a>
+        <div class="bound-row">
+          <div class="bound-box bound-old"><div class="n">41.6%</div>prior lower bound</div>
+          <div class="arrow">→</div>
+          <div class="bound-box bound-new"><div class="n">67.2%</div>Claude’s argument</div>
+        </div>
+        <p class="caveat">Not a proof of RH. Anthropic does not expect these techniques to yield one. Experts looked on short notice — this is not journal peer review.</p>
+        <p class="source-note">Primary: <a href="https://www.anthropic.com/research/riemann-zeta" target="_blank" rel="noopener noreferrer">Anthropic, “Learning more about Claude’s mathematical capabilities”</a> (10 Aug 2026). Context: <a href="https://www.scientificamerican.com/article/no-ai-didnt-just-solve-the-thorniest-problem-in-math/" target="_blank" rel="noopener noreferrer">Howlett, Scientific American</a> (12 Aug 2026).</p>
+      </section>
+
+      <section class="slide" data-slide="7">
+        <h1>~650 approaches → critique → ~60 subagents</h1>
+        <p>A non-mathematician staffer left the math choices to the model. Phase 1: about <strong>650 ideas, none worked</strong>. Then ~1.5 days coordinating about <strong>60 subagents</strong>.</p>
+        <svg class="swarm-svg" viewBox="0 0 720 158" aria-label="Propose, attempt, critique, prune swarm">
+          <defs>
+            <marker id="sw" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#286dc0"/></marker>
+          </defs>
+          <rect x="8" y="18" width="150" height="86" rx="12" fill="#00356b"/>
+          <text x="83" y="48" text-anchor="middle" font-size="15" fill="#fff" font-weight="800">PROPOSE</text>
+          <text x="83" y="70" text-anchor="middle" font-size="12" fill="#cde4ff">~650 approaches</text>
+          <text x="83" y="88" text-anchor="middle" font-size="12" fill="#cde4ff">Phase 1: all failed</text>
+          <line x1="158" y1="61" x2="176" y2="61" stroke="#286dc0" stroke-width="3" marker-end="url(#sw)"/>
+          <rect x="184" y="18" width="150" height="86" rx="12" fill="#0f7b4a"/>
+          <text x="259" y="48" text-anchor="middle" font-size="15" fill="#fff" font-weight="800">ATTEMPT</text>
+          <text x="259" y="70" text-anchor="middle" font-size="12" fill="#d4ffe8">~2,400 shell cmds</text>
+          <text x="259" y="88" text-anchor="middle" font-size="12" fill="#d4ffe8">scripts + zeta checks</text>
+          <line x1="334" y1="61" x2="352" y2="61" stroke="#286dc0" stroke-width="3" marker-end="url(#sw)"/>
+          <rect x="360" y="18" width="150" height="86" rx="12" fill="#286dc0"/>
+          <text x="435" y="48" text-anchor="middle" font-size="15" fill="#fff" font-weight="800">CRITIQUE</text>
+          <text x="435" y="70" text-anchor="middle" font-size="12" fill="#cde4ff">agents referee</text>
+          <text x="435" y="88" text-anchor="middle" font-size="12" fill="#cde4ff">54 arXiv papers</text>
+          <line x1="510" y1="61" x2="528" y2="61" stroke="#286dc0" stroke-width="3" marker-end="url(#sw)"/>
+          <rect x="536" y="18" width="176" height="86" rx="12" fill="#c73e82"/>
+          <text x="624" y="48" text-anchor="middle" font-size="15" fill="#fff" font-weight="800">PRUNE</text>
+          <text x="624" y="70" text-anchor="middle" font-size="12" fill="#ffe0ec">keep what survives</text>
+          <text x="624" y="88" text-anchor="middle" font-size="12" fill="#ffe0ec">drop dead ends</text>
+          <text x="360" y="140" text-anchor="middle" font-size="13" fill="#5c7086" font-weight="700">Two Claude Code sessions · 31 million output tokens · human mostly said “keep going”</text>
+        </svg>
+        <div class="role-grid">
+          <div class="r-key"><span class="n">2</span>key ideas</div>
+          <div class="r-help"><span class="n">13</span>contributed</div>
+          <div class="r-dead"><span class="n">30</span>produced nothing</div>
+          <div class="r-val"><span class="n">13</span>validators</div>
+          <div class="r-write"><span class="n">2</span>wrote the paper</div>
+        </div>
+        <p class="takeaway">Copy: many cheap attempts, explicit critique, explicit prune. Do not copy unbounded copies on one box — that is a turf war, not a swarm.</p>
+        <p class="source-note">Role split: Anthropic footnote. Graphic: <a href="../images/lec04/riemann-swarm.svg">riemann-swarm.svg</a>. Writeup: <a href="https://www.anthropic.com/research/riemann-zeta" target="_blank" rel="noopener noreferrer">anthropic.com/research/riemann-zeta</a>. Turf war: <a href="https://www.anthropic.com/research/multiagent-systems" target="_blank" rel="noopener noreferrer">multiagent-systems</a>.</p>
+      </section>
+
+      <section class="slide" data-slide="8">
+        <h1>Homework 2 is this loop — draft, don’t send</h1>
+        <p>FiftyFlowers wants <strong>business</strong> customers (planners, studios, venues) — volume buyers, not one-off retail.</p>
+        <div class="hw-flow">
+          <div>P2<br>ICP from their site</div>
+          <div>P3<br>search queries</div>
+          <div>P4<br>investigate loop</div>
+          <div>P5<br>score fit</div>
+          <div>P6<br>draft email</div>
+          <div class="stop">P6<br>DO NOT SEND</div>
+        </div>
+        <ul>
+          <li>P4 is the agent-y bit: crawl, cite <code>source_url</code>, or leave the field empty.</li>
+          <li>P6: 120–180 word draft, facts from page snapshots, saved as JSON. Palette has <code>draft_email</code>. It does not have <code>send_email</code>.</li>
+        </ul>
+        <p class="takeaway">Observe → decide → act → <strong>stop before send</strong>. Grown-up split: the agent drafts; a human would approve. <span class="big-no">No send.</span></p>
+      </section>
+
+      <section class="slide" data-slide="9">
+        <h1>Fewer tools beat kitchen sinks</h1>
+        <table>
+          <tr><th>Tool</th><th>When the agent should use it</th><th>HW2 cousin</th></tr>
+          <tr><td><code>search_web</code></td><td>Find candidate businesses from the ICP</td><td>P3</td></tr>
+          <tr><td><code>fetch_page</code></td><td>Read a real page; keep a snapshot</td><td>P4</td></tr>
+          <tr><td><code>score_icp</code></td><td>Apply your rubric, not vibes</td><td>P5</td></tr>
+          <tr><td><code>draft_email</code></td><td>Write a 120–180 word note with cited facts</td><td>P6</td></tr>
+          <tr><td><code>finish</code></td><td>Schema complete; stop looping</td><td>traces + report</td></tr>
+          <tr><td><code>send_email</code></td><td><strong>Not in the palette.</strong> Human only.</td><td>explicit ban</td></tr>
+        </table>
+        <p>Fewer, well-described tools beat “here is the entire internet, good luck.”</p>
+      </section>
+
+      <section class="slide" data-slide="10">
+        <h1>Traces, or it didn’t happen</h1>
+        <div class="cost-pills">
+          <span>script ~700 tok</span>
+          <span>3-step ~2k</span>
+          <span>8-step, no cap 6k+</span>
+          <span class="hot">Riemann swarm 31M</span>
+        </div>
+        <ul>
+          <li>Every step: role, tool name, args, truncated result, tokens if the API gives them.</li>
+          <li>JSONL: <code>output/traces/{run_id}.jsonl</code> — graders debug this, not “it felt right.”</li>
+          <li>HW2 source rule: no <code>source_url</code> → empty field. Invented emails are a zero.</li>
+        </ul>
+        <div class="diagram">step 1: search_web("New Haven wedding florist wholesale")
+step 2: fetch_page("https://example-florist.com/contact")
+step 3: finish({companies: [...], notes: "..."})  → VALID
+step 4: send_email(...)  → BLOCKED  (not in palette, not in HW2)</div>
+      </section>
+
+      <section class="slide" data-slide="11">
+        <h1>Human in the loop is a dial</h1>
+        <svg class="flow-svg" viewBox="0 0 720 150" aria-label="Autonomy dial from draft to send">
+          <rect x="20" y="40" width="150" height="70" rx="12" fill="#0f7b4a"/>
+          <text x="95" y="70" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">Search / fetch</text>
+          <text x="95" y="90" text-anchor="middle" font-size="11" fill="#d4ffe8">auto OK</text>
+          <rect x="195" y="40" width="150" height="70" rx="12" fill="#bd9b60"/>
+          <text x="270" y="70" text-anchor="middle" font-size="13" fill="#1a1208" font-weight="700">Score / draft</text>
+          <text x="270" y="90" text-anchor="middle" font-size="11" fill="#1a1208">spot-check</text>
+          <rect x="370" y="40" width="150" height="70" rx="12" fill="#f4633a"/>
+          <text x="445" y="70" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">Send / buy</text>
+          <text x="445" y="90" text-anchor="middle" font-size="11" fill="#fff">human click</text>
+          <rect x="545" y="40" width="155" height="70" rx="12" fill="#c73e82"/>
+          <text x="622" y="70" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">Delete / pay</text>
+          <text x="622" y="90" text-anchor="middle" font-size="11" fill="#fff">never auto</text>
+        </svg>
+        <p class="takeaway">Turn autonomy up only with eval evidence. The Riemann run still asked humans to check the paper. HW2 P8 is you disagreeing with the model on purpose.</p>
+      </section>
+
+      <section class="slide section-slide" data-slide="12">
+        <h1>→ Vibe coding (40 minutes)</h1>
+        <p class="punch">A 5-step scout agent.<br>Search, fetch, finish JSON.<br>Sending email is out of the palette.</p>
+        <p>If it never finishes, repeats the same search, or invents a contact — those are today’s failure modes. Fix them in the loop, not in a paragraph.</p>
+        <p><a href="../vibe/lec04-vibe.html">Open today’s prompts →</a></p>
+      </section>
+
+      <section class="slide" data-slide="13">
+        <h1>Failure modes you’ll hit in the lab</h1>
+        <table>
+          <tr><th>Symptom</th><th>Fix</th></tr>
+          <tr><td>Never calls finish</td><td>System prompt: “You MUST call finish to end.”</td></tr>
+          <tr><td>Same search 4 times</td><td>Track queries; return “duplicate query blocked.”</td></tr>
+          <tr><td>JSON soup</td><td>Validate in the finish tool; send the error back.</td></tr>
+          <tr><td>Invented contacts</td><td>Require <code>source_url</code> or empty string. HW2 P4.</td></tr>
+          <tr><td>Token lava</td><td>Lower max_steps; cheaper model for grunt fetches.</td></tr>
+        </table>
+      </section>
+
+      <section class="slide" data-slide="14">
+        <h1>What to remember</h1>
+        <ul>
+          <li>Agent = LLM + tools + <strong>loop</strong> + <strong>stop conditions</strong> + <strong>traces</strong>.</li>
+          <li>Autonomy is a dial. Draft ≠ send. HW2 is the dial at “research intern.”</li>
+          <li>Useful swarms <strong>propose, attempt, critique, prune</strong>. Unbounded copies start turf wars.</li>
+          <li>Claude’s zeta bound is progress on a related problem — not a proof of the Riemann hypothesis.</li>
+        </ul>
+        <p class="takeaway">Next: aim the loop at <strong>images</strong> — Lecture 5, image analysis.</p>
+      </section>
+
+  </div>
+  <p class="slide-hint">Arrow keys, Space, or buttons to advance</p>
+  <footer class="slide-deck-footer">
+    <button type="button" id="prev" aria-label="Previous slide">← Previous</button>
+    <button type="button" id="next" aria-label="Next slide">Next →</button>
+  </footer>
+  <script src="../../js/slides.js"></script>
+  <script src="../../js/theme.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{
+  "tool": "get_hours_and_tickets",
+  "source": "Visitor Services — hours and ticketing desk (course mock)",
+  "museum": "Yale Peabody Museum",
+  "address": "170 Whitney Avenue, New Haven, CT",
+  "weekly_hours": [
+    { "day": "Monday", "open": null, "close": null, "note": "Closed" },
+    { "day": "Tuesday", "open": "10:00", "close": "17:00" },
+    { "day": "Wednesday", "open": "10:00", "close": "17:00" },
+    { "day": "Thursday", "open": "10:00", "close": "17:00" },
+    { "day": "Friday", "open": "10:00", "close": "17:00" },
+    { "day": "Saturday", "open": "10:00", "close": "17:00" },
+    { "day": "Sunday", "open": "12:00", "close": "17:00" }
+  ],
+  "holiday_closures": [
+    "New Year's Day",
+    "Juneteenth",
+    "Fourth of July",
+    "Thanksgiving Day",
+    "Christmas Eve",
+    "Christmas Day"
+  ],
+  "exceptions": [
+    "Open on Yale Commencement Monday and MLK Day despite the usual Monday closure."
+  ],
+  "admission": {
+    "general": "Free for individual visitors. No timed tickets.",
+    "groups": "K-12 field trips and other groups still need a reservation.",
+    "currency_usd": 0
+  },
+  "membership_faq": [
+    {
+      "id": "mem_free",
+      "q": "Is there a free membership?",
+      "a": "Yes. A free membership is available; patron groups are paid add-ons."
+    },
+    {
+      "id": "mem_benefits",
+      "q": "What do members get?",
+      "a": "Members get program announcements and the option to RSVP to member-only programs when those programs are listed by Visitor Services. This desk does not publish after-hours gallery access on its own."
+    }
+  ],
+  "parking_note": "Local construction limits on-site parking through Summer 2026. Weekday visitor parking is described as Lot 41 when open; tickets may need desk validation. This is a summary for the assignment, not a live parking map."
+}

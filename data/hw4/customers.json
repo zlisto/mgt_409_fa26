@@ -1,0 +1,42 @@
+{
+  "store": "College Street Music Hall (course accounts)",
+  "algorithm": "pbkdf2_hmac_sha256",
+  "iterations": 120000,
+  "note": "Course-only guest accounts. password_hash is PBKDF2-HMAC-SHA256 of the password with password_salt (hex). Do not store or return plaintext passwords. These are not real venue accounts.",
+  "users": [
+    {
+      "username": "alex.rivera",
+      "display_name": "Alex Rivera",
+      "password_salt": "fdfdf50df2cada2b30af3473c8a86a16",
+      "password_hash": "1af211f22c72a71cf354cc11fd920b76b6d6d94e857de73c130734cbf735a09e",
+      "confirmation_ids": [
+        "CSMH-DEMO-1001"
+      ]
+    },
+    {
+      "username": "jordan.lee",
+      "display_name": "Jordan Lee",
+      "password_salt": "1e5818be6e27b383f03bedcc41b27617",
+      "password_hash": "1a1064b229a95149ca844336112b5f0e47b0eac0298ff911d277990efb3f4c27",
+      "confirmation_ids": [
+        "CSMH-DEMO-1002"
+      ]
+    },
+    {
+      "username": "sam.patel",
+      "display_name": "Sam Patel",
+      "password_salt": "b15a22d28334ab12b5a017d6bd10df0d",
+      "password_hash": "de16432b65277af31f0c06e1ab47c60ffb1efc63879ae6f6abc075052c98fe38",
+      "confirmation_ids": [
+        "CSMH-DEMO-1003"
+      ]
+    },
+    {
+      "username": "guest.walker",
+      "display_name": "Riley Walker",
+      "password_salt": "6fd3507929df60b019e4f729d145130d",
+      "password_hash": "4ddda1baed8f365315f312b415883162a434a0078412c238582710c86781a10d",
+      "confirmation_ids": []
+    }
+  ]
+}

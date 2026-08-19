@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 420" role="img" aria-label="News card: IBM Cost of a Data Breach 2026, AI-enabled breaches cost 6 million dollars">
+  <defs>
+    <linearGradient id="ibm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f62fe"/>
+      <stop offset="100%" stop-color="#ff3d6e"/>
+    </linearGradient>
+  </defs>
+  <rect width="920" height="420" rx="22" fill="#050a12"/>
+  <rect x="0" y="0" width="14" height="420" fill="url(#ibm)"/>
+  <rect x="28" y="24" width="864" height="372" rx="16" fill="#0b1628" stroke="#0f62fe" stroke-width="2"/>
+  <text x="52" y="64" fill="#8ab4ff" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="1.6">IBM NEWSROOM � 29 JULY 2026</text>
+  <text x="52" y="118" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800">1 in 4 malicious breaches:</text>
+  <text x="52" y="156" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800">AI-enabled. Average bill $6M.</text>
+  <text x="52" y="212" fill="#c9d6e8" font-family="Inter, Arial, sans-serif" font-size="20">Global average $4.99M (+12%). AI-driven attacks +56%.</text>
+  <text x="52" y="242" fill="#c9d6e8" font-family="Inter, Arial, sans-serif" font-size="20">&gt;20% of orgs reported a breach of AI models or apps.</text>
+  <rect x="52" y="286" width="780" height="78" rx="12" fill="#1a1030"/>
+  <text x="72" y="322" fill="#ffc857" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">Your chat log is a breach-class asset</text>
+  <text x="72" y="348" fill="#e8eef4" font-family="Inter, Arial, sans-serif" font-size="17">Redact PII before write. Well hash it later is a $6M later.</text>
+</svg>

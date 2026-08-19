@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 2 Vibe Coding — Structured Data from Free Text</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/vibe-session.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .vibe-clock {
+      display: grid;
+      grid-template-columns: 5.5rem 1fr;
+      gap: 0.35rem 0.85rem;
+      margin: 1rem 0 1.25rem;
+      padding: 0.85rem 1rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+    .vibe-clock .t { font-weight: 800; color: var(--yale-blue); }
+    [data-theme="dark"] .vibe-clock .t { color: var(--yale-blue-light); }
+    .behind {
+      background: #fff6d8;
+      border-left: 4px solid #c98900;
+      border-radius: 0 8px 8px 0;
+      padding: 0.75rem 1rem;
+      margin: 0 0 1.25rem;
+    }
+    [data-theme="dark"] .behind { background: #3a2f12; }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <main class="vibe-main">
+    <div class="vibe-header">
+      <h1>Lecture 2: Structured Data from Free Text</h1>
+      <p class="meta">
+        <a href="../slides/lec02-slides.html">← Slides</a>
+        <a href="../../lectures.html">All lectures</a>
+        · 40 minutes in class
+      </p>
+    </div>
+    <div class="vibe-goal"><strong>In-class goal:</strong> Leave with a one-receipt extractor (prompt file + JSON + validator), a one-row recon decision, and a Python total. This is a miniature of Homework 1 Problems 2 / 5 / 7 — not the Spoke &amp; Wrench pack.</div>
+    <p class="vibe-download">Reuse your Lecture 1 virtualenv and API key. No starter zip — vibe it from a blank <code>lec02/</code> folder.</p>
+
+    <div class="vibe-clock" aria-label="40-minute clock">
+      <span class="t">0–5</span><span>Scaffold (secrets stay local)</span>
+      <span class="t">5–10</span><span>Write a messy receipt on purpose</span>
+      <span class="t">10–16</span><span>Prompt file = the contract</span>
+      <span class="t">16–25</span><span>One script, one LLM call, one JSON file</span>
+      <span class="t">25–32</span><span>Validator before you trust it</span>
+      <span class="t">32–37</span><span>Mini recon (LLM) + Python booked total</span>
+      <span class="t">37–40</span><span>Log <code>AI_prompts.md</code></span>
+    </div>
+    <p class="behind"><strong>Behind?</strong> Skip Step 6. Still finish the validator and the prompt log. Do not open the Homework 1 zip in this lab.</p>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 1</span> Scaffold (0–5 min)</h2>
+      <p>Same hygiene as Lecture 1. The homework zip layout comes later; today is one folder.</p>
+      <pre class="prompt">Create a folder lec02/ with:
+- extract_receipt.py (empty for now)
+- prompts/receipt_extract.md (placeholder)
+- prompts/reconcile.md (placeholder)
+- sample_data/receipt_class.txt
+- output/
+- requirements.txt (openai, python-dotenv)
+- .env.example with OPENAI_API_KEY=
+- .gitignore ignoring .env, __pycache__, and output/*.json
+- README with venv + pip + copy .env.example
+Do not put a real API key in any file.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Folder exists; <code>.gitignore</code> lists <code>.env</code>; no key in git-tracked files.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 2</span> Write a messy receipt (5–10 min)</h2>
+      <p>Do <strong>not</strong> copy Homework 1 PDFs. Invent a classroom receipt so the schema is the point.</p>
+      <pre class="prompt">In sample_data/receipt_class.txt write a short fake bike-shop receipt as plain text. Include: store name, a date in January 2026, two line items, a total in dollars, and a note that tax is not shown as its own line. Leave the payment method blank so one field is actually missing.</pre>
+      <div class="vibe-check"><strong>Check:</strong> File is text, not a PDF. You can see a total and at least one missing fact.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 3</span> The prompt is the contract (10–16 min)</h2>
+      <p>This file is what <code>extract_receipt.py</code> will load — the homework’s <code>prompts/*.md</code> pattern. It is not <code>AI_prompts.md</code>.</p>
+      <pre class="prompt">Replace prompts/receipt_extract.md with instructions for an accounts-payable clerk.
+
+Extract JSON with keys:
+source_file (string), vendor (string), date (YYYY-MM-DD), description (string), amount_usd (number), category (one of parts, labor, tools, other), payment_method (string or null), fields_not_found (array of strings).
+
+Rules:
+- Return JSON only. No markdown fences.
+- If a field is not in the text, use null and add the key name to fields_not_found.
+- Never invent amounts or vendors.
+- If category is unclear, use other and list category in fields_not_found.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Prompt names every field, states types, and has “do not invent” language.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 4</span> One script, one LLM call, one JSON file (16–25 min)</h2>
+      <p>Homework 1 will loop over many PDFs. Today: one text file. Stay on the course model (often a mini-class via Portkey).</p>
+      <pre class="prompt">Write extract_receipt.py that:
+1. Takes --text-file and --out (default output/receipt.json)
+2. Loads prompts/receipt_extract.md as the system prompt
+3. Sends the file contents plus the filename as the user message
+4. Calls the OpenAI API with response_format json_object (model: same mini-class as Lecture 1 unless the course instructions say otherwise)
+5. Parses JSON
+6. Writes the object to --out
+7. Prints token usage
+Use python-dotenv for OPENAI_API_KEY. Clear error if the key is missing.</pre>
+      <div class="vibe-check"><strong>Check:</strong> <code>python extract_receipt.py --text-file sample_data/receipt_class.txt</code> writes valid JSON with the keys from Step 3.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 5</span> Validator before you trust it (25–32 min)</h2>
+      <p>Structured output can still be a fluent lie. Catch it in code.</p>
+      <pre class="prompt">Add validate_receipt(data) and call it before writing the file.
+
+Checks:
+- required keys present
+- amount_usd is a number &gt;= 0, or null
+- if amount_usd is null, fields_not_found includes "amount_usd"
+- date matches YYYY-MM-DD when not null
+- category is in {parts, labor, tools, other}
+On failure raise ValueError with a readable message. Do not silently coerce bad amounts.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Temporarily break a field in a test dict; the script refuses to write.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 6</span> Mini recon + Python total (32–37 min)</h2>
+      <p>Homework 1: LLM books once (P5), Python adds (P7). Do not sum the receipt and the card. Invent a second source — do not use the HW1 zip.</p>
+      <pre class="prompt">1. Write sample_data/card_line.json by hand: same amount_usd as your receipt, vendor mangled (e.g. PARKTOOL), source_file "card_jan.txt", category other.
+2. Replace prompts/reconcile.md: given two JSON objects, decide if they are the same purchase. Return JSON only: booked_amount_usd (number), same_purchase (boolean), resolution (one sentence), fields_not_found (array). Do not average. If same, book once.
+3. Write reconcile_class.py: load output/receipt.json and sample_data/card_line.json, call the LLM with reconcile.md, write output/recon.json, print the JSON.
+4. Write pnl_class.py: load output/recon.json and print booked_amount_usd. No LLM. Do not add receipt amount + card amount.</pre>
+      <div class="vibe-check"><strong>Check:</strong> <code>recon.json</code> has one booked amount. <code>pnl_class.py</code> prints that number, not a double count.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 7</span> Log the vibe-coder chat (37–40 min)</h2>
+      <p>Homework 1 Problem 1 wants this habit from day one. Your words, not a paste of this page.</p>
+      <pre class="prompt">Create or append AI_prompts.md with a Lecture 2 section. In your own words, bullet the prompts you actually typed for scaffold, receipt text, extraction contract, script, validator, and (if you got there) recon + Python total. One sentence on what the first attempt got wrong if you had to retry.</pre>
+      <div class="vibe-check"><strong>Check:</strong> File exists; bullets are paraphrases, not a copy-paste of this vibe page.</div>
+      <p class="vibe-extend"><strong>Stretch:</strong> Add <code>--input-dir</code> to extract every <code>.txt</code> in a folder. Homework 1 will need PDFs (pdfplumber / PyPDF2) and three different schemas — save that fight for the assignment, one problem at a time.</p>
+    </div>
+  </main>
+  <script src="../../js/theme.js"></script>
+  <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
+</body>
+</html>

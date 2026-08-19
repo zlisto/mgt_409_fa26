@@ -1,0 +1,122 @@
+[
+  {
+    "id": "faq-location",
+    "title": "Where is the venue?",
+    "answer": "College Street Music Hall is at 238 College Street, New Haven, CT 06510.",
+    "source_note": "Paraphrased from the public FAQ on collegestreetmusichall.com (course snapshot)."
+  },
+  {
+    "id": "faq-tickets-buy",
+    "title": "How do I buy tickets?",
+    "answer": "Advance tickets are sold through the venue website. The Friday box office hours described on the public FAQ were listed as suspended, and the Redscroll Records box office was listed as not currently available. Check the venue site for updates; this pack does not include a live box-office schedule.",
+    "source_note": "Paraphrased from the public FAQ (course snapshot)."
+  },
+  {
+    "id": "faq-refunds",
+    "title": "What is the refund policy?",
+    "answer": "Sales are final. The public FAQ states no refunds or exchanges unless a show is canceled or postponed. Openers can change. If a guest cannot attend, the FAQ points fans to Tixel for resale rather than a venue refund.",
+    "source_note": "Paraphrased from the public FAQ (course snapshot)."
+  },
+  {
+    "id": "faq-resale-tixel",
+    "title": "Can I resell my ticket?",
+    "answer": "The public FAQ names Tixel as the official fan-to-fan exchange, with listing via Eventbrite connection. Some shows may not be eligible. This pack does not process real resale or move tickets.",
+    "source_note": "Paraphrased from the public FAQ Tixel section (course snapshot)."
+  },
+  {
+    "id": "faq-age",
+    "title": "What is the age policy?",
+    "answer": "Unless a specific event is posted otherwise, shows are all ages.",
+    "source_note": "Paraphrased from the public FAQ (course snapshot)."
+  },
+  {
+    "id": "faq-id-alcohol",
+    "title": "Do I need ID to enter?",
+    "answer": "ID is required to drink alcohol, not merely to enter an all-ages show. Guests 21+ who want alcohol must show a valid, non-expired, government-issued photo ID. Anyone without proper ID is treated as under 21 and may not buy, hold, or drink alcohol. Violations can mean ejection.",
+    "source_note": "Paraphrased from the public FAQ (course snapshot)."
+  },
+  {
+    "id": "faq-seating",
+    "title": "Are there seats?",
+    "answer": "The room configuration changes by show. Loge and balcony, when used, are seated. Some shows have a seated floor; others are general-admission standing. Many GA standing shows put a limited number of chairs at the back first-come, first-served, with no guarantee of a seat.",
+    "source_note": "Paraphrased from the public FAQ (course snapshot)."
+  },
+  {
+    "id": "faq-ada",
+    "title": "Is the venue accessible?",
+    "answer": "The venue is described as accessible, but layout depends on the artist\u2019s room configuration. Typical GA floor setup includes ADA seating on a house-left rear platform. Fully seated shows list ADA seating in Gold Circle and Section 109. Loge and balcony are stairs-only; the public FAQ states there is no elevator.",
+    "source_note": "Paraphrased from the public FAQ (course snapshot). This pack does not book ADA seats."
+  },
+  {
+    "id": "faq-bags",
+    "title": "What is the bag policy?",
+    "answer": "Bags, backpacks, and containers larger than 12 \u00d7 6 \u00d7 12 inches are not allowed. Smaller bags are subject to search. If a bag is over that size, the agent should not promise locker storage unless this pack says so (it does not).",
+    "source_note": "Paraphrased from public Know Before You Go / prohibited-item lists used by the venue (course snapshot)."
+  },
+  {
+    "id": "faq-prohibited",
+    "title": "What cannot I bring in?",
+    "answer": "Prohibited examples in the public lists include weapons, illegal drugs, outside food and drinks (including empty refillable bottles), laser pointers, professional photo/recording gear, drones, selfie sticks, skateboards/rollerblades/bicycles, and animals except those allowed under ADA or state/local law. Staff may refuse other items they judge dangerous.",
+    "source_note": "Paraphrased from public prohibited-item lists (course snapshot)."
+  },
+  {
+    "id": "faq-reentry",
+    "title": "Is re-entry allowed?",
+    "answer": "Public Know Before You Go notes say re-entry is not allowed. Smoking areas are described as available.",
+    "source_note": "Paraphrased from public Know Before You Go emails (course snapshot)."
+  },
+  {
+    "id": "faq-willcall",
+    "title": "How does will call work?",
+    "answer": "Will-call pickup is in the purchaser\u2019s name with valid photo ID. Public notes say the box opens about two hours before door time; confirm on the ticket or event page. This pack does not look up real will-call names.",
+    "source_note": "Paraphrased from public Know Before You Go notes (course snapshot)."
+  },
+  {
+    "id": "faq-food",
+    "title": "Is there food?",
+    "answer": "Geronimo Tequila Bar & Southwest Grill is described as serving tacos in the lobby before and during shows. Bars also sell snacks such as chips.",
+    "source_note": "Paraphrased from the public FAQ (course snapshot)."
+  },
+  {
+    "id": "faq-drinks",
+    "title": "Are there bars?",
+    "answer": "The venue lists multiple full bars with drafts, cans, liquor, wine, soft drinks, and water. Alcohol still follows the ID rules in faq-id-alcohol.",
+    "source_note": "Paraphrased from the public FAQ (course snapshot)."
+  },
+  {
+    "id": "faq-coat-check",
+    "title": "Is there coat check?",
+    "answer": "Coat check is described as seasonal and first-come, first-served. It can fill up; the pack does not guarantee a hanger.",
+    "source_note": "Paraphrased from the public FAQ (course snapshot)."
+  },
+  {
+    "id": "faq-parking",
+    "title": "Where do I park?",
+    "answer": "Discounted parking at Temple Street Garage via ParkWhiz is mentioned for shows (about two blocks). Crown Street Garage is often noted as nearby. Other paid lots, garages, and street parking exist downtown. This pack does not sell parking.",
+    "source_note": "Paraphrased from the public FAQ and Know Before You Go notes (course snapshot)."
+  },
+  {
+    "id": "faq-hotels",
+    "title": "Hotel partners?",
+    "answer": "The public FAQ names New Haven Hotel as an official partner and Hotel Marcel as a sustainable partner with a stated discount and a phone number for shuttle questions. This homework must not book rooms or call hotels.",
+    "source_note": "Paraphrased from the public FAQ (course snapshot)."
+  },
+  {
+    "id": "faq-photo",
+    "title": "Can I take photos or record?",
+    "answer": "Photo, video, and audio rules are set per show at the artist\u2019s discretion. Do not promise that phones or cameras are always allowed.",
+    "source_note": "Paraphrased from the public FAQ (course snapshot)."
+  },
+  {
+    "id": "faq-covid",
+    "title": "COVID requirements?",
+    "answer": "The public FAQ snapshot said there were no venue-wide proof-of-vaccine or negative-test requirements, but policy can change per artist or government rule. Tell guests to watch their event page; do not invent a current mandate.",
+    "source_note": "Paraphrased from the public FAQ (course snapshot)."
+  },
+  {
+    "id": "faq-contact",
+    "title": "How can guests contact the venue?",
+    "answer": "The public FAQ lists phone 203-867-2000 and email info@collegestreetmusichall.com. Your homework agent must not send email or place calls. If a question needs a human at the venue, refuse to act as a messenger and say the guest should use those channels themselves.",
+    "source_note": "Paraphrased from the public FAQ (course snapshot)."
+  }
+]

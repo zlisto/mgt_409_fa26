@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 1 Vibe Coding — AI and Vibe Coding</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/vibe-session.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .vibe-main { max-width: 800px; }
+    .vibe-header h1 { font-size: 2rem; }
+    .vibe-goal {
+      background: #fff6d8;
+      border-left: 6px solid #ff3d7f;
+    }
+    [data-theme="dark"] .vibe-goal { background: #3a2f12; }
+    .vibe-kicker {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin: 0 0 1rem;
+    }
+    .mini-flow {
+      width: 100%;
+      margin: 0.75rem 0 1.25rem;
+    }
+    .dont {
+      background: #ffe4ec;
+      border: 1px solid #ff3d7f;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-top: 0.6rem;
+    }
+    [data-theme="dark"] .dont { background: #3a1524; }
+    .lab-clock {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.4rem;
+      margin: 1rem 0 1.25rem;
+    }
+    .lab-clock div {
+      border-radius: 10px;
+      padding: 0.55rem 0.4rem;
+      text-align: center;
+      font-weight: 800;
+      font-size: 0.78rem;
+      line-height: 1.25;
+      background: #08111f;
+      color: #c8f542;
+    }
+    .lab-clock span {
+      display: block;
+      color: #ffd166;
+      font-size: 0.7rem;
+      font-weight: 700;
+      margin-top: 0.15rem;
+    }
+    .mins {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: #ffd166;
+      color: #08111f;
+      padding: 0.12rem 0.45rem;
+      border-radius: 999px;
+      margin-left: 0.35rem;
+      vertical-align: middle;
+    }
+    .kickoff {
+      background: #e8eef4;
+      border-radius: 10px;
+      padding: 0.9rem 1.05rem;
+      margin: 1rem 0 1.5rem;
+    }
+    [data-theme="dark"] .kickoff { background: #132a45; }
+    @media (max-width: 720px) {
+      .lab-clock { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <main class="vibe-main">
+    <div class="vibe-header">
+      <h1>Lecture 1: Vibe coding lab</h1>
+      <p class="meta">
+        <a href="../slides/lec01-slides.html">← Slides</a>
+        <a href="../../lectures.html">All lectures</a>
+        · 40 minutes in class
+      </p>
+    </div>
+
+    <p class="vibe-kicker">SpaceX just paid $60 billion for a vibe-coding editor. You have forty minutes to learn the version that still works when the intern (the model) hallucinates a dollar amount.</p>
+
+    <div class="vibe-goal">
+      <strong>In-class goal:</strong> Leave with (1) a gitignored <code>.env</code>, (2) one working OpenAI API call from Python, (3) one JSON object the model did not get to invent freely, and (4) the start of <code>AI_prompts.md</code>. This is the atom of Homework 1 — not the homework.
+    </div>
+
+    <div class="lab-clock" aria-label="40-minute lab clock">
+      <div>0–4<span>kickoff</span></div>
+      <div>4–12<span>folder</span></div>
+      <div>12–18<span>install</span></div>
+      <div>18–28<span>first call</span></div>
+      <div>28–36<span>JSON</span></div>
+      <div>36–40<span>prompt log</span></div>
+    </div>
+
+    <svg class="mini-flow" viewBox="0 0 760 78" role="img" aria-label="Today: folder, API call, JSON, prompt log">
+      <rect x="4" y="14" width="170" height="50" rx="10" fill="#00356b"/>
+      <text x="89" y="45" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">folder + .env</text>
+      <rect x="198" y="14" width="170" height="50" rx="10" fill="#ff3d7f"/>
+      <text x="283" y="45" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">hello_llm.py</text>
+      <rect x="392" y="14" width="170" height="50" rx="10" fill="#ffd166"/>
+      <text x="477" y="45" text-anchor="middle" fill="#08111f" font-size="14" font-weight="700">JSON extract</text>
+      <rect x="586" y="14" width="170" height="50" rx="10" fill="#c8f542"/>
+      <text x="671" y="45" text-anchor="middle" fill="#08111f" font-size="14" font-weight="700">AI_prompts.md</text>
+    </svg>
+
+    <div class="kickoff">
+      <strong>Minutes 0–4 — kickoff.</strong> Cheap model today (for example <code>gpt-5.6-luna</code> or whatever the instructor names). Do not unzip Homework 1. If the API call is still broken at minute 28, use the debug prompt at the bottom — do not skip ahead to JSON.
+    </div>
+
+    <p class="vibe-download"><strong>Optional starter:</strong> <a href="../../data/lec01/lec01_starter.zip">lec01_starter.zip</a> if the instructor posted it. Otherwise vibe-code the folder from Step 1. Setup help: <a href="../../instructions.html">Instructions</a>.</p>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 1</span> Skeleton — secrets never travel <span class="mins">min 4–12</span></h2>
+      <p>Homework 1 will grow <code>prompts/</code> and <code>output/</code>. Start those habits now, on a throwaway lecture folder.</p>
+      <pre class="prompt">Create a folder lec01/ for MGT 409 Lecture 1 with:
+- hello_llm.py
+- requirements.txt listing openai and python-dotenv
+- .env.example with OPENAI_API_KEY=your_key_here
+- .gitignore that ignores .env, .venv, and __pycache__
+- prompts/ (empty for now)
+- output/ (empty for now)
+- README.md with venv, pip install, copy .env.example to .env, and python hello_llm.py
+Do not put a real API key in any file.</pre>
+      <div class="vibe-check"><strong>Check (by 12):</strong> <code>.gitignore</code> lists <code>.env</code>. No key in anything you would zip or commit.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 2</span> Install like a grown-up <span class="mins">min 12–18</span></h2>
+      <p>Run these in the terminal yourself. Do not paste your key into the vibe coder chat.</p>
+      <pre class="prompt">Update README.md with exact Windows and Mac commands:
+python -m venv .venv
+how to activate the venv
+pip install -r requirements.txt
+copy .env.example to .env (copy on Windows, cp on Mac)
+Then remind me to paste the OpenAI key into .env locally only.</pre>
+      <div class="vibe-check"><strong>Check (by 18):</strong> <code>pip list</code> shows <code>openai</code> and <code>python-dotenv</code>. <code>.env</code> exists on disk and is ignored by git.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 3</span> First call — prove the API works <span class="mins">min 18–28</span></h2>
+      <p>One function. One model. One sentence. This is the whole course in miniature. Use a cheap model — not the flagship Sol until a cheaper model fails the eval.</p>
+      <pre class="prompt">In hello_llm.py:
+1. Load OPENAI_API_KEY from .env with python-dotenv.
+2. Define ask_llm(prompt: str) -> str that calls OpenAI chat completions.
+3. Under if __name__ == "__main__": print ask_llm("In one sentence, what should a manager check after a vibe coder writes a script?")
+4. If the key is missing, raise a clear error that says to copy .env.example to .env.
+5. Print response.usage so I can see input and output tokens.</pre>
+      <div class="vibe-check"><strong>Check (by 28):</strong> <code>python hello_llm.py</code> prints one sentence <em>and</em> a token count. No traceback. If you are still debugging, stay here — JSON can wait.</div>
+      <p class="vibe-extend"><strong>If you finish early:</strong> Compute a rough USD cost from today’s <a href="https://developers.openai.com/api/docs/pricing">OpenAI pricing</a> using the usage object. Lecture slides used Luna at $0.20 / $1.20 per 1M tokens.</p>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 4</span> JSON teaser (Homework 1’s heartbeat) <span class="mins">min 28–36</span></h2>
+      <p>Homework 1 does not want a paragraph about the bike shop. It wants rows. Practice on this <strong>fake</strong> register tape — not the HW1 zip.</p>
+      <pre class="prompt">Add extract_receipt(text: str) -> dict that:
+- Calls the same model with response_format json_object (or equivalent structured output)
+- Uses a prompt file prompts/demo_receipt.md (not a giant string only in Python)
+- Schema keys: vendor, date, amount_usd, category, fields_not_found
+- Rules in the prompt: never invent amounts; put missing keys in fields_not_found
+- Input text:
+"""
+SPOKE N SNACK
+New Haven CT
+Jan 8 2026
+Inner tubes x2    18.00
+Tax                1.17
+TOTAL             19.17
+Paid VISA
+"""
+Print the dict. Write it to output/demo_receipt.json.</pre>
+      <div class="vibe-check"><strong>Check (by 36):</strong> File exists; JSON parses; <code>amount_usd</code> is 19.17 or the model honestly listed what it could not read. If it invents a vendor like “Nike,” fix the <strong>prompt</strong>, not the number by hand.</div>
+      <div class="dont"><strong>Do not:</strong> unzip Homework 1 and solve Problem 2 in this lab. Today is the pattern. Next lecture is a real PDF.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 5</span> Log the prompts you actually typed <span class="mins">min 36–40</span></h2>
+      <p>Problem 1 of Homework 1 is this file, grown up. Write in <strong>your</strong> words. Graders can tell a paste of this page from a human who was in the room.</p>
+      <pre class="prompt">Create AI_prompts.md with:
+# Lecture 1
+## Step 1 — project skeleton
+(what I asked, in my words)
+## Step 3 — first API call
+(what I asked)
+## Step 4 — JSON receipt demo
+(what I asked)
+If I needed a second prompt, one sentence on what the first one lacked.</pre>
+      <div class="vibe-check"><strong>Check (by 40):</strong> Three sections. Readable. No API key. No “please complete all of HW1.”</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Anytime</span> Debug like a manager</h2>
+      <p>When it breaks — and it will — give the model the <strong>error</strong> and the <strong>one file</strong>. That is the same move you will use when <code>read_receipts.py</code> explodes at 1 a.m. Use this instead of skipping ahead.</p>
+      <pre class="prompt">I ran python hello_llm.py and got this error:
+[paste traceback]
+Here is hello_llm.py:
+[paste that file only]
+Explain the cause in plain English and suggest the smallest fix. Do not rewrite the whole project.</pre>
+      <div class="vibe-check"><strong>Check:</strong> You can say the cause out loud (missing key, wrong model name, venv not active, JSON parse fail).</div>
+    </div>
+
+    <div class="assignment-box" style="margin-top:2rem">
+      <h2>Before next class</h2>
+      <ul>
+        <li>Finish <a href="../../instructions.html">setup</a> if Step 3 never printed.</li>
+        <li>Open <a href="../../hw1/p1.html">Homework 1, Problem 1</a>. Screenshot <em>that</em> card when you start — do not dump the whole assignment into a vibe coder.</li>
+        <li>Create <code>hw1/</code> with <code>prompts/</code> and <code>output/</code> empty and waiting. Problem 10 shows the zip layout; you do not need every file tonight.</li>
+        <li>Lecture 2 vibe: structured data from free text (a real receipt PDF).</li>
+      </ul>
+    </div>
+  </main>
+  <script src="../../js/theme.js"></script>
+  <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
+</body>
+</html>

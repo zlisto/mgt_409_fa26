@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 520" role="img" aria-labelledby="swarmTitle swarmDesc">
+  <title id="swarmTitle">Claude Riemann swarm: propose, attempt, critique, prune</title>
+  <desc id="swarmDesc">Phase 1 generated about 650 approaches that failed. Phase 2 ran about 60 subagents in parallel: they proposed ideas, attempted them with code, critiqued one another, and pruned what did not survive.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#07101c"/>
+      <stop offset="100%" stop-color="#0f1f35"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#7eb6ff"/>
+    </marker>
+  </defs>
+  <rect width="920" height="520" rx="22" fill="url(#bg)"/>
+
+  <text x="36" y="42" fill="#7eb6ff" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="1.6">ANTHROPIC � AUG 2026 � CLAUDE CODE SWARM</text>
+  <text x="36" y="78" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="800">Propose � attempt � critique � prune</text>
+  <text x="36" y="106" fill="#c9d6e8" font-family="Inter, Arial, sans-serif" font-size="16">Prompt: take a real stab at the Riemann hypothesis. The model chooses the math.</text>
+
+  <!-- Pipeline -->
+  <rect x="36" y="128" width="190" height="78" rx="12" fill="#00356b"/>
+  <text x="131" y="158" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800">PROPOSE</text>
+  <text x="131" y="180" text-anchor="middle" fill="#cde4ff" font-family="Inter, Arial, sans-serif" font-size="13">~650 approaches</text>
+  <text x="131" y="196" text-anchor="middle" fill="#cde4ff" font-family="Inter, Arial, sans-serif" font-size="13">Phase 1: all failed</text>
+
+  <line x1="226" y1="167" x2="248" y2="167" stroke="#7eb6ff" stroke-width="3" marker-end="url(#arr)"/>
+
+  <rect x="256" y="128" width="190" height="78" rx="12" fill="#0f7b4a"/>
+  <text x="351" y="158" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800">ATTEMPT</text>
+  <text x="351" y="180" text-anchor="middle" fill="#d4ffe8" font-family="Inter, Arial, sans-serif" font-size="13">~2,400 shell cmds</text>
+  <text x="351" y="196" text-anchor="middle" fill="#d4ffe8" font-family="Inter, Arial, sans-serif" font-size="13">Python + zeta checks</text>
+
+  <line x1="446" y1="167" x2="468" y2="167" stroke="#7eb6ff" stroke-width="3" marker-end="url(#arr)"/>
+
+  <rect x="476" y="128" width="190" height="78" rx="12" fill="#286dc0"/>
+  <text x="571" y="158" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800">CRITIQUE</text>
+  <text x="571" y="180" text-anchor="middle" fill="#cde4ff" font-family="Inter, Arial, sans-serif" font-size="13">Agents referee</text>
+  <text x="571" y="196" text-anchor="middle" fill="#cde4ff" font-family="Inter, Arial, sans-serif" font-size="13">54 arXiv papers</text>
+
+  <line x1="666" y1="167" x2="688" y2="167" stroke="#7eb6ff" stroke-width="3" marker-end="url(#arr)"/>
+
+  <rect x="696" y="128" width="188" height="78" rx="12" fill="#c73e82"/>
+  <text x="790" y="158" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800">PRUNE</text>
+  <text x="790" y="180" text-anchor="middle" fill="#ffe0ec" font-family="Inter, Arial, sans-serif" font-size="13">Keep survivors</text>
+  <text x="790" y="196" text-anchor="middle" fill="#ffe0ec" font-family="Inter, Arial, sans-serif" font-size="13">Drop dead ends</text>
+
+  <!-- Swarm of ~60 dots, 4 rows of 15 -->
+  <text x="36" y="248" fill="#8fa3b8" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700">PHASE 2 � ~60 SUBAGENTS IN PARALLEL (~1.5 DAYS)</text>
+
+  <!-- Row layout: 30 pruned (gray), 13 contributors (gold), 2 key (green), 13 validators (blue), 2 writers (orange) -->
+  <!-- 15 columns x 4 rows = 60. Order: first 30 gray, then 13 gold, 2 green, 13 blue, 2 orange -->
+  <g id="swarm-dots">
+    <!-- I'll place 60 circles. Columns start x=52, step 28; rows y=278, step 28 -->
+    <!-- 0-29 pruned -->
+    <circle cx="52" cy="278" r="9" fill="#4a5d73"/><circle cx="80" cy="278" r="9" fill="#4a5d73"/><circle cx="108" cy="278" r="9" fill="#4a5d73"/><circle cx="136" cy="278" r="9" fill="#4a5d73"/><circle cx="164" cy="278" r="9" fill="#4a5d73"/>
+    <circle cx="192" cy="278" r="9" fill="#4a5d73"/><circle cx="220" cy="278" r="9" fill="#4a5d73"/><circle cx="248" cy="278" r="9" fill="#4a5d73"/><circle cx="276" cy="278" r="9" fill="#4a5d73"/><circle cx="304" cy="278" r="9" fill="#4a5d73"/>
+    <circle cx="332" cy="278" r="9" fill="#4a5d73"/><circle cx="360" cy="278" r="9" fill="#4a5d73"/><circle cx="388" cy="278" r="9" fill="#4a5d73"/><circle cx="416" cy="278" r="9" fill="#4a5d73"/><circle cx="444" cy="278" r="9" fill="#4a5d73"/>
+    <circle cx="52" cy="306" r="9" fill="#4a5d73"/><circle cx="80" cy="306" r="9" fill="#4a5d73"/><circle cx="108" cy="306" r="9" fill="#4a5d73"/><circle cx="136" cy="306" r="9" fill="#4a5d73"/><circle cx="164" cy="306" r="9" fill="#4a5d73"/>
+    <circle cx="192" cy="306" r="9" fill="#4a5d73"/><circle cx="220" cy="306" r="9" fill="#4a5d73"/><circle cx="248" cy="306" r="9" fill="#4a5d73"/><circle cx="276" cy="306" r="9" fill="#4a5d73"/><circle cx="304" cy="306" r="9" fill="#4a5d73"/>
+    <circle cx="332" cy="306" r="9" fill="#4a5d73"/><circle cx="360" cy="306" r="9" fill="#4a5d73"/><circle cx="388" cy="306" r="9" fill="#4a5d73"/><circle cx="416" cy="306" r="9" fill="#4a5d73"/><circle cx="444" cy="306" r="9" fill="#4a5d73"/>
+    <!-- 13 contributors gold -->
+    <circle cx="52" cy="334" r="9" fill="#bd9b60"/><circle cx="80" cy="334" r="9" fill="#bd9b60"/><circle cx="108" cy="334" r="9" fill="#bd9b60"/><circle cx="136" cy="334" r="9" fill="#bd9b60"/><circle cx="164" cy="334" r="9" fill="#bd9b60"/>
+    <circle cx="192" cy="334" r="9" fill="#bd9b60"/><circle cx="220" cy="334" r="9" fill="#bd9b60"/><circle cx="248" cy="334" r="9" fill="#bd9b60"/><circle cx="276" cy="334" r="9" fill="#bd9b60"/><circle cx="304" cy="334" r="9" fill="#bd9b60"/>
+    <circle cx="332" cy="334" r="9" fill="#bd9b60"/><circle cx="360" cy="334" r="9" fill="#bd9b60"/><circle cx="388" cy="334" r="9" fill="#bd9b60"/>
+    <!-- 2 key ideas green, larger -->
+    <circle cx="424" cy="334" r="12" fill="#1aa37a" stroke="#d4ffe8" stroke-width="2"/>
+    <circle cx="456" cy="334" r="12" fill="#1aa37a" stroke="#d4ffe8" stroke-width="2"/>
+    <!-- 13 validators blue -->
+    <circle cx="52" cy="362" r="9" fill="#286dc0"/><circle cx="80" cy="362" r="9" fill="#286dc0"/><circle cx="108" cy="362" r="9" fill="#286dc0"/><circle cx="136" cy="362" r="9" fill="#286dc0"/><circle cx="164" cy="362" r="9" fill="#286dc0"/>
+    <circle cx="192" cy="362" r="9" fill="#286dc0"/><circle cx="220" cy="362" r="9" fill="#286dc0"/><circle cx="248" cy="362" r="9" fill="#286dc0"/><circle cx="276" cy="362" r="9" fill="#286dc0"/><circle cx="304" cy="362" r="9" fill="#286dc0"/>
+    <circle cx="332" cy="362" r="9" fill="#286dc0"/><circle cx="360" cy="362" r="9" fill="#286dc0"/><circle cx="388" cy="362" r="9" fill="#286dc0"/>
+    <!-- 2 paper writers orange -->
+    <circle cx="424" cy="362" r="10" fill="#f4633a"/><circle cx="456" cy="362" r="10" fill="#f4633a"/>
+  </g>
+
+  <!-- Role legend -->
+  <rect x="520" y="248" width="364" height="148" rx="12" fill="#121a2d" stroke="#1e3a5f" stroke-width="1.5"/>
+  <text x="540" y="276" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800">Of those ~60 subagents</text>
+  <circle cx="552" cy="300" r="7" fill="#1aa37a"/><text x="568" y="305" fill="#e8eef4" font-family="Inter, Arial, sans-serif" font-size="13">2 developed the key ideas</text>
+  <circle cx="552" cy="322" r="7" fill="#bd9b60"/><text x="568" y="327" fill="#e8eef4" font-family="Inter, Arial, sans-serif" font-size="13">13 contributed to those two</text>
+  <circle cx="552" cy="344" r="7" fill="#4a5d73"/><text x="568" y="349" fill="#e8eef4" font-family="Inter, Arial, sans-serif" font-size="13">30 produced nothing useful</text>
+  <circle cx="552" cy="366" r="7" fill="#286dc0"/><text x="568" y="371" fill="#e8eef4" font-family="Inter, Arial, sans-serif" font-size="13">13 validated arguments</text>
+  <circle cx="552" cy="388" r="7" fill="#f4633a"/><text x="568" y="393" fill="#e8eef4" font-family="Inter, Arial, sans-serif" font-size="13">2 wrote the initial paper</text>
+
+  <rect x="36" y="428" width="848" height="68" rx="12" fill="#1c2740"/>
+  <text x="56" y="456" fill="#ffd166" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700">Surviving claim (not a proof of RH): 41.6% � 67.2% of zeros on the critical line</text>
+  <text x="56" y="480" fill="#c9d6e8" font-family="Inter, Arial, sans-serif" font-size="14">31 million output tokens � two Claude Code sessions � human mostly said keep going</text>
+</svg>

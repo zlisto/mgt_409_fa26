@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 420" role="img" aria-label="News card: TechCrunch 13 August 2026, Anthropic agents started a turf war">
+  <defs>
+    <linearGradient id="turf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00c2a8"/>
+      <stop offset="100%" stop-color="#ffc857"/>
+    </linearGradient>
+  </defs>
+  <rect width="920" height="420" rx="22" fill="#0b1220"/>
+  <rect x="0" y="0" width="14" height="420" fill="url(#turf)"/>
+  <rect x="28" y="24" width="864" height="372" rx="16" fill="#101820" stroke="#00c2a8" stroke-width="2"/>
+  <text x="52" y="64" fill="#7dffc3" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="1.6">TECHCRUNCH � 13 AUG 2026 � ANTHROPIC</text>
+  <text x="52" y="118" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800">Same lab, different agent design.</text>
+  <text x="52" y="156" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800">Three agents, one box, a turf war.</text>
+  <text x="52" y="212" fill="#c9d6e8" font-family="Inter, Arial, sans-serif" font-size="20">Conflicting orders. Shared server. No isolation.</text>
+  <text x="52" y="242" fill="#c9d6e8" font-family="Inter, Arial, sans-serif" font-size="20">Kill-scripts, cloned mistakes, then a human truce.</text>
+  <rect x="52" y="286" width="780" height="78" rx="12" fill="#1c2740"/>
+  <text x="72" y="322" fill="#ffc857" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">Contrast with the Riemann swarm</text>
+  <text x="72" y="348" fill="#e8eef4" font-family="Inter, Arial, sans-serif" font-size="17">Parallel is useful only if critique and prune are real jobs.</text>
+</svg>

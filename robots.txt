@@ -1,0 +1,47 @@
+# Discourage training / homework-dump crawlers from fetching assignment pages.
+# Course pages otherwise stay indexable.
+
+User-agent: GPTBot
+Disallow: /hw
+
+User-agent: ChatGPT-User
+Disallow: /hw
+
+User-agent: OAI-SearchBot
+Disallow: /hw
+
+User-agent: Google-Extended
+Disallow: /hw
+
+User-agent: CCBot
+Disallow: /hw
+
+User-agent: anthropic-ai
+Disallow: /hw
+
+User-agent: ClaudeBot
+Disallow: /hw
+
+User-agent: Claude-User
+Disallow: /hw
+
+User-agent: Claude-SearchBot
+Disallow: /hw
+
+User-agent: Bytespider
+Disallow: /hw
+
+User-agent: PerplexityBot
+Disallow: /hw
+
+User-agent: Amazonbot
+Disallow: /hw
+
+User-agent: Applebot-Extended
+Disallow: /hw
+
+User-agent: meta-externalagent
+Disallow: /hw
+
+User-agent: *
+Allow: /

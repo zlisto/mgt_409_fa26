@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 10 Vibe Coding — Agent Orchestration</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/vibe-session.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .vibe-main { max-width: 820px; }
+    .vibe-header h1 { font-size: 2rem; }
+    .vibe-goal {
+      background: linear-gradient(90deg, #e8f4ff, #e6fff9);
+      border-left-color: #00c2b8;
+      font-size: 1.08rem;
+    }
+    .vibe-step h2 { font-size: 1.35rem; }
+    .vibe-joke {
+      background: linear-gradient(90deg, #fff3c4, #ffe0ef);
+      border-left: 5px solid #ff3d7f;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      margin: 0.75rem 0 1.25rem;
+    }
+    [data-theme="dark"] .vibe-joke { background: #3a1730; color: #ffe9c7; }
+    [data-theme="dark"] .vibe-goal { background: #123044; }
+    .vibe-clock {
+      background: linear-gradient(90deg, #0b3d91, #00c2b8);
+      color: #fff;
+      border-radius: 12px;
+      padding: 0.9rem 1.1rem;
+      margin: 0.85rem 0 0;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .vibe-clock .mins {
+      display: block;
+      font-weight: 600;
+      font-size: 0.95rem;
+      opacity: 0.95;
+      margin-top: 0.25rem;
+    }
+    .step-mins {
+      display: inline-block;
+      margin-left: 0.4rem;
+      background: #00c2b8;
+      color: #042a28;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 0.12rem 0.5rem;
+      border-radius: 999px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <main class="vibe-main">
+    <div class="vibe-header">
+      <h1>Lecture 10: Agent Orchestration</h1>
+      <p class="meta">
+        <a href="../slides/lec10-slides.html">← Slides</a>
+        <a href="../../lectures.html">All lectures</a>
+        · 40 minutes in class
+      </p>
+    </div>
+    <div class="vibe-clock">
+      40-minute lab. If you are still polishing the server at minute 10, skip the stretch and jump to the orchestrator.
+      <span class="mins">0–8 server · 8–13 catalog · 13–23 loop · 23–32 refuse · 32–37 eval · 37–40 log</span>
+    </div>
+    <div class="vibe-goal"><strong>In-class goal:</strong> Build a tiny MCP server plus an orchestrator that calls more than one tool, writes a tool trace, and <strong>refuses when two tools disagree</strong>. This is a coffee-cart toy — not Homework 5.</div>
+    <p class="vibe-joke">If the menu promises Sunday brunch and the hours file says “closed Sunday,” your agent is not a diplomat. It is a referee.</p>
+    <p>Work in a new folder <code>lec10_vibe/</code>. Use the OpenAI API the same way you do for homework. Do not paste the Peabody zip into this session.</p>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 1</span> Toy MCP server <span class="step-mins">0–8 min</span></h2>
+      <p>Two desks, two JSON files, one dispatcher.</p>
+      <pre class="prompt">Create lec10_vibe/ with tools/hours.json and tools/menu.json plus mcp_server.py.
+
+hours.json: weekday hours 8:00–16:00, closed Sunday, closed campus holidays.
+
+menu.json: weekday drinks, and a "Sunday maple latte brunch special" that implies the cart is serving Sunday.
+
+mcp_server.py must load those files and implement list_tools() and call_tool(name, arguments). Tools:
+
+- get_cart_hours(day) → hours / closed
+- get_menu(day) → items for that day
+
+Unknown tool names return {"error": "..."} not a made-up menu. Print list_tools() when run as main. Do not hard-code answers in the orchestrator later — the server reads the JSON.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Running the server prints two tools with names, descriptions, and input schemas. Calling <code>get_cart_hours</code> with <code>day=Sunday</code> says closed. Calling <code>get_menu</code> with <code>day=Sunday</code> still lists the brunch special.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 2</span> Catalog dump <span class="step-mins">8–13 min</span></h2>
+      <p>Prove the tools exist before you let the LLM touch them.</p>
+      <pre class="prompt">Add a --out-dir flag. When I run python mcp_server.py --out-dir output, write output/tool_catalog.json from list_tools() and output/sample_hours.json plus output/sample_menu.json from one real call_tool each (weekday is fine for the samples).</pre>
+      <div class="vibe-check"><strong>Check:</strong> Three JSON files exist. Catalog includes schemas. Samples include <code>tool</code>, <code>arguments</code>, and <code>result</code>.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 3</span> Orchestrator loop <span class="step-mins">13–23 min</span></h2>
+      <p>The agent imports MCP. It does not copy the JSON.</p>
+      <pre class="prompt">Create orchestrator.py and prompts/orchestrator.md.
+
+orchestrator.py takes --query and --out-dir. It imports list_tools and call_tool from mcp_server.py. It calls an LLM in a loop: observe query + prior tool results, decide next tool or finish, execute call_tool, append a trace. Cap at 6 steps.
+
+Write output/orchestrator_sample.json with keys query, answer, action (answer or refuse), tool_trace (list of {name, arguments, result_summary}), conflict {detected, summary}.
+
+Sample query must need BOTH tools, e.g. "I can only come Sunday — is the maple latte still happening?"</pre>
+      <div class="vibe-check"><strong>Check:</strong> Sample JSON has at least two different tool names in <code>tool_trace</code>. The file imported MCP instead of duplicating hours/menu logic.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 4</span> Refuse on disagreement <span class="step-mins">23–32 min</span></h2>
+      <p>Sunday is the planted clash: hours say closed, menu advertises brunch.</p>
+      <pre class="prompt">Update prompts/orchestrator.md: if two tools disagree, set action to refuse, answer to empty or a one-line "I need a human to confirm," conflict.detected true, and summarize the clash. Do not invent a blended policy like "open just for lattes." Re-run the Sunday maple-latte query and overwrite orchestrator_sample.json.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Sunday query → <code>action</code> is <code>refuse</code> and <code>conflict.detected</code> is true. Weekday “are you open at 10 and do you have coffee?” still answers.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 5</span> Mini eval <span class="step-mins">32–37 min</span></h2>
+      <p>Two cases, one clash, one clean.</p>
+      <pre class="prompt">Create cases.json with two objects: weekday_coffee (expect_conflict false) and sunday_brunch (expect_conflict true). Create run_tasks.py that runs the orchestrator on each and writes output/task_eval.json with id, query, action, conflict_detected, expect_conflict, matched_expect_conflict, tools_used.</pre>
+      <div class="vibe-check"><strong>Check:</strong> <code>matched_expect_conflict</code> is true for both rows. Sunday refuses. Weekday answers.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 6</span> AI_prompts.md <span class="step-mins">37–40 min</span></h2>
+      <p>Log what you actually typed.</p>
+      <pre class="prompt">Add a Lecture 10 section to AI_prompts.md with the prompts you used, in your own words, plus one sentence on what broke after the first orchestrator run.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Lecture 10 section exists with at least four prompt summaries.</div>
+      <p class="vibe-extend"><strong>Stretch (after 40):</strong> Draw a one-page HTML block diagram of mcp_server → orchestrator → task_eval, and mark the LLM box and the refuse path. This is practice for HW5 Problem 7, not a substitute for it.</p>
+    </div>
+  </main>
+  <script src="../../js/theme.js"></script>
+  <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
+</body>
+</html>

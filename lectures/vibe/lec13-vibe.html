@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 13 Vibe Coding — Future Directions</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/vibe-session.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .vibe-header h1 {
+      font-size: 2.1rem;
+      background: linear-gradient(90deg, #d97706, #e11d48, #7c3aed);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .vibe-goal {
+      background: linear-gradient(90deg, #ecfeff, #f5f3ff);
+      border-left: 6px solid #7c3aed;
+    }
+    .vibe-step h2 { font-size: 1.35rem; }
+    .vibe-step:nth-of-type(1) .step-num { background: #e11d48; }
+    .vibe-step:nth-of-type(2) .step-num { background: #d97706; }
+    .vibe-step:nth-of-type(3) .step-num { background: #65a30d; }
+    .vibe-step:nth-of-type(4) .step-num { background: #0891b2; }
+    .vibe-step:nth-of-type(5) .step-num { background: #7c3aed; }
+    .vibe-note {
+      margin: 1rem 0;
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      background: #fff7ed;
+      border: 2px solid #f59e0b;
+      font-weight: 600;
+    }
+    [data-theme="dark"] .vibe-note { background: #3b2710; color: #fde68a; }
+    .pace-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 0.85rem 0 1.1rem;
+    }
+    .pace-chip {
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 0.28rem 0.55rem;
+      border-radius: 999px;
+      background: #e8eef4;
+      color: #00356b;
+    }
+    [data-theme="dark"] .pace-chip { background: #132a45; color: #7ec8ff; }
+    .time-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: #111827;
+      color: #fff;
+      padding: 0.12rem 0.45rem;
+      border-radius: 4px;
+      margin-left: 0.35rem;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <main class="vibe-main">
+    <div class="vibe-header">
+      <h1>Lecture 13: Future Directions</h1>
+      <p class="meta">
+        <a href="../slides/lec13-slides.html">← Slides</a>
+        <a href="../../lectures.html">All lectures</a>
+        · 40 minutes in class
+      </p>
+    </div>
+    <div class="vibe-goal"><strong>In-class goal:</strong> Kick the Business AI Co-Pilot — pick a real business, map required modules, stub a router, and write an honest public-suite checklist. This is a 40-minute kickoff, not a workshop to finish the project.</div>
+    <p class="vibe-download"><strong>Practice pack:</strong> <a href="../../data/final_project/final_project_practice.zip">final_project_practice.zip</a> · <a href="../../project_requirements.html">Full requirements</a></p>
+    <p class="vibe-note">Do not ask your vibe coder to finish the whole project from the assignment URL. One section at a time. Graders still run a hidden suite.</p>
+    <div class="pace-strip">
+      <span class="pace-chip">0–8 name the business</span>
+      <span class="pace-chip">8–16 module map</span>
+      <span class="pace-chip">16–26 router stub</span>
+      <span class="pace-chip">26–34 public suite skeleton</span>
+      <span class="pace-chip">34–40 guardrail + memo + prompts</span>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 1</span> Name the business (Section A) <span class="time-badge">0–8 min</span></h2>
+      <p>Pick an industry you could explain to a skeptic in one paragraph. Fictional is fine; vague is not. “An AI company for businesses” is how you get a C and a sad README.</p>
+      <pre class="prompt">Create final_project/README.md for my MGT 409 Business AI Co-Pilot.
+
+Include:
+- business_name (specific, not Meridian with extra vowels)
+- one paragraph: industry, primary user (job title), one end-to-end workflow the co-pilot handles
+- install steps, model name, how to set OPENAI_API_KEY via local .env (never commit the key)
+- placeholder Live URL: TBD
+
+Do not generate the rest of the repo yet.</pre>
+      <div class="vibe-check"><strong>Check:</strong> README has a named business, a job-title user, and one concrete workflow (not “answers questions”).</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 2</span> Module map (honest status) <span class="time-badge">8–16 min</span></h2>
+      <p>The benchmark does not care about your brand color. It cares that these buckets exist as callable code.</p>
+      <pre class="prompt">Add a Module map table to final_project/README.md with one row each for:
+PDF extract, image extract, KB Q&amp;A (cite/refuse), sourced research, multi-step decision, router, guardrails, deployed web UI.
+
+Columns: capability, planned Python file(s), prompt file under prompts/, status (done from HW / stub / todo).
+Reuse HW1–6 files where they already work. Do not invent fake “done” checkmarks.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Eight rows, real file paths, at least two statuses that are not all “done.”</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 3</span> Router stub (Section F) <span class="time-badge">16–26 min</span></h2>
+      <p>Users must not pick “PDF mode.” The router picks. Start dumb (keywords) if you must; LLM classify later. Log the choice.</p>
+      <pre class="prompt">Create final_project/agents/router.py with route_request(user_message: str) -&gt; str
+that returns one of: pdf_extract | image_extract | kb_qa | research | decision.
+
+Use simple keyword / regex rules for today (LLM classifier can wait).
+Add a tiny demo in if __name__ == "__main__" that prints the route for these four messages:
+1) "Extract totals from this invoice PDF"
+2) "What is our PTO policy?"
+3) "Who are active DTC peers in this corpus?"
+4) "Recommend a vendor given these constraints"
+
+Append chosen module to output/router_trace.jsonl (create output/ if needed).
+Document the rules in README under Routing.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Four demo messages hit four different modules; jsonl has four lines.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 4</span> Public suite skeleton <span class="time-badge">26–34 min</span></h2>
+      <p>Download the practice zip if you haven’t. Today we wire the runner so Friday-you can iterate. Do not fake PASSes.</p>
+      <pre class="prompt">Create final_project/run_benchmarks.py that accepts
+--repo . --suite public --fixtures PATH
+and for today: prints each case id from this list with status TODO:
+pdf_01, image_01, search_01, search_trap_01, research_01, decision_01, router_01, security_01
+
+Add a README Testing section with the exact command:
+python run_benchmarks.py --repo . --suite public --fixtures PATH/to/practice
+and a table of which buckets you honestly expect to pass this week vs need work.
+Do not mark a case PASS unless you actually ran it against the practice files.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Script runs without API key and prints eight case ids. README Testing is brutally honest.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 5</span> Guardrail, memo headings, prompt log <span class="time-badge">34–40 min</span></h2>
+      <p>Section G needs a real <code>check_input</code>. Section H needs headings so Friday-you does not write poetry. Log what you actually asked.</p>
+      <pre class="prompt">Create final_project/guardrails.py with
+check_input(text: str) -&gt; dict  # keys: allowed (bool), reason (str)
+that blocks at least one obvious injection phrase (e.g. "ignore previous instructions")
+and returns allowed=False with a short reason. No OpenAI call on blocked input.
+
+Write output/security_demo.json showing one blocked example.
+
+Create output/tokenomics_memo.md with headings only plus 2–3 bullet placeholders each:
+1) Who uses it + one typical workflow
+2) Cost per 100 runs of that workflow (token assumptions — fill after a real log)
+3) One security tradeoff and why
+Do not invent dollar amounts today.
+
+Create or update final_project/AI_prompts.md with a Lecture 13 section.
+Paste the prompts you actually used today, in your own words.
+Add a one-line note: you will work remaining sections one at a time and will not request a full-repo generation from the project page.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Injection string is blocked without an API call. Memo has three headings and no fake $. Dated prompts in your voice — no mega-prompt.</div>
+      <p class="vibe-extend"><strong>If you finish early:</strong> one sentence in output/stretch.md naming a single stretch you might actually demo — not a list of seven fantasies.</p>
+    </div>
+  </main>
+  <script src="../../js/theme.js"></script>
+  <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
+</body>
+</html>

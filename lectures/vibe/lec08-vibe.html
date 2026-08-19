@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 8 Vibe Coding — Application Deployment</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/vibe-session.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .vibe-header h1 { font-size: 2rem; }
+    .vibe-goal {
+      background: linear-gradient(90deg, #f3e8ff, #e8fff8);
+      border-left-color: #7c4dff;
+    }
+    .joke-banner {
+      margin: 0.75rem 0 1.25rem;
+      padding: 0.85rem 1.1rem;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #ff2d95, #7c4dff 55%, #00d4c8);
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.12rem;
+      line-height: 1.35;
+    }
+    .vibe-clock {
+      margin: 1rem 0 1.25rem;
+      padding: 0.85rem 1.05rem;
+      border-radius: 12px;
+      background: var(--yale-blue-pale);
+      border: 1px solid var(--border, #c5d4e4);
+    }
+    .vibe-clock strong { color: var(--yale-blue); }
+    .vibe-clock ol {
+      margin: 0.45rem 0 0;
+      padding-left: 1.3rem;
+    }
+    .vibe-clock li { margin: 0.2rem 0; }
+    .vibe-mins {
+      display: inline-block;
+      background: #7c4dff;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.12rem 0.5rem;
+      border-radius: 999px;
+      margin-left: 0.35rem;
+      vertical-align: middle;
+    }
+    .arch-mini {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.4rem;
+      margin: 1rem 0 1.25rem;
+    }
+    .arch-mini div {
+      color: #fff;
+      font-weight: 800;
+      text-align: center;
+      padding: 0.65rem 0.35rem;
+      border-radius: 10px;
+      font-size: 0.88rem;
+    }
+    .arch-mini .a { background: #ff2d95; }
+    .arch-mini .b { background: #7c4dff; }
+    .arch-mini .c { background: #00a3a1; }
+    .arch-mini .d { background: #f5a623; color: #1a2e42; }
+    @media (max-width: 640px) {
+      .arch-mini { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <main class="vibe-main">
+    <div class="vibe-header">
+      <h1>Lecture 8: Application Deployment</h1>
+      <p class="meta">
+        <a href="../slides/lec08-slides.html">← Slides</a>
+        <a href="../../lectures.html">All lectures</a>
+        · 40 minutes in class
+      </p>
+    </div>
+    <div class="vibe-goal"><strong>In-class goal:</strong> Stand up a deploy-ready FastAPI stub (health check, <code>PORT</code>, CORS, env hygiene, smoke test, ephemeral-disk note) — the harness Homework 4’s College Street Music Hall app will sit in. Do not complete HW4 in this session.</div>
+    <p class="joke-banner">If it only runs on your laptop, it is a secret show. Today we print tickets (a URL) and hire a bouncer (CORS).</p>
+    <div class="vibe-clock">
+      <strong>40-minute clock</strong>
+      <ol>
+        <li>0–2 · Folder (optional zip or <code>lec08_deploy/</code>)</li>
+        <li>2–10 · Health + bind <code>0.0.0.0:$PORT</code></li>
+        <li>10–18 · CORS + echo</li>
+        <li>18–26 · Env hygiene</li>
+        <li>26–36 · Deploy notes, smoke test, ephemeral disk</li>
+        <li>36–40 · <code>AI_prompts.md</code></li>
+      </ol>
+    </div>
+    <div class="arch-mini" aria-hidden="true">
+      <div class="a">Guest UI</div>
+      <div class="b">Vite origin</div>
+      <div class="c">FastAPI</div>
+      <div class="d">/health</div>
+    </div>
+    <p class="vibe-download"><strong>Starter (optional):</strong> <a href="../../data/lec08/lec08_starter.zip">lec08_starter.zip</a> — or create a fresh folder <code>lec08_deploy/</code> in class.</p>
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 1</span> Health check that a host can ping <span class="vibe-mins">2–10 min</span></h2>
+      <p>Create a tiny FastAPI app that will survive Render’s “bind all interfaces, use our port” rule.</p>
+      <pre class="prompt">Create lec08_deploy/server.py as a FastAPI app. Add GET /health that returns JSON {"ok": true}. Read PORT from the environment (default 8000) and document running with: uvicorn server:app --host 0.0.0.0 --port $PORT. Add requirements.txt with fastapi and uvicorn. Add a README note: local homework uses 127.0.0.1:8000; production must use 0.0.0.0 and PORT.</pre>
+      <div class="vibe-check"><strong>Check:</strong> <code>uvicorn server:app --host 127.0.0.1 --port 8000</code> then <code>curl http://127.0.0.1:8000/health</code> returns <code>{"ok":true}</code>.</div>
+    </div>
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 2</span> CORS bouncer + echo route <span class="vibe-mins">10–18 min</span></h2>
+      <p>The Vite guest app (port 5173) is a different origin from FastAPI. Allow only that origin plus a placeholder production URL.</p>
+      <pre class="prompt">Enable CORS on the FastAPI app. Allow origins http://localhost:5173 and http://127.0.0.1:5173. Add POST /echo that accepts JSON {"text": "..."} and returns {"reply": "got it: ...", "channel": "web"}. Do not call OpenAI in this step. Explain in a README sentence why a random website should not be able to hit /echo.</pre>
+      <div class="vibe-check"><strong>Check:</strong> POST /echo with <code>{"text":"bag policy?"}</code> returns JSON. A request from a disallowed origin is blocked (browser CORS error or preflight fail).</div>
+    </div>
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 3</span> Secrets stay out of git <span class="vibe-mins">18–26 min</span></h2>
+      <p>Practice the hygiene HW4 needs when the real agent starts calling the model.</p>
+      <pre class="prompt">Add .env.example with OPENAI_API_KEY=sk-placeholder and VITE_API_URL=http://127.0.0.1:8000. Add .gitignore that ignores .env and __pycache__. Load dotenv in server.py but do not print the key. README: where local vs Render dashboard secrets live, and "if you paste a real key into chat or git, rotate it."</pre>
+      <div class="vibe-check"><strong>Check:</strong> <code>.env</code> is gitignored. <code>.env.example</code> has no real key. <code>git check-ignore -v .env</code> (or equivalent) confirms ignore.</div>
+    </div>
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 4</span> Deploy notes + smoke test + disk <span class="vibe-mins">26–36 min</span></h2>
+      <p>Write the production recipe even if you do not click Deploy yet. Name the ephemeral-disk trap.</p>
+      <pre class="prompt">Add render.yaml OR a README Deploy section: Python web service, buildCommand pip install -r requirements.txt, startCommand uvicorn server:app --host 0.0.0.0 --port $PORT, health path /health, env OPENAI_API_KEY sync: false. Write smoke_test.py that GETs /health and POSTs /echo and prints PASS/FAIL. Document ephemeral disks: a local SQLite file will vanish on free-tier restart — relevant to csmh.db in Homework 4.</pre>
+      <div class="vibe-check"><strong>Check:</strong> <code>python smoke_test.py</code> against the running local server prints PASS for health and echo. README names the start command with <code>0.0.0.0</code> and <code>$PORT</code>, and says a SQLite file on a free host does not survive restart.</div>
+      <p class="vibe-extend"><strong>Stretch (if you finish early):</strong> Deploy this stub to Render, paste the HTTPS /health URL in the README, and ping it once from your phone (not campus Wi-Fi only).</p>
+    </div>
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 5</span> AI_prompts.md <span class="vibe-mins">36–40 min</span></h2>
+      <p>Log what you actually typed — same habit as homework.</p>
+      <pre class="prompt">Add a Lecture 8 section to AI_prompts.md summarizing the four prompts above in your own words (health/bind, CORS+echo, env hygiene, deploy notes + smoke test + ephemeral disk). One sentence on what the first prompt missed if you needed a follow-up.</pre>
+      <div class="vibe-check"><strong>Check:</strong> AI_prompts.md has Lecture 8 with at least four prompt summaries in your own words.</div>
+    </div>
+  </main>
+  <script src="../../js/theme.js"></script>
+  <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
+</body>
+</html>

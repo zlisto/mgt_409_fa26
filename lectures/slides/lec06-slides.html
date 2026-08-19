@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 6 Slides — Video Analysis</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .slide-deck-body { --hot: #ff2d7b; --gold: #f5c518; --teal: #14c8c8; --lime: #b8ff3c; }
+    .slide-deck-body nav.site-nav { flex-shrink: 0; }
+    .slide h1 { font-size: clamp(1.9rem, 4.4vw, 2.7rem); }
+    .slide.title-slide h1 {
+      font-size: clamp(2.4rem, 6.2vw, 3.6rem);
+      background: linear-gradient(90deg, #5ee7ff, #ff4d9d 55%, #f5c518);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .slide p, .slide li { font-size: clamp(1.08rem, 2.4vw, 1.32rem); }
+    .joke {
+      margin-top: 1rem; padding: 0.85rem 1.1rem; border-radius: 12px;
+      background: linear-gradient(90deg, #fff3c4, #ffe0ef);
+      border-left: 6px solid var(--hot); font-weight: 700; color: #3b1548;
+    }
+    [data-theme="dark"] .joke { background: #3a2040; color: #ffe8f4; }
+    .news-card {
+      display: grid; grid-template-columns: 1.05fr 1fr; gap: 0.85rem; align-items: center;
+      background: #0f1c33; color: #fff; border-radius: 16px; overflow: hidden;
+      border: 3px solid var(--teal); margin: 0.45rem 0;
+    }
+    .news-card img { width: 100%; height: 148px; object-fit: cover; display: block; }
+    .news-card .copy { padding: 0.7rem 0.9rem 0.85rem; }
+    .news-card .kicker { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); font-weight: 800; }
+    .news-card h2 { margin: 0.2rem 0 0.3rem; font-size: 1.02rem; color: #fff; line-height: 1.25; }
+    .news-card p { font-size: 0.88rem !important; color: #d7e4f5; margin: 0 0 0.4rem; }
+    .news-card a { color: #7ef0ff; font-weight: 700; }
+    @media (max-width: 720px) { .news-card { grid-template-columns: 1fr; } .news-card img { height: 140px; } }
+    .hero-pic { width: 100%; max-height: 260px; object-fit: cover; border-radius: 14px; border: 4px solid var(--hot); }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0.75rem 0; }
+    .pill { background: #ff2d7b; color: #fff; font-weight: 800; padding: 0.28rem 0.7rem; border-radius: 999px; font-size: 0.92rem; }
+    .pill.teal { background: #0aa; }
+    .pill.gold { background: #f5c518; color: #1a1200; }
+    .pill.navy { background: #00356b; }
+    .status-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; }
+    .status { border-radius: 12px; padding: 0.85rem; color: #fff; min-height: 7.8rem; }
+    .status h3 { margin: 0 0 0.35rem; font-size: 1.05rem; color: #fff; }
+    .status p { font-size: 0.9rem !important; color: #fff; margin: 0; }
+    .status.go { background: #0a8f5a; }
+    .status.maybe { background: #d97706; }
+    .status.no { background: #c81e4a; }
+    .slide .takeaway { font-size: 1.12rem; background: #fff1c9; border-left-color: #f5c518; }
+    [data-theme="dark"] .slide .takeaway { background: #3d3210; }
+    .slide table { font-size: 1.02rem; }
+    .instructor-banner {
+      background: #ff2d7b; color: #fff; font-weight: 800; letter-spacing: 0.04em;
+      text-transform: uppercase; padding: 0.5rem 0.9rem; border-radius: 8px;
+      font-size: 0.88rem; margin: 0 0 0.85rem;
+    }
+    .pace { width: 100%; }
+    .pace th { background: #0f1c33; color: #fff; }
+    .pace td:first-child { font-weight: 800; white-space: nowrap; color: #00356b; width: 5.5rem; }
+    [data-theme="dark"] .pace td:first-child { color: #7ef0ff; }
+    .pace-total { font-weight: 800; }
+  </style>
+</head>
+<body class="slide-deck-body">
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <header class="slide-deck-header">
+    <a href="../../lectures.html">← Lectures</a>
+    <span>Lecture 6: Video Analysis</span>
+    <span class="slide-counter">1 / 14</span>
+  </header>
+  <div class="slide-viewport">
+
+    <section class="slide active title-slide" data-slide="1">
+      <h1>Video Analysis</h1>
+      <p class="subtitle">MGT 409 · Lecture 6 · Images &amp; videos</p>
+      <p class="subtitle" style="margin-top:1.1rem;font-size:1.35rem;font-weight:800;color:#ff2d7b">A phone clip is speech plus stills. Match a SKU — or refuse.</p>
+      <div class="pill-row" style="justify-content:center">
+        <span class="pill">transcribe</span>
+        <span class="pill teal">sample frames</span>
+        <span class="pill gold">crop in code</span>
+        <span class="pill navy">vision-compare</span>
+      </div>
+    </section>
+
+    <section class="slide" data-slide="2">
+      <div class="instructor-banner">Instructor outline — remove before class.</div>
+      <h1>40-minute lecture clock</h1>
+      <table class="pace">
+        <tr><th>Min</th><th>Beat</th></tr>
+        <tr><td>0–4</td><td>Cold open: last class was stills (Image Analysis). Today a clip is speech + a stack of stills. Campus Customs phone.</td></tr>
+        <tr><td>4–10</td><td>Product: Lens Live; Search boxes take video. ChatGPT’s camera ≠ the OpenAI API you call from a script (frames).</td></tr>
+        <tr><td>10–18</td><td>Pipeline: transcribe → frames → crop in code → text shortlist → vision-compare → refuse. Do not dump every frame into inventory search.</td></tr>
+        <tr><td>18–26</td><td>Two manager rules: speech carries size/color; the crop is a file, not a hallucination.</td></tr>
+        <tr><td>26–34</td><td>Three honest endings (match / variant_oos / not_in_inventory). How the loop fails.</td></tr>
+        <tr><td>34–38</td><td>Customer video is PII. HW3 P4–P7 is this pipeline; in-class is 3 toy SKUs.</td></tr>
+        <tr><td>38–40</td><td>Handoff to vibe (40 min). Last class priced a still; today the lever is which frames you send — not CLIP or tile math.</td></tr>
+      </table>
+      <p class="takeaway pace-total">Skip this slide in class. Spoken deck ≈ 40 minutes. CLIP / image-token formulas stay in Lecture 5.</p>
+    </section>
+
+    <section class="slide" data-slide="3">
+      <h1>Last class vs this class</h1>
+      <div class="two-col">
+        <div class="compare-box" style="border-color:#14c8c8;border-width:3px">
+          <h3>Lecture 5 · stills</h3>
+          <p>One product photo → structured text. Catalog onboarding. “What is on this shirt?”</p>
+        </div>
+        <div class="compare-box" style="border-color:#ff2d7b;border-width:3px">
+          <h3>Lecture 6 · video</h3>
+          <p>A clip is audio plus a stack of stills. Size and color may be spoken. The graphic may appear in only one frame.</p>
+        </div>
+      </div>
+      <p class="joke">Treat a clip as one fat JPEG and you pay for 200 blurry elbows — and still miss the logo.</p>
+    </section>
+
+    <section class="slide" data-slide="4">
+      <h1>Campus Customs: a clip, not a barcode</h1>
+      <img class="hero-pic" src="../images/lec06/campus-customs-phone-ask.png" alt="Associate and customer looking at a phone video of a Yale shirt">
+      <ul>
+        <li><strong>Homework 3:</strong> a customer holds up a phone. “Do you have that Yale shirt with Handsome Dan — medium, navy?”</li>
+        <li>No Uniqlo-grade visual search. You build the cheap, honest version: transcribe, sample, crop, shortlist, compare, refuse.</li>
+      </ul>
+      <p class="takeaway">Managers: this is Amazon Lens on a 20-SKU closet, with a refusal button.</p>
+    </section>
+
+    <section class="slide" data-slide="5">
+      <h1>Demo theater vs your API key</h1>
+      <ul>
+        <li>May 2024: the GPT-4o keynote showed live video in ChatGPT. August 2026: ChatGPT still has a camera.</li>
+        <li>The <strong>OpenAI API</strong> you use in class still wants <em>images</em>. Official cookbook: sample frames, then vision.</li>
+        <li>Gemini’s API can take a video file. Different vendor, different invoice, harder to audit which frame won.</li>
+      </ul>
+      <p class="takeaway">The consumer demo and the API product are not the same SKU. Budget the one you can call from a script.</p>
+      <p class="source-note">OpenAI cookbook: <a href="https://developers.openai.com/cookbook/examples/gpt_with_vision_for_video_understanding" target="_blank" rel="noopener">process video as frames</a>. Gemini docs: <a href="https://ai.google.dev/gemini-api/docs/video-understanding" target="_blank" rel="noopener">native video understanding</a>.</p>
+    </section>
+
+    <section class="slide" data-slide="6">
+      <h1>Customers already search with a clip</h1>
+      <article class="news-card">
+        <img src="../images/lec06/news-amazon-lens-live.png" alt="Amazon Lens Live camera matching a product in a living room">
+        <div class="copy">
+          <div class="kicker">Amazon News · Lens Live</div>
+          <h2>Shop what you see. Camera on. Matches in a carousel.</h2>
+          <p>On-device detector + visual embeddings against billions of SKUs. You will not beat that index. You <em>will</em> learn the loop at closet scale.</p>
+          <a href="https://www.aboutamazon.com/news/retail/search-image-amazon-lens-live-shopping-rufus" target="_blank" rel="noopener">aboutamazon.com — Lens Live →</a>
+        </div>
+      </article>
+      <article class="news-card">
+        <img src="../images/lec06/news-google-io-2026-search.png" alt="Google I/O 2026 blog: A new era for AI Search">
+        <div class="copy">
+          <div class="kicker">The Keyword · May 19, 2026</div>
+          <h2>Search box inputs now include videos.</h2>
+          <p>Liz Reid, VP Search: AI Mode on Gemini 3.5 Flash. Text, images, files, <strong>videos</strong>, Chrome tabs.</p>
+          <a href="https://blog.google/products-and-platforms/products/search/search-io-2026/" target="_blank" rel="noopener">blog.google — I/O 2026 Search →</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="slide" data-slide="7">
+      <h1>Video is a pipeline, not a file</h1>
+      <svg class="flow-svg" viewBox="0 0 920 210" aria-label="Video lookup pipeline">
+        <defs>
+          <marker id="a6v" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path class="arrow" d="M0,0 L6,3 L0,6 Z"/></marker>
+        </defs>
+        <rect class="box-light" x="8" y="70" width="110" height="54" rx="10"/>
+        <text x="63" y="93" text-anchor="middle" font-size="13" font-weight="700">Phone clip</text>
+        <text x="63" y="110" text-anchor="middle" font-size="11">mp4 + audio</text>
+        <line x1="118" y1="97" x2="148" y2="97" stroke="#ff2d7b" stroke-width="3" marker-end="url(#a6v)"/>
+        <rect class="box-dark" x="150" y="18" width="130" height="50" rx="10"/>
+        <text class="on-dark" x="215" y="48" text-anchor="middle" font-size="13">Transcribe</text>
+        <rect class="box-dark" x="150" y="122" width="130" height="50" rx="10"/>
+        <text class="on-dark" x="215" y="152" text-anchor="middle" font-size="13">Sample frames</text>
+        <line x1="280" y1="43" x2="318" y2="80" stroke="#14c8c8" stroke-width="3" marker-end="url(#a6v)"/>
+        <line x1="280" y1="147" x2="318" y2="110" stroke="#14c8c8" stroke-width="3" marker-end="url(#a6v)"/>
+        <rect class="box-light" x="320" y="70" width="120" height="54" rx="10"/>
+        <text x="380" y="93" text-anchor="middle" font-size="13" font-weight="700">Best frame</text>
+        <text x="380" y="110" text-anchor="middle" font-size="11">vision pick</text>
+        <line x1="440" y1="97" x2="470" y2="97" stroke="#ff2d7b" stroke-width="3" marker-end="url(#a6v)"/>
+        <rect class="box-light" x="472" y="70" width="120" height="54" rx="10"/>
+        <text x="532" y="93" text-anchor="middle" font-size="13" font-weight="700">Crop in code</text>
+        <text x="532" y="110" text-anchor="middle" font-size="11">box → file</text>
+        <line x1="592" y1="97" x2="622" y2="97" stroke="#ff2d7b" stroke-width="3" marker-end="url(#a6v)"/>
+        <rect class="box-dark" x="624" y="70" width="120" height="54" rx="10"/>
+        <text class="on-dark" x="684" y="93" text-anchor="middle" font-size="13">Text top ~5</text>
+        <text class="on-dark" x="684" y="110" text-anchor="middle" font-size="11">then vision</text>
+        <line x1="744" y1="97" x2="774" y2="97" stroke="#f5c518" stroke-width="3" marker-end="url(#a6v)"/>
+        <rect class="box-light" x="776" y="70" width="130" height="54" rx="10"/>
+        <text x="841" y="93" text-anchor="middle" font-size="13" font-weight="700">Match / none</text>
+        <text x="841" y="110" text-anchor="middle" font-size="11">stock facts</text>
+      </svg>
+      <p class="takeaway">HW3 in one sentence: <strong>do not dump every frame into inventory search as step 1.</strong></p>
+    </section>
+
+    <section class="slide" data-slide="8">
+      <h1>Why not send the whole movie?</h1>
+      <img class="hero-pic" src="../images/lec06/video-is-just-frames.png" alt="Film strip of shirt frames with one good frame circled">
+      <div class="stat-grid">
+        <div class="stat-box">
+          <div class="num">30 fps</div>
+          <div class="label">A 10s clip = 300 frames. Most are ceiling, thumb, or blur.</div>
+        </div>
+        <div class="stat-box">
+          <div class="num">1 fps</div>
+          <div class="label">Gemini’s default video sample rate. Fast motion still slips through.</div>
+        </div>
+        <div class="stat-box">
+          <div class="num">≥5</div>
+          <div class="label">HW3: save at least five frames (unless the clip is tiny).</div>
+        </div>
+      </div>
+      <p class="source-note">Last class priced <em>one</em> still. Today the lever is <em>which frames</em> you send — not CLIP embeddings or tile formulas. Gemini video docs: default ~1 frame/second.</p>
+    </section>
+
+    <section class="slide" data-slide="9">
+      <h1>Speech carries size and color</h1>
+      <ul>
+        <li>Pixels show the graphic. Audio often carries the SKU fields vision cannot see: <strong>color</strong> and <strong>size</strong>.</li>
+        <li>HW3: transcribe → <code>query_text.json</code> with <code>transcript</code>, <code>requested_color</code>, <code>requested_size</code>.</li>
+        <li>Whisper / OpenAI audio API. Empty string if they did not say it — do not invent “medium.”</li>
+      </ul>
+      <p class="takeaway">Join the transcript to the crop before you finish. Ignore speech and you match the right shirt in the wrong size.</p>
+    </section>
+
+    <section class="slide" data-slide="10">
+      <h1>The crop has to be a file</h1>
+      <svg class="flow-svg" viewBox="0 0 860 150" aria-label="Crop in code not in the model head">
+        <rect class="box-light" x="20" y="40" width="160" height="70" rx="10"/>
+        <text x="100" y="70" text-anchor="middle" font-size="14" font-weight="700">Vision proposes</text>
+        <text x="100" y="92" text-anchor="middle" font-size="13">x, y, w, h</text>
+        <line x1="180" y1="75" x2="230" y2="75" stroke="#ff2d7b" stroke-width="3"/>
+        <rect class="box-dark" x="230" y="32" width="200" height="86" rx="10"/>
+        <text class="on-dark" x="330" y="68" text-anchor="middle" font-size="15">Your code crops</text>
+        <text class="on-dark" x="330" y="92" text-anchor="middle" font-size="13">Pillow / ffmpeg → file</text>
+        <line x1="430" y1="75" x2="480" y2="75" stroke="#14c8c8" stroke-width="3"/>
+        <rect class="box-light" x="480" y="40" width="170" height="70" rx="10"/>
+        <text x="565" y="70" text-anchor="middle" font-size="14" font-weight="700">Vision looks</text>
+        <text x="565" y="92" text-anchor="middle" font-size="13">at the crop file</text>
+        <line x1="650" y1="75" x2="700" y2="75" stroke="#f5c518" stroke-width="3"/>
+        <rect class="box-light" x="700" y="40" width="140" height="70" rx="10"/>
+        <text x="770" y="80" text-anchor="middle" font-size="14" font-weight="700">JSON desc</text>
+      </svg>
+      <p class="takeaway">If the crop only exists in the model’s imagination, graders cannot see it — and neither can you in an audit.</p>
+    </section>
+
+    <section class="slide" data-slide="11">
+      <h1>Shortlist, compare, refuse</h1>
+      <div class="two-col">
+        <div class="compare-box">
+          <h3>Text search first</h3>
+          <p>Crop description + spoken color/size → rank the catalog. Keep ~5 SKUs. Words are cheap.</p>
+        </div>
+        <div class="compare-box">
+          <h3>Vision-compare second</h3>
+          <p>Crop vs those five product photos. Pick a SKU or <code>none</code>. Weak text list? Skip pixels. Finish <code>not_in_inventory</code>.</p>
+        </div>
+      </div>
+      <div class="status-grid">
+        <div class="status go">
+          <h3>match</h3>
+          <p>SKU found. Report sizes, colors, price. An associate can talk.</p>
+        </div>
+        <div class="status maybe">
+          <h3>variant_oos</h3>
+          <p>That’s our shirt. Not in the size/color they asked.</p>
+        </div>
+        <div class="status no">
+          <h3>not_in_inventory</h3>
+          <p>No catalog match. Do not mint a fake SKU because the model likes being helpful.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide="12">
+      <h1>How video search fails</h1>
+      <table>
+        <tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr>
+        <tr><td>Matches the wall poster</td><td>Best-frame picker liked high contrast, not the tee</td><td>Prompt: “garment on a person / hanger,” not “anything Yale”</td></tr>
+        <tr><td>Invented SKU</td><td>Vision-compare had no “none” option</td><td>Force <code>vision_choice: none</code>; status <code>not_in_inventory</code></td></tr>
+        <tr><td>Right shirt, wrong size</td><td>Ignored transcript</td><td>Join audio fields before finish; use <code>variant_oos</code></td></tr>
+        <tr><td>Surprise API bill</td><td>Sent 200 frames at high detail</td><td>Cap frames. Evidence is a file, not a movie dump.</td></tr>
+      </table>
+      <p class="takeaway">Faces, dorm rooms, other shoppers — all in the same 8 seconds. Cloud vision = vendor DPA. Keep the crop + catalog photo + transcript snippet. Not the whole selfie.</p>
+    </section>
+
+    <section class="slide" data-slide="13">
+      <h1>Homework 3 map (do not solve it now)</h1>
+      <ul>
+        <li><strong>P2–P3:</strong> vision catalog from product photos + ranked <em>text</em> search. That’s last lecture’s stills, now searchable.</li>
+        <li><strong>P4–P6:</strong> transcribe, sample frames, crop tool. Today’s mechanics.</li>
+        <li><strong>P7:</strong> agent loop that wires those tools. Trace + HTML evidence. Honest no-match run required.</li>
+      </ul>
+      <p class="takeaway">In-class vibe = a toy clip and 3 SKUs. HW3 = 20 Yale tees and a real agent. Screenshot one problem at a time.</p>
+      <p style="margin-top:1.1rem;font-size:1.25rem;font-weight:800"><a href="../vibe/lec06-vibe.html">Open vibe coding prompts →</a> · 40 minutes</p>
+    </section>
+
+    <section class="slide" data-slide="14">
+      <h1>Summary</h1>
+      <ul>
+        <li>Video = speech + sampled stills. Agents choose; code crops; vision compares a shortlist.</li>
+        <li>Retail already shipped this (Lens Live). Search boxes now take video (Google I/O 2026).</li>
+        <li>Your API may still be JPEG-shaped. Cap frames. Refuse when it is not in inventory.</li>
+      </ul>
+      <p class="takeaway">Next lectures leave the camera and start putting this behind an app. HW3 is the last time the merch is the whole plot.</p>
+    </section>
+
+  </div>
+  <p class="slide-hint">Arrow keys, Space, or buttons to advance</p>
+  <footer class="slide-deck-footer">
+    <button type="button" id="prev" aria-label="Previous slide">← Previous</button>
+    <button type="button" id="next" aria-label="Next slide">Next →</button>
+  </footer>
+  <script src="../../js/slides.js"></script>
+  <script src="../../js/theme.js"></script>
+</body>
+</html>

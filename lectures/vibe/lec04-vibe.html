@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 4 Vibe Coding — Agents</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/vibe-session.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .vibe-banner {
+      background: linear-gradient(90deg, #00356b, #f4633a);
+      color: #fff; border-radius: 12px; padding: 0.9rem 1.1rem; margin: 1rem 0 0;
+      font-weight: 700;
+    }
+    .vibe-goal { border-left-color: #f4633a; }
+    .no-send {
+      display: inline-block; background: #c73e82; color: #fff; font-weight: 800;
+      padding: 0.1rem 0.45rem; border-radius: 6px;
+    }
+    .lab-clock {
+      display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.4rem;
+      margin: 1rem 0 0.25rem;
+    }
+    .lab-clock div {
+      border-radius: 10px; padding: 0.55rem 0.4rem; text-align: center;
+      font-weight: 800; font-size: 0.78rem; line-height: 1.25;
+      background: #00356b; color: #fff;
+    }
+    .lab-clock span { display: block; color: #ffd166; font-size: 0.7rem; font-weight: 700; margin-top: 0.15rem; }
+    .mins {
+      display: inline-block; font-size: 0.72rem; font-weight: 800;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      background: #bd9b60; color: #1a1208; padding: 0.12rem 0.45rem;
+      border-radius: 999px; margin-left: 0.35rem; vertical-align: middle;
+    }
+    .behind {
+      margin: 0.65rem 0 0; padding: 0.55rem 0.8rem; border-radius: 8px;
+      background: #fff3c4; border-left: 5px solid #bd9b60; font-size: 0.92rem;
+    }
+    [data-theme="dark"] .behind { background: #3a2a12; color: #ffe8c8; }
+    @media (max-width: 720px) { .lab-clock { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <main class="vibe-main">
+    <div class="vibe-header">
+      <h1>Lecture 4: Agents</h1>
+      <p class="meta">
+        <a href="../slides/lec04-slides.html">← Slides</a>
+        <a href="../../lectures.html">All lectures</a>
+        · 40 minutes in class
+      </p>
+    </div>
+    <div class="lab-clock" aria-label="40-minute lab clock">
+      <div>0–6<span>skeleton</span></div>
+      <div>6–14<span>search</span></div>
+      <div>14–22<span>fetch</span></div>
+      <div>22–30<span>finish</span></div>
+      <div>30–37<span>traces</span></div>
+      <div>37–40<span>prompt log</span></div>
+    </div>
+    <div class="vibe-banner">Build a bounded scout agent. It may search and fetch. It may <span class="no-send">not</span> send email. That split is the whole lecture — and it is the HW2 rule.</div>
+    <div class="vibe-goal"><strong>In-class goal:</strong> Leave with <code>lec04/agent.py</code> that loops (max 5 steps), calls <code>search_web</code> + <code>fetch_page</code> + <code>finish_research</code>, writes a JSONL trace, and hard-blocks any send. This is a toy New Haven florist scout — not Homework 2. Do not complete FiftyFlowers in class.</div>
+    <p class="behind"><strong>If you are behind:</strong> at minute 22 you still need a loop that cannot run forever and a blocked send. Skip polish; do not start the FiftyFlowers zip.</p>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 1</span> Agent skeleton with max_steps <span class="mins">min 0–6</span></h2>
+      <p>The loop is ~30 lines of Python you must be able to explain to a VP who thinks “the AI just knows.”</p>
+      <pre class="prompt">Create lec04/agent.py with run_agent(goal: str, max_steps: int = 5) -> dict.
+Maintain a messages list. Each step: call OpenAI with tools [search_web, fetch_page, finish_research].
+If the model returns a tool call: execute it in Python, append the tool result, continue.
+If max_steps is hit: raise RuntimeError that includes the trace file path (create a placeholder path for now).
+Use gpt-4o-mini. Load OPENAI_API_KEY from .env. Do not put a real key in any file.</pre>
+      <div class="vibe-check"><strong>Check:</strong> <code>run_agent("List 3 New Haven florists that look like wholesale buyers")</code> starts without crashing; it cannot run forever.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 2</span> Reuse search_web from Lecture 3 <span class="mins">min 6–14</span></h2>
+      <p>Agents are loops around last week’s tools. Do not rewrite search.</p>
+      <pre class="prompt">Import or copy search_web from lec03. Register the tool schema name search_web with parameters {query: string}.
+In the agent loop, execute it and return a JSON string of results truncated to 2000 characters per call.
+Log the query. If the model repeats an identical query, return the tool error "duplicate query blocked" instead of hitting the API again.</pre>
+      <div class="vibe-check"><strong>Check:</strong> A trace line exists with <code>search_web</code> and at least one real HTTPS URL (not invented).</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 3</span> fetch_page — the tiny version of HW2 investigate <span class="mins">min 14–22</span></h2>
+      <p>Search snippets lie. Homework 2 Problem 4 will make you crawl real sites and cite <code>source_url</code>. Practice that muscle on one page.</p>
+      <pre class="prompt">Add tool fetch_page with parameters {url: string}.
+Only allow https URLs. Fetch the page, strip to visible text, truncate to 4000 characters, return JSON {url, text, status}.
+If fetch fails, return an error string to the model — do not invent page content.
+Save a snapshot under lec04/output/pages/ named so a human can match it to the URL.</pre>
+      <div class="vibe-check"><strong>Check:</strong> After a run, <code>output/pages/</code> has a file whose contents came from the URL in the trace, not from the model’s memory.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 4</span> finish_research with a schema — still no Send <span class="mins">min 22–30</span></h2>
+      <p>The agent cannot shrug and print prose. It must call finish with valid JSON, or keep looping until max_steps.</p>
+      <pre class="prompt">Add finish_research accepting {companies: array, notes: string}.
+Validate: at least 2 companies; each has name, url, one_line, source_url (source_url must be a real https URL from a prior tool result — not guessed).
+notes length &gt;= 40 characters.
+On validation failure: return the error to the model and continue the loop.
+On success: store the payload, return {status: "done"}, and end the loop.
+Do not add send_email. If the model tries any tool named send_email, send_message, or mail_to, return "blocked: human approval required" and do not send anything.</pre>
+      <div class="vibe-check"><strong>Check:</strong> A deliberately invalid finish (0 companies) shows up as a tool error in the trace; a valid finish ends the run. No email leaves the machine.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 5</span> JSONL traces + CLI <span class="mins">min 30–37</span></h2>
+      <p>Graders (and your future ops team) do not debug vibes. They debug files.</p>
+      <pre class="prompt">Write lec04/output/traces/{timestamp}.jsonl with one JSON object per line: step, role, tool_name, tool_args, content_excerpt, token_usage if available.
+Print the trace path at the end of run_agent.
+Add if __name__ == "__main__": argparse --goal and --max-steps.
+Write the validated finish payload to lec04/output/scout.json.
+README with one example command using the New Haven florist goal.</pre>
+      <div class="vibe-check"><strong>Check:</strong> After one run you have <code>scout.json</code> plus a jsonl file with ≥3 lines including tool calls.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 6</span> AI_prompts.md + stretch <span class="mins">min 37–40</span></h2>
+      <p>Same habit as every homework: log what you typed, in your own words. Stretch only if the scout already finishes.</p>
+      <pre class="prompt">Append a Lecture 4 section to AI_prompts.md with the prompts you actually used for the skeleton, search, fetch, finish, and traces.
+Stretch: add a --dry-run flag that mocks the LLM with a scripted sequence (search → fetch → invalid finish → valid finish) so you can unit-test the loop without spending tokens.</pre>
+      <div class="vibe-check"><strong>Check:</strong> AI_prompts.md has Lecture 4. Stretch: dry-run produces a trace with a blocked invalid finish and a successful valid finish.</div>
+      <p class="vibe-extend"><strong>Stretch:</strong> Cap total tool-result characters stored in messages (e.g. 8k) so a chatty fetch cannot blow the context window — a baby version of the cost meter from the slides.</p>
+    </div>
+  </main>
+  <script src="../../js/theme.js"></script>
+  <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
+</body>
+</html>

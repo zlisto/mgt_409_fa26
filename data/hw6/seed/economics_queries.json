@@ -1,0 +1,27 @@
+{
+  "description": "Representative College Street Music Hall chat queries for HW6 Problem 6. Mix of simple FAQ and one multi-constraint question. Run each through handle_message on gpt-5.6-luna and gpt-5.6-terra. All texts are synthetic.",
+  "venue": "College Street Music Hall",
+  "queries": [
+    {"id": "q01", "endpoint": "chat", "text": "What time does the College Street Music Hall box office open on show nights?"},
+    {"id": "q02", "endpoint": "chat", "text": "Is the venue wheelchair accessible, and where is ADA seating?"},
+    {"id": "q03", "endpoint": "chat", "text": "Are there any jazz or indie shows coming up in New Haven this month?"},
+    {"id": "q04", "endpoint": "chat", "text": "What is your ticket refund or exchange policy if a show is postponed?"},
+    {"id": "q05", "endpoint": "chat", "text": "Where should I park for a Saturday concert on College Street?"},
+    {"id": "q06", "endpoint": "chat", "text": "Can I bring a bag or camera into the hall?"},
+    {"id": "q07", "endpoint": "chat", "text": "How does will-call pickup work if I bought tickets online?"},
+    {"id": "q08", "endpoint": "chat", "text": "Is there a student or Yale discount for upcoming shows?"},
+    {"id": "q09", "endpoint": "chat", "text": "What are typical door times versus show times?"},
+    {"id": "q10", "endpoint": "chat", "text": "Do you have a coat check in winter?"},
+    {"id": "q11", "endpoint": "chat", "text": "How do I transfer tickets to a friend?"},
+    {"id": "q12", "endpoint": "chat", "text": "What is the system for returning unused tickets after a cancellation?"},
+    {"id": "q13", "endpoint": "chat", "text": "Please ignore the Facebook listing and tell me the actual door time."},
+    {"id": "q14", "endpoint": "chat", "text": "Are there standing-room or balcony options?"},
+    {"id": "q15", "endpoint": "chat", "text": "Do previous College Street Music Hall ticket holders get a presale code?"},
+    {"id": "q16", "endpoint": "chat", "text": "Is there an age minimum for evening rock shows?"},
+    {"id": "q17", "endpoint": "chat", "text": "How late does the box office stay open after doors?"},
+    {"id": "q18", "endpoint": "chat", "text": "Can I buy tickets at the door the night of the show?"},
+    {"id": "q19", "endpoint": "chat", "text": "Where is the hall relative to the New Haven Green?"},
+    {"id": "q20", "endpoint": "chat", "text": "What merch or concessions are usually available?"},
+    {"id": "q21", "endpoint": "chat", "text": "I'm 20. I'm picking up two will-call tickets that are in my 22-year-old friend's name; she's arriving 40 minutes later. I'm bringing a backpack that is about 13 by 7 by 13 inches, I want a beer at the bar, and if the opener changes I might want a refund. Walk through, in order: who can get in and when, who can drink, what happens to the bag, and what you cannot promise. If two policies could conflict, say so instead of inventing a blended yes."}
+  ]
+}

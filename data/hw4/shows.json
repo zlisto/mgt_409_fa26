@@ -1,0 +1,87 @@
+{
+  "disclaimer": "Course snapshot of a few public listings from collegestreetmusichall.com. Not live inventory. Times and ages can change; graders use this file.",
+  "venue": "College Street Music Hall",
+  "address": "238 College Street, New Haven, CT 06510",
+  "shows": [
+    {
+      "show_id": "show-rock80s-2026-08-22",
+      "artist": "Rock of the 80’s",
+      "support": "feat. China Crisis, Big Country, The Vapors, The Icicle Works",
+      "date": "2026-08-22",
+      "doors_local": "18:00",
+      "show_local": "19:00",
+      "age": "All Ages",
+      "notes": "Public listing; ticket links are on the venue site, not in this pack."
+    },
+    {
+      "show_id": "show-sevendust-2026-08-29",
+      "artist": "Sevendust & Theory of a Deadman",
+      "support": "with Return to Dust",
+      "date": "2026-08-29",
+      "doors_local": "18:30",
+      "show_local": "19:30",
+      "age": "All Ages",
+      "notes": "Tour name on the public calendar: The Dead / Seven Tour."
+    },
+    {
+      "show_id": "show-lcd-2026-09-10",
+      "artist": "LCD Soundsystem",
+      "support": "with Victoryland",
+      "date": "2026-09-10",
+      "doors_local": "19:00",
+      "show_local": "20:00",
+      "age": "All Ages",
+      "notes": "Night 1 of three public listings."
+    },
+    {
+      "show_id": "show-lcd-2026-09-11",
+      "artist": "LCD Soundsystem",
+      "support": "with Victoryland",
+      "date": "2026-09-11",
+      "doors_local": "19:00",
+      "show_local": "20:00",
+      "age": "All Ages",
+      "notes": "Night 2 of three public listings."
+    },
+    {
+      "show_id": "show-lcd-2026-09-12",
+      "artist": "LCD Soundsystem",
+      "support": "with Victoryland",
+      "date": "2026-09-12",
+      "doors_local": "19:00",
+      "show_local": "20:00",
+      "age": "All Ages",
+      "notes": "Night 3 of three public listings."
+    },
+    {
+      "show_id": "show-minus-the-bear-2026-09-15",
+      "artist": "Minus the Bear",
+      "support": "with Keep",
+      "date": "2026-09-15",
+      "doors_local": "19:00",
+      "show_local": "20:00",
+      "age": "All Ages",
+      "notes": "Menos El Oso 20th Anniversary Tour."
+    },
+    {
+      "show_id": "show-trampled-2026-09-18",
+      "artist": "Trampled by Turtles",
+      "support": "with Clayton Nile Young",
+      "date": "2026-09-18",
+      "doors_local": "18:30",
+      "show_local": "19:30",
+      "age": "All Ages",
+      "notes": ""
+    },
+    {
+      "show_id": "show-handler-2026-09-27",
+      "artist": "Chelsea Handler",
+      "support": "",
+      "date": "2026-09-27",
+      "doors_local": "18:00",
+      "show_local": "19:00",
+      "age": "All Ages",
+      "notes": "The High and Mighty Tour (comedy)."
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 9 Vibe Coding — MCP Servers</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/vibe-session.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .vibe-header h1 {
+      background: linear-gradient(90deg, #e11d48, #d97706, #7c3aed);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-size: 2rem;
+    }
+    .vibe-goal {
+      background: linear-gradient(90deg, #fff3d6, #ffe4f1);
+      border-left-color: #f43f5e;
+    }
+    .vibe-step .step-num { background: #e11d48; }
+    .vibe-joke {
+      margin: 0.75rem 0;
+      padding: 0.7rem 0.95rem;
+      background: #111827;
+      color: #fde68a;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    .vibe-clock {
+      margin: 0.85rem 0 0;
+      padding: 0.85rem 1rem;
+      background: #111827;
+      color: #fff;
+      border-radius: 12px;
+    }
+    .vibe-clock h2 {
+      margin: 0 0 0.45rem;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fde68a;
+    }
+    .vibe-clock ol { margin: 0; padding-left: 1.2rem; }
+    .vibe-clock li { margin: 0.25rem 0; font-size: 0.95rem; }
+    .step-time {
+      display: inline-block;
+      margin-left: 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #d97706;
+      letter-spacing: 0.02em;
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <main class="vibe-main">
+    <div class="vibe-header">
+      <h1>Lecture 9: MCP Servers</h1>
+      <p class="meta">
+        <a href="../slides/lec09-slides.html">← Slides</a>
+        <a href="../../lectures.html">All lectures</a>
+        · 40 minutes in class
+      </p>
+    </div>
+    <div class="vibe-goal"><strong>In-class goal:</strong> Leave with a tiny MCP-style server that implements <code>list_tools()</code> and <code>call_tool()</code> over local JSON — the same contract Homework 5 uses for Peabody, without completing HW5. If time allows, one Python script that <em>imports</em> those two verbs. Do not build the Lecture 10 orchestrator.</div>
+    <p class="vibe-joke">Do <strong>not</strong> download the Peabody zip for this session. If your vibe coder starts writing <code>get_exhibit_info</code>, you accidentally started homework. Stop. Come back to scoops.</p>
+
+    <div class="vibe-clock">
+      <h2>40-minute clock</h2>
+      <ol>
+        <li><strong>0–8</strong> — Toy JSON + manifest (two tools, no LLM)</li>
+        <li><strong>8–22</strong> — <code>list_tools</code> + <code>call_tool</code> + honest error</li>
+        <li><strong>22–30</strong> — Catalog + one real sample per tool</li>
+        <li><strong>30–37</strong> — Tiny asker that <em>imports</em> the plug (not an orchestrator)</li>
+        <li><strong>37–40</strong> — <code>AI_prompts.md</code></li>
+      </ol>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 1</span> Toy shop JSON <span class="step-time">0–8 min</span></h2>
+      <p>Make two fake desks so the server has something honest to read. No OpenAI key yet.</p>
+      <pre class="prompt">Create lec09_mcp/ with tools/hours.json and tools/flavors.json for a fictional New Haven shop called Elm City Scoops. hours.json: weekly hours (closed Monday), address. flavors.json: at least 4 scoops with name, has_nuts, seasonal. Add mcp_manifest.json with two tools: get_hours (optional day) and get_flavors (optional query). README says this is a lecture toy, not Homework 5.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Three JSON files exist; manifest tool names match the two files.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 2</span> list_tools + call_tool <span class="step-time">8–22 min</span></h2>
+      <p>USB-C is two verbs. Implement both. Unknown names must fail loudly. This is the whole lecture in code.</p>
+      <pre class="prompt">Create mcp_server.py that loads mcp_manifest.json and the files under tools/. Implement list_tools() returning name, description, input_schema for each tool. Implement call_tool(name, arguments) that reads the matching JSON (filter by day or query if provided). Unknown tool names return an error object {error, tool} — never invent flavors. CLI: python mcp_server.py --data-dir lec09_mcp --out-dir output. No OpenAI key needed for this step.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Calling a fake tool name returns an error object. Calling get_hours returns hours from the file, not from memory.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 3</span> Write the catalog and samples <span class="step-time">22–30 min</span></h2>
+      <p>Prove the plug works before any LLM shows up. Same shape as HW5 Problem 3.</p>
+      <pre class="prompt">When mcp_server.py runs, write output/tool_catalog.json from list_tools(). Also write output/tool_sample_hours.json and output/tool_sample_flavors.json, each with keys tool, arguments, result from a real call_tool. Include one extra output/tool_sample_unknown.json showing the error path.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Four JSON files in output/. Catalog has exactly two tools. Unknown sample has an error key.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 4</span> Tiny asker that uses the plug <span class="step-time">30–37 min</span></h2>
+      <p>One LLM call path is enough. Import the two verbs. Do <strong>not</strong> build a multi-tool loop, traces, or “refuse when tools disagree” — that is Lecture 10 / HW5 P4–P5.</p>
+      <pre class="prompt">Create ask_scoops.py that loads OPENAI_API_KEY from .env, imports list_tools and call_tool from mcp_server.py (do not copy the tool bodies), and answers one user question by: (1) listing tools, (2) calling one or two tools, (3) writing output/scoops_answer.json with query, answer, tool_trace. Prompt file prompts/scoops.md: only use tool results; if tools don't cover it, say you don't know. Example query: "Are you open Tuesday, and do you have a nut-free scoop?"</pre>
+      <div class="vibe-check"><strong>Check:</strong> scoops_answer.json has a tool_trace with real tool names from the manifest. Answer mentions a fact that appears in the JSON files. If the API call is slow, skip to Step 5 and finish later.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 5</span> AI_prompts.md <span class="step-time">37–40 min</span></h2>
+      <p>Course habit: log what you actually typed.</p>
+      <pre class="prompt">Add a Lecture 9 section to AI_prompts.md with the prompts above in your own words, plus one sentence on what broke after the first try if anything did.</pre>
+      <div class="vibe-check"><strong>Check:</strong> AI_prompts.md has Lecture 9 with at least four prompt summaries, not a paste of this page.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Stretch</span> FastMCP or a third tool <span class="step-time">if you finish</span></h2>
+      <p>Optional. Homework 5 still accepts a local dispatcher. Do not start Peabody.</p>
+      <pre class="prompt">Either (A) add get_allergen_policy as a third tool with tools/allergens.json and update the manifest, or (B) wrap the same list_tools/call_tool contract with FastMCP and note the extra dependency in README. Do not start the Peabody assignment in this folder.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Third tool or FastMCP path still returns errors for unknown names.</div>
+      <p class="vibe-extend"><strong>Stretch:</strong> Draw a 4-box HTML diagram (user → ask_scoops.py → mcp_server.py → JSON files) saved as output/pipeline.html. Preview of HW5 Problem 7, not a substitute.</p>
+    </div>
+  </main>
+  <script src="../../js/theme.js"></script>
+  <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
+</body>
+</html>

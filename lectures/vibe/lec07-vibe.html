@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 7 Vibe Coding — Web Applications</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/vibe-session.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    :root {
+      --lec7-pink: #ff3cac;
+      --lec7-cyan: #2de2e6;
+      --lec7-gold: #ffd166;
+    }
+    .vibe-header h1 {
+      font-size: clamp(1.9rem, 4vw, 2.6rem);
+      background: linear-gradient(90deg, #2de2e6, #ff3cac 60%, #ffd166);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .vibe-goal {
+      background: #12152c;
+      border-left: 6px solid var(--lec7-cyan);
+      color: #e8ecff;
+    }
+    .vibe-goal strong { color: var(--lec7-cyan); }
+    .vibe-step h2 { color: var(--lec7-pink); font-size: 1.4rem; }
+    .vibe-step .step-num { background: var(--lec7-pink); }
+    .vibe-check { border-left: 4px solid var(--lec7-gold); }
+    .joke-banner {
+      margin: 1rem 0 0;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      background: #2a1a00;
+      border: 2px solid var(--lec7-gold);
+      color: var(--lec7-gold);
+      font-weight: 700;
+    }
+    .clock {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.4rem;
+      margin: 1rem 0 0.25rem;
+    }
+    .clock div {
+      background: #12152c;
+      color: #e8ecff;
+      border-radius: 10px;
+      padding: 0.55rem 0.4rem;
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .clock .t { display: block; color: var(--lec7-cyan); font-size: 0.9rem; letter-spacing: 0.04em; }
+    .mins {
+      display: inline-block;
+      margin-left: 0.35rem;
+      padding: 0.12rem 0.5rem;
+      border-radius: 999px;
+      background: #12152c;
+      color: var(--lec7-cyan);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      vertical-align: middle;
+    }
+    @media (max-width: 720px) { .clock { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <main class="vibe-main">
+    <div class="vibe-header">
+      <h1>Lecture 7: Web Applications</h1>
+      <p class="meta">
+        <a href="../slides/lec07-slides.html">← Slides</a>
+        <a href="../../lectures.html">All lectures</a>
+        · 40 minutes in class · localhost only
+      </p>
+    </div>
+    <div class="clock" aria-label="40-minute clock">
+      <div><span class="t">0–5</span>Scaffold + SQLite</div>
+      <div><span class="t">5–14</span>FastAPI chat</div>
+      <div><span class="t">14–24</span>Vite UI</div>
+      <div><span class="t">24–34</span>Hash + persist</div>
+      <div><span class="t">34–40</span>Log + stretch</div>
+    </div>
+    <div class="vibe-goal"><strong>In-class goal:</strong> Leave with a React (Vite) page talking to FastAPI, with FAQ and chats in <strong>SQLite</strong> — the shape of Homework 4, not the assignment. Do not use the HW4 zip. Do not deploy (Lecture 8). Invent a 6-row fake venue FAQ.</div>
+    <p class="joke-banner">If it only works in the terminal, you built a lab. If a classmate can click it, you built an app. A public URL is next week.</p>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 1</span> Two folders, SQLite seed <span class="mins">0–5 min</span></h2>
+      <p>Empty project. Not College Street Music Hall data — a toy so you learn the wiring. SQLite is the source of truth from minute one.</p>
+      <pre class="prompt">Create lec07_web/backend/ and lec07_web/frontend/.
+In backend/, write seed_db.py that creates venue.db with tables:
+  faq(id, category, question, answer)
+  users(id, username, salt, password_hash)
+  messages(id, username, role, text, created_at)
+Insert 6 FAQ rows (bag policy, door time, refunds, no elevator, food, tickets).
+Do not store a plaintext password. README: backend is FastAPI on 8000, frontend is Vite on 5173, database is venue.db.
+Do not copy Homework 4 files. Do not add a Render/Dockerfile.</pre>
+      <div class="vibe-check"><strong>Check:</strong> <code>sqlite3 venue.db "SELECT category, question FROM faq;"</code> prints 6 rows. README names both ports.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 2</span> FastAPI: health + chat from SQLite <span class="mins">5–14 min</span></h2>
+      <p>The browser never holds the API key. Chat reads FAQ rows with SQL — do not embed, do not dump the whole table into every prompt.</p>
+      <pre class="prompt">In backend/server.py make a FastAPI app with CORS for http://127.0.0.1:5173.
+GET /health → {"ok": true}.
+POST /chat JSON {message} SELECTs matching faq rows from venue.db (by category or keyword), asks the OpenAI API to answer only from those rows, returns {answer, refused, citations}.
+Never invent an elevator. Keys load from .env on the server only.
+Run: uvicorn server:app --host 127.0.0.1 --port 8000</pre>
+      <div class="vibe-check"><strong>Check:</strong> <code>curl http://127.0.0.1:8000/health</code> works. POST <code>{"message":"Is there an elevator?"}</code> returns refused true or an answer that cites the no-elevator row.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 3</span> Vite React chat UI <span class="mins">14–24 min</span></h2>
+      <p>A real frontend folder, not index.html sitting next to Python. Stay on localhost — no deploy.</p>
+      <pre class="prompt">In frontend/ scaffold React + Vite. One CSS file (not only inline). Dark venue colors, big type.
+A text box + Send that POSTs to http://127.0.0.1:8000/chat and shows answer + refused.
+README: npm install && npm run dev. Document whether you use a Vite proxy or the full URL.
+Do not put OPENAI_API_KEY in any frontend file or VITE_ variable.</pre>
+      <div class="vibe-check"><strong>Check:</strong> From the browser you can ask about bags and see a reply without opening a terminal for that turn. FastAPI is still on 8000; Vite is on 5173.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 4</span> Hash a password, persist the thread <span class="mins">24–34 min</span></h2>
+      <p>HW4 uses PBKDF2 in SQLite. In class, prove two product rules: never store plaintext, and chats survive refresh.</p>
+      <pre class="prompt">Add backend/auth.py with hash_password(password, salt) and verify().
+Seed one user in venue.db (salt + hash only).
+POST /login {username, password} → {ok, token}. Never log or echo the password.
+POST /chat also INSERTs both the user message and the assistant reply into messages.
+GET /chats?username=... returns that user's turns from SQLite.
+Frontend: a login field that must succeed before chat is enabled. After a browser refresh, prior turns reappear from GET /chats.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Wrong password → ok false. Right password unlocks chat. <code>SELECT username, password_hash FROM users;</code> has no plaintext. Refresh the page: the last turn is still there.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 5</span> AI_prompts.md <span class="mins">34–40 min</span></h2>
+      <p>Same habit as homework: log what you asked the vibe coder, in your words. If you still have minutes, screenshot is stretch — not required to “finish” class.</p>
+      <pre class="prompt">Create AI_prompts.md with a Lecture 7 section. One prompt summary per step above.
+Note what broke (CORS, ports, hash mismatch, chats vanishing) and the follow-up prompt that fixed it.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Five step headings; at least one “what was lacking” sentence.</div>
+      <p class="vibe-extend"><strong>Stretch (if time):</strong> Screenshot button that captures the current page (not the webcam) and POSTs it with the message. Backend uses vision + the FAQ rows. Typed chat must still work if the button fails. Do not deploy.</p>
+    </div>
+  </main>
+  <script src="../../js/theme.js"></script>
+  <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
+</body>
+</html>

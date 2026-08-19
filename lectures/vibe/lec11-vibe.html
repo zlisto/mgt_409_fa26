@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 11 Vibe Coding — Security and Guardrails</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/vibe-session.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .vibe-header h1 { font-size: clamp(1.7rem, 3vw, 2.1rem); }
+    .vibe-goal {
+      background: linear-gradient(90deg, #fde8ee, #e8faf6);
+      border-left-color: #ff3d6e;
+    }
+    .joke {
+      margin: 0.75rem 0 0;
+      padding: 0.65rem 0.9rem;
+      background: linear-gradient(90deg, #fff3d6, #ffe8f0);
+      border-left: 5px solid #ff3d6e;
+      border-radius: 0 10px 10px 0;
+      font-weight: 700;
+    }
+    .pace {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.85rem 0 1.1rem;
+      font-size: 0.95rem;
+    }
+    .pace th, .pace td {
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.6rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    .pace th { background: var(--yale-blue-pale); }
+    .pace td:first-child {
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+      width: 5.5rem;
+    }
+    .step-clock {
+      display: inline-block;
+      margin-left: 0.35rem;
+      padding: 0.12rem 0.5rem;
+      border-radius: 999px;
+      background: #ff3d6e;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <main class="vibe-main">
+    <div class="vibe-header">
+      <h1>Lecture 11: Security and Guardrails</h1>
+      <p class="meta">
+        <a href="../slides/lec11-slides.html">← Slides</a>
+        <a href="../../lectures.html">All lectures</a>
+        · 40 minutes in class
+      </p>
+    </div>
+    <div class="vibe-goal"><strong>In-class goal:</strong> A miniature College Street Music Hall chat loop with an input filter that runs <em>before</em> any OpenAI call, plus PII redaction on logs. This is the shape of Homework 6 Problems 2–4 — not the homework pack, not Luna vs Terra.</div>
+    <p class="joke">You are the bouncer. The model is the bartender. Drunk strangers do not get to talk to the bartender.</p>
+    <p class="vibe-download">Reuse your Lecture 1 virtualenv and API key. Start a fresh <code>lec11/</code> folder. Do not paste Homework 6 into chat and ask for the zip.</p>
+
+    <table class="pace">
+      <thead>
+        <tr><th>Clock</th><th>Step</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>0–6</td><td>Scaffold — secrets stay local</td></tr>
+        <tr><td>6–16</td><td><code>check_input</code> + classroom tests (no LLM in the filter)</td></tr>
+        <tr><td>16–26</td><td>Wire the filter before OpenAI</td></tr>
+        <tr><td>26–34</td><td>Redact PII on every log write</td></tr>
+        <tr><td>34–40</td><td>Four-prompt red-team + README + <code>AI_prompts.md</code></td></tr>
+      </tbody>
+    </table>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 1</span> Scaffold (secrets stay local) <span class="step-clock">0–6 min</span></h2>
+      <p>Same hygiene as always. The filter is ordinary Python — no key required until Step 3.</p>
+      <pre class="prompt">Create a folder lec11/ with:
+- guardrails.py
+- chat_agent.py (empty for now)
+- tests/classroom_guardrail_tests.json
+- prompts/chat_system.md
+- logs/
+- output/
+- requirements.txt (openai, python-dotenv)
+- .env.example with OPENAI_API_KEY=
+- .gitignore ignoring .env, __pycache__, logs/*
+- README with venv + pip + copy .env.example
+Do not put a real API key in any file.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Folder exists; <code>.gitignore</code> lists <code>.env</code>; no key in git-tracked files.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 2</span> <code>check_input</code> — no LLM in the bouncer <span class="step-clock">6–16 min</span></h2>
+      <p>Homework 6 requires this function. Today: a classroom suite, not the pack file. Think in <em>families</em> (override, obfuscation) vs ordinary venue questions — a three-word English keyword list will fail on purpose.</p>
+      <pre class="prompt">In guardrails.py write check_input(text) that returns a dict {allowed: bool, reason: str}. Do not call an LLM.
+
+Allow ordinary College Street Music Hall questions (doors, box office, coat check, "what time does the show start?").
+
+Block instruction-override attempts, including light obfuscation (weird spacing, mixed case, "ignore previous instructions", "you are now", "reveal the system prompt").
+
+Write tests/classroom_guardrail_tests.json with at least 6 cases: 3 allowed venue questions and 3 blocked jailbreaks. Each case: id, text, expected_allowed.
+
+Write run_classroom_tests.py that loads the JSON, calls check_input, and writes output/guardrail_results.json with id, expected_allowed, actual_allowed, reason, pass.</pre>
+      <div class="vibe-check"><strong>Check:</strong> All classroom cases pass. A normal "What time do doors open?" is allowed. A jailbreak is not.</div>
+      <p class="vibe-extend"><strong>If early:</strong> Add one other-language or encoded override. If it sneaks through, tighten the filter — that is the Homework 6 plot.</p>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 3</span> Wire the bouncer before the bartender <span class="step-clock">16–26 min</span></h2>
+      <p>Homework 6 Problem 3: blocked text never hits the model. Import <code>check_input</code> — do not copy-paste it.</p>
+      <pre class="prompt">In prompts/chat_system.md write a short College Street Music Hall assistant prompt: answer venue FAQs, refuse off-topic, never invent refunds.
+
+In chat_agent.py write handle_message(text, model="gpt-4o-mini") that:
+1. Imports check_input from guardrails
+2. If not allowed: return {user_text, allowed: false, reason, llm_called: false, reply: a polite venue-only refusal} and do not import or call OpenAI
+3. If allowed: call the OpenAI chat API with the system prompt file, return {user_text, allowed: true, reason, llm_called: true, reply}
+
+Write output/blocked_sample.json and output/allowed_sample.json by running handle_message once on a jailbreak and once on "What time does the box office open?"</pre>
+      <div class="vibe-check"><strong>Check:</strong> Blocked sample has <code>llm_called: false</code>. Allowed sample has a real venue-ish reply. Watch the OpenAI dashboard — the jailbreak must not create a new completion.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 4</span> Redact PII before the log write <span class="step-clock">26–34 min</span></h2>
+      <p>People paste emails, phones, and card-shaped numbers. Use <strong>fake</strong> PII only.</p>
+      <pre class="prompt">Add redact_pii(text) in guardrails.py that replaces:
+- emails → [EMAIL]
+- US-ish phone numbers → [PHONE]
+- 13–19 digit card-like runs (spaces or dashes allowed) → [CARD]
+
+In handle_message, append one line to logs/chat.log for every request. The line must use redact_pii on the user text (and on the reply if you log it). Never write the raw PII.
+
+Write redact_demo.py that prints a before/after pair to output/redaction_sample.txt using fake email, phone, AND card-like digits.
+
+README must name the log path: logs/chat.log</pre>
+      <div class="vibe-check"><strong>Check:</strong> After a message containing <code>ada@example.com</code>, the log shows <code>[EMAIL]</code> and not the address.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 5</span> Red-team, README, AI_prompts.md <span class="step-clock">34–40 min</span></h2>
+      <p>Document what you block so a grader (or future you) can rerun it. This is not the Homework 6 zip layout. Leave Luna vs Terra for Lecture 12.</p>
+      <pre class="prompt">Add a README section Security that lists:
+- how check_input decides
+- that blocked requests never call OpenAI
+- what redact_pii masks
+- results of four classroom red-team prompts (override, obfuscated override, other-guest data ask, PII paste)
+
+Do not copy Homework 6 hidden-test families as a cheat sheet. Describe your own four prompts.
+
+Add a Lecture 11 section to AI_prompts.md with the prompts you actually used, in your own words, plus one sentence on what the first prompt missed if you needed a second.</pre>
+      <div class="vibe-check"><strong>Check:</strong> README Security section has four outcomes. <code>output/guardrail_results.json</code> exists. Lecture 11 section in <code>AI_prompts.md</code>. No API key in either file.</div>
+      <p class="vibe-extend"><strong>After class (Lecture 12 teaser):</strong> Print <code>response.usage</code> on allowed calls only. Do not log usage for blocked messages.</p>
+    </div>
+  </main>
+  <script src="../../js/theme.js"></script>
+  <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
+</body>
+</html>

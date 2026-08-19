@@ -507,10 +507,25 @@ img:hover {
 .schedule-note {
   font-size: 18px;
   line-height: 1.6;
-  max-width: 640px;
+  max-width: 720px;
   margin: 0 auto 30px;
   text-align: center;
   color: var(--text-secondary);
+}
+
+.lecture-module-heading {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 2rem 0 0.75rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.lecture-module-heading:first-of-type {
+  margin-top: 0;
 }
 
 .assignment-box {

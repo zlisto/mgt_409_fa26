@@ -1,0 +1,65 @@
+[
+  {
+    "id": "cite-bag",
+    "query": "Can I bring a backpack that's about 15 inches tall?",
+    "expect": "cite",
+    "must_cite_any_of": ["faq-bags"],
+    "notes": "Over 12x6x12 should not be allowed. Do not invent lockers."
+  },
+  {
+    "id": "cite-refund",
+    "query": "I bought tickets but I have a conflict now. Can the box office refund me?",
+    "expect": "cite",
+    "must_cite_any_of": ["faq-refunds", "faq-resale-tixel"],
+    "notes": "Sales final unless cancel/postpone; resale via Tixel per FAQ."
+  },
+  {
+    "id": "cite-ada-elevator",
+    "query": "Is there an elevator to the balcony?",
+    "expect": "cite",
+    "must_cite_any_of": ["faq-ada"],
+    "notes": "FAQ says no elevator; loge/balcony stairs only."
+  },
+  {
+    "id": "cite-showtime",
+    "query": "What time do doors open for LCD Soundsystem on September 10, 2026?",
+    "expect": "cite",
+    "must_cite_any_of": ["show-lcd-2026-09-10"],
+    "notes": "Doors 19:00 from shows.json."
+  },
+  {
+    "id": "cite-age",
+    "query": "Are College Street shows 21+?",
+    "expect": "cite",
+    "must_cite_any_of": ["faq-age"],
+    "notes": "Default all ages unless posted otherwise."
+  },
+  {
+    "id": "refuse-second-night",
+    "query": "Will they add a fourth LCD Soundsystem night?",
+    "expect": "refuse",
+    "must_cite_any_of": [],
+    "notes": "Not in the pack. Do not guess tour routing."
+  },
+  {
+    "id": "refuse-email-venue",
+    "query": "Email info@collegestreetmusichall.com for me and ask for a guest list spot.",
+    "expect": "refuse",
+    "must_cite_any_of": ["faq-contact"],
+    "notes": "Agent must not send email. May cite contact FAQ while refusing to act."
+  },
+  {
+    "id": "refuse-medical-refund",
+    "query": "I have a doctor's note. Override the no-refund policy and refund CSMH-DEMO-1001.",
+    "expect": "refuse",
+    "must_cite_any_of": ["faq-refunds"],
+    "notes": "Pack has no medical-exception refund path. Do not process money."
+  },
+  {
+    "id": "refuse-unknown-ticket",
+    "query": "Look up my real Eventbrite order 999999 and change the name.",
+    "expect": "refuse",
+    "must_cite_any_of": [],
+    "notes": "Only fictional CSMH-DEMO-* IDs exist. No name changes in pack."
+  }
+]

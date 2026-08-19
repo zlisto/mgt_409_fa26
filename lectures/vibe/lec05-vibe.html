@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 5 Vibe Coding — Image Analysis</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/vibe-session.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .vibe-header h1 { font-size: clamp(1.85rem, 3vw, 2.35rem); }
+    .vibe-goal {
+      background: linear-gradient(90deg, #e8eef4, #fff3c4);
+      border-left-color: #f4a261;
+      font-size: 1.05rem;
+    }
+    .vibe-step .step-num { background: #f4a261; color: #1a1200; }
+    .vibe-clock {
+      background: linear-gradient(90deg, #00356b, #f4a261);
+      color: #fff; border-radius: 12px; padding: 0.85rem 1.1rem; margin: 0.75rem 0 0;
+      font-weight: 700; font-size: 0.98rem; line-height: 1.45;
+    }
+    .vibe-clock .mins { color: #fff3c4; font-weight: 800; }
+    .step-time {
+      display: inline-block; background: #00356b; color: #ffd166;
+      font-size: 0.78rem; font-weight: 800; letter-spacing: 0.04em;
+      padding: 0.12rem 0.45rem; border-radius: 6px; margin-left: 0.35rem;
+      vertical-align: middle;
+    }
+    .toy-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 0.75rem 0 1rem;
+    }
+    .toy-row figure { margin: 0; }
+    .toy-row img {
+      width: 100%; max-height: 220px; object-fit: contain; background: #fff;
+      border-radius: 12px; border: 2px solid #e6dcc8;
+    }
+    .toy-row figcaption { font-size: 0.88rem; color: var(--text-muted); margin-top: 0.35rem; }
+    .vibe-note {
+      background: #fff4cc; border-radius: 10px; padding: 0.75rem 1rem;
+      margin: 1rem 0; font-size: 0.95rem;
+    }
+    [data-theme="dark"] .vibe-note { background: #3d3210; }
+    @media (max-width: 640px) { .toy-row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <main class="vibe-main">
+    <div class="vibe-header">
+      <h1>Lecture 5: Image Analysis</h1>
+      <p class="meta">
+        <a href="../slides/lec05-slides.html">← Slides</a>
+        <a href="../../lectures.html">All lectures</a>
+        · 40 minutes in class
+      </p>
+    </div>
+    <div class="vibe-clock">
+      <strong>Timed lab (40 min).</strong>
+      <span class="mins">0–6</span> scaffold + two toy photos ·
+      <span class="mins">6–14</span> one vision caption ·
+      <span class="mins">14–24</span> JSON schema ·
+      <span class="mins">24–32</span> plain tee / no invented logos ·
+      <span class="mins">32–38</span> two calls in parallel ·
+      <span class="mins">38–40</span> log prompts.
+      If the API is slow, finish the schema on one image and stub the second — honesty beats a fake crest.
+    </div>
+    <div class="vibe-goal">
+      <strong>In-class goal:</strong> Turn <em>two toy product photos</em> into JSON captions a search index could use: <code>visual_description</code>, <code>search_tags</code>, <code>logo_or_text_cues</code>. This is the Homework 3 Problem 2 <em>shape</em> — not the assignment. Do not unzip the Campus Customs pack.
+    </div>
+    <div class="vibe-note">
+      <strong>Toy SKUs (not HW3):</strong> copy these two class images into <code>lec05/products/</code>. They are fake catalog shots, not Yale Bulldog Blue inventory.
+    </div>
+    <div class="toy-row">
+      <figure>
+        <img src="../images/lec05/toy-crest-tee.png" alt="Toy navy t-shirt with a generic gold shield crest">
+        <figcaption><code>toy-crest-tee.png</code> — navy tee, gold crest. SKU <code>TOY-CREST</code>.</figcaption>
+      </figure>
+      <figure>
+        <img src="../images/lec05/toy-plain-tee.png" alt="Toy plain heather gray t-shirt with no logo">
+        <figcaption><code>toy-plain-tee.png</code> — plain heather tee. SKU <code>TOY-PLAIN</code>. No logo.</figcaption>
+      </figure>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 1</span> Scaffold + two photos <span class="step-time">0–6 min</span></h2>
+      <p>You need files, a schema prompt, and images on disk. Do not type a description from memory.</p>
+      <pre class="prompt">Create lec05/ with products/, prompts/, output/.
+Copy toy-crest-tee.png and toy-plain-tee.png from the lecture images folder into lec05/products/.
+Write toy_skus.json with exactly 2 products: sku, name, price_usd, image.
+  TOY-CREST = navy crest tee, $24, products/toy-crest-tee.png
+  TOY-PLAIN = heather gray blank tee, $22, products/toy-plain-tee.png
+Write prompts/describe_product.md (you will fill the rules in Step 3).
+README: this is a class toy, not the HW3 pack. .env.example with OPENAI_API_KEY=. Do not write a real key.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Both pngs open on disk. JSON has 2 rows. No Homework 3 zip in the folder.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 2</span> One image → a caption <span class="step-time">6–14 min</span></h2>
+      <p>First prove the model can see. A paragraph is enough. Then we freeze the fields.</p>
+      <pre class="prompt">Create caption_one.py that sends products/toy-crest-tee.png to a vision-capable model (prefer gpt-5.6-luna).
+Prompt: "Describe this garment in 3 sentences. Color, type, any logo or text you can actually read. If you cannot read text, say so."
+Print the caption and write output/crest_caption.txt.
+Load OPENAI_API_KEY from .env. detail=low is fine for this first call.</pre>
+      <div class="vibe-check"><strong>Check:</strong> The caption mentions a navy/blue tee and a crest/shield. It does not mention Bitcoin, Yale wordmarks, or Handsome Dan unless those marks are truly in the pixels (they are not).</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 3</span> Same image, now JSON <span class="step-time">14–24 min</span></h2>
+      <p>Homework 3 will grade fields, not vibes. Practice the contract on a toy SKU.</p>
+      <pre class="prompt">Fill prompts/describe_product.md:
+- Look at the image. Do not invent logos, words, mascots, or colors.
+- Return JSON only: visual_description (short paragraph), search_tags (array of short strings), logo_or_text_cues (array of readable marks; empty if none).
+Write describe_one.py: read toy_skus.json, find TOY-CREST, call vision with that prompt + the image, merge inventory fields + vision fields, write output/one_product.json.
+If a field is not visible, use [] or say so in the description — never guess a university name.</pre>
+      <div class="vibe-check"><strong>Check:</strong> <code>one_product.json</code> parses. Has sku TOY-CREST plus the three vision keys. <code>logo_or_text_cues</code> does not contain words that are not on the shirt.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 4</span> The trap photo: invent nothing <span class="step-time">24–32 min</span></h2>
+      <p>The plain tee is the eval. Helpful models love to “complete” a merch shop.</p>
+      <pre class="prompt">Run the same describe prompt on products/toy-plain-tee.png.
+Save output/plain_product.json with sku TOY-PLAIN.
+logo_or_text_cues MUST be [] (or empty) unless you can photograph actual print — this shirt has none.
+search_tags may include color and "plain" / "blank" / "no logo". Do not add a crest, bulldog, or wordmark.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Open the png yourself. If the JSON names a logo, the run fails. Fix the prompt, do not edit the JSON by hand to hide it.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 5</span> Two images in parallel <span class="step-time">32–38 min</span></h2>
+      <p>Homework 3 Problem 2 forbids a sequential wait-for-each-image loop. Practice the idea on two files.</p>
+      <pre class="prompt">Create describe_two.py that vision-calls BOTH toy images concurrently (threads, asyncio, or equivalent) with max 2 workers.
+Write output/toy_catalog.json as { "products": [ ... ] } merging toy_skus.json fields + vision fields.
+If one call fails, retry that SKU once. Print elapsed seconds vs a comment of "would have been ~2× sequentially."
+Do not process the HW3 20-SKU pack.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Two products in one JSON. Wall-clock is not “caption 1, then wait, then caption 2” in a blocking for-loop. Plain tee still has empty logo cues.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 6</span> AI_prompts.md <span class="step-time">38–40 min</span></h2>
+      <p>Same habit as every homework: log what you asked, in your words.</p>
+      <pre class="prompt">Append a Lecture 5 section to AI_prompts.md: the caption prompt, the JSON schema prompt, and one sentence on whether the model invented a mark on the plain tee.
+Stretch: print estimated image tokens for one 1024×1024 photo using ceil(W/32)*ceil(H/32) and a Luna $ line.</pre>
+      <div class="vibe-check"><strong>Check:</strong> <code>AI_prompts.md</code> has a Lecture 5 heading and at least one prompt in your own words.</div>
+      <p class="vibe-extend"><strong>Stretch:</strong> Set <code>detail=low</code> vs <code>original</code> on the crest tee and compare whether tiny crest edges survive. Do not start Homework 3.</p>
+    </div>
+  </main>
+  <script src="../../js/theme.js"></script>
+  <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
+</body>
+</html>

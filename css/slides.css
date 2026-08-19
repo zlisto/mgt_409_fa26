@@ -1,0 +1,409 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+:root {
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --yale-blue: #00356b;
+  --yale-blue-dark: #002147;
+  --yale-blue-light: #286dc0;
+  --yale-blue-pale: #e8eef4;
+  --bg-slide: #ffffff;
+  --text-primary: #1a2e42;
+  --text-secondary: #3d5166;
+  --text-muted: #5c7086;
+  --accent-bar: var(--yale-blue);
+}
+
+[data-theme="dark"] {
+  --yale-blue-pale: #132a45;
+  --bg-slide: #0a1628;
+  --text-primary: #e8eef4;
+  --text-secondary: #b8c9d9;
+  --text-muted: #8fa3b8;
+  --accent-bar: #286dc0;
+}
+
+* { box-sizing: border-box; }
+
+body.slide-deck-body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--bg-slide);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.slide-deck-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1.25rem;
+  background: var(--yale-blue-dark);
+  color: #fff;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.slide-deck-header a {
+  color: #b8d4f0;
+  text-decoration: none;
+}
+
+.slide-deck-header a:hover { color: #fff; }
+
+.slide-viewport {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 2rem 1rem;
+  position: relative;
+  min-height: 0;
+}
+
+.slide {
+  display: none;
+  width: 100%;
+  max-width: 920px;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+  padding: 0 0.5rem;
+  animation: fadeIn 0.25s ease;
+}
+
+.slide.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.slide h1 {
+  font-size: clamp(1.75rem, 4vw, 2.35rem);
+  font-weight: 800;
+  color: var(--yale-blue);
+  margin: 0 0 1rem;
+  line-height: 1.2;
+  border-left: 5px solid var(--accent-bar);
+  padding-left: 1rem;
+}
+
+[data-theme="dark"] .slide h1 { color: #fff; }
+
+.slide h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--yale-blue-light);
+  margin: 1.25rem 0 0.5rem;
+}
+
+.slide p, .slide li {
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  line-height: 1.55;
+  color: var(--text-primary);
+}
+
+.slide ul, .slide ol {
+  margin: 0.5rem 0;
+  padding-left: 1.4rem;
+}
+
+.slide li { margin: 0.4rem 0; }
+
+.slide .subtitle {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  margin: -0.5rem 0 1.25rem 1.25rem;
+}
+
+.slide.title-slide h1 {
+  border: none;
+  padding: 0;
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  text-align: center;
+}
+
+.slide.title-slide .subtitle { text-align: center; margin-left: 0; }
+
+.slide.section-slide {
+  text-align: center;
+}
+
+.slide.section-slide h1 {
+  border: none;
+  padding: 0;
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+}
+
+.slide.section-slide p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.slide .takeaway {
+  margin-top: 1.25rem;
+  padding: 0.85rem 1.1rem;
+  background: var(--yale-blue-pale);
+  border-radius: 8px;
+  border-left: 4px solid var(--yale-blue-light);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+[data-theme="dark"] .slide .takeaway {
+  background: #132a45;
+}
+
+.slide table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+  font-size: 0.95rem;
+}
+
+.slide th, .slide td {
+  border: 1px solid var(--yale-blue-pale);
+  padding: 0.5rem 0.65rem;
+  text-align: left;
+}
+
+[data-theme="dark"] .slide th,
+[data-theme="dark"] .slide td { border-color: #1e3a5f; }
+
+.slide th {
+  background: var(--yale-blue-pale);
+  font-weight: 700;
+}
+
+.slide .diagram {
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  background: var(--yale-blue-pale);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  white-space: pre;
+  margin: 0.75rem 0;
+}
+
+[data-theme="dark"] .slide .diagram { background: #0d1b2e; }
+
+.slide .bar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.35rem 0;
+  font-size: 0.95rem;
+}
+
+.slide .bar {
+  height: 1.1rem;
+  background: var(--yale-blue-light);
+  border-radius: 3px;
+  min-width: 4px;
+}
+
+.slide-deck-footer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem 1rem;
+  flex-shrink: 0;
+}
+
+.slide-deck-footer button {
+  font: inherit;
+  font-size: 1rem;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--yale-blue-light);
+  background: var(--yale-blue);
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.slide-deck-footer button:hover {
+  background: var(--yale-blue-dark);
+}
+
+.slide-hint {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  padding-bottom: 0.5rem;
+}
+
+.slide .source-note {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+  font-style: italic;
+}
+
+.slide .stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.slide .stat-box {
+  background: var(--yale-blue-pale);
+  border-radius: 8px;
+  padding: 0.85rem;
+  text-align: center;
+}
+
+.slide .stat-box .num {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--yale-blue);
+  line-height: 1.1;
+}
+
+[data-theme="dark"] .slide .stat-box .num { color: #6ba3e0; }
+
+.slide .stat-box .label {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+  line-height: 1.3;
+}
+
+.slide .chart-title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 0.5rem 0 0.25rem;
+  color: var(--text-secondary);
+}
+
+.slide .chart-bar-chart {
+  margin: 0.5rem 0 0;
+}
+
+.slide .chart-row {
+  display: grid;
+  grid-template-columns: 11rem 1fr 3rem;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.45rem 0;
+  font-size: 0.9rem;
+}
+
+.slide .chart-row .bar-track {
+  background: var(--yale-blue-pale);
+  border-radius: 4px;
+  height: 1.35rem;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .slide .chart-row .bar-track { background: #132a45; }
+
+.slide .chart-row .bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--yale-blue), var(--yale-blue-light));
+  border-radius: 4px;
+  min-width: 2px;
+}
+
+.slide .chart-row .bar-fill.muted {
+  background: linear-gradient(90deg, #6b8aad, #8fa3b8);
+}
+
+.slide .chart-row .pct {
+  font-weight: 700;
+  text-align: right;
+  color: var(--yale-blue);
+}
+
+[data-theme="dark"] .slide .chart-row .pct { color: #6ba3e0; }
+
+.slide .two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin: 0.75rem 0;
+}
+
+@media (max-width: 720px) {
+  .slide .two-col { grid-template-columns: 1fr; }
+  .slide .stat-grid { grid-template-columns: 1fr; }
+  .slide .chart-row { grid-template-columns: 8rem 1fr 2.5rem; font-size: 0.8rem; }
+}
+
+.slide .compare-box {
+  border: 1px solid var(--yale-blue-pale);
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-size: 0.92rem;
+}
+
+.slide .compare-box h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  color: var(--yale-blue-light);
+}
+
+.slide svg.flow-svg {
+  width: 100%;
+  max-height: 200px;
+  margin: 0.5rem 0;
+}
+
+.slide svg.flow-svg text {
+  fill: #00356b;
+  font-family: Inter, sans-serif;
+}
+
+[data-theme="dark"] .slide svg.flow-svg text {
+  fill: #6ba3e0;
+}
+
+.slide svg.flow-svg text.on-dark {
+  fill: #ffffff;
+}
+
+[data-theme="dark"] .slide svg.flow-svg text.on-dark {
+  fill: #ffffff;
+}
+
+.slide svg.flow-svg .box-light {
+  fill: #e8eef4;
+  stroke: #00356b;
+}
+
+[data-theme="dark"] .slide svg.flow-svg .box-light {
+  fill: #132a45;
+  stroke: #286dc0;
+}
+
+.slide svg.flow-svg .box-dark {
+  fill: #00356b;
+  stroke: #00356b;
+}
+
+.slide svg.flow-svg .arrow {
+  stroke: #286dc0;
+  fill: #286dc0;
+}
+
+.slide .speaker-note {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  border-top: 1px dashed var(--yale-blue-pale);
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+}
+
+.slide code {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.88em;
+  background: var(--yale-blue-pale);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+
+[data-theme="dark"] .slide code { background: #132a45; }

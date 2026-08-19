@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 6 Vibe Coding — Video Analysis</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/vibe-session.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .vibe-header h1 { font-size: 2.1rem; }
+    .vibe-goal {
+      background: linear-gradient(90deg, #e8fff8, #ffe8f4);
+      border-left-color: #ff2d7b;
+    }
+    .vibe-step .step-num { background: #ff2d7b; }
+    .vibe-note {
+      background: #fff4cc; border-radius: 10px; padding: 0.75rem 1rem;
+      margin: 1rem 0; font-size: 0.95rem;
+    }
+    [data-theme="dark"] .vibe-note { background: #3d3210; }
+    .vibe-hero {
+      width: 100%; max-height: 220px; object-fit: cover; border-radius: 12px;
+      border: 3px solid #14c8c8; margin: 0.5rem 0 1rem;
+    }
+    .vibe-clock {
+      background: linear-gradient(90deg, #00356b, #ff2d7b);
+      color: #fff; border-radius: 12px; padding: 0.85rem 1.1rem; margin: 0.75rem 0 0;
+      font-weight: 700; font-size: 0.98rem; line-height: 1.45;
+    }
+    .vibe-clock .mins { color: #f5c518; font-weight: 800; }
+    .step-time {
+      display: inline-block; background: #0f1c33; color: #7ef0ff;
+      font-size: 0.78rem; font-weight: 800; letter-spacing: 0.04em;
+      padding: 0.12rem 0.45rem; border-radius: 6px; margin-left: 0.35rem;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <main class="vibe-main">
+    <div class="vibe-header">
+      <h1>Lecture 6: Video Analysis</h1>
+      <p class="meta">
+        <a href="../slides/lec06-slides.html">← Slides</a>
+        <a href="../../lectures.html">All lectures</a>
+        · 40 minutes in class
+      </p>
+    </div>
+    <img class="vibe-hero" src="../images/lec06/campus-customs-phone-ask.png" alt="Phone video of a Yale shirt in a merch shop">
+    <div class="vibe-clock">
+      <strong>Timed lab (40 min).</strong>
+      <span class="mins">0–6</span> scaffold ·
+      <span class="mins">6–13</span> transcribe ·
+      <span class="mins">13–20</span> frames ·
+      <span class="mins">20–30</span> crop ·
+      <span class="mins">30–38</span> lookup / refuse ·
+      <span class="mins">38–40</span> log prompts.
+      If ffmpeg stalls, use 5 stills and keep going — the crop file and the refuse path matter more than a perfect mp4.
+    </div>
+    <div class="vibe-goal">
+      <strong>In-class goal:</strong> Wire a <em>tiny</em> video lookup: transcribe a short clip, sample frames, crop a region in code, describe it, and match against a 3-SKU toy catalog — or honestly say it is not in inventory. This is the Homework 3 <em>shape</em>, not the assignment. Do not download HW3 and finish it in class.
+    </div>
+    <div class="vibe-note">
+      <strong>Media:</strong> Record an 8–12 second phone video of any garment (a hoodie on a chair is fine). Put it at <code>media/ask.mp4</code>. If video capture is painful, use 5 stills in <code>media/frames/</code> and skip ffmpeg — still do crop + vision. No starter zip required.
+    </div>
+    <div class="vibe-note">
+      <strong>Homework 3</strong> is Campus Customs (20 product photos + a customer clip). Work that later, one problem card at a time. Today: three fake SKUs you invent. Last class priced a still; today do not build a CLIP index or a token spreadsheet.
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 1</span> Scaffold lec06 (toy catalog, not HW3) <span class="step-time">0–6 min</span></h2>
+      <p>Prompts in files. Outputs in a folder. Secrets in <code>.env</code>. A catalog so small you can see when the agent is lying.</p>
+      <pre class="prompt">Create lec06/ with:
+- media/ (I will add ask.mp4)
+- prompts/transcribe_ask.md, pick_frame.md, describe_crop.md, match_sku.md
+- toy_catalog.json with exactly 3 products: sku, name, color, sizes[], image_note (one sentence of what the photo would show)
+- sample_frames.py, transcribe_ask.py, inspect_region.py, mini_lookup.py
+- output/frames/, output/crops/, requirements.txt (openai, python-dotenv, pillow). Optional: opencv-python or imageio-ffmpeg for video.
+- .env.example, .gitignore for .env
+README: how to drop in a phone video. Do not write a real API key.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Three SKUs in JSON; prompt files exist; no key in the repo.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 2</span> Transcribe the ask <span class="step-time">6–13 min</span></h2>
+      <p>Speech carries size/color. Pixels carry the mascot. Do not merge those jobs in one mushy prompt yet.</p>
+      <pre class="prompt">Write prompts/transcribe_ask.md and transcribe_ask.py --video media/ask.mp4 --out-dir output
+Use Whisper or the OpenAI audio API. Save output/query_text.json with video_path, transcript, requested_color, requested_size (empty string if not spoken). Never invent a size.</pre>
+      <div class="vibe-check"><strong>Check:</strong> JSON exists. If you whispered “medium navy,” those fields are filled; if you only waved the shirt, they are empty strings.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 3</span> Sample frames (you pick the method) <span class="step-time">13–20 min</span></h2>
+      <p>Video in this course is stills you can point to. OpenAI’s own cookbook samples frames; Gemini would take the mp4 — we stay on the frame path so evidence is a file.</p>
+      <pre class="prompt">sample_frames.py --video media/ask.mp4 --out-dir output
+Save at least 5 jpgs under output/frames/ and output/frames.json with path + timestamp_sec. Document the sampling rule in README (every N seconds is fine).</pre>
+      <div class="vibe-check"><strong>Check:</strong> Five images on disk. Opening frame_000.jpg does not require a video player.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 4</span> Pick a best frame, then crop in code <span class="step-time">20–30 min</span></h2>
+      <p>The model may propose a box. Pillow (or similar) must write the crop. No “I cropped it in my head.”</p>
+      <pre class="prompt">1) Using prompts/pick_frame.md, have vision pick the best product frame from output/frames.json. Save output/best_frame.json with path + reason.
+2) inspect_region.py --frame PATH --x --y --w --h --out-dir output
+   writes a crop under output/crops/, calls vision with prompts/describe_crop.md, saves output/crop_inspect.json with source_frame, crop_path, box, description.
+You may hard-code a box on the CLI for the first run if the model’s box is nonsense — the crop file must still come from code.</pre>
+      <div class="vibe-check"><strong>Check:</strong> <code>output/crops/</code> has an image you can open. Description talks about the garment, not the whole room.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 5</span> Mini lookup: text shortlist, then vision, then refuse <span class="step-time">30–38 min</span></h2>
+      <p>Same order as the lecture diagram. Three SKUs only. Helpful hallucination is a fail.</p>
+      <pre class="prompt">mini_lookup.py reads query_text.json, crop_inspect.json, toy_catalog.json.
+Prompt match_sku.md: score each of the 3 SKUs 0-100 from the crop description + transcript; then if the top score is weak, status=not_in_inventory and sku="".
+Write output/mini_lookup.json with status (match|not_in_inventory), sku, reply (one sentence an associate could say), evidence (best_frame, crop_path, transcript_snippet).
+Do not invent a fourth SKU. Do not build an embedding index.</pre>
+      <div class="vibe-check"><strong>Check:</strong> JSON validates. If you film a banana, you get <code>not_in_inventory</code>, not a creative Yale banana tee.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 6</span> Log prompts <span class="step-time">38–40 min</span></h2>
+      <p>Course habit: what you typed, in your words. If you are still debugging the crop, skip the stretch and log what you have.</p>
+      <pre class="prompt">Append a Lecture 6 section to AI_prompts.md with the prompts you actually used (paraphrase is required). Note one thing the first prompt got wrong (box, transcript, or over-eager match).</pre>
+      <div class="vibe-check"><strong>Check:</strong> AI_prompts.md has Lecture 6 with at least four bullets.</div>
+      <p class="vibe-extend"><strong>Stretch (after 40, or if you finish early):</strong> Second run on a still that should not match (a coffee mug). Save <code>output/mini_lookup_no_match.json</code>. Do not spend class time on a frame-count cost spreadsheet — that is Lecture 5 / Lecture 12 territory.</p>
+    </div>
+  </main>
+  <script src="../../js/theme.js"></script>
+  <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
+</body>
+</html>

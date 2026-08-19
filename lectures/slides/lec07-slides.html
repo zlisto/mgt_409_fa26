@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 7 Slides — Web Applications</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .slide-deck-body { --hot: #c73e82; --gold: #bd9b60; --teal: #0a7a74; }
+    .slide { max-width: 980px; }
+    .slide h1 { font-size: clamp(1.95rem, 4.6vw, 2.75rem); }
+    .slide.title-slide h1 {
+      font-size: clamp(2.4rem, 6vw, 3.5rem);
+      background: linear-gradient(90deg, #00356b, #286dc0 45%, #bd9b60);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    [data-theme="dark"] .slide.title-slide h1 {
+      background: linear-gradient(90deg, #7eb6ff, #ffd166 55%, #e8c37a);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .slide p, .slide li { font-size: clamp(1.1rem, 2.35vw, 1.34rem); }
+    .joke {
+      margin-top: 1rem;
+      padding: 0.85rem 1.1rem;
+      background: #fff6e4;
+      border-left: 6px solid var(--gold);
+      border-radius: 0 12px 12px 0;
+      font-weight: 700;
+      color: #4a3510;
+    }
+    [data-theme="dark"] .joke { background: #3a2e14; color: #ffe9c2; }
+    .slide .takeaway { font-size: 1.12rem; }
+    .chip {
+      display: inline-block;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: var(--yale-blue);
+      color: #fff;
+      margin-bottom: 0.45rem;
+    }
+    .chip.gold { background: var(--gold); color: #1a1208; }
+    .instructor-banner {
+      display: inline-block;
+      margin: 0 0 0.7rem;
+      padding: 0.28rem 0.75rem;
+      border-radius: 999px;
+      background: var(--hot);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .pace th:first-child, .pace td:first-child {
+      width: 5.5rem;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+      color: var(--yale-blue);
+    }
+    [data-theme="dark"] .pace td:first-child { color: #e8c37a; }
+    .news-card {
+      display: block;
+      margin: 0.75rem 0;
+      padding: 1rem 1.1rem;
+      border-radius: 14px;
+      background: #f7f1e6;
+      border: 2px solid var(--gold);
+      text-decoration: none;
+      color: inherit;
+    }
+    .news-card .kicker {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #8a6a2a;
+      margin: 0 0 0.3rem;
+    }
+    .news-card h2 {
+      margin: 0 0 0.4rem;
+      font-size: 1.22rem;
+      color: var(--yale-blue);
+      line-height: 1.25;
+    }
+    .news-card p { margin: 0; font-size: 0.98rem !important; }
+    [data-theme="dark"] .news-card { background: #1a2433; border-color: #d4b57a; }
+    [data-theme="dark"] .news-card h2 { color: #fff; }
+    [data-theme="dark"] .news-card .kicker { color: #e8c37a; }
+    .compare-box.hot { border-color: var(--hot); border-width: 2px; }
+    .compare-box.cool { border-color: var(--yale-blue); border-width: 2px; }
+    .hw-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem;
+      margin: 0.85rem 0;
+    }
+    .hw-grid div {
+      background: var(--yale-blue-pale);
+      border-left: 5px solid var(--gold);
+      border-radius: 10px;
+      padding: 0.6rem 0.75rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+    [data-theme="dark"] .hw-grid div { background: #132a45; }
+    .slide table { font-size: 1.02rem; }
+    .flow-svg { width: 100%; height: auto; }
+    @media (max-width: 800px) { .hw-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body class="slide-deck-body">
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <header class="slide-deck-header">
+    <a href="../../lectures.html">← Lectures</a>
+    <span>Lecture 7: Web Applications</span>
+    <span class="slide-counter">1 / 14</span>
+  </header>
+  <div class="slide-viewport">
+
+      <section class="slide active title-slide" data-slide="1">
+        <p class="chip">Apps &amp; deployment · Lecture 7</p>
+        <h1>Web Applications</h1>
+        <p class="subtitle">MGT 409 · 40 min lecture + 40 min vibe · Homework 4</p>
+        <p>College Street Music Hall: a guest site, not a terminal demo.</p>
+        <p class="takeaway">Today is FastAPI + Vite + SQLite on your laptop. A public URL is Lecture 8.</p>
+      </section>
+
+      <section class="slide" data-slide="2">
+        <p class="instructor-banner">Instructor outline — remove before class.</p>
+        <h1>~40 minutes</h1>
+        <table class="pace">
+          <tr><th>Min</th><th>Beat</th></tr>
+          <tr><td>0–5</td><td>Cold open: guests do not run <code>python cs_agent.py</code></td></tr>
+          <tr><td>5–12</td><td>Lovable $13.3B — generating HTML is cheap; owning auth/data/session is the product</td></tr>
+          <tr><td>12–20</td><td>Stack: Vite :5173 → FastAPI :8000 → SQLite. CORS is the bouncer. Not a URL (L8)</td></tr>
+          <tr><td>20–26</td><td>Grounding: <code>SELECT</code> FAQ rows; one cite/refuse brain</td></tr>
+          <tr><td>26–34</td><td>Product: hashed login + chats that survive refresh</td></tr>
+          <tr><td>34–37</td><td>Screenshot / voice are extra cables — typed chat still has to work</td></tr>
+          <tr><td>37–40</td><td>HW4 map, failure modes, vibe handoff</td></tr>
+        </table>
+        <p class="takeaway">Then 40 min vibe: two processes + SQLite on localhost. Do not deploy today.</p>
+      </section>
+
+      <section class="slide" data-slide="3">
+        <h1>Scripts shipped. Guests want a site.</h1>
+        <div class="two-col">
+          <div class="compare-box hot">
+            <h3><code>python cs_agent.py</code></h3>
+            <p>You, a TA, flags, JSON files. Fine for debugging.</p>
+            <p>Nobody at the merch table runs this.</p>
+          </div>
+          <div class="compare-box cool">
+            <h3>A page they can click</h3>
+            <p>Login, calendar, chat. SQLite keeps the thread.</p>
+            <p>This is what Homework 4 grades — still on localhost today.</p>
+          </div>
+        </div>
+        <p class="takeaway">If a guest cannot click it, it is a lab notebook — not a product.</p>
+      </section>
+
+      <section class="slide" data-slide="4">
+        <h1>The market priced “English → running app”</h1>
+        <p class="chip gold">Aug 12, 2026</p>
+        <a class="news-card" href="https://techcrunch.com/2026/08/12/lovable-confirms-new-13-3b-valuation-raises-another-400m/" target="_blank" rel="noopener">
+          <p class="kicker">TechCrunch · Julie Bort</p>
+          <h2>Lovable confirms $13.3B valuation, raises another $400M</h2>
+          <p>$400M Series C (Menlo + EQT). They told the press a ~$500M ARR run-rate. The product is businesses that run on generated web apps — login, data, payments — not chat demos.</p>
+        </a>
+        <p class="source-note"><a href="https://techcrunch.com/2026/08/12/lovable-confirms-new-13-3b-valuation-raises-another-400m/" target="_blank" rel="noopener">TechCrunch</a> · <a href="https://lovable.dev/blog/series-c" target="_blank" rel="noopener">lovable.dev/blog/series-c</a></p>
+        <p class="takeaway">MBA translation: the scarce thing is no longer “can we generate a page.” It is “can we own auth, data, and the guest session.”</p>
+      </section>
+
+      <section class="slide" data-slide="5">
+        <h1>You are not Lovable. You are the venue.</h1>
+        <ul>
+          <li>A prompt-to-app tool can fake a pretty UI in 90 seconds.</li>
+          <li>It will also invent an elevator to the balcony, store passwords in plaintext, and drop the chat on refresh.</li>
+          <li>HW4 is the opposite: <strong>FastAPI + React (Vite) + hashed login + SQLite threads</strong>, grounded in a closed FAQ.</li>
+        </ul>
+        <p class="takeaway">Buy a demo. Grade a repo. Managers who cannot tell the difference will ship the demo.</p>
+      </section>
+
+      <section class="slide" data-slide="6">
+        <h1>The stack, in one picture</h1>
+        <svg class="flow-svg" viewBox="0 0 980 250" aria-label="React talks to FastAPI, which talks to SQLite and the agent">
+          <defs>
+            <marker id="arr7" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#286dc0"/></marker>
+          </defs>
+          <rect class="box-light" x="20" y="70" width="220" height="110" rx="14" stroke-width="3"/>
+          <text x="130" y="116" text-anchor="middle" font-size="20" font-weight="800">React · Vite</text>
+          <text x="130" y="144" text-anchor="middle" font-size="14">port 5173 · UI</text>
+          <line class="arrow" x1="240" y1="125" x2="310" y2="125" stroke-width="3" marker-end="url(#arr7)"/>
+          <rect class="box-dark" x="320" y="55" width="250" height="140" rx="14" stroke-width="3"/>
+          <text class="on-dark" x="445" y="108" text-anchor="middle" font-size="20" font-weight="800">FastAPI</text>
+          <text class="on-dark" x="445" y="136" text-anchor="middle" font-size="14">/login /shows /chat</text>
+          <text class="on-dark" x="445" y="162" text-anchor="middle" font-size="14">port 8000 · API</text>
+          <line class="arrow" x1="570" y1="95" x2="640" y2="70" stroke-width="3" marker-end="url(#arr7)"/>
+          <line class="arrow" x1="570" y1="155" x2="640" y2="180" stroke-width="3" marker-end="url(#arr7)"/>
+          <rect class="box-light" x="650" y="25" width="300" height="90" rx="12" stroke-width="3"/>
+          <text x="800" y="62" text-anchor="middle" font-size="18" font-weight="800">SQLite</text>
+          <text x="800" y="88" text-anchor="middle" font-size="14">users · faq · chats</text>
+          <rect class="box-light" x="650" y="140" width="300" height="90" rx="12" stroke-width="3"/>
+          <text x="800" y="178" text-anchor="middle" font-size="18" font-weight="800">cite / refuse agent</text>
+          <text x="800" y="204" text-anchor="middle" font-size="14">no embeddings · keys stay here</text>
+        </svg>
+        <p class="joke">CORS is the bouncer between 5173 and 8000. Forget it and the browser fails — the model is not “broken.”</p>
+      </section>
+
+      <section class="slide" data-slide="7">
+        <h1>Two servers, one guest</h1>
+        <table>
+          <tr><th>Process</th><th>Job</th><th>Never put here</th></tr>
+          <tr><td><strong>Vite</strong></td><td>Buttons, brand, the box they type in</td><td>API keys, password hashes, the FAQ dump</td></tr>
+          <tr><td><strong>FastAPI</strong></td><td>Auth, SQL, agent</td><td>Hard-coded guest passwords in git</td></tr>
+          <tr><td><strong>SQLite</strong></td><td>The source of truth</td><td>A second copy of truth in random JSON</td></tr>
+        </table>
+        <p class="takeaway">React draws. FastAPI checks ID. The database is the guest list. Lecture 8 puts this at a URL — not today.</p>
+      </section>
+
+      <section class="slide" data-slide="8">
+        <h1>A venue FAQ is a SELECT, not a vector store</h1>
+        <ul>
+          <li>HW4 Problem 2: invent ≥4 categories, <code>SELECT</code> those rows, then answer.</li>
+          <li>Do <strong>not</strong> embed the FAQ. Do not stuff the whole policy into every prompt.</li>
+          <li>One customer-service brain. Conflicting agents on one venue policy start a turf war.</li>
+        </ul>
+        <p class="takeaway">If the bot invents lockers or an elevator, you stuffed the model instead of selected FAQ rows.</p>
+      </section>
+
+      <section class="slide" data-slide="9">
+        <h1>Passwords are not a prompt</h1>
+        <div class="two-col">
+          <div class="compare-box hot">
+            <h3>Fail</h3>
+            <p><code>password = "hunter2"</code> in JSON. Printed in the terminal. Logged in chat history.</p>
+          </div>
+          <div class="compare-box cool">
+            <h3>Pass</h3>
+            <p>Salt + hash in SQLite (PBKDF2 settings live in <code>meta</code>). Compare hashes. Never echo what they typed. Signup = new salt.</p>
+          </div>
+        </div>
+        <p class="takeaway">If the users table is plaintext, you do not have a web app. You have a leak with CSS.</p>
+      </section>
+
+      <section class="slide" data-slide="10">
+        <h1>Chats that survive a refresh</h1>
+        <ul>
+          <li><code>POST /chat</code> writes <strong>both</strong> sides of the turn into SQLite.</li>
+          <li><code>GET /chats</code> is that user’s threads only.</li>
+          <li>“New chat” starts a row. Old threads stay. That is the product.</li>
+        </ul>
+        <p class="takeaway">If the thread dies on refresh, you returned JSON and never <code>INSERT</code>ed.</p>
+      </section>
+
+      <section class="slide" data-slide="11">
+        <h1>Screenshot and voice are extra cables</h1>
+        <div class="stat-grid">
+          <div class="stat-box"><div class="num">Type</div><div class="label">Must work first. Graders start here.</div></div>
+          <div class="stat-box"><div class="num">Shot</div><div class="label">Capture the page they are staring at — not a webcam of the room</div></div>
+          <div class="stat-box"><div class="num">Mic</div><div class="label">STT → same agent → TTS. If typing is broken, the mic will not save you</div></div>
+        </div>
+        <p class="takeaway">HW4 P7–8. In vibe today these are stretch. The product is login + chat + a database.</p>
+      </section>
+
+      <section class="slide" data-slide="12">
+        <h1>Homework 4 is this lecture, unzipped</h1>
+        <div class="hw-grid">
+          <div>P2 · Categorize FAQ (no vectors)</div>
+          <div>P3 · Cite / refuse guest agent</div>
+          <div>P4 · Hash login + signup</div>
+          <div>P5 · FastAPI + saved chats</div>
+          <div>P6 · React Vite, venue CSS</div>
+          <div>P7–8 · Screenshot + voice</div>
+        </div>
+        <table>
+          <tr><th>Symptom</th><th>Actual problem</th></tr>
+          <tr><td>Browser “Failed to fetch”</td><td>CORS, wrong port, FastAPI not running</td></tr>
+          <tr><td>Bot invents lockers / refunds</td><td>You stuffed the model, not the selected FAQ rows</td></tr>
+          <tr><td>Login always fails</td><td>Wrong hash iterations, or you compared plaintext</td></tr>
+          <tr><td>Chats vanish</td><td>You returned JSON and forgot to <code>INSERT</code></td></tr>
+          <tr><td>API key in the React bundle</td><td>The key is now in every guest’s browser</td></tr>
+        </table>
+      </section>
+
+      <section class="slide section-slide" data-slide="13">
+        <h1>→ Vibe coding · 40 minutes</h1>
+        <p>Toy FastAPI + Vite + SQLite chat a classmate can click. Not the HW4 zip. Not a deploy.</p>
+        <p><a href="../vibe/lec07-vibe.html">Open the timed vibe prompts →</a></p>
+        <p class="source-note">Lecture 8 is the URL that is not <code>localhost</code>.</p>
+      </section>
+
+      <section class="slide" data-slide="14">
+        <h1>What to remember</h1>
+        <ul>
+          <li>A web app is <strong>UI + API + database</strong>, not a nicer print statement.</li>
+          <li>Hash passwords. Persist chats. Ground answers in <code>SELECT</code>ed rows.</li>
+          <li>Prompt-to-app tools make this cheaper to start — and easier to ship a demo that lies.</li>
+        </ul>
+        <p class="takeaway">Next: Lecture 8, Application Deployment — bind <code>0.0.0.0:$PORT</code>, hide secrets, smoke-test a URL.</p>
+      </section>
+
+  </div>
+  <p class="slide-hint">Arrow keys, Space, or buttons to advance</p>
+  <footer class="slide-deck-footer">
+    <button type="button" id="prev" aria-label="Previous slide">← Previous</button>
+    <button type="button" id="next" aria-label="Next slide">Next →</button>
+  </footer>
+  <script src="../../js/slides.js"></script>
+  <script src="../../js/theme.js"></script>
+</body>
+</html>

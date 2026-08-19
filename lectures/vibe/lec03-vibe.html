@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 3 Vibe Coding — Tool Use</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/vibe-session.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .vibe-header h1 {
+      font-size: clamp(1.8rem, 4vw, 2.35rem);
+      background: linear-gradient(90deg, #ff3d7f, #7c5cff);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .vibe-goal {
+      background: linear-gradient(90deg, #e8fff6, #ffe8f3);
+      border-left-color: #ff3d7f;
+    }
+    .vibe-step .step-num { background: #ff3d7f; font-size: 0.82rem; }
+    .vibe-step:nth-child(even) .step-num { background: #7c5cff; }
+    .joke-line {
+      margin: 0.75rem 0 0;
+      padding: 0.65rem 0.85rem;
+      background: #fff3c4;
+      border-left: 5px solid #ffb703;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+    [data-theme="dark"] .joke-line { background: #3a2a08; color: #ffe9b8; }
+    .vibe-clock {
+      display: inline-block;
+      font-weight: 800;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      background: #00356b;
+      color: #fff;
+      padding: 0.18rem 0.5rem;
+      border-radius: 4px;
+      margin-left: 0.4rem;
+      vertical-align: middle;
+    }
+    .vibe-pace {
+      background: var(--yale-blue-pale);
+      border-radius: 8px;
+      padding: 0.85rem 1.1rem;
+      margin: 1rem 0 1.25rem;
+    }
+    .vibe-pace strong { color: var(--yale-blue); }
+    .vibe-pace ol { margin: 0.4rem 0 0 1.2rem; padding: 0; }
+    .vibe-pace li { margin: 0.25rem 0; }
+    [data-theme="dark"] .vibe-pace { background: #132a45; }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <main class="vibe-main">
+    <div class="vibe-header">
+      <h1>Lecture 3: Tool Use</h1>
+      <p class="meta">
+        <a href="../slides/lec03-slides.html">← Slides</a>
+        <a href="../../lectures.html">All lectures</a>
+        · 40 minutes in class
+      </p>
+    </div>
+    <div class="vibe-goal">
+      <strong>In-class goal:</strong> Ship a real <code>search_web</code> tool that returns titled URLs, let an LLM invent queries from a tiny ICP JSON, save <code>search_results.json</code>, then run a function-calling variant where the model <em>requests</em> the tool. This is the Homework 2 search wrench—not the FiftyFlowers answers, not the email sender, not the agent loop (that’s Lecture 4).
+    </div>
+    <div class="vibe-pace">
+      <strong>40-minute clock</strong>
+      <ol>
+        <li>0:00–6:00 — Scaffold <code>lec03/</code></li>
+        <li>6:00–14:00 — Implement <code>search_web</code> + CLI</li>
+        <li>14:00–20:00 — Query prompt from the ICP</li>
+        <li>20:00–30:00 — <code>run_search.py</code> (HW2 Problem 3 shape)</li>
+        <li>30:00–37:00 — Function-calling variant</li>
+        <li>37:00–40:00 — Log prompts + click two URLs</li>
+      </ol>
+      <p style="margin:0.6rem 0 0">If you are behind at 30:00, skip README polish and still do the function-calling step. Stretch (cap at 3 calls in code) is optional.</p>
+    </div>
+    <p class="joke-line">Toy company in class: <strong>Petal Depot</strong>, a bulk flower wholesaler. Same <em>shape</em> as HW2. Different site, so you cannot paste this session in as the homework zip.</p>
+    <p class="vibe-download">Vibe this from scratch (prompts in files, outputs in a folder, <code>.env</code> gitignored). Use OpenAI via Portkey the way the course already set up.</p>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 1</span> Scaffold lec03 <span class="vibe-clock">0:00–6:00</span></h2>
+      <p>Separate the search function from the “invent queries + save JSON” script. Secrets stay in <code>.env</code>.</p>
+      <pre class="prompt">Create a folder lec03/ with:
+- search_web.py
+- run_search.py
+- prompts/search_queries.md
+- fixtures/icp.json (tiny fake ICP for "Petal Depot", a bulk flower wholesaler targeting wedding planners and floral studios; include disqualifiers for one-off retail brides)
+- fixtures/search_results.stub.json (5 fake but well-formed hits with https URLs, for offline mode)
+- output/
+- requirements.txt (openai, python-dotenv)
+- .env.example with OPENAI_API_KEY=
+- .gitignore ignoring .env and output/*
+- README: how to run; note that search_web may use OpenAI Responses web_search OR the stub if no key / flag --offline
+No real API keys in any file.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Folder exists; README explains live search vs stub; no secrets in tracked files.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 2</span> Implement search_web(query) <span class="vibe-clock">6:00–14:00</span></h2>
+      <p>The tool returns evidence, not a vibe paragraph. Every hit needs a URL the grader could click.</p>
+      <pre class="prompt">In search_web.py define:
+
+search_web(query: str, max_results: int = 5) -> list[dict]
+
+Each dict keys: title, url, snippet.
+- Prefer OpenAI Responses API with tools=[{"type":"web_search"}] when OPENAI_API_KEY is set.
+- If --offline or no key, filter fixtures/search_results.stub.json by query substring.
+- Drop any hit missing a https URL.
+- Truncate snippets to 280 chars in Python (do not dump whole pages into the model).
+Add a CLI: python search_web.py "austin wedding planner" that pretty-prints JSON.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Running the CLI prints ≤5 objects; first object has a real-looking https url key. Offline mode still returns URLs from the stub.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 3</span> Prompt: invent search queries from an ICP <span class="vibe-clock">14:00–20:00</span></h2>
+      <p>Homework 2 will have the model propose ≥5 queries from <code>icp.json</code>. Practice that contract now.</p>
+      <pre class="prompt">In prompts/search_queries.md tell the model:
+Input: ICP JSON for a bulk flower wholesaler.
+Output: JSON only, {"queries": [string, ...]} with at least 5 distinct web search strings.
+Rules:
+- Queries should find BUSINESS customers (planners, studios, venues), not "buy roses cheap".
+- Include city or region in some queries.
+- Do not name invented companies.
+- Do not include personal social-media hunting language.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Prompt file states the JSON shape, the ≥5 rule, and “business customers not retail shoppers.”</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 4</span> run_search.py — queries then tool <span class="vibe-clock">20:00–30:00</span></h2>
+      <p>Still a script, not an agent loop. You decide the order: LLM queries → your code searches each one. HW2 Problem 3 puts this shape in one script named <code>search_web.py</code>; today we keep the function separate so the handshake is obvious.</p>
+      <pre class="prompt">Create run_search.py that:
+1. Loads fixtures/icp.json
+2. Calls gpt-4o-mini (or the Portkey model we use in class) with prompts/search_queries.md + the ICP, response_format json_object
+3. Parses queries (require len >= 5)
+4. For each query, calls search_web(query)
+5. Writes output/search_results.json as:
+   {"queries": [...], "results": [{"query","title","url","snippet"}, ...]}
+6. Prints token usage and number of hits.
+CLI: python run_search.py --icp fixtures/icp.json --out-dir output
+Refuse to write results that lack urls. If a query returns nothing, continue.</pre>
+      <div class="vibe-check"><strong>Check:</strong> File exists; ≥5 queries; every result row has query + url.</div>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 5</span> Function-calling variant <span class="vibe-clock">30:00–37:00</span></h2>
+      <p>Same destination, tool-native path: the model <em>requests</em> <code>search_web</code> instead of you always calling it first. Max turns are a cap, not an agent loop (Lecture 4).</p>
+      <pre class="prompt">Add research_with_tools.py that:
+- Registers search_web as an OpenAI function tool (name search_web, parameters {query: string, max_results: integer})
+- System prompt: propose queries from the Petal Depot ICP, call search_web up to 3 times, then stop.
+- Your code executes each tool call and appends results.
+- Max 4 model turns. Then write output/tool_trace.json with the tool call names/args and output/search_results.json in the same schema as Step 4.
+- Print a warning if the model tries to call anything other than search_web.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Logs show at least one <code>search_web</code> tool call; final JSON still has https URLs.</div>
+      <p class="vibe-extend"><strong>Stretch (if time):</strong> Cap total search calls at 3 in code even if the model begs for more. That’s a manager control, not a prompt hope.</p>
+    </div>
+
+    <div class="vibe-step">
+      <h2><span class="step-num">Step 6</span> Log prompts + click two URLs <span class="vibe-clock">37:00–40:00</span></h2>
+      <p>Course habit: what you typed to the vibe coder, in your words. Then prove the tool, not the JSON.</p>
+      <pre class="prompt">Append a Lecture 3 section to AI_prompts.md summarizing, in my own words: scaffold, search_web implementation, query-prompt design, run_search.py, and the function-calling variant. One sentence on what broke on the first try if anything did.</pre>
+      <div class="vibe-check"><strong>Check:</strong> Lecture 3 section exists with ≥4 bullets. No API keys pasted into the log. Open two saved URLs in a browser. If they 404, fix the tool—not the JSON by hand.</div>
+      <p class="joke-line">Homework 2 starts from FiftyFlowers.com and adds investigate / score / draft / report. Do not send email. Do not harvest personal inboxes. Today you only proved the intern can use a browser with adult supervision.</p>
+    </div>
+  </main>
+  <script src="../../js/theme.js"></script>
+  <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
+</body>
+</html>

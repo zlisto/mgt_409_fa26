@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 12 Slides — Tokenomics</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    /* Site nav lives in style.css; keep it from fighting the deck viewport. */
+    .slide-deck-body nav.site-nav {
+      position: relative;
+      flex-shrink: 0;
+    }
+    .slide-deck-body a { font-size: inherit; line-height: inherit; }
+    .slide-deck-body img {
+      margin-bottom: 0;
+      box-shadow: none;
+      border: none;
+      transform: none;
+    }
+    .slide-deck-body img:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    .slide-viewport { padding: 0.85rem 1.5rem 0.4rem; }
+    .slide { max-width: 980px; }
+    .slide h1 {
+      font-size: clamp(2.05rem, 4.6vw, 2.85rem);
+      border-left-color: #f4c430;
+    }
+    .slide p, .slide li { font-size: clamp(1.12rem, 2.4vw, 1.38rem); }
+    .slide.title-slide h1 {
+      font-size: clamp(2.6rem, 6vw, 3.4rem);
+      background: linear-gradient(90deg, #00356b, #e85d04, #f4c430);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    [data-theme="dark"] .slide.title-slide h1 {
+      background: linear-gradient(90deg, #7ec8ff, #ff9f1c, #ffe566);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .joke {
+      margin-top: 0.9rem;
+      padding: 0.75rem 1rem;
+      background: #fff4cc;
+      border-left: 6px solid #f4c430;
+      border-radius: 0 10px 10px 0;
+      font-weight: 700;
+      font-size: 1.12rem;
+      color: #3d2b00;
+    }
+    [data-theme="dark"] .joke {
+      background: #3a2e0a;
+      color: #ffe9a8;
+      border-left-color: #f4c430;
+    }
+    .slide .takeaway {
+      background: linear-gradient(90deg, #e8f8ee, #e8eef4);
+      border-left-color: #2f9e44;
+      font-size: 1.12rem;
+    }
+    [data-theme="dark"] .slide .takeaway {
+      background: #123322;
+      border-left-color: #51cf66;
+    }
+    .news-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 2px solid #f4c430;
+      box-shadow: 0 8px 22px rgba(0, 53, 107, 0.16);
+      margin: 0.35rem 0 0.5rem;
+    }
+    .news-card img {
+      display: block;
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      object-position: center 20%;
+    }
+    .news-card .cap {
+      padding: 0.55rem 0.85rem 0.7rem;
+      background: #00356b;
+      color: #fff;
+    }
+    .news-card .outlet {
+      display: block;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #f4c430;
+      font-weight: 800;
+      margin-bottom: 0.2rem;
+    }
+    .news-card .hl {
+      font-size: 1.08rem;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+    .viz {
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 3px solid #286dc0;
+      margin: 0.35rem 0;
+    }
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin: 0.7rem 0;
+    }
+    .pill {
+      font-weight: 800;
+      font-size: 1.05rem;
+      padding: 0.45rem 0.8rem;
+      border-radius: 999px;
+      color: #fff;
+    }
+    .pill.luna { background: #4dabf7; }
+    .pill.terra { background: #2f9e44; }
+    .pill.sol { background: #e8590c; }
+    .price-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.7rem;
+      margin: 0.6rem 0;
+    }
+    .price-card {
+      border-radius: 14px;
+      padding: 0.85rem 0.7rem;
+      text-align: center;
+      color: #fff;
+    }
+    .price-card.luna { background: linear-gradient(160deg, #4dabf7, #1c7ed6); }
+    .price-card.terra { background: linear-gradient(160deg, #51cf66, #2b8a3e); }
+    .price-card.sol { background: linear-gradient(160deg, #ffa94d, #d9480f); }
+    .price-card .who { font-size: 1.05rem; font-weight: 800; letter-spacing: 0.04em; }
+    .price-card .amt { font-size: 1.55rem; font-weight: 800; line-height: 1.15; margin: 0.25rem 0; }
+    .price-card .sub { font-size: 0.82rem; opacity: 0.95; }
+    .slide .stat-box { border-top: 5px solid #f4c430; }
+    .slide .stat-box .num { font-size: 2.05rem; }
+    .slide svg.flow-svg { max-height: 210px; }
+    .instructor-banner {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: #c92a2a;
+      color: #fff;
+      padding: 0.32rem 0.7rem;
+      border-radius: 6px;
+      margin-bottom: 0.55rem;
+    }
+    .pace {
+      width: 100%;
+      margin: 0.35rem 0 0;
+    }
+    .pace th, .pace td { font-size: 1.02rem; }
+    .pace td:first-child {
+      font-weight: 800;
+      white-space: nowrap;
+      width: 5.8rem;
+      color: #00356b;
+    }
+    [data-theme="dark"] .pace td:first-child { color: #7ec8ff; }
+    .formula {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 1.02rem;
+      background: #e8eef4;
+      border-radius: 10px;
+      padding: 0.7rem 0.9rem;
+      margin: 0.45rem 0;
+    }
+    [data-theme="dark"] .formula { background: #132a45; }
+    .cache-ladder {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 0.4rem;
+      align-items: center;
+      margin: 0.55rem 0 0.7rem;
+    }
+    .cache-box {
+      border-radius: 12px;
+      padding: 0.65rem 0.5rem;
+      text-align: center;
+      color: #fff;
+      font-weight: 800;
+    }
+    .cache-box .lbl { font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.95; }
+    .cache-box .num { font-size: 1.45rem; line-height: 1.15; margin: 0.15rem 0; }
+    .cache-box.read { background: linear-gradient(160deg, #51cf66, #2b8a3e); }
+    .cache-box.uncached { background: linear-gradient(160deg, #4dabf7, #1c7ed6); }
+    .cache-box.write { background: linear-gradient(160deg, #ffa94d, #d9480f); }
+    .cache-arrow { font-size: 1.4rem; font-weight: 900; color: #e8590c; text-align: center; }
+    .order-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem;
+      margin: 0.5rem 0;
+    }
+    .order-card {
+      border-radius: 12px;
+      padding: 0.7rem 0.85rem;
+    }
+    .order-card h3 { margin: 0 0 0.35rem; font-size: 1.05rem; }
+    .order-card.good { background: #e8f8ee; border-left: 6px solid #2f9e44; }
+    .order-card.bad { background: #fff0e6; border-left: 6px solid #e8590c; }
+    [data-theme="dark"] .order-card.good { background: #123322; }
+    [data-theme="dark"] .order-card.bad { background: #3a2410; }
+    @media (max-width: 720px) {
+      .price-grid, .order-row, .cache-ladder { grid-template-columns: 1fr; }
+      .cache-arrow { display: none; }
+      .news-card img { height: 120px; }
+    }
+  </style>
+</head>
+<body class="slide-deck-body">
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <header class="slide-deck-header">
+    <a href="../../lectures.html">← Lectures</a>
+    <span>Lecture 12: Tokenomics</span>
+    <span class="slide-counter">1 / 14</span>
+  </header>
+  <div class="slide-viewport">
+
+    <section class="slide active title-slide" data-slide="1">
+      <h1>Tokenomics</h1>
+      <p class="subtitle">MGT 409 · Tokens → dollars, then match the model to the task</p>
+      <p class="subtitle" style="margin-top:0.4rem">Tauhid Zaman · Yale SOM · Fall 2026</p>
+      <div class="pill-row" style="justify-content:center">
+        <span class="pill luna">Luna = default</span>
+        <span class="pill terra">Terra = when Luna fails</span>
+        <span class="pill sol">Sol = when the task earns it</span>
+      </div>
+      <p class="speaker-note">Lecture 11 was safety. Today is unit economics: list prices, a worked FAQ bill, prompt cache, then Luna vs Terra. Homework 6 Problems 5–7. Skip slide 2 in class.</p>
+    </section>
+
+    <section class="slide" data-slide="2">
+      <div class="instructor-banner">Instructor outline — remove before class.</div>
+      <h1>40-minute lecture clock</h1>
+      <table class="pace">
+        <tr><th>Min</th><th>Beat</th></tr>
+        <tr><td>0–2</td><td>Title. Safe agent, unpaid bill.</td></tr>
+        <tr><td>2–5</td><td>Last week vs this week — meter, not vibes.</td></tr>
+        <tr><td>5–9</td><td>Tokens → <code>usage.csv</code>.</td></tr>
+        <tr><td>9–13</td><td>July 30 list prices: Luna / Terra / Sol.</td></tr>
+        <tr><td>13–19</td><td><strong>Worked FAQ:</strong> 800 in + 250 out, board arithmetic.</td></tr>
+        <tr><td>19–22</td><td>Hidden multipliers (steps, history, Fast).</td></tr>
+        <tr><td>22–28</td><td><strong>Prompt cache</strong> (6 min): 0.1× read, 1.25× write, 30m TTL, 4k+200 table, prompt order.</td></tr>
+        <tr><td>28–32</td><td>CSMH 100 chats/day + mix. Cache as a P7 lever.</td></tr>
+        <tr><td>32–35</td><td>Earn the upgrade: <code>luna_ok</code> / <code>needs_terra</code>.</td></tr>
+        <tr><td>35–38</td><td>HW6 P5–P7. Blocked traffic is free.</td></tr>
+        <tr><td>38–40</td><td>Four things → vibe (~40 min).</td></tr>
+      </table>
+      <p class="speaker-note">Do not linger on news cards. The two math beats are 13–19 and 22–28. Cut Q&amp;A, not cache.</p>
+    </section>
+
+    <section class="slide" data-slide="3">
+      <h1>Last week vs this week</h1>
+      <div class="two-col">
+        <div class="compare-box">
+          <h3>Lecture 11 — Security</h3>
+          <p>Injection, PII in logs, a refund nobody approved. The question is: <em>how did this happen?</em></p>
+        </div>
+        <div class="compare-box">
+          <h3>Lecture 12 — Tokenomics</h3>
+          <p>The same agent is polite and on-policy. It also looped 11 times on Sol Fast. The question is: <em>who approved this bill?</em></p>
+        </div>
+      </div>
+      <p class="takeaway">A safe agent you cannot price is not a product. Today we put a meter on the loop.</p>
+    </section>
+
+    <section class="slide" data-slide="4">
+      <h1>Tokens are the unit you buy</h1>
+      <img class="viz" src="../images/lec12/token-meter.jpg" alt="Parking meter overflowing with token coins">
+      <ul>
+        <li><strong>Input</strong> — system prompt, history, retrieved docs, tool dumps. <strong>Output</strong> — the reply (usually 6× per token).</li>
+        <li>Guest message → prompt pile → Luna / Terra / Sol → <code>response.usage</code> × list price → append <code>usage.csv</code>.</li>
+        <li>Rule of thumb: ~1 token ≈ ¾ of an English word. Images and tool JSON still count.</li>
+      </ul>
+      <p class="takeaway">If it is not in <code>usage.csv</code>, you cannot defend it. Homework 6 graders check the CSV against the brief.</p>
+    </section>
+
+    <section class="slide" data-slide="5">
+      <h1>July 30: Luna −80%. Sol unchanged.</h1>
+      <a class="news-card" href="https://www.cnbc.com/2026/07/30/open-ai-price-cut-gpt.html" target="_blank" rel="noopener noreferrer">
+        <img src="../images/lec12/cnbc-openai-price-cut.jpg" alt="CNBC story on OpenAI price cuts">
+        <div class="cap">
+          <span class="outlet">CNBC · July 30, 2026</span>
+          <div class="hl">OpenAI cuts prices for two of its AI models as cost worries mount</div>
+        </div>
+      </a>
+      <div class="price-grid">
+        <div class="price-card luna">
+          <div class="who">LUNA</div>
+          <div class="amt">$0.20 / $1.20</div>
+          <div class="sub">per 1M in / out · FAQ, hours, parking</div>
+        </div>
+        <div class="price-card terra">
+          <div class="who">TERRA</div>
+          <div class="amt">$2 / $12</div>
+          <div class="sub">per 1M in / out · messy policy</div>
+        </div>
+        <div class="price-card sol">
+          <div class="who">SOL</div>
+          <div class="amt">$5 / $30</div>
+          <div class="sub">per 1M in / out · high-stakes only</div>
+        </div>
+      </div>
+      <p class="source-note">Short-context list prices. OpenAI <a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noopener noreferrer">API pricing</a>. Cached input is a separate column — two slides from now. Re-check if Portkey rates differ.</p>
+    </section>
+
+    <section class="slide" data-slide="6">
+      <h1>Worked FAQ: 800 in + 250 out</h1>
+      <div class="formula">USD = in × (price_in / 1M) + out × (price_out / 1M)<br>
+Luna: 800 × $0.20/1M + 250 × $1.20/1M = $0.00016 + $0.00030 = <strong>$0.00046</strong></div>
+      <table>
+        <tr><th>Model</th><th>Per call</th><th>1,000/day</th><th>30 days</th><th>vs Luna</th></tr>
+        <tr><td><strong>gpt-5.6-luna</strong></td><td>$0.00046</td><td>$0.46</td><td>~$14</td><td>1×</td></tr>
+        <tr><td><strong>gpt-5.6-terra</strong></td><td>$0.0046</td><td>$4.60</td><td>~$138</td><td>10×</td></tr>
+        <tr><td><strong>gpt-5.6-sol</strong></td><td>$0.0115</td><td>$11.50</td><td>~$345</td><td>25×</td></tr>
+      </table>
+      <p class="takeaway">Walk the Luna line on the board. Terra and Sol are 10× and 25× for the <em>same</em> 800+250 tokens. Output is 6× input — a chatty agent is a markup.</p>
+    </section>
+
+    <section class="slide" data-slide="7">
+      <h1>Hidden multipliers</h1>
+      <img class="viz" src="../images/lec12/agent-loop-wallet.jpg" alt="Agent looping around a wallet">
+      <table>
+        <tr><th>Move</th><th>What it does to the bill</th></tr>
+        <tr><td>5-step agent vs 1-shot FAQ</td><td>~5× tokens, before retries</td></tr>
+        <tr><td>Unbounded chat history</td><td>Input grows every turn; old turns still bill</td></tr>
+        <tr><td>Dumping search JSON back in</td><td>You pay to re-read your own tools</td></tr>
+        <tr><td>Sol Fast mode (2× list)</td><td>Same model, skip-the-line surcharge — 0× extra IQ</td></tr>
+      </table>
+      <p class="takeaway">An 80% Luna cut is a gift. An 8-step agent on Sol Fast is how the gift disappears. Track $ per successful outcome, not $ per million tokens.</p>
+    </section>
+
+    <section class="slide" data-slide="8">
+      <h1>Prompt cache: reuse the prefix</h1>
+      <p>OpenAI name: <strong>prompt caching</strong>. If the API sees a long, <em>identical</em> prefix (system, tools JSON, static FAQ), those input tokens bill at a <strong>cached</strong> rate instead of full input. Output is never cached.</p>
+      <div class="cache-ladder">
+        <div class="cache-box read">
+          <div class="lbl">Cache read</div>
+          <div class="num">0.1×</div>
+          <div class="lbl">Luna $0.02 / 1M</div>
+        </div>
+        <div class="cache-arrow">≪</div>
+        <div class="cache-box uncached">
+          <div class="lbl">Uncached input</div>
+          <div class="num">1×</div>
+          <div class="lbl">Luna $0.20 / 1M</div>
+        </div>
+        <div class="cache-arrow">&lt;</div>
+        <div class="cache-box write">
+          <div class="lbl">Cache write</div>
+          <div class="num">1.25×</div>
+          <div class="lbl">Luna $0.25 / 1M</div>
+        </div>
+      </div>
+      <ul>
+        <li>GPT-5.6: min prefix <strong>1,024 tokens</strong>. TTL <strong>30 minutes</strong> (<code>prompt_cache_options.ttl</code> = <code>30m</code>). Exact prefix match.</li>
+        <li>Short-context: Luna cached $0.02 / write $0.25; Terra $0.20 / $2.50; Sol $0.50 / $6.25 per 1M.</li>
+        <li>Anthropic is the same idea (<code>cache_control</code>): 5-min default at 1.25× write / 0.1× read; optional 1-hour write at 2×.</li>
+      </ul>
+      <p class="source-note"><a href="https://developers.openai.com/api/docs/guides/prompt-caching" target="_blank" rel="noopener noreferrer">OpenAI prompt caching</a> · <a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noopener noreferrer">Pricing</a> · <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching" target="_blank" rel="noopener noreferrer">Anthropic</a>.</p>
+    </section>
+
+    <section class="slide" data-slide="9">
+      <h1>CSMH example: 4k prefix + 200-token question</h1>
+      <p>Luna, <strong>input only</strong>. First turn writes the 4k system+FAQ prefix. Turns 2–N in the 30m window read it. Guest tokens stay uncached.</p>
+      <table>
+        <tr><th></th><th>Uncached every turn</th><th>With prompt cache</th></tr>
+        <tr><td>Turn 1</td><td>$0.00084</td><td>$0.00104 <em>(write 1.25× — slightly more)</em></td></tr>
+        <tr><td>Each later turn</td><td>$0.00084</td><td>$0.00012 <em>(read 0.1× on the 4k)</em></td></tr>
+        <tr><td><strong>10-turn session</strong></td><td><strong>$0.00840</strong></td><td><strong>$0.00212</strong> ≈ 4× cheaper</td></tr>
+      </table>
+      <div class="order-row">
+        <div class="order-card good">
+          <h3>Stable first — cache hits</h3>
+          <p>System, tool schemas, static policy/FAQ. Same <code>prompt_cache_key</code>. Don’t reshuffle tools. Don’t put a UUID or timestamp at the top.</p>
+        </div>
+        <div class="order-card bad">
+          <h3>Changing last — or you bust it</h3>
+          <p>User turn, churny RAG, clocks. Multi-agent: share one frozen tool/policy prefix. Unique shuffled prompts = unique full bills.</p>
+        </div>
+      </div>
+      <p class="takeaway">First call pays the write. Reuse is the discount. HW6 P7: propose a frozen prefix — you do not have to build it.</p>
+    </section>
+
+    <section class="slide" data-slide="10">
+      <h1>College Street, 100 chats/day</h1>
+      <p>HW6 Problem 7: monthly LLM opex at <strong>100 queries/day</strong> = 3,000 calls. Same 800+250 shape as the worked FAQ.</p>
+      <table>
+        <tr><th>Architecture</th><th>Rough LLM opex / month</th><th>Note</th></tr>
+        <tr><td>All Luna, 1-shot</td><td>~$1.40</td><td>3,000 × $0.00046</td></tr>
+        <tr><td>All Terra</td><td>~$14</td><td>10× Luna</td></tr>
+        <tr><td>All Sol</td><td>~$35</td><td>25× Luna — still small until agents</td></tr>
+        <tr><td>90% Luna / 10% Terra</td><td>~$2.60</td><td>Mix beats Sol everywhere</td></tr>
+        <tr><td>5-step Terra agent</td><td>~$70</td><td>Same tokens × 5 steps (not $120 hand-waving)</td></tr>
+        <tr><td>Luna + prompt cache on a 10-turn thread</td><td>input ~4× cheaper</td><td>P7 lever: freeze the prefix</td></tr>
+      </table>
+      <p class="takeaway">FAQ chat is cheap. <strong>Agentic</strong> chat is the line item. Model mix + cache beat “Sol everywhere.”</p>
+    </section>
+
+    <section class="slide" data-slide="11">
+      <h1>Earn the upgrade. Measure it.</h1>
+      <svg class="flow-svg" viewBox="0 0 920 200" aria-label="Luna then Terra routing">
+        <rect x="360" y="8" width="200" height="42" rx="10" fill="#00356b"/>
+        <text class="on-dark" x="460" y="35" text-anchor="middle" font-size="16" font-weight="700">New guest question</text>
+        <line x1="460" y1="50" x2="460" y2="72" stroke="#e8590c" stroke-width="3"/>
+        <rect x="330" y="72" width="260" height="48" rx="10" fill="#4dabf7"/>
+        <text class="on-dark" x="460" y="102" text-anchor="middle" font-size="16" font-weight="700">Start on Luna. Always.</text>
+        <line x1="330" y1="96" x2="150" y2="96" stroke="#2f9e44" stroke-width="3"/>
+        <line x1="150" y1="96" x2="150" y2="140" stroke="#2f9e44" stroke-width="3"/>
+        <line x1="590" y1="96" x2="770" y2="96" stroke="#e8590c" stroke-width="3"/>
+        <line x1="770" y1="96" x2="770" y2="140" stroke="#e8590c" stroke-width="3"/>
+        <rect x="40" y="140" width="220" height="52" rx="10" fill="#2f9e44"/>
+        <text class="on-dark" x="150" y="162" text-anchor="middle" font-size="14" font-weight="700">Luna is good enough</text>
+        <text class="on-dark" x="150" y="180" text-anchor="middle" font-size="13">ship · log · done</text>
+        <rect x="660" y="140" width="230" height="52" rx="10" fill="#e8590c"/>
+        <text class="on-dark" x="775" y="162" text-anchor="middle" font-size="14" font-weight="700">Eval fail / fuzzy policy</text>
+        <text class="on-dark" x="775" y="180" text-anchor="middle" font-size="13">Terra (Sol last)</text>
+      </svg>
+      <p>HW6 Problem 6: every shipped query on <code>gpt-5.6-luna</code> and <code>gpt-5.6-terra</code>. Label <code>luna_ok</code> vs <code>needs_terra</code>. Totals in <code>tokenomics.md</code> must match <code>usage.csv</code>.</p>
+      <p class="joke">“Terra felt smarter” is not a reason. “Luna invented a refund policy” is a reason.</p>
+    </section>
+
+    <section class="slide" data-slide="12">
+      <h1>Homework 6 is the lab</h1>
+      <p><strong>College Street Music Hall</strong> guest chat. Lecture 11 = don’t get hacked. Today = don’t fly blind on cost.</p>
+      <ol>
+        <li><strong>P5</strong> — <code>cost_log.py</code>: log allowed calls only. Blocked junk never hits the API and never writes a CSV row.</li>
+        <li><strong>P6</strong> — every shipped query on Luna <em>and</em> Terra. <code>tokenomics.md</code> totals = CSV.</li>
+        <li><strong>P7</strong> — cheaper architecture; monthly cost at 100 queries/day. Mix + frozen prompt-cache prefix are valid levers. You do not have to build it.</li>
+      </ol>
+      <p><a href="../../hw6/p5.html">Homework 6, Problem 5 →</a></p>
+      <p class="speaker-note">In-class vibe is the meter pattern, not the whole assignment. Screenshot one problem card later; do not paste the HW page into Codex.</p>
+    </section>
+
+    <section class="slide section-slide" data-slide="13">
+      <h1>→ Vibe coding (~40 min)</h1>
+      <p>Wire a real meter: <code>usage.csv</code> + Luna vs Terra on a tiny FAQ set.</p>
+      <p>This is the HW6 pattern — not the whole homework. Prompt cache is a P7 sentence, not a coding step today.</p>
+      <p><a href="../vibe/lec12-vibe.html">Open step-by-step prompts →</a></p>
+    </section>
+
+    <section class="slide" data-slide="14">
+      <h1>If you remember four things</h1>
+      <ul>
+        <li>Tokens are a meter. Loops, history, and tools multiply the meter.</li>
+        <li>Luna is the default. Terra (then Sol) is a promotion you earn with evals.</li>
+        <li>Prompt cache: stable prefix first. Read is 0.1×; write is 1.25×; TTL 30 minutes.</li>
+        <li>If it is not in the log, you cannot defend it in a memo.</li>
+      </ul>
+      <p class="joke">Next class: future directions — and your co-pilot. Bring a cost number, not a feeling.</p>
+    </section>
+
+  </div>
+  <p class="slide-hint">Arrow keys, Space, or buttons to advance</p>
+  <footer class="slide-deck-footer">
+    <button type="button" id="prev" aria-label="Previous slide">← Previous</button>
+    <button type="button" id="next" aria-label="Next slide">Next →</button>
+  </footer>
+  <script src="../../js/slides.js"></script>
+  <script src="../../js/theme.js"></script>
+</body>
+</html>

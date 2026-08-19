@@ -1,0 +1,32 @@
+{
+  "tool": "get_visitor_policy",
+  "source": "Visitor Services handbook (course mock, Fall 2026)",
+  "museum": "Yale Peabody Museum",
+  "effective": "2026-09-01",
+  "rules": [
+    {
+      "id": "pol_hours_boundary",
+      "topic": "after_hours",
+      "title": "Public access ends at closing",
+      "text": "The museum is closed to visitors after posted public hours. After 5:00 pm, only staff, registered researchers with written clearance, and contracted vendors may remain. Visitor Services does not operate member socials or public programs in the galleries after closing."
+    },
+    {
+      "id": "pol_bags",
+      "topic": "bags",
+      "title": "Bag check",
+      "text": "Bags larger than 11 x 17 x 6 inches must be checked at the lobby. Camera bags are not an exception. During any period when the building is closed to the public, no visitor bags may enter the galleries."
+    },
+    {
+      "id": "pol_photo",
+      "topic": "photography",
+      "title": "Photography",
+      "text": "Handheld photos without flash are allowed in most galleries during public hours. Flash, tripods, monopods, and selfie sticks are not allowed. Do not photograph funerary items in Egypt and Mesopotamia or Andean and Mesoamerican galleries."
+    },
+    {
+      "id": "pol_food",
+      "topic": "food",
+      "title": "Food and drink",
+      "text": "No food or drink in exhibit areas. Snacking is allowed in the Central Gallery only."
+    }
+  ]
+}

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 8 Slides — Application Deployment</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    body.slide-deck-body nav.site-nav { flex-shrink: 0; }
+    .slide { max-height: calc(100vh - 210px); }
+    .slide h1 { font-size: clamp(2rem, 4.6vw, 2.85rem); }
+    .slide.title-slide h1 { font-size: clamp(2.4rem, 6vw, 3.4rem); }
+    .slide p, .slide li { font-size: clamp(1.12rem, 2.4vw, 1.38rem); }
+    .pill {
+      display: inline-block;
+      background: var(--yale-blue);
+      color: #fff;
+      font-weight: 800;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .instructor-banner {
+      display: block;
+      background: #c98900;
+      color: #1a1208;
+      font-weight: 800;
+      text-align: center;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+      padding: 0.45rem 0.8rem;
+      border-radius: 8px;
+      margin: 0 0 0.7rem;
+    }
+    [data-theme="dark"] .instructor-banner {
+      background: #e0b84a;
+      color: #1a1208;
+    }
+    .pace th:first-child, .pace td:first-child {
+      white-space: nowrap;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      width: 5.5rem;
+    }
+    .news-card {
+      display: grid;
+      grid-template-columns: 7.5rem 1fr;
+      gap: 0.85rem;
+      align-items: start;
+      margin: 0.7rem 0;
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      background: var(--yale-blue-pale);
+      border: 1px solid var(--yale-blue-pale-border, #c5d4e4);
+    }
+    [data-theme="dark"] .news-card { background: #132a45; border-color: #1e3a5f; }
+    .news-card .when {
+      font-weight: 800;
+      color: var(--yale-blue);
+      font-size: 1.05rem;
+      line-height: 1.25;
+    }
+    [data-theme="dark"] .news-card .when { color: #6ba3e0; }
+    .news-card a { font-weight: 700; }
+    .slide .stat-box .num { font-size: 2.05rem; }
+    @media (max-width: 800px) {
+      .news-card { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="slide-deck-body">
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../instructions.html">Instructions</a></li>
+      <li><a href="../../lectures.html">Lectures</a></li>
+      <li><a href="../../homeworks.html">Homeworks</a></li>
+      <li><a href="../../project_requirements.html">Final Project</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+  <header class="slide-deck-header">
+    <a href="../../lectures.html">← Lectures</a>
+    <span>Lecture 8: Application Deployment</span>
+    <span class="slide-counter">1 / 14</span>
+  </header>
+  <div class="slide-viewport">
+
+      <section class="slide active title-slide" data-slide="1">
+        <p class="pill">Module 4 · Apps &amp; deployment</p>
+        <h1>Application Deployment</h1>
+        <p class="subtitle">MGT 409 · Lecture 8 · A URL other people can open</p>
+        <p class="subtitle">~40 min lecture · ~40 min vibe</p>
+        <p class="speaker-note">Skip slide 2 in class. Story: localhost → public URL. Then env, PORT, ephemeral disk, smoke tests. Vibe is the harness, not HW4.</p>
+      </section>
+
+      <section class="slide" data-slide="2">
+        <p class="instructor-banner">Instructor outline — remove before class.</p>
+        <h1>40-minute lecture</h1>
+        <table class="pace">
+          <tr><th>Min</th><th>Beat</th><th>Say this</th></tr>
+          <tr><td>0–4</td><td>Localhost → URL</td><td>A neighbor cannot open <code>127.0.0.1</code>. Deploying is the product.</td></tr>
+          <tr><td>4–10</td><td>Four decisions</td><td>Secrets, CORS, <code>/health</code>, disk. HW4 stack in one sentence — do not re-teach Lecture 7.</td></tr>
+          <tr><td>10–15</td><td>News</td><td>Generating a UI is cheap. Binding <code>0.0.0.0:$PORT</code> is still on you.</td></tr>
+          <tr><td>15–21</td><td>Two hosts + env</td><td>Static frontend + FastAPI. <code>OPENAI_API_KEY</code>, <code>VITE_API_URL</code>, <code>PORT</code>.</td></tr>
+          <tr><td>21–27</td><td>Bind + health</td><td>Local <code>127.0.0.1:8000</code>. Production: all interfaces, host-picked port, <code>GET /health</code>.</td></tr>
+          <tr><td>27–32</td><td>Ephemeral disk</td><td>A restart can wipe <code>csmh.db</code>. File ≠ database strategy.</td></tr>
+          <tr><td>32–38</td><td>Smoke + failures</td><td>Ping, login, cite/refuse, no CORS. Cold start 30–60s. Four post-launch symptoms.</td></tr>
+          <tr><td>38–40</td><td>Handoff</td><td>Vibe = deploy stub, not HW4. Next week: MCP.</td></tr>
+        </table>
+        <p class="source-note">Spoken slides: 1, then 3–14. This slide is pacing only. Then 40 min vibe.</p>
+      </section>
+
+      <section class="slide" data-slide="3">
+        <h1>A laptop demo is not a product</h1>
+        <div class="two-col">
+          <div class="compare-box">
+            <h3><code>localhost:8000</code></h3>
+            <p>Works on your machine. Graders, teammates, and a guest on a phone cannot open it.</p>
+          </div>
+          <div class="compare-box">
+            <h3><code>https://…</code></h3>
+            <p>Someone else can try the guest site without your laptop. That URL is today’s assignment.</p>
+          </div>
+        </div>
+        <p class="takeaway">Deploying is what turns Homework 4 from a folder into a service.</p>
+      </section>
+
+      <section class="slide" data-slide="4">
+        <h1>A URL forces four decisions</h1>
+        <p>Lecture 7 already built the stack: React + FastAPI + SQLite + a grounded FAQ agent. Keys stay on the server.</p>
+        <table>
+          <tr><th>Decision</th><th>Why it appears the moment you go live</th></tr>
+          <tr><td>Secrets</td><td>Dashboard env vars, not a file you forgot to gitignore</td></tr>
+          <tr><td>CORS</td><td>The Vite origin is not the API origin. Allowlist the real frontend.</td></tr>
+          <tr><td>Health</td><td>The host (and you) need <code>GET /health</code> → 200</td></tr>
+          <tr><td>Disk</td><td>A restart can wipe <code>csmh.db</code> on a free host</td></tr>
+        </table>
+        <p class="takeaway">Skip them and the site looks “done” until someone else clicks.</p>
+      </section>
+
+      <section class="slide" data-slide="5">
+        <h1>Generating an app is getting cheap</h1>
+        <div class="news-card">
+          <div class="when">Aug 5</div>
+          <div>
+            <a href="https://vercel.com/blog/introducing-the-new-v0-api" target="_blank" rel="noopener noreferrer">Vercel v0 API is generally available</a>
+            — prompt in, running preview out, deploy in one API call. MBA takeaway: generating the UI is cheap; owning env vars, CORS, and a health check is still the job.
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="when">Aug 7</div>
+          <div>
+            <a href="https://render.com/changelog/reduced-median-service-build-time-by-40-all-runtimes" target="_blank" rel="noopener noreferrer">Render cut median build time ~40%</a>
+            — 38s → ~21s across runtimes, including Python. Faster CI does not fix a process that never binds <code>0.0.0.0:$PORT</code>.
+          </div>
+        </div>
+        <p class="source-note">Primary: Vercel blog (5 Aug 2026); Render changelog (7 Aug 2026).</p>
+      </section>
+
+      <section class="slide" data-slide="6">
+        <h1>Two-host pattern (course default)</h1>
+        <div class="two-col">
+          <div class="compare-box">
+            <h3>Frontend (Vite build)</h3>
+            <p>Static files on Vercel, Netlify, or Render Static. Env: <code>VITE_API_URL</code> pointing at the API. Never put the model key here.</p>
+          </div>
+          <div class="compare-box">
+            <h3>Backend (FastAPI)</h3>
+            <p>Python web service on Render or Railway. Env: <code>OPENAI_API_KEY</code>, session secret. Start: <code>uvicorn server:app --host 0.0.0.0 --port $PORT</code></p>
+          </div>
+        </div>
+        <p class="takeaway">CORS is an allowlist of websites that may call your API. The frontend origin must be on it — exactly.</p>
+      </section>
+
+      <section class="slide" data-slide="7">
+        <h1>The three env vars that matter</h1>
+        <table>
+          <tr><th>Variable</th><th>Local (HW4)</th><th>Production</th></tr>
+          <tr><td><code>OPENAI_API_KEY</code></td><td><code>.env</code> (gitignored)</td><td>Host dashboard → secret</td></tr>
+          <tr><td><code>VITE_API_URL</code></td><td><code>http://127.0.0.1:8000</code></td><td><code>https://your-api.onrender.com</code></td></tr>
+          <tr><td><code>PORT</code></td><td>8000 if you like</td><td>Injected by the host. Do not hardcode.</td></tr>
+        </table>
+        <p class="takeaway">Commit <code>.env.example</code> with fake values. If a real key hits GitHub, rotate it immediately.</p>
+      </section>
+
+      <section class="slide" data-slide="8">
+        <h1>Bind like the host expects</h1>
+        <div class="stat-grid">
+          <div class="stat-box">
+            <div class="num">0.0.0.0</div>
+            <div class="label">Listen on all interfaces — required on Render Linux</div>
+          </div>
+          <div class="stat-box">
+            <div class="num">$PORT</div>
+            <div class="label">Host picks the port. Uvicorn must read the env var</div>
+          </div>
+          <div class="stat-box">
+            <div class="num">/health</div>
+            <div class="label">JSON {"ok": true} — the smoke test that saves demos</div>
+          </div>
+        </div>
+        <p>Local HW4: <code>uvicorn server:app --host 127.0.0.1 --port 8000</code>. Production: same app, different bind.</p>
+      </section>
+
+      <section class="slide" data-slide="9">
+        <h1>SQLite vs the ephemeral disk</h1>
+        <ul>
+          <li>Free web hosts often give you an <strong>ephemeral filesystem</strong> — a restart wipes local files.</li>
+          <li><code>csmh.db</code> next to <code>server.py</code> will look fine until the first redeploy.</li>
+          <li>Manager options: paid persistent disk, managed Postgres, or demo from a known seed database.</li>
+        </ul>
+        <p class="takeaway">If chats must survive a redeploy, a file on the web service is not a database strategy.</p>
+      </section>
+
+      <section class="slide" data-slide="10">
+        <h1>Smoke tests — five minutes, every deploy</h1>
+        <ul>
+          <li>Frontend loads over <strong>HTTPS</strong> (no mixed-content warnings)</li>
+          <li><code>GET /health</code> → 200 and <code>{"ok": true}</code></li>
+          <li>Login works; password never appears in the JSON</li>
+          <li>One FAQ citation; one out-of-scope refusal; browser console: no CORS errors</li>
+        </ul>
+        <p>Free tier still sleeps after ~15 minutes idle. Wake-up is 30–60s. Hit <code>/health</code> before you demo.</p>
+        <p class="takeaway">Write the checklist in the README. Graders and future you will use it.</p>
+      </section>
+
+      <section class="slide" data-slide="11">
+        <h1>Failure modes after you go live</h1>
+        <table>
+          <tr><th>Symptom</th><th>Likely cause</th><th>Manager fix</th></tr>
+          <tr><td>Site loads, chat hangs</td><td>API asleep or wrong <code>VITE_API_URL</code></td><td>Ping <code>/health</code>; fix env; wake before demo</td></tr>
+          <tr><td>CORS error in console</td><td>Allowlist missed the real origin</td><td>Exact HTTPS origin, no trailing slash</td></tr>
+          <tr><td>Empty calendar after restart</td><td>Ephemeral disk wiped <code>csmh.db</code></td><td>Seed on boot or persistent storage</td></tr>
+          <tr><td>Huge OpenAI bill</td><td>Public URL, no auth / rate limit</td><td>Login required; spend cap; Lecture 12</td></tr>
+        </table>
+      </section>
+
+      <section class="slide" data-slide="12">
+        <h1>Manager launch checklist</h1>
+        <ol>
+          <li>Secrets only in env — production key has a spend cap</li>
+          <li><code>0.0.0.0:$PORT</code> + <code>/health</code> returning 200</li>
+          <li>CORS locked to your frontend origin</li>
+          <li>A plan for the database after restart</li>
+          <li>Five smoke tests written down with pass/fail</li>
+        </ol>
+        <p class="takeaway">Ship a bounded bot. A FAQ that cites and refuses beats a public intern that invents policy.</p>
+      </section>
+
+      <section class="slide section-slide" data-slide="13">
+        <h1>→ Vibe coding (~40 min)</h1>
+        <p>Health + <code>PORT</code> · CORS · env hygiene · smoke test + ephemeral disk</p>
+        <p><a href="../vibe/lec08-vibe.html">Open timed prompts →</a></p>
+      </section>
+
+      <section class="slide" data-slide="14">
+        <h1>Summary</h1>
+        <ul>
+          <li>Deploy = a URL someone else can open — not a laptop demo.</li>
+          <li>Own <strong>env</strong>, <strong><code>0.0.0.0:$PORT</code></strong>, <strong>ephemeral disk</strong>, and a written smoke test.</li>
+          <li>Generating apps is getting automatic; <strong>operating</strong> them is still on you.</li>
+        </ul>
+        <p>Next: <strong>MCP servers</strong> — wrap tools so other agents can call your capabilities.</p>
+      </section>
+
+  </div>
+  <p class="slide-hint">Arrow keys, Space, or buttons to advance</p>
+  <footer class="slide-deck-footer">
+    <button type="button" id="prev" aria-label="Previous slide">← Previous</button>
+    <button type="button" id="next" aria-label="Next slide">Next →</button>
+  </footer>
+  <script src="../../js/slides.js"></script>
+  <script src="../../js/theme.js"></script>
+</body>
+</html>
