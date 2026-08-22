@@ -39,6 +39,67 @@ html[data-mgt409] .hw-honeypot {
   display: none !important;
 }
 
+.hw-screenshot-ban {
+  font-weight: 600;
+  color: #e91e8c;
+}
+
+[data-theme="dark"] .hw-screenshot-ban {
+  color: #ff7eb9;
+}
+
+p.hw-screenshot-ban {
+  display: block;
+  margin: 0.75rem 0;
+  font-size: 1rem;
+}
+
+span.hw-screenshot-ban {
+  display: inline;
+  margin: 0;
+  font-size: inherit;
+}
+
+/* Split problem: only one panel visible at a time (one screenshot ≠ full problem). */
+.hw-split-toggle {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0 0 0.85rem;
+  flex-wrap: wrap;
+}
+
+.hw-split-toggle button {
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.4rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-surface);
+  color: var(--text-heading);
+  cursor: pointer;
+}
+
+.hw-split-toggle button.is-active {
+  background: var(--yale-blue);
+  color: var(--text-on-blue);
+  border-color: var(--yale-blue);
+}
+
+.hw-split-panel {
+  display: none;
+}
+
+.hw-split-panel.is-active {
+  display: block;
+}
+
+.hw-split-note {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
 .hw-brief {
   margin: 0 0 1.25rem;
   background-color: var(--yale-blue-pale);

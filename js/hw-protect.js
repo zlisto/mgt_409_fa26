@@ -27,4 +27,23 @@
   window.addEventListener("afterprint", function () {
     document.body.removeAttribute("data-hw-print-block");
   });
+
+  // Split problem panels: only one half visible at a time
+  document.querySelectorAll(".hw-split-problem").forEach(function (card) {
+    var buttons = card.querySelectorAll(".hw-split-toggle button");
+    var panels = card.querySelectorAll(".hw-split-panel");
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var target = btn.getAttribute("data-panel");
+        buttons.forEach(function (b) {
+          var on = b === btn;
+          b.classList.toggle("is-active", on);
+          b.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        panels.forEach(function (panel) {
+          panel.classList.toggle("is-active", panel.getAttribute("data-panel") === target);
+        });
+      });
+    });
+  });
 })();
