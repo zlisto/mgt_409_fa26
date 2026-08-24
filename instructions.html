@@ -66,108 +66,66 @@
         </li>
       </ul>
 
-      <h3>Connect Python to VS Code</h3>
-      <ul>
-        <li>Open VS Code</li>
-        <li>Install the <strong>Python</strong> extension if you have not already (Extensions: <code>Ctrl+Shift+X</code> / <code>Cmd+Shift+X</code>)</li>
-        <li>Click <strong>View</strong> in the top menu, then select <strong>Command Palette...</strong></li>
-        <li>In the search bar that appears, type <code>Python: Select Interpreter</code> and press Enter</li>
-        <li>Choose the Python version from the list, or click "Enter interpreter path" to manually locate it:
-          <ul>
-            <li><strong>Windows example:</strong> <code>C:\Users\YourName\AppData\Local\Programs\Python\Python3x\python.exe</code></li>
-            <li><strong>Mac example:</strong> <code>/usr/local/bin/python3</code> (you can find it by running <code>which python3</code> in Terminal)</li>
-          </ul>
-        </li>
-        <li>Restart the editor to apply the new interpreter</li>
-      </ul>
+      <h3>Check that Python works</h3>
+      <p>In VS Code, open the integrated terminal (<code>Ctrl + `</code> or <code>View &gt; Terminal</code>) and run:</p>
+      <pre class="terminal"><code>python --version</code></pre>
+      <p>If you see a version number, you are set. Homework scripts and Codex both use this same Python install.</p>
 
       <h2 id="react">React + Node.js</h2>
       <p>For a video walkthrough on how to install React and Node.js, see <a href="https://www.youtube.com/watch?v=BCX6UVQba4U" target="_blank" rel="noopener noreferrer">this YouTube tutorial</a>.</p>
+
+      <h3>Install Node.js</h3>
       <ul>
-        <li><strong>Install Node.js:</strong>
-          <ul>
-            <li>Go to <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer">https://nodejs.org/</a></li>
-            <li>Download the <strong>LTS</strong> version for your operating system (recommended)</li>
-            <li>Run the installer and follow the prompts</li>
-            <li><strong>Note:</strong> The installer may offer optional tools for building native modules. If you run into errors during this step, you can safely skip installing those optional tools — React and Node.js will work fine without them.</li>
-          </ul>
-        </li>
-        <li><strong>Verify Node and npm:</strong>
-          <ul>
-            <li>Open a terminal and run:</li>
-          </ul>
-          <pre class="terminal"><code>node -v
-npm -v</code></pre>
-          <ul>
-            <li>You should see version numbers if installation was successful</li>
-          </ul>
-        </li>
-        <li><strong>Create a React App:</strong>
-          <ul>
-            <li>Create a folder for your app (e.g. <code>my-app</code>)</li>
-            <li>Open that folder in VS Code (<strong>File &gt; Open Folder</strong>)</li>
-            <li>In VS Code's integrated terminal, run:</li>
-          </ul>
-          <pre class="terminal"><code>npx create-react-app .</code></pre>
-          <ul>
-            <li>This creates all the React files inside the current folder</li>
-            <li>To run the app, in the terminal run:</li>
-          </ul>
-          <pre class="terminal"><code>npm start</code></pre>
-          <ul>
-            <li>The app will open in your browser at <code>http://localhost:3000</code></li>
-          </ul>
-        </li>
-        <li><strong>Note:</strong> VS Code usually detects Node.js automatically — no need to configure paths.</li>
+        <li>Go to <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer">https://nodejs.org/</a></li>
+        <li>Download the <strong>LTS</strong> version for your operating system (recommended)</li>
+        <li>Run the installer and follow the prompts</li>
+        <li><strong>Note:</strong> The installer may offer optional tools for building native modules. If you run into errors during this step, you can safely skip installing those optional tools — React and Node.js will work fine without them.</li>
       </ul>
+
+      <h3>Check that Node and npm work</h3>
+      <p>In VS Code, open the integrated terminal (<code>Ctrl + `</code> or <code>View &gt; Terminal</code>) and run:</p>
+      <pre class="terminal"><code>node -v
+npm -v</code></pre>
+      <p>If you see version numbers, Node.js is installed.</p>
+
+      <h3>Create a React app</h3>
+      <p>Create a folder for your app (e.g. <code>my-app</code>), open it in VS Code (<strong>File &gt; Open Folder</strong>), then in the integrated terminal run:</p>
+      <pre class="terminal"><code>npx create-react-app .</code></pre>
+      <p>That scaffolds the React files in the current folder. To run the app:</p>
+      <pre class="terminal"><code>npm start</code></pre>
+      <p>The app opens in your browser at <code>http://localhost:3000</code>. VS Code usually detects Node.js automatically — no path setup needed.</p>
 
       <h2 id="github">GitHub</h2>
-      <p>For a video walkthrough on how to install git on a Windows machine, see this <a href="https://www.youtube.com/watch?v=VWbX2B3Q-1g" target="_blank" rel="noopener noreferrer">YouTube tutorial</a>.</p>
-      <p>For a video walkthrough on how to install git on a Mac machine, see this <a href="https://www.youtube.com/watch?v=B4qsvQ5IqWk" target="_blank" rel="noopener noreferrer">YouTube tutorial</a>.</p>
+      <p>Video walkthroughs for installing Git: <a href="https://www.youtube.com/watch?v=VWbX2B3Q-1g" target="_blank" rel="noopener noreferrer">Windows</a> · <a href="https://www.youtube.com/watch?v=B4qsvQ5IqWk" target="_blank" rel="noopener noreferrer">Mac</a>.</p>
+
+      <h3>Create a GitHub Account</h3>
       <ul>
-        <li><strong>Create a GitHub Account:</strong>
-          <ul>
-            <li>Go to <a href="https://github.com/" target="_blank" rel="noopener noreferrer">https://github.com/</a></li>
-            <li>Click <strong>Sign up</strong> and follow the instructions to create a free account.</li>
-            <li>Verify your email address.</li>
-          </ul>
-        </li>
-        <li><strong>Download and Install Git:</strong>
-          <ul>
-            <li><strong>Windows:</strong> Go to <a href="https://git-scm.com/download/win" target="_blank" rel="noopener noreferrer">https://git-scm.com/download/win</a> and download the "64-bit Git for Windows Setup." Run the installer and accept the default settings.</li>
-            <li><strong>Mac:</strong> Simply open your terminal and type <code>git</code>. A popup will appear asking if you want to install the "Command Line Developer Tools." Click <strong>Install</strong>. (Alternatively, use <code>brew install git</code> if you have Homebrew).</li>
-          </ul>
-        </li>
-        <li><strong>Integrate GitHub with VS Code:</strong>
-          <ul>
-            <li>Open <strong>VS Code</strong>.</li>
-            <li>Open the integrated terminal (<code>Ctrl + `</code> or <code>View &gt; Terminal</code>).</li>
-            <li>Set your Git identity (this attaches your name to your code changes):</li>
-          </ul>
-          <pre class="terminal"><code>git config --global user.name "Your Name"
-git config --global user.email "your@email.com"</code></pre>
-          <ul>
-            <li><strong>Authentication:</strong> The easiest way is to click the <strong>Accounts icon</strong> (bottom-left corner of VS Code) and select <strong>"Sign in with GitHub"</strong>. This handles the security tokens for you.</li>
-            <li>Alternatively, you can authenticate via the terminal by trying to clone a repository:</li>
-          </ul>
-          <pre class="terminal"><code>git clone https://github.com/your-username/your-repo.git</code></pre>
-          <ul>
-            <li>Follow the browser prompt to sign in. Once authorized, you won't have to sign in again.</li>
-            <li>To verify everything is working, run:</li>
-          </ul>
-          <pre class="terminal"><code>git --version
-git config --list</code></pre>
-          <ul>
-            <li><strong>Pro Tip:</strong> You can use the <strong>Source Control tab</strong> (the branch icon on the left sidebar) in VS Code to stage and commit changes without typing commands.</li>
-          </ul>
-        </li>
+        <li>Go to <a href="https://github.com/" target="_blank" rel="noopener noreferrer">https://github.com/</a></li>
+        <li>Click <strong>Sign up</strong> and follow the instructions to create a free account.</li>
+        <li>Verify your email address.</li>
       </ul>
 
+      <h3>Download and Install Git</h3>
+      <ul>
+        <li><strong>Windows:</strong> Go to <a href="https://git-scm.com/download/win" target="_blank" rel="noopener noreferrer">https://git-scm.com/download/win</a> and download the "64-bit Git for Windows Setup." Run the installer and accept the default settings.</li>
+        <li><strong>Mac:</strong> Simply open your terminal and type <code>git</code>. A popup will appear asking if you want to install the "Command Line Developer Tools." Click <strong>Install</strong>. (Alternatively, use <code>brew install git</code> if you have Homebrew).</li>
+      </ul>
+
+      <h3>Check that Git works</h3>
+      <p>In VS Code, open the integrated terminal (<code>Ctrl + `</code> or <code>View &gt; Terminal</code>) and run:</p>
+      <pre class="terminal"><code>git --version</code></pre>
+      <p>If you see a version number, Git is installed. If you get an error, finish the install step above and try again.</p>
+
+      <h3>Integrate GitHub with VS Code</h3>
+      <p>Two one-time steps. Codex can run Git commands for you afterward; you still need to sign in to GitHub yourself.</p>
+      <ul>
+        <li>In VS Code, click the <strong>Accounts</strong> icon (bottom-left) → <strong>Sign in with GitHub</strong>. Complete the browser prompt once.</li>
+        <li>Open Codex and ask it to set your Git identity — for example: <em>"Set my global git user.name to Your Name and user.email to your@yale.edu"</em> (use the same email as your GitHub account).</li>
+      </ul>
+      <p>When you need to clone, commit, or push later, tell Codex what you want in plain English and it will run the commands.</p>
+
       <h2 id="cursor">Cursor (optional)</h2>
-      <p>
-        Cursor is an another AI vibe coding tool built on VS Code with some additional features.  
-      </p>
-      <p>If you want to try it on your own:</p>
+      <p>Cursor is another AI vibe-coding tool built on VS Code with some extra features. Codex + Portkey is what we use in class; Cursor is optional if you want to explore on your own.</p>
       <ul>
         <li>Sign up at
           <a href="https://www.cursor.com" target="_blank" rel="noopener noreferrer">https://www.cursor.com</a>
