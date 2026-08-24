@@ -276,7 +276,7 @@
 
     <div class="setup-video">
       <p><strong>Mac walkthrough</strong></p>
-      <a href="https://www.youtube.com/watch?v=REPLACE_WITH_MAC_VIDEO_ID" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
+      <a href="https://youtu.be/uhwORrDyXVQ" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
     </div>
 
     <div class="setup-callout">
@@ -350,11 +350,15 @@ env_key = "PORTKEY_API_KEY"</code></pre>
 
     <section class="setup-step" id="step-5">
       <h2><span class="n">5</span> Save the Portkey key in your shell profile</h2>
-      <p>Back in the Terminal, run:</p>
+      <p>Back in the Terminal, run (this is <strong>zsh</strong> syntax — the Mac default shell):</p>
       <div class="codebox">
         <div class="codebar"><span>Terminal</span><button class="copy" type="button">Copy</button></div>
-        <pre><code>read -s "Paste your Portkey API key: " k
-echo</code></pre>
+        <pre><code>read -s "k?Paste your Portkey API key: "</code></pre>
+      </div>
+      <p>Terminal will display:</p>
+      <div class="codebox">
+        <div class="codebar"><span>Expected prompt</span></div>
+        <pre><code>Paste your Portkey API key: </code></pre>
       </div>
       <p>Paste the Portkey key and press <strong>Enter</strong>. The key will not appear on screen as you paste.</p>
       <p>Then save it to <code>~/.zshrc</code> and load it into the current terminal:</p>

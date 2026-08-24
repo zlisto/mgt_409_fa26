@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Set Up Codex with Portkey (Windows) - AI Foundations for Managers</title>
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Set Up Codex with Portkey (Windows) - AI Foundations for Managers</title>
   <link rel="stylesheet" href="css/style.css">
   <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
   <style>
@@ -236,6 +237,25 @@
       color: var(--link-hover);
       text-decoration: underline;
     }
+
+    .setup-video-embed {
+      position: relative;
+      width: 100%;
+      max-width: 560px;
+      aspect-ratio: 16 / 9;
+      margin: 0.75rem 0 0.5rem;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .setup-video-embed iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
   </style>
 </head>
 <body>
@@ -276,7 +296,15 @@
 
     <div class="setup-video">
       <p><strong>Windows walkthrough</strong></p>
-      <a href="https://youtu.be/7TI88UZqPpU" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
+      <div class="setup-video-embed">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/7TI88UZqPpU"
+          title="Windows Codex Portkey setup walkthrough"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
+      </div>
+      <a href="https://youtu.be/7TI88UZqPpU" target="_blank" rel="noopener noreferrer">Open on YouTube ↗</a>
     </div>
 
     <div class="setup-callout">
