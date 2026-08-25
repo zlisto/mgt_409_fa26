@@ -288,6 +288,16 @@ h1, h2 {
   color: var(--text-heading);
 }
 
+.content h1,
+.content h2,
+.content h3 {
+  scroll-margin-top: calc(var(--nav-sticky-offset) + 8px);
+}
+
+.content h2[id] {
+  padding-top: 3.5rem;
+}
+
 h3 {
   color: var(--yale-blue-light);
   font-size: 18px;
@@ -411,11 +421,11 @@ img:hover {
 
 .sidebar {
   box-sizing: border-box;
-  flex: 0 0 200px;
-  width: 200px;
-  min-width: 180px;
+  flex: 0 0 220px;
+  width: 220px;
+  min-width: 200px;
   background-color: var(--bg-nav);
-  padding: 20px;
+  padding: 20px 20px 6rem;
   position: sticky;
   top: var(--nav-sticky-offset);
   height: calc(100vh - var(--nav-sticky-offset));

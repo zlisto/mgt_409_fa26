@@ -15,6 +15,11 @@
     img.setup-shot:hover {
       transform: none;
     }
+    /* Enough empty space below the last section that #cursor can scroll
+       flush under the sticky top nav (same as earlier sections). */
+    .content {
+      padding-bottom: 100vh;
+    }
   </style>
 </head>
 <body>
@@ -32,7 +37,6 @@
   <div class="wrapper">
     <div class="sidebar">
       <a href="#vscode">VS Code</a>
-      <a href="#codex">Codex + Portkey</a>
       <a href="#portkey-key">Get Portkey API Key</a>
       <a href="#connect-codex">Connect Codex to Portkey</a>
       <a href="#python">Python</a>
@@ -53,9 +57,7 @@
         <li>Open VS Code and complete any first-run setup prompts</li>
       </ul>
 
-      <h2 id="codex">Codex + Portkey</h2>
-
-      <h3 id="portkey-key">Get Portkey API Key</h3>
+      <h2 id="portkey-key">Get Portkey API Key</h2>
       <p>You need a Yale Portkey API key before you configure Codex. Do not share the key, paste it into screenshots, or put it in homework zips or GitHub.</p>
       <ol>
         <li>
@@ -73,7 +75,7 @@
         </li>
       </ol>
 
-      <h3 id="connect-codex">Connect Codex to Portkey</h3>
+      <h2 id="connect-codex">Connect Codex to Portkey</h2>
       <p>You should now have VS Code installed and your Portkey API key saved in a text file. Next, install the Codex extension and connect it to that key. Pick your computer and follow the step-by-step guide:</p>
       <ul>
         <li><a href="setup-vibe-coder.html">Windows setup</a></li>
@@ -100,9 +102,10 @@
       </ul>
 
       <h3>Check that Python works</h3>
-      <p>In VS Code, open the integrated terminal (<code>Ctrl + `</code> or <code>View &gt; Terminal</code>) and run:</p>
+      <p>Open Codex and ask: <em>"Check if I have Python installed and tell me the version."</em> If Codex reports a version number, you are set. Homework scripts and Codex both use this same Python install.</p>
+      <p><strong>Or check without AI:</strong> In VS Code, open the integrated terminal (<code>Ctrl + `</code> or <code>View &gt; Terminal</code>) and run:</p>
       <pre class="terminal"><code>python --version</code></pre>
-      <p>If you see a version number, you are set. Homework scripts and Codex both use this same Python install.</p>
+      <p>If you see a version number, Python is installed.</p>
 
       <h2 id="react">React + Node.js</h2>
       <p>For a video walkthrough on how to install React and Node.js, see <a href="https://www.youtube.com/watch?v=BCX6UVQba4U" target="_blank" rel="noopener noreferrer">this YouTube tutorial</a>.</p>
@@ -116,7 +119,8 @@
       </ul>
 
       <h3>Check that Node and npm work</h3>
-      <p>In VS Code, open the integrated terminal (<code>Ctrl + `</code> or <code>View &gt; Terminal</code>) and run:</p>
+      <p>Open Codex and ask: <em>"Check if I have Node and npm installed and tell me the versions."</em> If Codex reports version numbers, Node.js is installed.</p>
+      <p><strong>Or check without AI:</strong> In VS Code, open the integrated terminal (<code>Ctrl + `</code> or <code>View &gt; Terminal</code>) and run:</p>
       <pre class="terminal"><code>node -v
 npm -v</code></pre>
       <p>If you see version numbers, Node.js is installed.</p>
@@ -145,17 +149,16 @@ npm -v</code></pre>
       </ul>
 
       <h3>Check that Git works</h3>
-      <p>In VS Code, open the integrated terminal (<code>Ctrl + `</code> or <code>View &gt; Terminal</code>) and run:</p>
+      <p>Open Codex and ask: <em>"Check if I have Git installed and tell me the version."</em> If Codex reports a version number, Git is installed.</p>
+      <p><strong>Or check without AI:</strong> In VS Code, open the integrated terminal (<code>Ctrl + `</code> or <code>View &gt; Terminal</code>) and run:</p>
       <pre class="terminal"><code>git --version</code></pre>
       <p>If you see a version number, Git is installed. If you get an error, finish the install step above and try again.</p>
 
       <h3>Integrate GitHub with VS Code</h3>
-      <p>Two one-time steps. Codex can run Git commands for you afterward; you still need to sign in to GitHub yourself.</p>
-      <ul>
-        <li>In VS Code, click the <strong>Accounts</strong> icon (bottom-left) → <strong>Sign in with GitHub</strong>. Complete the browser prompt once.</li>
-        <li>Open Codex and ask it to set your Git identity — for example: <em>"Set my global git user.name to Your Name and user.email to your@yale.edu"</em> (use the same email as your GitHub account).</li>
-      </ul>
-      <p>When you need to clone, commit, or push later, tell Codex what you want in plain English and it will run the commands.</p>
+      <p>Once Git is installed, open Codex and ask:</p>
+      <p><em>"Help me connect VS Code to GitHub. Set my global git user.name to Your Name and user.email to your@yale.edu, then walk me through signing in to GitHub in VS Code."</em></p>
+      <p>Use the same email as your GitHub account. Codex will run the Git commands for you. When it tells you to sign in, click the <strong>Accounts</strong> icon (bottom-left) → <strong>Sign in with GitHub</strong> and complete the browser prompt once — Codex cannot do that part for you.</p>
+      <p>After that, tell Codex what you want in plain English when you need to clone, commit, or push.</p>
 
       <h2 id="cursor">Cursor (optional)</h2>
       <p>Cursor is another AI vibe-coding tool built on VS Code with some extra features. Codex + Portkey is what we use in class; Cursor is optional if you want to explore on your own.</p>
