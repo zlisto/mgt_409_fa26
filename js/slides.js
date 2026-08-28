@@ -150,48 +150,84 @@
     if (isPresentationActive()) updateFullscreenLayout();
   });
 
-  if (viewport) {
+  function bindSwipeNavigation(surface) {
+    if (!surface) return;
+
     let startX = 0;
     let startY = 0;
     let tracking = false;
+    let swipeAxis = null;
 
-    viewport.addEventListener(
+    function isInteractiveTarget(target) {
+      return Boolean(
+        target.closest(
+          "a, button, input, textarea, select, label, canvas, .slide-chart-wrap, .intel-chart-wrap, .pareto-chart-wrap"
+        )
+      );
+    }
+
+    surface.addEventListener(
       "touchstart",
       (e) => {
         if (e.touches.length !== 1) return;
-        const target = e.target;
-        if (
-          target.closest(
-            "a, button, input, textarea, select, label, canvas, .slide-chart-wrap, .intel-chart-wrap, .pareto-chart-wrap"
-          )
-        ) {
+        if (isInteractiveTarget(e.target)) {
           tracking = false;
+          swipeAxis = null;
           return;
         }
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
         tracking = true;
+        swipeAxis = null;
       },
       { passive: true }
     );
 
-    viewport.addEventListener(
+    surface.addEventListener(
+      "touchmove",
+      (e) => {
+        if (!tracking || e.touches.length !== 1) return;
+        const dx = e.touches[0].clientX - startX;
+        const dy = e.touches[0].clientY - startY;
+        if (!swipeAxis && (Math.abs(dx) > 12 || Math.abs(dy) > 12)) {
+          swipeAxis = Math.abs(dx) > Math.abs(dy) * 1.05 ? "h" : "v";
+        }
+        if (swipeAxis === "h") e.preventDefault();
+      },
+      { passive: false }
+    );
+
+    surface.addEventListener(
       "touchend",
       (e) => {
         if (!tracking) return;
         tracking = false;
+        if (swipeAxis !== "h") {
+          swipeAxis = null;
+          return;
+        }
         const touch = e.changedTouches[0];
         const dx = touch.clientX - startX;
         const dy = touch.clientY - startY;
-        if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
+        swipeAxis = null;
+        if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
         if (dx < 0) next();
         else prev();
       },
       { passive: true }
     );
 
-    viewport.style.touchAction = "pan-y pinch-zoom";
+    surface.addEventListener(
+      "touchcancel",
+      () => {
+        tracking = false;
+        swipeAxis = null;
+      },
+      { passive: true }
+    );
   }
+
+  bindSwipeNavigation(document.querySelector(".slide-deck-body") || viewport);
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") {
