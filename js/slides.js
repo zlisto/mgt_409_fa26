@@ -126,7 +126,15 @@
     presentBtn.setAttribute("aria-label", "Start presentation");
     presentBtn.title = "Start presentation";
     presentBtn.addEventListener("click", togglePresentation);
-    document.body.appendChild(presentBtn);
+
+    const footer = document.querySelector(".slide-deck-footer");
+    const nextBtn = document.getElementById("next");
+    if (footer) {
+      if (nextBtn) footer.insertBefore(presentBtn, nextBtn);
+      else footer.appendChild(presentBtn);
+    } else {
+      document.body.appendChild(presentBtn);
+    }
   }
 
   function onFullscreenChange() {

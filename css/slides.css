@@ -214,31 +214,19 @@ body.slide-deck-body {
 .slide-deck-footer {
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  align-items: center;
+  gap: 0.65rem;
   padding: 0.75rem 1rem 1rem;
   flex-shrink: 0;
 }
 
-.slide-deck-footer button {
-  font: inherit;
-  font-size: 1rem;
-  padding: 0.5rem 1.25rem;
-  border: 1px solid var(--yale-blue-light);
-  background: var(--yale-blue);
-  color: #fff;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.slide-deck-footer button:hover {
-  background: var(--yale-blue-dark);
+.slide-deck-footer .slide-present-btn {
+  position: static;
+  flex: 0 0 auto;
+  box-shadow: none;
 }
 
 .slide-present-btn {
-  position: fixed;
-  z-index: 120;
-  right: max(1rem, env(safe-area-inset-right, 0px));
-  bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -259,6 +247,21 @@ body.slide-deck-body {
 }
 
 .slide-present-btn:hover {
+  background: var(--yale-blue-dark);
+}
+
+.slide-deck-footer button:not(.slide-present-btn) {
+  font: inherit;
+  font-size: 1rem;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--yale-blue-light);
+  background: var(--yale-blue);
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.slide-deck-footer button:not(.slide-present-btn):hover {
   background: var(--yale-blue-dark);
 }
 
@@ -285,13 +288,15 @@ body.slide-deck-body {
 }
 
 body.is-fullscreen-deck .slide-present-btn {
+  position: fixed;
   top: max(0.75rem, env(safe-area-inset-top, 0px));
-  bottom: auto;
+  right: max(0.75rem, env(safe-area-inset-right, 0px));
+  z-index: 10001;
+  box-shadow: 0 4px 14px rgba(0, 53, 107, 0.35);
 }
 
 @media (max-width: 720px) {
   .slide-present-btn {
-    bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px));
     width: 3rem;
     height: 3rem;
   }
@@ -610,11 +615,16 @@ body.is-fullscreen-deck .slide .source-note {
     padding: 0.65rem 0.75rem max(0.85rem, env(safe-area-inset-bottom, 0px));
   }
 
-  .slide-deck-footer button {
+  .slide-deck-footer button:not(.slide-present-btn) {
     flex: 1 1 0;
     min-height: 44px;
     font-size: 0.95rem;
     padding: 0.65rem 0.75rem;
+  }
+
+  .slide-deck-footer .slide-present-btn {
+    min-height: 44px;
+    min-width: 44px;
   }
 
   .slide-hint {
