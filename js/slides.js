@@ -117,6 +117,9 @@
   }
 
   if (!document.getElementById("present")) {
+    const header = document.querySelector(".slide-deck-header");
+    const headerEnd = document.createElement("div");
+    headerEnd.className = "slide-deck-header-end";
     const presentBtn = document.createElement("button");
     presentBtn.type = "button";
     presentBtn.id = "present";
@@ -125,16 +128,18 @@
     presentBtn.setAttribute("aria-pressed", "false");
     presentBtn.setAttribute("aria-label", "Start presentation");
     presentBtn.title = "Start presentation";
-    presentBtn.addEventListener("click", togglePresentation);
+    headerEnd.appendChild(presentBtn);
+    const counter = document.querySelector(".slide-counter");
+    if (counter) headerEnd.appendChild(counter);
+    if (header) header.appendChild(headerEnd);
+    else document.body.appendChild(presentBtn);
+  }
 
-    const footer = document.querySelector(".slide-deck-footer");
-    const nextBtn = document.getElementById("next");
-    if (footer) {
-      if (nextBtn) footer.insertBefore(presentBtn, nextBtn);
-      else footer.appendChild(presentBtn);
-    } else {
-      document.body.appendChild(presentBtn);
-    }
+  const presentBtn = document.getElementById("present");
+  if (presentBtn && !presentBtn.dataset.bound) {
+    presentBtn.dataset.bound = "1";
+    presentBtn.addEventListener("click", togglePresentation);
+    updatePresentButton();
   }
 
   function onFullscreenChange() {
