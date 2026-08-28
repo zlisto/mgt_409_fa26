@@ -19,8 +19,6 @@ Update this file as you rehearse. Clock times assume start at **0:00**. Target b
 | Finish lecture (**Next Class**)                                   | ~1:19          | ~90 min     | VS Code / Codex / Portkey preview                                        |
 
 
-
-
 ### Slide map (for reference)
 
 
@@ -62,8 +60,8 @@ Update this file as you rehearse. Clock times assume start at **0:00**. Target b
 | 34  | Next Class ← ~1:19                                          |
 
 
-
-
 Lecture 2 - Extract data from unstructured text documents with vibe coding.
 
-For htis lecture, I need to teach them about Python, packages, API keys and .env files, OpenAI API, ways to get data out of a PDF file (text extract, images and screenshots which i cover next week lecture 3), how to prompt Codex for python based tasks.  file types like .py, .md, .env.  requirments.txt, README.md, termnal, running python code, dash apps, app frameworks.
+20 minutes lecture (rest of time we vibe code)
+
+For htis lecture, I need to teach them about Python, packages, API keys and .env files, OpenAI API, ways to get data out of a PDF file (text extract, images and screenshots which i cover next week lecture 3), how to prompt Codex for python based tasks.  file types like .json, .py, .md, .env.  requirments.txt, README.md.  talk abot structure of json files, curly brackets, fields, show an example or 2.  termnal, running python code, dash apps, app frameworks.
