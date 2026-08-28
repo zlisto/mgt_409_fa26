@@ -151,6 +151,16 @@
   document.addEventListener("fullscreenchange", onFullscreenChange);
   document.addEventListener("webkitfullscreenchange", onFullscreenChange);
 
+  function syncDeckToolbarOffset() {
+    const nav = document.querySelector(".site-nav");
+    if (!nav) return;
+    document.body.style.setProperty("--deck-toolbar-top", `${nav.offsetHeight}px`);
+  }
+
+  syncDeckToolbarOffset();
+  window.addEventListener("resize", syncDeckToolbarOffset);
+  window.addEventListener("orientationchange", syncDeckToolbarOffset);
+
   window.addEventListener("resize", () => {
     if (isPresentationActive()) updateFullscreenLayout();
   });
