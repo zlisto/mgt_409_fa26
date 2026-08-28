@@ -111,15 +111,11 @@
     .news-shot {
       display: block;
       width: 100%;
-      max-height: min(42vh, 380px);
-      object-fit: cover;
-      object-position: top;
+      max-height: min(var(--slide-figure-max-h), var(--slide-figure-max-px));
+      object-fit: contain;
+      object-position: top center;
       border-radius: 12px;
-      border: 3px solid #111;
-      box-shadow: 8px 8px 0 #111;
-      background: #111;
     }
-    [data-theme="dark"] .news-shot { box-shadow: 8px 8px 0 var(--cyan); }
     .price-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -240,39 +236,55 @@
     .covers-slide .covers-photo {
       display: block;
       width: 100%;
-      max-width: 300px;
+      max-width: 320px;
       justify-self: end;
-      max-height: min(58vh, 520px);
-      object-fit: cover;
+      max-height: min(var(--slide-figure-max-h), var(--slide-figure-max-px));
+      object-fit: contain;
       object-position: center top;
       border-radius: 12px;
-      border: 3px solid #111;
-      box-shadow: 8px 8px 0 #111;
-    }
-    [data-theme="dark"] .covers-slide .covers-photo {
-      box-shadow: 8px 8px 0 var(--cyan);
     }
     .website-slide {
       text-align: center;
-      max-width: 920px;
+      max-width: 1140px;
+      flex-direction: column;
+      justify-content: space-evenly;
+    }
+    .slide.website-slide.active {
+      display: flex;
+    }
+    .website-slide h1 {
+      flex-shrink: 0;
+      margin-bottom: 0;
     }
     .website-slide ul {
       text-align: left;
-      margin: 0.5rem auto 0;
-      max-width: 640px;
+      margin: 0 auto;
+      padding-left: 1.4rem;
+      max-width: 52rem;
+      width: 100%;
+      flex-shrink: 0;
+    }
+    .website-slide ul > li {
+      margin: 0.35rem 0;
+      font-size: clamp(1.35rem, 2.85vw, 1.85rem);
+      font-weight: 700;
+      line-height: 1.42;
     }
     .website-slide .website-prometheus {
       display: block;
       width: min(100%, 4in);
       max-width: 4in;
-      max-height: min(28vh, 260px);
+      max-height: min(32vh, 300px);
       object-fit: contain;
-      margin: 0.5rem auto;
+      margin: 0 auto;
       border-radius: 4px;
+      flex-shrink: 0;
     }
     .website-slide .website-url {
-      margin: 0.35rem 0 0.85rem;
+      margin: 0;
+      font-size: clamp(1.15rem, 2.4vw, 1.5rem);
       font-weight: 700;
+      flex-shrink: 0;
     }
     .website-slide .website-url a {
       color: var(--yale-blue-light);
@@ -282,15 +294,44 @@
       color: #6ba3e0;
     }
     .vibe-coder-slide .vibe-coder-layout {
-      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-      gap: 1.25rem;
-      align-items: center;
-      margin-top: 0.35rem;
+      flex: 1 1 auto;
+      min-height: 0;
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+      gap: 1.5rem;
+      align-items: stretch;
+      margin-top: 0.25rem;
+    }
+    .slide.vibe-coder-slide {
+      max-width: 1140px;
+      flex-direction: column;
+    }
+    .slide.vibe-coder-slide.active {
+      display: flex;
+    }
+    .vibe-coder-slide h1 {
+      flex-shrink: 0;
+    }
+    .vibe-coder-slide .vibe-coder-layout > div:first-child {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      min-height: 100%;
+      min-width: 0;
+    }
+    .vibe-coder-slide .vibe-coder-layout ul {
+      margin: 0;
+      padding-left: 1.4rem;
+    }
+    .vibe-coder-slide .vibe-coder-layout ul > li {
+      margin: 0;
+      font-size: clamp(1.35rem, 2.85vw, 1.85rem);
+      font-weight: 700;
+      line-height: 1.42;
     }
     .vibe-coder-slide .model-table {
       width: 100%;
-      margin: 0.65rem 0 0.5rem;
-      font-size: clamp(0.95rem, 1.9vw, 1.12rem);
+      margin: 0;
+      font-size: clamp(1.05rem, 2.2vw, 1.35rem);
     }
     .vibe-coder-slide .model-table th {
       background: var(--yale-blue);
@@ -317,8 +358,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       gap: 0.55rem;
       min-width: 0;
+      min-height: 100%;
     }
     .vibe-coder-slide .vibe-logos {
       display: flex;
@@ -341,7 +384,9 @@
     .vibe-coder-slide .robot-pigs {
       display: block;
       width: 100%;
-      max-height: min(52vh, 460px);
+      max-height: none;
+      flex: 1 1 auto;
+      min-height: 0;
       object-fit: contain;
       border-radius: 12px;
     }
@@ -370,23 +415,27 @@
     .vibe-coder-slide .pig-labels .luna-name { color: var(--hot); }
     .vibe-coder-slide .pig-labels .terra-name { color: #b8860b; }
     .vibe-coder-slide .pig-labels .sol-name { color: var(--yale-blue-light); }
-    .cursor-slide .cursor-shot {
-      max-height: min(48vh, 420px);
+    .cursor-slide .cursor-shot,
+    .cursor-founder-slide .cursor-founder-shot,
+    .cursor-email-slide .cursor-email-shot {
+      max-height: min(var(--slide-figure-max-h), var(--slide-figure-max-px));
       object-fit: contain;
-      object-position: top;
+      object-position: top center;
+    }
+    .cursor-slide .cursor-shot {
       background: #1a1a1a;
     }
     .cursor-founder-slide .cursor-founder-shot {
-      max-height: min(52vh, 460px);
-      object-fit: contain;
-      object-position: top;
       background: #000;
     }
     .cursor-email-slide .cursor-email-shot {
-      max-height: min(58vh, 520px);
-      object-fit: contain;
-      object-position: top;
       background: #1a1a1a;
+    }
+    .slide.cursor-growth-slide {
+      flex-direction: column;
+    }
+    .slide.cursor-growth-slide.active {
+      display: flex;
     }
     .cursor-growth-slide .growth-stack {
       display: flex;
@@ -394,28 +443,28 @@
       align-items: center;
       gap: 0.75rem;
       margin-top: 0.5rem;
+      flex: 1 1 auto;
+      min-height: 0;
+      justify-content: center;
     }
     .cursor-growth-slide .growth-headline {
       display: block;
-      width: min(100%, 920px);
-      max-height: min(22vh, 180px);
+      width: 100%;
+      max-height: min(28vh, 220px);
       object-fit: contain;
       object-position: center;
       border-radius: 8px;
       background: #fff;
+      flex-shrink: 0;
     }
     .cursor-growth-slide .growth-photo {
       display: block;
-      width: min(100%, 420px);
-      max-height: min(42vh, 380px);
+      width: min(100%, 520px);
+      max-height: min(var(--slide-figure-max-h), var(--slide-figure-max-px));
       object-fit: contain;
       object-position: center top;
       border-radius: 12px;
-      border: 3px solid #111;
-      box-shadow: 8px 8px 0 #111;
-    }
-    [data-theme="dark"] .cursor-growth-slide .growth-photo {
-      box-shadow: 8px 8px 0 var(--cyan);
+      margin: 0 auto;
     }
     .logistics-slide .grade-grid {
       display: grid;
@@ -444,17 +493,12 @@
     }
     .transformers-title-slide .transformers-hero {
       display: block;
-      width: min(100%, 920px);
-      max-height: min(58vh, 520px);
+      width: 100%;
+      max-height: min(var(--slide-figure-max-h), var(--slide-figure-max-px));
       margin: 0.6rem auto 0;
       object-fit: contain;
       object-position: center;
       border-radius: 12px;
-      border: 3px solid #111;
-      box-shadow: 8px 8px 0 #111;
-    }
-    [data-theme="dark"] .transformers-title-slide .transformers-hero {
-      box-shadow: 8px 8px 0 var(--cyan);
     }
     .slide.transformer-arch-slide {
       max-width: 1100px;
@@ -464,10 +508,9 @@
       display: flex;
     }
     .transformer-arch-slide .arch-diagram {
-      display: block;
-      width: 100%;
-      max-width: 1080px;
-      height: auto;
+      flex: 1 1 auto;
+      min-height: 0;
+      max-width: none;
       margin: auto 0;
       border-radius: 6px;
     }
@@ -486,10 +529,9 @@
       display: flex;
     }
     .attention-weights-slide .attn-diagram {
-      display: block;
-      width: 100%;
-      max-width: 980px;
-      height: auto;
+      flex: 1 1 auto;
+      min-height: 0;
+      max-width: none;
       margin: auto 0;
       border-radius: 6px;
     }
@@ -510,8 +552,13 @@
     .slide.context-embed-slide.active {
       display: flex;
     }
+    .slide.context-embed-sentences {
+      max-width: 1140px;
+      flex-direction: column;
+    }
     .slide.context-embed-sentences.active {
-      text-align: center;
+      display: flex;
+      text-align: left;
     }
     .context-embed-slide ul {
       margin-bottom: 0.85rem;
@@ -521,23 +568,70 @@
       flex-shrink: 0;
     }
     .context-embed-sentences .bat-intro {
-      margin: auto 0 1rem;
-      font-size: clamp(1.45rem, 3.2vw, 1.95rem);
+      margin: 0 0 0.35rem;
+      font-size: clamp(1.2rem, 2.5vw, 1.55rem);
       font-weight: 700;
       flex-shrink: 0;
+      text-align: left;
+      width: 100%;
+    }
+    .context-embed-sentences .bat-layout {
+      flex: 1 1 auto;
+      min-height: 0;
+      grid-template-columns: minmax(0, 1.32fr) minmax(0, 0.68fr);
+      gap: 1.25rem;
+      align-items: stretch;
+      margin-top: 0.15rem;
+      width: 100%;
+    }
+    .context-embed-sentences .bat-photo-stack {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      gap: 0.85rem;
+      min-height: 100%;
+      height: 100%;
+      align-items: center;
+      justify-items: center;
+    }
+    .context-embed-sentences .bat-photo-box {
+      aspect-ratio: 1 / 1;
+      width: min(100%, 100%);
+      max-height: 100%;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .context-embed-sentences .bat-sense-photo {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      border: none;
+      box-shadow: none;
+      border-radius: 0;
+      background: transparent;
     }
     .context-embed-sentences .bat-examples {
       list-style: none;
       padding-left: 0;
-      margin: 0 auto auto;
-      max-width: 46rem;
-      flex-shrink: 0;
+      margin: 0;
+      width: 100%;
+      min-width: 0;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      text-align: left;
     }
     .context-embed-sentences .bat-examples li {
-      margin: 0.7rem 0;
-      font-size: clamp(1.25rem, 2.9vw, 1.7rem);
-      font-weight: 600;
-      line-height: 1.35;
+      margin: 0;
+      font-size: clamp(1.35rem, 2.85vw, 1.85rem);
+      font-weight: 700;
+      line-height: 1.42;
     }
     .context-embed-slide .bat-animal {
       color: #7c3aed;
@@ -556,10 +650,9 @@
     [data-theme="dark"] .context-embed-slide .bat-animal { color: #c4b5fd; }
     [data-theme="dark"] .context-embed-slide .bat-sense { color: #9aafc2; }
     .context-embed-slide .embed-plot {
-      display: block;
-      width: 100%;
-      max-width: 820px;
-      height: auto;
+      flex: 1 1 auto;
+      min-height: 0;
+      max-width: none;
       margin: auto;
       border-radius: 6px;
     }
@@ -578,15 +671,14 @@
       flex-shrink: 0;
     }
     .transformers-talking-slide .talk-histogram {
-      display: block;
-      width: 100%;
-      max-width: 980px;
-      height: auto;
+      flex: 1 1 auto;
+      min-height: 0;
+      max-width: none;
       margin: auto 0;
       border-radius: 6px;
     }
     .slide.transformers-cando-slide {
-      max-width: 980px;
+      max-width: 1140px;
       flex-direction: column;
       text-align: center;
     }
@@ -601,25 +693,42 @@
     .transformers-cando-slide .cando-list {
       list-style: disc;
       padding-left: 2rem;
-      margin: auto auto;
-      max-width: 48rem;
+      margin: 0;
+      width: 100%;
+      max-width: none;
       text-align: left;
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
     }
     .transformers-cando-slide .cando-list li {
-      margin: 0.65rem 0;
-      font-size: clamp(3.4rem, 7.5vw, 4.8rem);
+      margin: 0;
+      font-size: clamp(1.35rem, 2.85vw, 1.85rem);
       font-weight: 800;
-      line-height: 1.2;
+      line-height: 1.42;
     }
     .transformers-cando-slide .cando-list .cando-anything {
-      margin-top: 1rem;
+      margin-top: 0;
       list-style: none;
       margin-left: -2rem;
-      font-size: clamp(4rem, 9vw, 5.6rem);
+      font-size: clamp(1.75rem, 3.8vw, 2.45rem);
       font-weight: 900;
       color: var(--hot);
       text-transform: uppercase;
       letter-spacing: 0.02em;
+    }
+    html:fullscreen .transformers-cando-slide .cando-list li,
+    html:-webkit-full-screen .transformers-cando-slide .cando-list li,
+    body.is-fullscreen-deck .transformers-cando-slide .cando-list li {
+      font-size: clamp(1.35rem, 2.85vw, 1.85rem);
+      line-height: 1.42;
+    }
+    html:fullscreen .transformers-cando-slide .cando-list .cando-anything,
+    html:-webkit-full-screen .transformers-cando-slide .cando-list .cando-anything,
+    body.is-fullscreen-deck .transformers-cando-slide .cando-list .cando-anything {
+      font-size: clamp(1.75rem, 3.8vw, 2.45rem);
     }
     .slide.intel-race-slide {
       max-width: 1180px;
@@ -640,17 +749,8 @@
     }
     [data-theme="dark"] .intel-race-slide .intel-note { color: #9aafc2; }
     .intel-race-slide .intel-chart-wrap {
-      position: relative;
       flex: 1 1 auto;
-      width: 100%;
-      height: min(52vh, 480px);
-      min-height: 320px;
-      margin: 0.35rem 0 0;
-    }
-    .intel-race-slide canvas {
-      display: block;
-      width: 100% !important;
-      height: 100% !important;
+      min-height: 0;
     }
     .intel-race-slide .intel-source {
       margin: 0.55rem 0 0;
@@ -686,13 +786,10 @@
       flex-shrink: 0;
     }
     .frontier-models-slide .frontier-chart {
-      display: block;
-      width: 100%;
-      max-width: 1040px;
-      height: auto;
+      flex: 1 1 auto;
+      min-height: 0;
       margin: auto 0 0;
       border-radius: 6px;
-      border: 2px solid #111;
     }
     .slide.frontier-cost-slide {
       max-width: 1180px;
@@ -724,8 +821,6 @@
       max-height: min(58vh, 520px);
       object-fit: contain;
       border-radius: 6px;
-      border: 2px solid #111;
-      background: #fff;
     }
     .frontier-cost-slide .frontier-pair figcaption {
       margin-top: 0.35rem;
@@ -757,17 +852,8 @@
     }
     [data-theme="dark"] .frontier-pareto-slide .pareto-note { color: #9aafc2; }
     .frontier-pareto-slide .pareto-chart-wrap {
-      position: relative;
       flex: 1 1 auto;
-      width: 100%;
-      height: min(52vh, 480px);
-      min-height: 320px;
-      margin: 0.35rem 0 0;
-    }
-    .frontier-pareto-slide canvas {
-      display: block;
-      width: 100% !important;
-      height: 100% !important;
+      min-height: 0;
     }
     .frontier-pareto-slide .pareto-source {
       margin: 0.55rem 0 0;
@@ -780,9 +866,9 @@
     .frontier-pareto-slide .pareto-source a { font-weight: 800; }
     [data-theme="dark"] .frontier-pareto-slide .pareto-source { color: #9aafc2; }
     .achievement-slide .achievement-photo {
-      object-fit: cover;
+      object-fit: contain;
       object-position: center top;
-      max-height: min(58vh, 520px);
+      max-height: min(var(--slide-figure-max-h), var(--slide-figure-max-px));
     }
     .achievement-slide .duo-photo-row {
       display: grid;
@@ -800,26 +886,21 @@
     .achievement-slide .duo-photo-row img {
       display: block;
       width: 100%;
-      height: min(34vh, 300px);
+      height: auto;
+      max-height: min(var(--slide-figure-max-h), var(--slide-figure-max-px));
       object-fit: cover;
       object-position: center top;
       border-radius: 12px;
-      border: 3px solid #111;
-      box-shadow: 8px 8px 0 #111;
     }
     .achievement-slide .duo-photo-row .duo-photo-full img {
       height: auto;
-      max-height: min(52vh, 460px);
+      max-height: min(var(--slide-figure-max-h), var(--slide-figure-max-px));
       object-fit: contain;
       object-position: center center;
       background: #0c1828;
     }
     [data-theme="dark"] .achievement-slide .duo-photo-row .duo-photo-full img {
       background: #08111f;
-    }
-    [data-theme="dark"] .achievement-slide .duo-photo-row img {
-      box-shadow: 8px 8px 0 var(--cyan);
-      border-color: var(--cyan);
     }
     .achievement-slide .duo-photo-row figcaption {
       font-size: clamp(0.82rem, 1.5vw, 0.98rem);
@@ -841,17 +922,213 @@
     }
     @media (max-width: 900px) {
       .achievement-slide .duo-photo-row { grid-template-columns: 1fr; }
-      .achievement-slide .duo-photo-row figure:not(.duo-photo-full) img { height: min(28vh, 240px); }
-      .achievement-slide .duo-photo-row .duo-photo-full img { max-height: min(44vh, 380px); }
+      .achievement-slide .duo-photo-row figure:not(.duo-photo-full) img { max-height: min(42vh, 360px); }
+      .achievement-slide .duo-photo-row .duo-photo-full img { max-height: min(48vh, 420px); }
     }
     .achievement-slide a {
       font-weight: 800;
     }
-    .aimax-slide .topic-layout ul > li {
-      margin: 0.42rem 0;
-      font-size: clamp(0.95rem, 1.85vw, 1.15rem);
+    .achievement-slide.math-results-slide .math-results-list > li {
+      margin: 0;
+      font-size: clamp(1.35rem, 2.85vw, 1.85rem);
+      font-weight: 800;
+      line-height: 1.42;
+    }
+    .achievement-slide.math-results-slide .math-results-list ul {
+      margin: 0.35rem 0 0;
+      padding-left: 1.25rem;
+    }
+    .achievement-slide.math-results-slide .math-results-list ul li {
+      margin: 0.25rem 0;
+      font-size: clamp(1.15rem, 2.4vw, 1.55rem);
+      font-weight: 600;
+      line-height: 1.38;
+    }
+    .slide.math-results-slide {
+      max-width: 1140px;
+      flex-direction: column;
+    }
+    .slide.math-results-slide.active {
+      display: flex;
+    }
+    .math-results-slide h1 {
+      flex-shrink: 0;
+    }
+    .math-results-slide .math-results-body {
+      flex: 1 1 auto;
+      min-height: 0;
+      align-items: stretch;
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+      gap: 1.5rem;
+      margin-top: 0.25rem;
+    }
+    .math-results-slide .math-results-list {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      margin: 0;
+      padding-left: 1.4rem;
+      min-height: 100%;
+    }
+    .math-results-slide .achievement-photo {
+      width: 100%;
+      height: 100%;
+      max-height: none;
+      object-fit: contain;
+      object-position: center;
+      align-self: stretch;
+    }
+    .math-results-slide .math-results-footnotes {
+      flex-shrink: 0;
+      margin: 0.65rem 0 0;
+      padding-top: 0.55rem;
+      border-top: 2px solid #e8eef4;
+      font-size: clamp(0.78rem, 1.45vw, 0.92rem);
+      font-weight: 600;
+      line-height: 1.45;
+      color: #5c7086;
+    }
+    [data-theme="dark"] .math-results-slide .math-results-footnotes {
+      border-top-color: #1a3354;
+      color: #9aafc2;
+    }
+    .math-results-slide .math-results-footnotes a {
+      font-weight: 800;
+    }
+    .math-results-slide .math-results-footnotes sup {
+      font-weight: 800;
+      margin-right: 0.12rem;
+    }
+    .aimax-slide .topic-layout ul > li,
+    .paradigm-slide .topic-layout ul > li,
+    .next-class-slide .topic-layout ul > li,
+    .tao-slide .topic-layout ul > li,
+    .topic-slide .topic-layout ul > li {
+      margin: 0;
+      font-size: clamp(1.35rem, 2.85vw, 1.85rem);
       font-weight: 700;
-      line-height: 1.35;
+      line-height: 1.42;
+    }
+    .slide.aimax-slide,
+    .slide.paradigm-slide,
+    .slide.next-class-slide,
+    .slide.tao-slide,
+    .slide.topic-slide {
+      max-width: 1140px;
+      flex-direction: column;
+    }
+    .slide.aimax-slide.active,
+    .slide.paradigm-slide.active,
+    .slide.next-class-slide.active,
+    .slide.tao-slide.active,
+    .slide.topic-slide.active {
+      display: flex;
+    }
+    .aimax-slide h1,
+    .paradigm-slide h1,
+    .next-class-slide h1,
+    .tao-slide h1,
+    .topic-slide h1 {
+      flex-shrink: 0;
+    }
+    .aimax-slide .topic-layout,
+    .paradigm-slide .topic-layout,
+    .next-class-slide .topic-layout,
+    .tao-slide .topic-layout,
+    .topic-slide .topic-layout {
+      flex: 1 1 auto;
+      min-height: 0;
+      align-items: stretch;
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+      gap: 1.5rem;
+      margin-top: 0.25rem;
+    }
+    .aimax-slide .topic-layout ul,
+    .paradigm-slide .topic-layout ul,
+    .next-class-slide .topic-layout ul,
+    .tao-slide .topic-layout ul,
+    .topic-slide .topic-layout ul {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      margin: 0;
+      padding-left: 1.4rem;
+      min-height: 100%;
+    }
+    .aimax-slide .topic-photo,
+    .paradigm-slide .topic-photo,
+    .next-class-slide .topic-photo,
+    .tao-slide .topic-photo,
+    .topic-slide .topic-photo {
+      width: 100%;
+      height: 100%;
+      max-height: none;
+      object-fit: contain;
+      object-position: center;
+      align-self: stretch;
+      border-radius: 12px;
+    }
+    .slide.covers-slide.covers-agenda {
+      max-width: 1140px;
+      flex-direction: column;
+    }
+    .slide.covers-slide.covers-agenda.active {
+      display: flex;
+    }
+    .covers-slide.covers-agenda h1 {
+      flex-shrink: 0;
+    }
+    .covers-slide.covers-agenda .covers-layout {
+      flex: 1 1 auto;
+      min-height: 0;
+      align-items: stretch;
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+      gap: 1.5rem;
+      margin-top: 0.25rem;
+    }
+    .covers-slide.covers-agenda .covers-list {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      margin: 0;
+      padding-left: 1.4rem;
+      min-height: 100%;
+      min-width: 0;
+    }
+    .covers-slide.covers-agenda .covers-list > li {
+      margin: 0;
+      font-size: clamp(1.35rem, 2.85vw, 1.85rem);
+      font-weight: 800;
+      line-height: 1.42;
+      overflow-wrap: anywhere;
+    }
+    .covers-slide.covers-agenda .covers-photo {
+      width: 100%;
+      max-width: none;
+      height: 100%;
+      max-height: none;
+      justify-self: stretch;
+      object-fit: contain;
+      object-position: center;
+      align-self: stretch;
+    }
+    html:fullscreen .topic-slide .topic-layout ul > li,
+    html:-webkit-full-screen .topic-slide .topic-layout ul > li,
+    html:fullscreen .covers-slide.covers-agenda .covers-list > li,
+    html:-webkit-full-screen .covers-slide.covers-agenda .covers-list > li,
+    html:fullscreen .context-embed-sentences .bat-examples li,
+    html:-webkit-full-screen .context-embed-sentences .bat-examples li,
+    html:fullscreen .website-slide ul > li,
+    html:-webkit-full-screen .website-slide ul > li,
+    html:fullscreen .vibe-coder-slide .vibe-coder-layout ul > li,
+    html:-webkit-full-screen .vibe-coder-slide .vibe-coder-layout ul > li,
+    body.is-fullscreen-deck .topic-slide .topic-layout ul > li,
+    body.is-fullscreen-deck .covers-slide.covers-agenda .covers-list > li,
+    body.is-fullscreen-deck .context-embed-sentences .bat-examples li,
+    body.is-fullscreen-deck .website-slide ul > li,
+    body.is-fullscreen-deck .vibe-coder-slide .vibe-coder-layout ul > li {
+      font-size: clamp(1.35rem, 2.85vw, 1.85rem);
+      line-height: 1.42;
     }
     [data-theme="dark"] .vibe-coder-slide .pig-labels span {
       text-shadow:
@@ -860,30 +1137,6 @@
         1px 1px 0 #08111f;
     }
     [data-theme="dark"] .vibe-coder-slide .pig-labels .sol-name { color: #6ba3e0; }
-    .covers-slide.covers-agenda .covers-list > li {
-      margin: 0.55rem 0;
-      font-size: clamp(1.15rem, 2.5vw, 1.45rem);
-      font-weight: 700;
-    }
-    .topic-slide .topic-layout {
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-      gap: 1.25rem;
-      align-items: center;
-      margin-top: 0.35rem;
-    }
-    .topic-slide .topic-photo {
-      display: block;
-      width: 100%;
-      max-height: min(55vh, 480px);
-      object-fit: cover;
-      object-position: center top;
-      border-radius: 12px;
-      border: 3px solid #111;
-      box-shadow: 8px 8px 0 #111;
-    }
-    [data-theme="dark"] .topic-slide .topic-photo {
-      box-shadow: 8px 8px 0 var(--cyan);
-    }
     @media (max-width: 720px) {
       .price-grid, .bound-row, .prompt-chips { grid-template-columns: 1fr; }
       .bound-arrow { display: none; }
@@ -893,6 +1146,13 @@
       .covers-slide .covers-photo { max-height: 36vh; }
       .topic-slide .topic-layout { grid-template-columns: 1fr; }
       .topic-slide .topic-photo { max-height: 36vh; }
+      .context-embed-sentences .bat-layout { grid-template-columns: 1fr; }
+      .context-embed-sentences .bat-photo-stack {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: none;
+        max-width: 20rem;
+        margin: 0 auto;
+      }
     }
   </style>
 </head>
@@ -910,7 +1170,7 @@
   <header class="slide-deck-header">
     <a href="../../lectures.html">← Lectures</a>
     <span>Lecture 1: AI and Vibe Coding</span>
-    <span class="slide-counter">1 / 33</span>
+    <span class="slide-counter">1 / 34</span>
   </header>
   <div class="slide-viewport">
 
@@ -1147,15 +1407,25 @@
     <section class="slide context-embed-slide context-embed-sentences" data-slide="20">
       <h1>Context Dependent Embeddings</h1>
       <p class="bat-intro">Consider these sentences that use the word <em>bat</em></p>
-      <ul class="bat-examples">
-        <li>A <span class="bat-animal">bat</span> flew out of the cave</li>
-        <li>The <span class="bat-animal">bat</span> pooped on the ground</li>
-        <li>A <span class="bat-animal">bat</span> bit me in the neck</li>
-        <li>I’m afraid of a <span class="bat-animal">bat</span> because it is like a rat with wings</li>
-        <li>A <span class="bat-sport">bat</span> flew out of the baseball player’s hand</li>
-        <li>I hit a home run with the metal <span class="bat-sport">bat</span></li>
-        <li>No one swung a <span class="bat-sport">bat</span> harder than Babe Ruth.</li>
-      </ul>
+      <div class="two-col bat-layout">
+        <ul class="bat-examples">
+          <li>A <span class="bat-animal">bat</span> flew out of the cave</li>
+          <li>The <span class="bat-animal">bat</span> pooped on the ground</li>
+          <li>A <span class="bat-animal">bat</span> bit me in the neck</li>
+          <li>I’m afraid of a <span class="bat-animal">bat</span> because it is like a rat with wings</li>
+          <li>A <span class="bat-sport">bat</span> flew out of the baseball player’s hand</li>
+          <li>I hit a home run with the metal <span class="bat-sport">bat</span></li>
+          <li>No one swung a <span class="bat-sport">bat</span> harder than Babe Ruth.</li>
+        </ul>
+        <div class="bat-photo-stack">
+          <figure class="bat-photo-box">
+            <img class="bat-sense-photo" src="../images/lec01/bat-animal.jpg" alt="Flying bat animal with wings spread" loading="lazy">
+          </figure>
+          <figure class="bat-photo-box">
+            <img class="bat-sense-photo" src="../images/lec01/baseball-bat.jpg" alt="Wooden baseball bat" loading="lazy">
+          </figure>
+        </div>
+      </div>
     </section>
 
     <section class="slide context-embed-slide" data-slide="21">
@@ -1194,7 +1464,7 @@
         hover a point for the model name.
         Frontier lines for OpenAI, Anthropic, Google (Gemini), xAI (Grok), and DeepSeek (open weights).
       </p>
-      <div class="intel-chart-wrap">
+      <div class="intel-chart-wrap slide-chart-wrap">
         <canvas id="intelRaceChart" aria-label="Interactive chart of frontier model intelligence over time for OpenAI, Anthropic, Google, xAI, and DeepSeek"></canvas>
       </div>
       <p class="intel-source">
@@ -1231,7 +1501,7 @@
         Terminal-Bench v2.1 — cost per task vs score. Hover a dot for the model.
         The dashed line is the cheap-and-smart frontier (nothing cheaper scores higher).
       </p>
-      <div class="pareto-chart-wrap">
+      <div class="pareto-chart-wrap slide-chart-wrap">
         <canvas id="frontierParetoChart" aria-label="Scatter plot of Terminal-Bench cost versus score"></canvas>
       </div>
       <p class="pareto-source">
@@ -1259,7 +1529,7 @@
       </ul>
     </section>
 
-    <section class="slide achievement-slide" data-slide="29">
+    <section class="slide achievement-slide tao-slide" data-slide="29">
       <h1>Terence Tao on AI and Mathematics</h1>
       <div class="two-col topic-layout">
         <ul>
@@ -1272,28 +1542,35 @@
       </div>
     </section>
 
-    <section class="slide achievement-slide" data-slide="30">
+    <section class="slide achievement-slide math-results-slide" data-slide="30">
       <h1>Recent AI Achievements in Math</h1>
-      <div class="two-col topic-layout">
-        <ul>
-          <li><strong>OpenAI (Astra)</strong>: new results on <strong>10 long-open problems</strong> — first explicit <strong>non-sofic group</strong> (open since 1999), disproof of <strong>Connes’s rigidity conjecture</strong>, progress on <strong>Erdős #183</strong> (multicolor Ramsey numbers), <strong>Ehrhart’s volume conjecture</strong>, and more — with Lean 4 certificates
+      <div class="two-col topic-layout math-results-body">
+        <ul class="math-results-list">
+          <li><strong>OpenAI (Astra)</strong> — 10 long-open problems
             <ul>
-              <li><a href="https://openai.com/index/ten-advances-in-mathematics/" target="_blank" rel="noopener noreferrer">OpenAI: Ten advances in mathematics</a></li>
+              <li>Non-sofic group</li>
+              <li>Connes rigidity conjecture</li>
+              <li>Erdős Problem #183</li>
+              <li>Ehrhart volume conjecture</li>
+              <li>Sphere-packing bound + 5 more</li>
             </ul>
           </li>
-          <li><strong>Anthropic (Claude)</strong>: unconditionally proved &gt; <strong>⅔ of Riemann zeta zeros</strong> are simple and on the critical line — raised the record from <strong>41.6% → 67.2%</strong> (not the full Riemann hypothesis)
+          <li><strong>Anthropic (Claude)</strong>
             <ul>
-              <li><a href="https://www.anthropic.com/research/riemann-zeta" target="_blank" rel="noopener noreferrer">Anthropic: Riemann zeta research</a></li>
-            </ul>
-          </li>
-          <li><strong>Anthropic (Claude + Levent Alpöge)</strong>: proposed an explicit <strong>complex structure on S⁶</strong> — the Hopf problem, open since ~1948 — still undergoing expert scrutiny
-            <ul>
-              <li><a href="https://officechai.com/ai/anthropic-researcher-says-claude-helped-build-a-complex-structure-on-s%E2%81%B6-taking-aim-at-the-unsolved-hopf-problem/" target="_blank" rel="noopener noreferrer">Office Chai: S⁶ complex structure claim</a></li>
+              <li>Riemann zeta zeros — &gt;⅔ on the critical line</li>
+              <li>S⁶ complex structure (Hopf problem, open since 1948; still under review)</li>
             </ul>
           </li>
         </ul>
         <img class="topic-photo achievement-photo" src="../images/lec01/recent-ai-math-breakthroughs.jpg" alt="Illustration of AI-assisted mathematical breakthroughs — neural network light beside advanced equations on a chalkboard" loading="lazy">
       </div>
+      <p class="math-results-footnotes">
+        <sup>1</sup> <a href="https://openai.com/index/ten-advances-in-mathematics/" target="_blank" rel="noopener noreferrer">OpenAI write-up</a>
+        &nbsp;·&nbsp;
+        <sup>2</sup> <a href="https://www.anthropic.com/research/riemann-zeta" target="_blank" rel="noopener noreferrer">Anthropic — Riemann zeta</a>
+        &nbsp;·&nbsp;
+        <sup>3</sup> <a href="https://officechai.com/ai/anthropic-researcher-says-claude-helped-build-a-complex-structure-on-s%E2%81%B6-taking-aim-at-the-unsolved-hopf-problem/" target="_blank" rel="noopener noreferrer">S⁶ claim — coverage</a>
+      </p>
     </section>
 
     <section class="slide aimax-slide" data-slide="31">
@@ -1304,13 +1581,24 @@
           <li>Not “use AI to fill in a spreadsheet” → <strong>no spreadsheets</strong>; AI updates your records database directly</li>
           <li>Not “use AI to skim resumes in HR” → AI <strong>interviews every candidate</strong> in depth and maps real strengths</li>
           <li>Not “use AI to draft customer-support replies” → AI <strong>owns the resolution loop</strong> and only escalates true edge cases</li>
-          <li>Early cameras just <strong>filmed stage plays</strong> — then someone invented <em class="hot-phrase">cinema</em>. AI today is that kind of leap: design the <strong>next paradigm</strong>, not a faster version of yesterday</li>
         </ul>
-        <img class="topic-photo" src="../images/lec01/ai-maxxing-frame.jpg" alt="Terminator robot at a whiteboard — crossed-out spreadsheets and resume piles, arrows to a database and deep AI interviews, stage play vs cinema" loading="lazy">
+        <img class="topic-photo" src="../images/lec01/ai-maxxing-frame.jpg" alt="Terminator robot at a whiteboard — crossed-out spreadsheets and resume piles, arrows to a database and deep AI interviews" loading="lazy">
       </div>
     </section>
 
-    <section class="slide logistics-slide" data-slide="32">
+    <section class="slide paradigm-slide" data-slide="32">
+      <h1>New Tech, New Paradigm</h1>
+      <div class="two-col topic-layout">
+        <ul>
+          <li>Every transformative technology starts by <strong>bolting onto the old world</strong> — until someone sees what the tool is <em>really</em> for</li>
+          <li>Early cameras just <strong>filmed stage plays</strong> — then someone invented <em class="hot-phrase">cinema</em></li>
+          <li>AI today is that kind of leap: design the <strong>next paradigm</strong>, not a faster version of yesterday</li>
+        </ul>
+        <img class="topic-photo" src="../images/lec01/terminator-records-wicked.jpg" alt="Terminator robot with a cinema camera recording the Wicked Broadway musical on stage — filming the play instead of inventing film" loading="lazy">
+      </div>
+    </section>
+
+    <section class="slide logistics-slide" data-slide="33">
       <h1>Course logistics</h1>
       <div class="grade-grid">
         <div class="grade-box att">
@@ -1350,7 +1638,7 @@
       </ul>
     </section>
 
-    <section class="slide next-class-slide" data-slide="33">
+    <section class="slide next-class-slide" data-slide="34">
       <h1>Next Class</h1>
       <div class="two-col topic-layout">
         <ul>
@@ -1364,7 +1652,7 @@
     </section>
 
   </div>
-  <p class="slide-hint">← → or Space to advance · F for full screen</p>
+  <p class="slide-hint">Swipe or use buttons to advance · projector icon for presentation</p>
   <footer class="slide-deck-footer">
     <button type="button" id="prev" aria-label="Previous slide">← Previous</button>
     <button type="button" id="next" aria-label="Next slide">Next →</button>
