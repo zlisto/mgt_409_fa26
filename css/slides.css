@@ -229,6 +229,180 @@ body.slide-deck-body {
   background: var(--yale-blue-dark);
 }
 
+.slide-deck-footer #fullscreen {
+  background: transparent;
+  color: var(--yale-blue);
+  border-color: var(--yale-blue-light);
+}
+
+.slide-deck-footer #fullscreen:hover {
+  background: var(--yale-blue-pale);
+}
+
+[data-theme="dark"] .slide-deck-footer #fullscreen {
+  color: #fff;
+  border-color: var(--yale-blue-light);
+}
+
+[data-theme="dark"] .slide-deck-footer #fullscreen:hover {
+  background: #132a45;
+}
+
+/* Full-screen presentation: each slide fills the viewport (no tiny centered box). */
+html:fullscreen body.slide-deck-body,
+html:-webkit-full-screen body.slide-deck-body {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+html:fullscreen .site-nav,
+html:-webkit-full-screen .site-nav,
+html:fullscreen .slide-deck-header,
+html:-webkit-full-screen .slide-deck-header,
+html:fullscreen .slide-hint,
+html:-webkit-full-screen .slide-hint,
+html:fullscreen .slide-deck-footer,
+html:-webkit-full-screen .slide-deck-footer {
+  display: none;
+}
+
+html:fullscreen .slide-viewport,
+html:-webkit-full-screen .slide-viewport {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  padding: 3.5vh 4.5vw;
+  box-sizing: border-box;
+  display: block;
+  overflow: hidden;
+}
+
+html:fullscreen .slide,
+html:-webkit-full-screen .slide {
+  max-width: none;
+  max-height: none;
+}
+
+body.is-fullscreen-deck .slide.active {
+  display: flex !important;
+  flex-direction: column;
+  position: relative !important;
+  left: auto !important;
+  top: auto !important;
+  transform: none !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+  box-sizing: border-box;
+  animation: none;
+}
+
+body.is-fullscreen-deck .slide.active.title-slide {
+  justify-content: center;
+  align-items: center;
+  background: #000;
+  border-radius: 0;
+}
+
+html:fullscreen .slide h1,
+html:-webkit-full-screen .slide h1 {
+  font-size: clamp(2rem, 5.2vh, 3.75rem);
+  flex-shrink: 0;
+  margin-bottom: 0.65em;
+}
+
+html:fullscreen .slide p,
+html:fullscreen .slide li,
+html:-webkit-full-screen .slide p,
+html:-webkit-full-screen .slide li {
+  font-size: clamp(1.1rem, 2.5vh, 1.75rem);
+  line-height: 1.35;
+}
+
+html:fullscreen .slide ul,
+html:fullscreen .slide ol,
+html:-webkit-full-screen .slide ul,
+html:-webkit-full-screen .slide ol {
+  flex-shrink: 0;
+}
+
+html:fullscreen .slide .news-shot,
+html:fullscreen .slide .covers-photo,
+html:fullscreen .slide .website-prometheus,
+html:fullscreen .slide .title-hero,
+html:-webkit-full-screen .slide .news-shot,
+html:-webkit-full-screen .slide .covers-photo,
+html:-webkit-full-screen .slide .website-prometheus,
+html:-webkit-full-screen .slide .title-hero {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: contain;
+  margin-top: 0.5rem;
+}
+
+html:fullscreen .slide .title-hero,
+html:-webkit-full-screen .slide .title-hero {
+  width: min(100%, 52vh);
+}
+
+body.is-fullscreen-deck .covers-slide,
+body.is-fullscreen-deck .website-slide {
+  max-width: none !important;
+}
+
+body.is-fullscreen-deck .covers-slide .covers-layout {
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
+}
+
+body.is-fullscreen-deck .covers-slide .covers-photo {
+  max-width: none !important;
+  height: 100%;
+}
+
+body.is-fullscreen-deck .website-slide ul {
+  max-width: none;
+}
+
+body.is-fullscreen-deck .website-slide .website-prometheus {
+  width: min(100%, 4in);
+  max-width: 4in;
+  max-height: min(26vh, 240px);
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+body.is-fullscreen-deck .slide.active.covers-slide {
+  overflow-y: auto;
+}
+
+html:fullscreen .slide .two-col,
+html:-webkit-full-screen .slide .two-col {
+  flex: 1;
+  min-height: 0;
+}
+
+html:fullscreen .slide .price-grid,
+html:fullscreen .slide .stat-grid,
+html:-webkit-full-screen .slide .price-grid,
+html:-webkit-full-screen .slide .stat-grid {
+  flex-shrink: 0;
+}
+
+html:fullscreen .slide .source-note,
+html:-webkit-full-screen .slide .source-note {
+  font-size: clamp(0.75rem, 1.6vh, 1rem);
+  flex-shrink: 0;
+}
+
 .slide-hint {
   text-align: center;
   font-size: 0.8rem;

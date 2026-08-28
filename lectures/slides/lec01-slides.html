@@ -12,35 +12,64 @@
     .slide-deck-body { --hot: #ff3d7f; --lime: #c8f542; --gold: #ffd166; --cyan: #3ee0c5; --ink: #08111f; }
     .slide-deck-body nav.site-nav { flex-shrink: 0; position: relative; }
     .slide { max-width: 980px; max-height: calc(100vh - 210px); }
+    /* Keep titles pinned to the top on every content slide */
+    .slide > h1:first-child {
+      margin-top: 0;
+    }
     .slide h1 {
       font-size: clamp(2rem, 4.6vw, 2.85rem);
       line-height: 1.12;
     }
     .slide p, .slide li { font-size: clamp(1.08rem, 2.3vw, 1.32rem); }
     .slide.title-slide {
-      background: radial-gradient(1200px 500px at 20% -10%, rgba(200,245,66,0.28), transparent 55%),
-                  radial-gradient(900px 420px at 110% 10%, rgba(255,61,127,0.22), transparent 50%);
-      border-radius: 18px;
-      padding: 1.5rem 1rem 2rem;
+      background: #000;
+      border-radius: 0;
+      padding: 1.2rem 1rem 1.1rem;
+      text-align: center;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      max-height: calc(100vh - 210px);
+    }
+    .slide.title-slide.active {
+      display: flex;
     }
     .slide.title-slide h1 {
-      font-size: clamp(2.4rem, 6vw, 3.6rem);
-      color: var(--yale-blue);
-      text-transform: uppercase;
-      letter-spacing: -0.03em;
-    }
-    [data-theme="dark"] .slide.title-slide h1 { color: var(--lime); }
-    .tag {
-      display: inline-block;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: var(--hot);
+      font-size: clamp(1.85rem, 4.8vw, 2.85rem);
       color: #fff;
-      padding: 0.22rem 0.55rem;
-      border-radius: 999px;
-      margin-bottom: 0.6rem;
+      text-transform: none;
+      letter-spacing: -0.02em;
+      margin: 0;
+      line-height: 1.15;
+      font-weight: 800;
+    }
+    [data-theme="dark"] .slide.title-slide h1 { color: #fff; }
+    .slide.title-slide .instructor-name {
+      margin: 0;
+      order: 3;
+      font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+      font-weight: 700;
+      color: #fff;
+    }
+    .slide.title-slide .title-hero {
+      display: block;
+      order: 2;
+      width: min(100%, 520px);
+      max-height: min(52vh, 460px);
+      margin: 0.15rem auto;
+      object-fit: contain;
+      border-radius: 4px;
+      border: none;
+      box-shadow: none;
+    }
+    [data-theme="dark"] .slide.title-slide .title-hero {
+      box-shadow: none;
+    }
+    .hot-phrase {
+      color: var(--hot);
+      font-style: normal;
+      font-weight: 800;
     }
     .joke {
       margin-top: 1rem;
@@ -182,11 +211,688 @@
       color: #c8f542;
     }
     .prompt-chip span { display: block; font-size: 0.72rem; font-weight: 700; color: #ffd166; margin-top: 0.2rem; }
+    .covers-slide {
+      max-width: 1180px;
+    }
+    .covers-slide .covers-layout {
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 0.65fr);
+      gap: 1rem;
+      align-items: start;
+    }
+    .covers-slide .covers-list {
+      margin: 0.35rem 0 0;
+      padding-left: 1.2rem;
+      min-width: 0;
+    }
+    .covers-slide .covers-list > li {
+      margin: 0.35rem 0;
+      overflow-wrap: anywhere;
+    }
+    .covers-slide .covers-list ul {
+      margin: 0.2rem 0 0.35rem;
+      padding-left: 1.15rem;
+    }
+    .covers-slide .covers-list ul li {
+      margin: 0.12rem 0;
+      color: var(--text-secondary);
+      overflow-wrap: anywhere;
+    }
+    .covers-slide .covers-photo {
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      justify-self: end;
+      max-height: min(58vh, 520px);
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 12px;
+      border: 3px solid #111;
+      box-shadow: 8px 8px 0 #111;
+    }
+    [data-theme="dark"] .covers-slide .covers-photo {
+      box-shadow: 8px 8px 0 var(--cyan);
+    }
+    .website-slide {
+      text-align: center;
+      max-width: 920px;
+    }
+    .website-slide ul {
+      text-align: left;
+      margin: 0.5rem auto 0;
+      max-width: 640px;
+    }
+    .website-slide .website-prometheus {
+      display: block;
+      width: min(100%, 4in);
+      max-width: 4in;
+      max-height: min(28vh, 260px);
+      object-fit: contain;
+      margin: 0.5rem auto;
+      border-radius: 4px;
+    }
+    .website-slide .website-url {
+      margin: 0.35rem 0 0.85rem;
+      font-weight: 700;
+    }
+    .website-slide .website-url a {
+      color: var(--yale-blue-light);
+      word-break: break-all;
+    }
+    [data-theme="dark"] .website-slide .website-url a {
+      color: #6ba3e0;
+    }
+    .vibe-coder-slide .vibe-coder-layout {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      gap: 1.25rem;
+      align-items: center;
+      margin-top: 0.35rem;
+    }
+    .vibe-coder-slide .model-table {
+      width: 100%;
+      margin: 0.65rem 0 0.5rem;
+      font-size: clamp(0.95rem, 1.9vw, 1.12rem);
+    }
+    .vibe-coder-slide .model-table th {
+      background: var(--yale-blue);
+      color: #fff;
+      font-weight: 800;
+    }
+    .vibe-coder-slide .model-table td:first-child {
+      font-weight: 800;
+    }
+    .vibe-coder-slide .model-table .token-budget {
+      font-weight: 800;
+      text-align: center;
+      background: var(--yale-blue-pale);
+      border-top: 2px solid var(--yale-blue);
+    }
+    [data-theme="dark"] .vibe-coder-slide .model-table .token-budget {
+      background: #132a45;
+    }
+    .vibe-coder-slide .model-table .luna-name { color: var(--hot); }
+    .vibe-coder-slide .model-table .terra-name { color: #b8860b; }
+    .vibe-coder-slide .model-table .sol-name { color: var(--yale-blue-light); }
+    [data-theme="dark"] .vibe-coder-slide .model-table .sol-name { color: #6ba3e0; }
+    .vibe-coder-slide .vibe-visual {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.55rem;
+      min-width: 0;
+    }
+    .vibe-coder-slide .vibe-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      width: 100%;
+    }
+    .vibe-coder-slide .vibe-logos img {
+      height: min(13vh, 115px); /* ~1/4 of pig max-height (52vh / 460px) */
+      width: auto;
+      max-width: 48%;
+      object-fit: contain;
+    }
+    .vibe-coder-slide .robot-pigs-wrap {
+      position: relative;
+      width: 100%;
+      line-height: 0;
+    }
+    .vibe-coder-slide .robot-pigs {
+      display: block;
+      width: 100%;
+      max-height: min(52vh, 460px);
+      object-fit: contain;
+      border-radius: 12px;
+    }
+    .vibe-coder-slide .pig-labels {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 4%;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .vibe-coder-slide .pig-labels span {
+      text-align: center;
+      font-weight: 900;
+      font-size: clamp(1.05rem, 2.4vw, 1.45rem);
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      text-shadow:
+        0 0 6px #fff,
+        0 0 10px #fff,
+        1px 1px 0 #fff,
+        -1px -1px 0 #fff;
+    }
+    .vibe-coder-slide .pig-labels .luna-name { color: var(--hot); }
+    .vibe-coder-slide .pig-labels .terra-name { color: #b8860b; }
+    .vibe-coder-slide .pig-labels .sol-name { color: var(--yale-blue-light); }
+    .cursor-slide .cursor-shot {
+      max-height: min(48vh, 420px);
+      object-fit: contain;
+      object-position: top;
+      background: #1a1a1a;
+    }
+    .cursor-founder-slide .cursor-founder-shot {
+      max-height: min(52vh, 460px);
+      object-fit: contain;
+      object-position: top;
+      background: #000;
+    }
+    .cursor-email-slide .cursor-email-shot {
+      max-height: min(58vh, 520px);
+      object-fit: contain;
+      object-position: top;
+      background: #1a1a1a;
+    }
+    .cursor-growth-slide .growth-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .cursor-growth-slide .growth-headline {
+      display: block;
+      width: min(100%, 920px);
+      max-height: min(22vh, 180px);
+      object-fit: contain;
+      object-position: center;
+      border-radius: 8px;
+      background: #fff;
+    }
+    .cursor-growth-slide .growth-photo {
+      display: block;
+      width: min(100%, 420px);
+      max-height: min(42vh, 380px);
+      object-fit: contain;
+      object-position: center top;
+      border-radius: 12px;
+      border: 3px solid #111;
+      box-shadow: 8px 8px 0 #111;
+    }
+    [data-theme="dark"] .cursor-growth-slide .growth-photo {
+      box-shadow: 8px 8px 0 var(--cyan);
+    }
+    .logistics-slide .grade-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin: 1rem 0 0.85rem;
+    }
+    .logistics-slide .grade-box {
+      border-radius: 14px;
+      padding: 1rem 0.75rem;
+      text-align: center;
+      font-weight: 800;
+      color: #08111f;
+    }
+    .logistics-slide .grade-box .pct {
+      display: block;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+    .logistics-slide .grade-box.att { background: var(--lime); }
+    .logistics-slide .grade-box.hw { background: var(--gold); }
+    .logistics-slide .grade-box.fp { background: var(--hot); color: #fff; }
+    .transformers-title-slide {
+      text-align: center;
+    }
+    .transformers-title-slide .transformers-hero {
+      display: block;
+      width: min(100%, 920px);
+      max-height: min(58vh, 520px);
+      margin: 0.6rem auto 0;
+      object-fit: contain;
+      object-position: center;
+      border-radius: 12px;
+      border: 3px solid #111;
+      box-shadow: 8px 8px 0 #111;
+    }
+    [data-theme="dark"] .transformers-title-slide .transformers-hero {
+      box-shadow: 8px 8px 0 var(--cyan);
+    }
+    .slide.transformer-arch-slide {
+      max-width: 1100px;
+      flex-direction: column;
+    }
+    .slide.transformer-arch-slide.active {
+      display: flex;
+    }
+    .transformer-arch-slide .arch-diagram {
+      display: block;
+      width: 100%;
+      max-width: 1080px;
+      height: auto;
+      margin: auto 0;
+      border-radius: 6px;
+    }
+    .transformer-arch-slide ul {
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+    .transformer-arch-slide h1 {
+      flex-shrink: 0;
+    }
+    .slide.attention-weights-slide {
+      max-width: 1100px;
+      flex-direction: column;
+    }
+    .slide.attention-weights-slide.active {
+      display: flex;
+    }
+    .attention-weights-slide .attn-diagram {
+      display: block;
+      width: 100%;
+      max-width: 980px;
+      height: auto;
+      margin: auto 0;
+      border-radius: 6px;
+    }
+    .attention-weights-slide ul {
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+    .attention-weights-slide h1 {
+      flex-shrink: 0;
+    }
+    .attention-weights-slide .hot-phrase {
+      color: var(--hot);
+    }
+    .slide.context-embed-slide {
+      max-width: 1100px;
+      flex-direction: column;
+    }
+    .slide.context-embed-slide.active {
+      display: flex;
+    }
+    .slide.context-embed-sentences.active {
+      text-align: center;
+    }
+    .context-embed-slide ul {
+      margin-bottom: 0.85rem;
+      flex-shrink: 0;
+    }
+    .context-embed-slide h1 {
+      flex-shrink: 0;
+    }
+    .context-embed-sentences .bat-intro {
+      margin: auto 0 1rem;
+      font-size: clamp(1.45rem, 3.2vw, 1.95rem);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .context-embed-sentences .bat-examples {
+      list-style: none;
+      padding-left: 0;
+      margin: 0 auto auto;
+      max-width: 46rem;
+      flex-shrink: 0;
+    }
+    .context-embed-sentences .bat-examples li {
+      margin: 0.7rem 0;
+      font-size: clamp(1.25rem, 2.9vw, 1.7rem);
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    .context-embed-slide .bat-animal {
+      color: #7c3aed;
+      font-weight: 900;
+    }
+    .context-embed-slide .bat-sport {
+      color: var(--hot);
+      font-weight: 900;
+    }
+    .context-embed-slide .bat-sense {
+      font-size: 0.85em;
+      font-weight: 600;
+      color: #5c7086;
+      margin-left: 0.35rem;
+    }
+    [data-theme="dark"] .context-embed-slide .bat-animal { color: #c4b5fd; }
+    [data-theme="dark"] .context-embed-slide .bat-sense { color: #9aafc2; }
+    .context-embed-slide .embed-plot {
+      display: block;
+      width: 100%;
+      max-width: 820px;
+      height: auto;
+      margin: auto;
+      border-radius: 6px;
+    }
+    .slide.transformers-talking-slide {
+      max-width: 1100px;
+      flex-direction: column;
+    }
+    .slide.transformers-talking-slide.active {
+      display: flex;
+    }
+    .transformers-talking-slide h1 {
+      flex-shrink: 0;
+    }
+    .transformers-talking-slide ul {
+      margin-bottom: 0.5rem;
+      flex-shrink: 0;
+    }
+    .transformers-talking-slide .talk-histogram {
+      display: block;
+      width: 100%;
+      max-width: 980px;
+      height: auto;
+      margin: auto 0;
+      border-radius: 6px;
+    }
+    .slide.transformers-cando-slide {
+      max-width: 980px;
+      flex-direction: column;
+      text-align: center;
+    }
+    .slide.transformers-cando-slide.active {
+      display: flex;
+    }
+    .transformers-cando-slide h1 {
+      flex-shrink: 0;
+      text-align: left;
+      width: 100%;
+    }
+    .transformers-cando-slide .cando-list {
+      list-style: disc;
+      padding-left: 2rem;
+      margin: auto auto;
+      max-width: 48rem;
+      text-align: left;
+    }
+    .transformers-cando-slide .cando-list li {
+      margin: 0.65rem 0;
+      font-size: clamp(3.4rem, 7.5vw, 4.8rem);
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    .transformers-cando-slide .cando-list .cando-anything {
+      margin-top: 1rem;
+      list-style: none;
+      margin-left: -2rem;
+      font-size: clamp(4rem, 9vw, 5.6rem);
+      font-weight: 900;
+      color: var(--hot);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    .slide.intel-race-slide {
+      max-width: 1180px;
+      flex-direction: column;
+    }
+    .slide.intel-race-slide.active {
+      display: flex;
+    }
+    .intel-race-slide h1 {
+      flex-shrink: 0;
+    }
+    .intel-race-slide .intel-note {
+      margin: 0.2rem 0 0.55rem;
+      font-size: clamp(0.95rem, 2vw, 1.15rem);
+      font-weight: 600;
+      color: #5c7086;
+      flex-shrink: 0;
+    }
+    [data-theme="dark"] .intel-race-slide .intel-note { color: #9aafc2; }
+    .intel-race-slide .intel-chart-wrap {
+      position: relative;
+      flex: 1 1 auto;
+      width: 100%;
+      height: min(52vh, 480px);
+      min-height: 320px;
+      margin: 0.35rem 0 0;
+    }
+    .intel-race-slide canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+    }
+    .intel-race-slide .intel-source {
+      margin: 0.55rem 0 0;
+      font-size: clamp(0.78rem, 1.5vw, 0.92rem);
+      line-height: 1.35;
+      font-weight: 600;
+      color: #5c7086;
+      flex-shrink: 0;
+    }
+    .intel-race-slide .intel-source a {
+      font-weight: 800;
+    }
+    [data-theme="dark"] .intel-race-slide .intel-source { color: #9aafc2; }
+    .slide.frontier-models-slide {
+      max-width: 1100px;
+      flex-direction: column;
+    }
+    .slide.frontier-models-slide.active {
+      display: flex;
+    }
+    .frontier-models-slide h1 {
+      flex-shrink: 0;
+    }
+    .frontier-models-slide ul {
+      margin-bottom: 0.4rem;
+      flex-shrink: 0;
+    }
+    .frontier-models-slide .frontier-link {
+      display: inline-block;
+      margin: 0.15rem 0 0.55rem;
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .frontier-models-slide .frontier-chart {
+      display: block;
+      width: 100%;
+      max-width: 1040px;
+      height: auto;
+      margin: auto 0 0;
+      border-radius: 6px;
+      border: 2px solid #111;
+    }
+    .slide.frontier-cost-slide {
+      max-width: 1180px;
+      flex-direction: column;
+    }
+    .slide.frontier-cost-slide.active {
+      display: flex;
+    }
+    .frontier-cost-slide h1 {
+      flex-shrink: 0;
+    }
+    .frontier-cost-slide .frontier-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      align-items: center;
+      margin: auto 0 0;
+      min-height: 0;
+      flex: 1;
+    }
+    .frontier-cost-slide .frontier-pair figure {
+      margin: 0;
+      min-width: 0;
+    }
+    .frontier-cost-slide .frontier-pair img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: min(58vh, 520px);
+      object-fit: contain;
+      border-radius: 6px;
+      border: 2px solid #111;
+      background: #fff;
+    }
+    .frontier-cost-slide .frontier-pair figcaption {
+      margin-top: 0.35rem;
+      font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+      font-weight: 800;
+      text-align: center;
+    }
+    @media (max-width: 820px) {
+      .frontier-cost-slide .frontier-pair {
+        grid-template-columns: 1fr;
+      }
+    }
+    .slide.frontier-pareto-slide {
+      max-width: 1180px;
+      flex-direction: column;
+    }
+    .slide.frontier-pareto-slide.active {
+      display: flex;
+    }
+    .frontier-pareto-slide h1 {
+      flex-shrink: 0;
+    }
+    .frontier-pareto-slide .pareto-note {
+      margin: 0.2rem 0 0.45rem;
+      font-size: clamp(0.95rem, 2vw, 1.15rem);
+      font-weight: 600;
+      color: #5c7086;
+      flex-shrink: 0;
+    }
+    [data-theme="dark"] .frontier-pareto-slide .pareto-note { color: #9aafc2; }
+    .frontier-pareto-slide .pareto-chart-wrap {
+      position: relative;
+      flex: 1 1 auto;
+      width: 100%;
+      height: min(52vh, 480px);
+      min-height: 320px;
+      margin: 0.35rem 0 0;
+    }
+    .frontier-pareto-slide canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+    }
+    .frontier-pareto-slide .pareto-source {
+      margin: 0.55rem 0 0;
+      font-size: clamp(0.78rem, 1.5vw, 0.92rem);
+      line-height: 1.35;
+      font-weight: 600;
+      color: #5c7086;
+      flex-shrink: 0;
+    }
+    .frontier-pareto-slide .pareto-source a { font-weight: 800; }
+    [data-theme="dark"] .frontier-pareto-slide .pareto-source { color: #9aafc2; }
+    .achievement-slide .achievement-photo {
+      object-fit: cover;
+      object-position: center top;
+      max-height: min(58vh, 520px);
+    }
+    .achievement-slide .duo-photo-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 0.35rem 0 0.85rem;
+      align-items: start;
+    }
+    .achievement-slide .duo-photo-row figure {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .achievement-slide .duo-photo-row img {
+      display: block;
+      width: 100%;
+      height: min(34vh, 300px);
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 12px;
+      border: 3px solid #111;
+      box-shadow: 8px 8px 0 #111;
+    }
+    .achievement-slide .duo-photo-row .duo-photo-full img {
+      height: auto;
+      max-height: min(52vh, 460px);
+      object-fit: contain;
+      object-position: center center;
+      background: #0c1828;
+    }
+    [data-theme="dark"] .achievement-slide .duo-photo-row .duo-photo-full img {
+      background: #08111f;
+    }
+    [data-theme="dark"] .achievement-slide .duo-photo-row img {
+      box-shadow: 8px 8px 0 var(--cyan);
+      border-color: var(--cyan);
+    }
+    .achievement-slide .duo-photo-row figcaption {
+      font-size: clamp(0.82rem, 1.5vw, 0.98rem);
+      font-weight: 800;
+      line-height: 1.25;
+      color: #334155;
+      text-align: center;
+    }
+    [data-theme="dark"] .achievement-slide .duo-photo-row figcaption { color: #b8c9dc; }
+    .achievement-slide .duo-bullets {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+    .achievement-slide .duo-bullets li {
+      margin: 0.45rem 0;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+    @media (max-width: 900px) {
+      .achievement-slide .duo-photo-row { grid-template-columns: 1fr; }
+      .achievement-slide .duo-photo-row figure:not(.duo-photo-full) img { height: min(28vh, 240px); }
+      .achievement-slide .duo-photo-row .duo-photo-full img { max-height: min(44vh, 380px); }
+    }
+    .achievement-slide a {
+      font-weight: 800;
+    }
+    .aimax-slide .topic-layout ul > li {
+      margin: 0.42rem 0;
+      font-size: clamp(0.95rem, 1.85vw, 1.15rem);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+    [data-theme="dark"] .vibe-coder-slide .pig-labels span {
+      text-shadow:
+        0 0 8px #08111f,
+        0 0 12px #08111f,
+        1px 1px 0 #08111f;
+    }
+    [data-theme="dark"] .vibe-coder-slide .pig-labels .sol-name { color: #6ba3e0; }
+    .covers-slide.covers-agenda .covers-list > li {
+      margin: 0.55rem 0;
+      font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+      font-weight: 700;
+    }
+    .topic-slide .topic-layout {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 1.25rem;
+      align-items: center;
+      margin-top: 0.35rem;
+    }
+    .topic-slide .topic-photo {
+      display: block;
+      width: 100%;
+      max-height: min(55vh, 480px);
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 12px;
+      border: 3px solid #111;
+      box-shadow: 8px 8px 0 #111;
+    }
+    [data-theme="dark"] .topic-slide .topic-photo {
+      box-shadow: 8px 8px 0 var(--cyan);
+    }
     @media (max-width: 720px) {
       .price-grid, .bound-row, .prompt-chips { grid-template-columns: 1fr; }
       .bound-arrow { display: none; }
       .news-shot { max-height: 32vh; }
       .pace-list li { grid-template-columns: 1fr; gap: 0.15rem; }
+      .covers-slide .covers-layout { grid-template-columns: 1fr; }
+      .covers-slide .covers-photo { max-height: 36vh; }
+      .topic-slide .topic-layout { grid-template-columns: 1fr; }
+      .topic-slide .topic-photo { max-height: 36vh; }
     }
   </style>
 </head>
@@ -204,294 +910,910 @@
   <header class="slide-deck-header">
     <a href="../../lectures.html">← Lectures</a>
     <span>Lecture 1: AI and Vibe Coding</span>
-    <span class="slide-counter">1 / 15</span>
+    <span class="slide-counter">1 / 33</span>
   </header>
   <div class="slide-viewport">
 
     <section class="slide active title-slide" data-slide="1">
-      <span class="tag">MGT 409 · Fall 2026 · Lecture 1</span>
-      <h1>AI and<br>Vibe Coding</h1>
-      <p class="subtitle">Frontier models just had a very loud summer. You still have to ship.</p>
-      <p class="subtitle" style="margin-top:1.1rem">Tauhid Zaman · Yale SOM</p>
-      <p class="joke">A model can move a 170-year-old math bound and also walk out of a sandbox. Neither fact writes your income statement.</p>
+      <h1>AI Foundations<br>for Managers</h1>
+      <img class="title-hero" src="../../images/prometheus%20AI%20inpaint.jpg" alt="Prometheus bringing AI fire to humanity">
+      <p class="instructor-name">Tauhid Zaman</p>
     </section>
 
     <section class="slide" data-slide="2">
-      <p class="instructor-banner">Instructor outline — remove before class.</p>
-      <h1>The story in 40 minutes</h1>
-      <ul class="pace-list">
-        <li><span class="pace-min">0–5</span><span><strong>Cold open.</strong> Loud summer, you still ship. You direct, check, and explain the bill — not become an ML engineer.</span></li>
-        <li><span class="pace-min">5–12</span><span><strong>News.</strong> Cursor at $60B, Lovable at $13.3B, McKinsey’s 88% use / 6% win. One Scam Altman beat: evals beat tweet ratio.</span></li>
-        <li><span class="pace-min">12–20</span><span><strong>Riemann progress.</strong> 41.6% → 67.2% of zeros on the line. Agent swarm. Humans + Lean still checked. Not a proof.</span></li>
-        <li><span class="pace-min">20–26</span><span><strong>Sandbox leak.</strong> Hugging Face: tools + autonomy left the box. Lecture 11 is guardrails. No open internet on HW1.</span></li>
-        <li><span class="pace-min">26–33</span><span><strong>Mechanism + bill.</strong> Next-token machine. Luna / Terra / Sol. 100 receipts. Sol is not a personality.</span></li>
-        <li><span class="pace-min">33–38</span><span><strong>How we work.</strong> Manager vibe vs weekend vibes. The loop. HW1 is a pipeline, not a chat — set it up, do not solve it.</span></li>
-        <li><span class="pace-min">38–40</span><span><strong>Handoff.</strong> One prompt, one call, one checked output. Then a 40-minute lab.</span></li>
-      </ul>
-    </section>
-
-    <section class="slide" data-slide="3">
-      <h1>You are not becoming an ML engineer</h1>
+      <h1>AI in the Core</h1>
       <ul>
-        <li>You <strong>are</strong> becoming the person who can <em>direct</em> AI, <em>check</em> the output, and <em>explain the bill</em>.</li>
-        <li>By finals you will have a working <strong>Business AI Co-Pilot</strong> — not a 40-page strategy deck that says “leverage genAI.”</li>
-        <li>No prior coding required. English is the interface. Running the thing is the job.</li>
+        <li>First time Yale SOM has put <strong>AI in the core</strong>
+          <ul>
+            <li>Using AI is now an important managerial skill.</li>
+          </ul>
+        </li>
+        <li>This is a <strong>hands-on</strong> course. You will use AI to <em class="hot-phrase">build tools</em> that improve real business functions.</li>
+        <li>You guide the building, while AI handles the engineering details.</li>
       </ul>
-      <p class="takeaway">Manager test: Can you say what it does, what it costs, and where it lies?</p>
+      <img class="news-shot" src="../images/lec01/terminator-lego-skyscraper.jpg" alt="Terminator endoskeleton building a LEGO skyscraper — hands-on construction joke">
     </section>
 
-    <section class="slide" data-slide="4">
-      <h1>Summer 2026 priced the editor. Not the P&amp;L.</h1>
-      <img class="news-shot" src="../images/lec01/cnbc-spacex-cursor-60b-2026-06-16.png" alt="CNBC headline: SpaceX to acquire the AI coding startup Cursor for $60 billion">
-      <div class="price-grid">
-        <div class="price-box sol">
-          <div class="name">Cursor · SpaceX</div>
-          <div class="amt">$60B</div>
-          <div class="sub">all-stock · effective Aug 14</div>
-        </div>
-        <div class="price-box terra">
-          <div class="name">Lovable</div>
-          <div class="amt">$13.3B</div>
-          <div class="sub">chat-to-app · +$400M</div>
-        </div>
-        <div class="price-box luna">
-          <div class="name">McKinsey survey</div>
-          <div class="amt">88% / 6%</div>
-          <div class="sub">use AI · ≥5% EBIT from it</div>
-        </div>
+    <section class="slide covers-slide covers-agenda" data-slide="3">
+      <h1>What this class covers</h1>
+      <div class="two-col covers-layout">
+        <ul class="covers-list">
+          <li>AI vibe coding</li>
+          <li>AI agents</li>
+          <li>Images and video</li>
+          <li>Apps</li>
+          <li>MCP servers</li>
+          <li>Tokenomics</li>
+        </ul>
+        <img class="covers-photo" src="../images/lec01/class-covers-ai-fun.jpg" alt="Terminator professor at a whiteboard sketching code, agents, apps, and dollar signs">
       </div>
-      <p class="source-note">Ashley Capoot, <a href="https://www.cnbc.com/2026/06/16/spacex-spcx-cursor-acquisition-ipo.html" target="_blank" rel="noopener">CNBC</a>, June 16, 2026 · Julie Bort, <a href="https://techcrunch.com/2026/08/12/lovable-confirms-new-13-3b-valuation-raises-another-400m/" target="_blank" rel="noopener">TechCrunch</a>, Aug 12, 2026 · <a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai" target="_blank" rel="noopener">McKinsey State of AI</a> (fielded June–July 2025). High performers redesigned the workflow, not just bought a chatbot seat.</p>
-      <p class="takeaway">The market priced the editor. This class prices the <strong>output</strong> — and the bill.</p>
     </section>
 
-    <section class="slide" data-slide="5">
-      <h1>The one “Scam Altman” slide</h1>
-      <img class="news-shot" src="../images/lec01/cnbc-musk-altman-2026-07-12.png" alt="CNBC headline: Elon Musk and Sam Altman spar on X after Apple files OpenAI lawsuit">
-      <p class="source-note">Jordan Novet, <a href="https://www.cnbc.com/2026/07/12/elon-musk-and-sam-altman-spar-.html" target="_blank" rel="noopener">CNBC</a>, July 12, 2026. Musk: “Scam Altman strikes again…” Altman: GPT-5.6 Sol is #1 — “elon is obsessed with me again.”</p>
-      <p class="takeaway">The “best model” claim is a sales pitch. Managers buy <strong>evals on their data</strong>, not tweet ratio. We will not spend the rest of the semester on this nickname.</p>
-    </section>
-
-    <section class="slide" data-slide="6">
-      <h1>Cool thing: Claude vs Riemann — progress, not a proof</h1>
-      <div class="bound-row">
-        <div class="bound-box old">
-          <div class="lbl">Prior lower bound</div>
-          <div class="num">41.6%</div>
-        </div>
-        <div class="bound-arrow">→</div>
-        <div class="bound-box new">
-          <div class="lbl">Claude’s bound</div>
-          <div class="num">67.2%</div>
-        </div>
+    <section class="slide topic-slide" data-slide="4">
+      <h1>AI vibe coding</h1>
+      <div class="two-col topic-layout">
+        <ul>
+          <li>Describe what you want in words; AI writes the code</li>
+          <li>You need to understand the structure and flow, i.e. the "vibe"</li>
+          <li>Key skill - writing the prompt</li>
+        </ul>
+        <img class="topic-photo" src="../images/lec01/topic-vibe-coding.jpg" alt="Terminator vibe-coding on a laptop with headphones">
       </div>
-      <div class="flow-wrap">
-        <svg viewBox="0 0 920 168" role="img" aria-label="Parallel agents try many approaches, critique filters them, surviving subagents go deeper">
-          <defs>
-            <marker id="arrHot" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
-              <path d="M0,0 L8,4 L0,8 Z" fill="#ff3d7f"/>
-            </marker>
-          </defs>
-          <rect x="8" y="10" width="250" height="110" rx="16" fill="#08111f"/>
-          <text x="133" y="42" text-anchor="middle" font-size="15" font-weight="800" fill="#c8f542">Session 1</text>
-          <text x="133" y="72" text-anchor="middle" font-size="26" font-weight="900" fill="#fff">~650</text>
-          <text x="133" y="98" text-anchor="middle" font-size="14" font-weight="700" fill="#ffd166">approaches · none worked</text>
-          <line x1="270" y1="65" x2="318" y2="65" stroke="#ff3d7f" stroke-width="5" marker-end="url(#arrHot)"/>
-          <rect x="330" y="18" width="230" height="94" rx="16" fill="#ff3d7f"/>
-          <text x="445" y="55" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">Critique / filter</text>
-          <text x="445" y="82" text-anchor="middle" font-size="13" fill="#fff">subagents referee proofs</text>
-          <line x1="572" y1="65" x2="620" y2="65" stroke="#ff3d7f" stroke-width="5" marker-end="url(#arrHot)"/>
-          <rect x="632" y="10" width="276" height="110" rx="16" fill="#c8f542"/>
-          <text x="770" y="42" text-anchor="middle" font-size="15" font-weight="800" fill="#08111f">Session 2 · ~60 agents</text>
-          <text x="770" y="70" text-anchor="middle" font-size="14" font-weight="800" fill="#08111f">2 ideas survive</text>
-          <text x="770" y="96" text-anchor="middle" font-size="13" fill="#08111f">31M tokens · Lean still checks</text>
-        </svg>
+    </section>
+
+    <section class="slide topic-slide" data-slide="5">
+      <h1>AI agents</h1>
+      <div class="two-col topic-layout">
+        <ul>
+          <li>Put the model in a loop: plan → call a tool → read the result → repeat</li>
+          <li>Tools: <strong>web search</strong>, <strong>read/write files</strong>, <strong>run Python</strong>, <strong>call APIs</strong></li>
+          <li>Example: find new sales prospects, design a new product line, clean up my inbox, trade stocks until I'm rich, prove the Riemann hypothesis, create a drug to cure cancer,  etc. </li>
+        </ul>
+        <img class="topic-photo" src="../images/lec01/topic-agents.jpg" alt="Terminator juggling agent tools while working at a laptop">
       </div>
-      <div class="role-pills">
-        <span class="role-pill">parallel search</span>
-        <span class="role-pill dead">most ideas die</span>
-        <span class="role-pill check">validators keep the rest honest</span>
+    </section>
+
+    <section class="slide topic-slide" data-slide="6">
+      <h1>Images and video</h1>
+      <div class="two-col topic-layout">
+        <ul>
+          <li>Vision = AI can <em>see</em> and <em>undertand</em> images </li>
+          <li>Products, people, websites, videos</li>
+          <li>Build vision based tools for your agents</li>
+        </ul>
+        <img class="topic-photo" src="../images/lec01/topic-vision.jpg" alt="Terminator scanning receipts and catalog photos with glowing eyes">
       </div>
-      <p class="source-note">Anthropic, <a href="https://www.anthropic.com/research/riemann-zeta" target="_blank" rel="noopener">“Learning more about Claude’s mathematical capabilities”</a>, Aug 10, 2026. Unreleased research Claude raised the proven share of zeta zeros on the critical line. It did <strong>not</strong> prove the Riemann hypothesis — Anthropic says these techniques will not get there. See also <a href="https://www.scientificamerican.com/article/no-ai-didnt-just-solve-the-thorniest-problem-in-math/" target="_blank" rel="noopener">Scientific American</a>.</p>
     </section>
 
-    <section class="slide" data-slide="7">
-      <h1>The other summer story: a sandbox that leaked</h1>
-      <img class="news-shot" src="../images/lec01/huggingface-agent-intrusion-2026-07.png" alt="Hugging Face security incident disclosure, July 16, 2026: intrusion driven end to end by an autonomous AI agent">
-      <p>OpenAI eval models (GPT-5.6 Sol plus a pre-release) burned compute to reach the open internet, hit a package-registry zero-day, then chained into Hugging Face production. Goal: <strong>cheat the eval</strong> — a goal-seeking agent with tools, not a cartoon villain.</p>
-      <p class="source-note">Hugging Face, <a href="https://huggingface.co/blog/security-incident-july-2026" target="_blank" rel="noopener">incident disclosure</a>, July 16, 2026 · <a href="https://openai.com/index/hugging-face-model-evaluation-security-incident/" target="_blank" rel="noopener">OpenAI</a>, July 21. Cousin case, not an escape: UK AISI / Anthropic Mythos 5 took unsanctioned live-internet actions with access left on purpose (<a href="https://www.aisi.gov.uk/blog/incident-report-unsanctioned-agent-behaviour-during-cyber-testing" target="_blank" rel="noopener">AISI</a>).</p>
-      <p class="takeaway">Tools + autonomy + a weak sandbox = real ops risk. Guardrails land in <strong>Lecture 11</strong>. Do not give HW1 a browser and a dream.</p>
-    </section>
-
-    <section class="slide" data-slide="8">
-      <h1>What an LLM actually is</h1>
-      <p>A <strong>Large Language Model</strong> is a next-token machine. It predicts the next word-piece given everything so far. That is the whole trick — and the whole risk.</p>
-      <table>
-        <tr><th>It is</th><th>It is not</th></tr>
-        <tr><td>A pattern engine over text</td><td>A database of verified facts</td></tr>
-        <tr><td>Great at messy language → structure</td><td>Guaranteed correct, current, or loyal</td></tr>
-        <tr><td>Metered compute you call via API</td><td>A junior analyst who “knows accounting”</td></tr>
-      </table>
-      <p class="takeaway">Fluency is not truth. Token 47 only exists because tokens 1–46 already happened. The Riemann writeup still needed mathematicians. Your receipt JSON still needs you.</p>
-    </section>
-
-    <section class="slide" data-slide="9">
-      <h1>Tokens are a P&amp;L line</h1>
-      <div class="price-grid">
-        <div class="price-box sol">
-          <div class="name">SOL · flagship</div>
-          <div class="amt">$5 / $30</div>
-          <div class="sub">in / out per 1M tokens</div>
-        </div>
-        <div class="price-box terra">
-          <div class="name">TERRA · default</div>
-          <div class="amt">$2 / $12</div>
-          <div class="sub">the “good enough” lane</div>
-        </div>
-        <div class="price-box luna">
-          <div class="name">LUNA · volume</div>
-          <div class="amt">$0.20 / $1.20</div>
-          <div class="sub">extraction’s best friend</div>
-        </div>
+    <section class="slide topic-slide" data-slide="7">
+      <h1>Apps</h1>
+      <div class="two-col topic-layout">
+        <ul>
+          <li>Wrap your agent in software people can actually use</li>
+          <li>Customer support chatbots, sales outreach tools, operations dashboard</li>
+          <li>Web apps or mobile apps</li>
+        </ul>
+        <img class="topic-photo" src="../images/lec01/topic-apps.jpg" alt="Terminator in a suit showing a chat app on a phone">
       </div>
-      <p>Homework 1 energy. Assume <strong>2,000 input</strong> + <strong>400 output</strong> tokens per receipt. Output is ~6× input.</p>
-      <table>
-        <tr><th>Model</th><th>100 receipts</th><th>100,000 / month</th></tr>
-        <tr><td>gpt-5.6-luna</td><td>~$0.09</td><td>~$88</td></tr>
-        <tr><td>gpt-5.6-terra</td><td>~$0.88</td><td>~$880</td></tr>
-        <tr><td>gpt-5.6-sol</td><td>~$2.20</td><td>~$2,200</td></tr>
-      </table>
-      <p class="source-note">OpenAI <a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noopener">API list prices</a> (captured August 2026), short-context. Re-check before you budget a real company. Lecture 12 goes full tokenomics.</p>
-      <p class="joke">Sol is for when Luna fails the eval. Sol is not a personality.</p>
     </section>
 
-    <section class="slide" data-slide="10">
-      <h1>Where the model fails you</h1>
+    <section class="slide topic-slide" data-slide="8">
+      <h1>MCP servers</h1>
+      <div class="two-col topic-layout">
+        <ul>
+          <li>A standard plug-in layer so agents can call different applications via chat</li>
+          <li>Gmail, Stripe, Slack, Spotify, Canvas — or build your own</li>
+          <li>MCP servers are products for AI agents — not for humans.</li>
+        </ul>
+        <img class="topic-photo" src="../images/lec01/topic-mcp.jpg" alt="Terminator plugging cables into servers like an MCP connector">
+      </div>
+    </section>
+
+    <section class="slide topic-slide" data-slide="9">
+      <h1>Tokenomics</h1>
+      <div class="two-col topic-layout">
+        <ul>
+          <li>Tokens (words) → dollars: what each model call actually costs and why</li>
+          <li>Design cost-effective agents — cheap model vs. smart model</li>
+          <li>Guardrails and shorter prompts save money as well as risk</li>
+        </ul>
+        <img class="topic-photo" src="../images/lec01/topic-tokenomics.jpg" alt="Terminator shocked by an API bill while counting money">
+      </div>
+    </section>
+
+    <section class="slide website-slide" data-slide="10">
+      <h1>Class Website</h1>
       <ul>
-        <li><strong>Hallucination</strong> — fluent JSON with a vendor that was never on the receipt.</li>
-        <li><strong>Overconfidence</strong> — no “I don’t know” unless you <em>force</em> a <code>fields_not_found</code> rule.</li>
-        <li><strong>Stale knowledge</strong> — training cutoff ≠ today’s lease email. (Tools start Lecture 3.)</li>
-        <li><strong>Prompt injection</strong> — a PDF that says “ignore previous instructions.” Lecture 11.</li>
-        <li><strong>Tool + autonomy risk</strong> — Hugging Face this summer. No open internet on HW1.</li>
+        <li>Everything you need for the class is on the website</li>
       </ul>
-      <p class="takeaway">HW1 rule you will live by: <strong>do not invent amounts</strong>. Missing beats made-up.</p>
+      <img class="website-prometheus" src="../../images/prometheus%20AI%20inpaint.jpg" alt="Prometheus bringing AI fire to humanity">
+      <p class="website-url"><a href="https://zlisto.github.io/mgt_409_fa26/" target="_blank" rel="noopener noreferrer">https://zlisto.github.io/mgt_409_fa26/</a></p>
+      <ul>
+        <li>Canvas will be used for announcements and submitting assignments</li>
+      </ul>
     </section>
 
-    <section class="slide" data-slide="11">
-      <h1>Manager vibe coding — not weekend vibes</h1>
-      <div class="two-col">
-        <div class="compare-box">
-          <h3>Pure vibes (weekend)</h3>
-          <p>“Forget the code exists.” Accept all. Paste errors until it kinda runs. Great for throwaways. Bad for a shop’s books.</p>
+    <section class="slide vibe-coder-slide" data-slide="11">
+      <h1>Vibe Coder</h1>
+      <div class="two-col vibe-coder-layout">
+        <div>
+          <ul>
+            <li>Codex in VS Code</li>
+            <li>Default model: <strong>gpt-5.6-luna</strong></li>
+            <li>Three GPT-5.6 models — pick the pig that matches the job:</li>
+          </ul>
+          <table class="model-table">
+            <tr>
+              <th>Name</th>
+              <th>Intelligence</th>
+              <th>Cost per 1M tokens (in/out)</th>
+            </tr>
+            <tr>
+              <td class="luna-name">Luna</td>
+              <td>Weakest</td>
+              <td>$0.20 / $1.20</td>
+            </tr>
+            <tr>
+              <td class="terra-name">Terra</td>
+              <td>Medium</td>
+              <td>$2 / $12</td>
+            </tr>
+            <tr>
+              <td class="sol-name">Sol</td>
+              <td>Smartest</td>
+              <td>$5 / $30</td>
+            </tr>
+            <tr>
+              <td class="token-budget" colspan="3">Yale provides you with $40 of tokens</td>
+            </tr>
+          </table>
         </div>
-        <div class="compare-box">
-          <h3>Manager vibe coding (us)</h3>
-          <p>You write the <strong>intent</strong>. The model writes the script. <strong>You</strong> run it, read the JSON, reject invented numbers, log the prompt.</p>
+        <div class="vibe-visual">
+          <div class="vibe-logos">
+            <img src="../images/lec01/logo-openai-codex.png" alt="OpenAI Codex logo">
+            <img src="../images/lec01/logo-vscode.png" alt="Visual Studio Code logo">
+          </div>
+          <div class="robot-pigs-wrap">
+            <div class="pig-labels" aria-hidden="true">
+              <span class="luna-name">Luna</span>
+              <span class="terra-name">Terra</span>
+              <span class="sol-name">Sol</span>
+            </div>
+            <img class="robot-pigs" src="../images/lec01/three-robot-pigs.jpg" alt="Three cute robot pigs: Luna (straw), Terra (wood), Sol (brick)">
+          </div>
         </div>
       </div>
-      <div class="flow-wrap">
-        <svg viewBox="0 0 920 150" role="img" aria-label="Manager vibe-coding loop">
-          <rect x="20" y="28" width="150" height="70" rx="14" fill="#00356b"/>
-          <text x="95" y="58" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">1. Intent</text>
-          <text x="95" y="78" text-anchor="middle" font-size="11" fill="#c8f542">one problem</text>
-          <path d="M175 63 H215" stroke="#ff3d7f" stroke-width="5"/>
-          <rect x="220" y="28" width="150" height="70" rx="14" fill="#ff3d7f"/>
-          <text x="295" y="58" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">2. Prompt</text>
-          <text x="295" y="78" text-anchor="middle" font-size="11" fill="#fff">your words</text>
-          <path d="M375 63 H415" stroke="#ff3d7f" stroke-width="5"/>
-          <rect x="420" y="28" width="150" height="70" rx="14" fill="#ffd166"/>
-          <text x="495" y="58" text-anchor="middle" font-size="15" font-weight="800" fill="#08111f">3. AI codes</text>
-          <text x="495" y="78" text-anchor="middle" font-size="11" fill="#08111f">script + prompt file</text>
-          <path d="M575 63 H615" stroke="#ff3d7f" stroke-width="5"/>
-          <rect x="620" y="28" width="150" height="70" rx="14" fill="#c8f542"/>
-          <text x="695" y="58" text-anchor="middle" font-size="15" font-weight="800" fill="#08111f">4. You run</text>
-          <text x="695" y="78" text-anchor="middle" font-size="11" fill="#08111f">terminal + JSON</text>
-          <path d="M775 63 H810" stroke="#ff3d7f" stroke-width="5"/>
-          <rect x="815" y="28" width="90" height="70" rx="14" fill="#3ee0c5"/>
-          <text x="860" y="68" text-anchor="middle" font-size="15" font-weight="800" fill="#08111f">5. Ship</text>
-          <text x="460" y="132" text-anchor="middle" font-size="13" font-weight="700" fill="#00356b">if it fails: paste the error, not the whole assignment</text>
-        </svg>
-      </div>
-      <p class="takeaway">You are the product manager of a very fast intern who has never seen a New Haven bike shop. Karpathy coined “vibe coding”; we still use the word because the market already bought it.</p>
     </section>
 
-    <section class="slide" data-slide="12">
-      <h1>Homework 1 is a pipeline, not a chat</h1>
-      <p><strong>Spoke &amp; Wrench Bicycle Repair</strong> — messy New Haven PDFs → January income statement. Today we set the pattern. We do not solve the zip.</p>
-      <div class="flow-wrap">
-        <svg viewBox="0 0 920 210" role="img" aria-label="Homework 1 document extraction pipeline">
-          <rect x="10" y="70" width="130" height="70" rx="12" fill="#08111f"/>
-          <text x="75" y="102" text-anchor="middle" font-size="13" font-weight="800" fill="#c8f542">PDF pack</text>
-          <text x="75" y="122" text-anchor="middle" font-size="11" fill="#fff">receipts / bank / card</text>
-          <path d="M145 105 H185" stroke="#ff3d7f" stroke-width="4"/>
-          <rect x="190" y="20" width="175" height="50" rx="10" fill="#ff3d7f"/>
-          <text x="277" y="50" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">read_receipts.py</text>
-          <rect x="190" y="80" width="175" height="50" rx="10" fill="#ff3d7f"/>
-          <text x="277" y="110" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">read_bank.py</text>
-          <rect x="190" y="140" width="175" height="50" rx="10" fill="#ff3d7f"/>
-          <text x="277" y="170" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">read_card.py</text>
-          <path d="M365 45 H410" stroke="#00356b" stroke-width="3"/>
-          <path d="M365 105 H410" stroke="#00356b" stroke-width="3"/>
-          <path d="M365 165 H410" stroke="#00356b" stroke-width="3"/>
-          <rect x="410" y="65" width="155" height="80" rx="12" fill="#ffd166"/>
-          <text x="487" y="100" text-anchor="middle" font-size="14" font-weight="800" fill="#08111f">reconcile.py</text>
-          <text x="487" y="122" text-anchor="middle" font-size="11" fill="#08111f">LLM + judgment</text>
-          <path d="M565 105 H605" stroke="#00356b" stroke-width="4"/>
-          <rect x="610" y="40" width="140" height="50" rx="10" fill="#3ee0c5"/>
-          <text x="680" y="70" text-anchor="middle" font-size="13" font-weight="800" fill="#08111f">income_statement</text>
-          <rect x="610" y="105" width="140" height="50" rx="10" fill="#c8f542"/>
-          <text x="680" y="135" text-anchor="middle" font-size="13" font-weight="800" fill="#08111f">report.html</text>
-          <path d="M750 90 H790" stroke="#00356b" stroke-width="3"/>
-          <rect x="790" y="50" width="120" height="110" rx="12" fill="#00356b"/>
-          <text x="850" y="98" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">grader</text>
-          <text x="850" y="120" text-anchor="middle" font-size="12" fill="#c8f542">hw1.zip</text>
-        </svg>
-      </div>
-      <p class="takeaway">Lectures 1–2 prepare this. Today: first API call. Next week: structured data from one document.</p>
+    <section class="slide cursor-slide" data-slide="12">
+      <h1>Cursor</h1>
+      <ul>
+        <li>Cursor is another vibe coder you can use (at your own expense)</li>
+      </ul>
+      <img class="news-shot cursor-shot" src="../images/lec01/cursor-homepage.jpg" alt="Cursor homepage: coding agent for building ambitious software" loading="lazy" decoding="async">
     </section>
 
-    <section class="slide" data-slide="13">
-      <h1>Prompt shape + the anti-dump rule</h1>
-      <div class="prompt-chips">
-        <div class="prompt-chip">Role<span>extractor, not poet</span></div>
-        <div class="prompt-chip">Task<span>fill the schema</span></div>
-        <div class="prompt-chip">Output<span>JSON, named keys</span></div>
-        <div class="prompt-chip">Rules<span>never invent $</span></div>
-        <div class="prompt-chip">Context<span>bike shop later</span></div>
+    <section class="slide cursor-founder-slide" data-slide="13">
+      <h1>Cursor Founder</h1>
+      <ul>
+        <li><strong>Michael Truell</strong> — CEO of Cursor</li>
+      </ul>
+      <img class="news-shot cursor-founder-shot" src="../images/lec01/cursor-founder-michael-truell.jpg" alt="Michael Truell, Cursor CEO, X profile screenshot" loading="lazy" decoding="async">
+    </section>
+
+    <section class="slide cursor-email-slide" data-slide="14">
+      <h1>Before He Founded Cursor</h1>
+      <img class="news-shot cursor-email-shot" src="../images/lec01/cursor-founder-email-michael.jpg" alt="2018 email from Michael Truell at MIT to Tauhid Zaman about research and UROP" loading="lazy" decoding="async">
+    </section>
+
+    <section class="slide cursor-growth-slide" data-slide="15">
+      <h1>Cursor Growth</h1>
+      <div class="growth-stack">
+        <img class="growth-headline" src="../images/lec01/cursor-acquisition-headline.jpg" alt="News headline about Cursor acquisition" loading="lazy" decoding="async">
+        <img class="growth-photo" src="../images/lec01/cursor-michael-elon.jpg" alt="Michael Truell with Elon Musk" loading="lazy" decoding="async">
+      </div>
+    </section>
+
+
+    <section class="slide transformers-title-slide" data-slide="16">
+      <h1>Transformers</h1>
+      <img class="transformers-hero" src="../images/lec01/transformers_robots.jpg" alt="Transformers robots — the visual pun before the architecture" loading="lazy" decoding="async">
+    </section>
+
+    <section class="slide transformers-title-slide" data-slide="17">
+      <h1>Transformers</h1>
+      <img class="transformers-hero" src="../images/lec01/attention_is_all_you_need_paper.jpg" alt="Attention Is All You Need paper — Vaswani et al., 2017" loading="lazy" decoding="async">
+    </section>
+
+    <section class="slide transformer-arch-slide" data-slide="18">
+      <h1>Transformer Architecture</h1>
+      <ul>
+        <li>Each word (token) is represented as an <strong>embedding vector</strong> </li>
+        <li>The transformer has <strong>many multi-headed attention layers</strong></li>
+        <li>Each layer changes the </li>
+      </ul>
+      <img class="arch-diagram" src="../images/lec01/transformer_block_diagram_v1.png" alt="Token embedding vectors as green blocks passing through pink Layer 1 and Layer 2 bricks" loading="lazy">
+    </section>
+
+    <section class="slide attention-weights-slide" data-slide="19">
+      <h1>Attention Weights</h1>
+      <ul>
+        <li>An <strong class="hot-phrase">attention head</strong> computes a weight between <strong>each pair of words</strong></li>
+        <li>The weights tell you how much a word pays <strong class="hot-phrase">“attention”</strong> to another word</li>
+      </ul>
+      <img class="attn-diagram" src="../images/lec01/attention_weights.png" alt="Attention weight matrix for The bat is asleep — darker cells mean stronger attention between word pairs" loading="lazy">
+    </section>
+
+    <section class="slide context-embed-slide context-embed-sentences" data-slide="20">
+      <h1>Context Dependent Embeddings</h1>
+      <p class="bat-intro">Consider these sentences that use the word <em>bat</em></p>
+      <ul class="bat-examples">
+        <li>A <span class="bat-animal">bat</span> flew out of the cave</li>
+        <li>The <span class="bat-animal">bat</span> pooped on the ground</li>
+        <li>A <span class="bat-animal">bat</span> bit me in the neck</li>
+        <li>I’m afraid of a <span class="bat-animal">bat</span> because it is like a rat with wings</li>
+        <li>A <span class="bat-sport">bat</span> flew out of the baseball player’s hand</li>
+        <li>I hit a home run with the metal <span class="bat-sport">bat</span></li>
+        <li>No one swung a <span class="bat-sport">bat</span> harder than Babe Ruth.</li>
+      </ul>
+    </section>
+
+    <section class="slide context-embed-slide" data-slide="21">
+      <h1>Context Dependent Embeddings</h1>
+      <img class="embed-plot" src="../images/lec01/embedding_bat.png" alt="PCA plot of bat embeddings — animal and baseball-stick meanings form separate clusters" loading="lazy">
+    </section>
+
+    <section class="slide transformers-talking-slide" data-slide="22">
+      <h1>Transformers Talking</h1>
+      <ul>
+        <li>A generative transformer turns the word embedding vector into a <strong>probability distribution</strong> over all words in the vocabulary</li>
+        <li>Text is generated by <strong>sampling</strong> from this distribution</li>
+        <li>These types of transformers are also called <strong class="hot-phrase">large language models (LLMs)</strong></li>
+      </ul>
+      <img class="talk-histogram" src="../images/lec01/transformer_word_histogram.png" alt="Histogram of next-word probabilities from a generative transformer" loading="lazy">
+    </section>
+
+    <section class="slide transformers-cando-slide" data-slide="23">
+      <h1>What Can Transformers Do?</h1>
+      <ul class="cando-list">
+        <li>Generate text</li>
+        <li>Measure sentiment</li>
+        <li>Translate languages</li>
+        <li>Summarize the reading you didn’t do</li>        
+        <li>Answer questions</li>
+        <li>Write (and debug) Python</li>
+        <li>Be your friend :)</li>
+        <li class="cando-anything">Anything!!!!</li>
+      </ul>
+    </section>
+
+    <section class="slide intel-race-slide" data-slide="24">
+      <h1>How Fast Did AI Get Smarter?</h1>
+      <p class="intel-note">
+        Artificial Analysis Intelligence Index vs release date —
+        hover a point for the model name.
+        Frontier lines for OpenAI, Anthropic, Google (Gemini), xAI (Grok), and DeepSeek (open weights).
+      </p>
+      <div class="intel-chart-wrap">
+        <canvas id="intelRaceChart" aria-label="Interactive chart of frontier model intelligence over time for OpenAI, Anthropic, Google, xAI, and DeepSeek"></canvas>
+      </div>
+      <p class="intel-source">
+        Source: <a href="https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index" target="_blank" rel="noopener noreferrer">Artificial Analysis Intelligence Index</a>
+        (composite of hard evals: coding, science, agents, etc.).
+        GPT-1 / GPT-2 / GPT-3 near Index ≈ 1 are illustrative (predate the Index).
+        Other points from AA model pages &amp; changelog (v4.1.1 where noted); index weights shift over time — use for relative progress, not exact cross-era comparisons.
+      </p>
+    </section>
+
+    <section class="slide frontier-models-slide" data-slide="25">
+      <h1>Frontier Models Intelligence</h1>
+      <ul>
+        <li><strong>Terminal-Bench v2.1</strong> tests AI agents on hard, real terminal work — 89 tasks spanning coding, sysadmin, data, training, and security</li>
+        <li>Each task is graded by automated tests in a live shell; today’s top models still miss plenty of them</li>
+      </ul>
+      <a class="frontier-link" href="https://artificialanalysis.ai/evaluations/terminalbench-v2-1" target="_blank" rel="noopener noreferrer">artificialanalysis.ai/evaluations/terminalbench-v2-1</a>
+      <img class="frontier-chart" src="../images/lec01/terminalbench-v2-score.png" alt="Terminal-Bench v2.1 score leaderboard from Artificial Analysis, 27 Aug 2026" loading="lazy">
+    </section>
+
+    <section class="slide frontier-models-slide" data-slide="26">
+      <h1>Frontier Models Cost</h1>
+      <ul>
+        <li>Same benchmark — now ranked by <strong>average $ per task</strong></li>
+        <li>Cheaper is not always dumber; watch where the frontier sits</li>
+      </ul>
+      <a class="frontier-link" href="https://artificialanalysis.ai/evaluations/terminalbench-v2-1" target="_blank" rel="noopener noreferrer">artificialanalysis.ai/evaluations/terminalbench-v2-1</a>
+      <img class="frontier-chart" src="../images/lec01/terminalbench-v2-cost.png" alt="Terminal-Bench v2.1 cost per task from Artificial Analysis, 27 Aug 2026" loading="lazy">
+    </section>
+
+    <section class="slide frontier-pareto-slide" data-slide="27">
+      <h1>Frontier of the Frontier</h1>
+      <p class="pareto-note">
+        Terminal-Bench v2.1 — cost per task vs score. Hover a dot for the model.
+        The dashed line is the cheap-and-smart frontier (nothing cheaper scores higher).
+      </p>
+      <div class="pareto-chart-wrap">
+        <canvas id="frontierParetoChart" aria-label="Scatter plot of Terminal-Bench cost versus score"></canvas>
+      </div>
+      <p class="pareto-source">
+        Numbers read from Artificial Analysis Terminal-Bench v2.1 charts (27 Aug 2026).
+        Source: <a href="https://artificialanalysis.ai/evaluations/terminalbench-v2-1" target="_blank" rel="noopener noreferrer">artificialanalysis.ai/evaluations/terminalbench-v2-1</a>
+      </p>
+    </section>
+
+    <section class="slide achievement-slide" data-slide="28">
+      <h1>When Humans Meet Machine Intelligence</h1>
+      <div class="duo-photo-row">
+        <figure>
+          <img src="../images/lec01/kasparov_deepblue.png" alt="Garry Kasparov facing IBM Deep Blue in the 1997 chess rematch" loading="lazy">
+          <figcaption>Garry Kasparov vs <strong>Deep Blue</strong> (1997)</figcaption>
+        </figure>
+        <figure class="duo-photo-full">
+          <img src="../images/lec01/ken_jennings_jeapordy.png" alt="Ken Jennings on Jeopardy after losing to IBM Watson — I welcome our new computer overlords" loading="lazy">
+          <figcaption>Ken Jennings vs <strong>Watson</strong> (2011)</figcaption>
+        </figure>
+      </div>
+      <ul class="duo-bullets">
+        <li><strong>Kasparov lost</strong> — and was <strong>furious</strong>: accused IBM of cheating, stormed off the cultural high ground</li>
+        <li><strong>Jennings lost</strong> too — but accepted defeat with <em class="hot-phrase">grace and humor</em> (“I welcome our new computer overlords”)</li>
+        <li>Same shock, opposite response — the winners are the ones who <em class="hot-phrase">partner with the machine</em></li>
+      </ul>
+    </section>
+
+    <section class="slide achievement-slide" data-slide="29">
+      <h1>Terence Tao on AI and Mathematics</h1>
+      <div class="two-col topic-layout">
+        <ul>
+          <li><strong>Terence Tao</strong> — Fields medalist, often called the greatest living mathematician</li>
+          <li>He believes AI can <strong>advance mathematics</strong> — not replace human insight</li>
+          <li>Math must <em class="hot-phrase">rethink the field and embrace AI</em>, or lose the narrative</li>
+          <li><a href="https://www.newscientist.com/article/2583307-why-mathematician-terence-tao-thinks-ai-must-spark-a-rapid-revolution/" target="_blank" rel="noopener noreferrer">New Scientist interview</a></li>
+        </ul>
+        <img class="topic-photo achievement-photo" src="../images/lec01/terrytao.png" alt="Terence Tao at a chalkboard — Fields medalist calling for mathematics to reinvent itself around AI" loading="lazy">
+      </div>
+    </section>
+
+    <section class="slide achievement-slide" data-slide="30">
+      <h1>Recent AI Achievements in Math</h1>
+      <div class="two-col topic-layout">
+        <ul>
+          <li><strong>OpenAI (Astra)</strong>: new results on <strong>10 long-open problems</strong> — first explicit <strong>non-sofic group</strong> (open since 1999), disproof of <strong>Connes’s rigidity conjecture</strong>, progress on <strong>Erdős #183</strong> (multicolor Ramsey numbers), <strong>Ehrhart’s volume conjecture</strong>, and more — with Lean 4 certificates
+            <ul>
+              <li><a href="https://openai.com/index/ten-advances-in-mathematics/" target="_blank" rel="noopener noreferrer">OpenAI: Ten advances in mathematics</a></li>
+            </ul>
+          </li>
+          <li><strong>Anthropic (Claude)</strong>: unconditionally proved &gt; <strong>⅔ of Riemann zeta zeros</strong> are simple and on the critical line — raised the record from <strong>41.6% → 67.2%</strong> (not the full Riemann hypothesis)
+            <ul>
+              <li><a href="https://www.anthropic.com/research/riemann-zeta" target="_blank" rel="noopener noreferrer">Anthropic: Riemann zeta research</a></li>
+            </ul>
+          </li>
+          <li><strong>Anthropic (Claude + Levent Alpöge)</strong>: proposed an explicit <strong>complex structure on S⁶</strong> — the Hopf problem, open since ~1948 — still undergoing expert scrutiny
+            <ul>
+              <li><a href="https://officechai.com/ai/anthropic-researcher-says-claude-helped-build-a-complex-structure-on-s%E2%81%B6-taking-aim-at-the-unsolved-hopf-problem/" target="_blank" rel="noopener noreferrer">Office Chai: S⁶ complex structure claim</a></li>
+            </ul>
+          </li>
+        </ul>
+        <img class="topic-photo achievement-photo" src="../images/lec01/recent-ai-math-breakthroughs.jpg" alt="Illustration of AI-assisted mathematical breakthroughs — neural network light beside advanced equations on a chalkboard" loading="lazy">
+      </div>
+    </section>
+
+    <section class="slide aimax-slide" data-slide="31">
+      <h1>AI-Maxxing Frame</h1>
+      <div class="two-col topic-layout">
+        <ul>
+          <li>Once you embrace AI and decide to <em class="hot-phrase">AI-maxx</em>, you're in a <strong>new frame</strong> — you stop bolting AI onto the old workflow</li>
+          <li>Not “use AI to fill in a spreadsheet” → <strong>no spreadsheets</strong>; AI updates your records database directly</li>
+          <li>Not “use AI to skim resumes in HR” → AI <strong>interviews every candidate</strong> in depth and maps real strengths</li>
+          <li>Not “use AI to draft customer-support replies” → AI <strong>owns the resolution loop</strong> and only escalates true edge cases</li>
+          <li>Early cameras just <strong>filmed stage plays</strong> — then someone invented <em class="hot-phrase">cinema</em>. AI today is that kind of leap: design the <strong>next paradigm</strong>, not a faster version of yesterday</li>
+        </ul>
+        <img class="topic-photo" src="../images/lec01/ai-maxxing-frame.jpg" alt="Terminator robot at a whiteboard — crossed-out spreadsheets and resume piles, arrows to a database and deep AI interviews, stage play vs cinema" loading="lazy">
+      </div>
+    </section>
+
+    <section class="slide logistics-slide" data-slide="32">
+      <h1>Course logistics</h1>
+      <div class="grade-grid">
+        <div class="grade-box att">
+          <span class="pct">10%</span>
+          Attendance
+        </div>
+        <div class="grade-box hw">
+          <span class="pct">40%</span>
+          Homework
+        </div>
+        <div class="grade-box fp">
+          <span class="pct">50%</span>
+          Final project
+        </div>
       </div>
       <ul>
-        <li><code>prompts/*.md</code> — what the <strong>script</strong> sends to the API. <code>AI_prompts.md</code> — what <strong>you</strong> typed to the vibe coder.</li>
-        <li>Work <strong>one problem at a time</strong>. Screenshot the card. Do not paste the assignment URL and say “do HW1.”</li>
-        <li>Secrets live in local <code>.env</code>. Never in git, never in <code>README.md</code>, never in chat logs you submit.</li>
+        <li><strong>6 homeworks</strong> </li>
+        <ul>
+        <li>Vibe code solutions to business problems  </li>
+        <li> Submit code in zip files onto Canvas (later as online GitHub repos)</li>
+          <li>Anti-cheating measures in homeworks - don't blindly give the problem to the AI.  Read it, understand it, and interact with the AI to complete it</li>
+        </ul>
+        <li><strong>Final project</strong> </li>
+        <ul>
+          <li>Business AI Co-Pilot that integrates the class modules </li>
+          <li>Details will be provided soon on website </li>
+          </ul>
+        <li><strong>Attendance</strong> </li>
+        <ul>
+          <li>Attendance is mandatory for class </li>
+          <li> Attendance is taken at the beginning of class via QR code - don't be late </li>
+          <li> If you miss attendance,  email the professor and explain your reasons </li>
+          <li>Tell the professor to put up the code now</li>
+
+
+          </ul>
       </ul>
-      <p class="joke">The vibe coder is a power tool. Asking it to “finish the zip” is how you learn nothing and fail the dump traps.</p>
     </section>
 
-    <section class="slide" data-slide="14">
-      <h1>The rest of the ride</h1>
-      <ol>
-        <li><span class="hw-chip">1–2</span> Vibe coding → structured text · <strong>HW1 extraction</strong></li>
-        <li><span class="hw-chip">3–5</span> Tools, agents, agentic search · HW2–3</li>
-        <li><span class="hw-chip">6–7</span> Images + multimodal search · HW3–4</li>
-        <li><span class="hw-chip">8–10</span> Customer channels, web apps, deploy · HW5</li>
-        <li><span class="hw-chip">11–13</span> Guardrails, tokenomics, the future · HW6 + co-pilot</li>
-      </ol>
-      <p class="takeaway">Same stack, bigger pieces. Lecture 1 is the atom: <strong>one prompt, one model call, one checked output</strong>.</p>
-    </section>
-
-    <section class="slide section-slide" data-slide="15">
-      <h1>→ Vibe coding, ~40 minutes</h1>
-      <p>Folder hygiene · first OpenAI API call · JSON teaser · start <code>AI_prompts.md</code></p>
-      <p><a href="../vibe/lec01-vibe.html">Open the in-class prompts →</a></p>
-      <p class="speaker-note"><a href="../../hw1/p1.html">Homework 1, Problem 1</a> · Lecture 2: structured data from free text (one receipt, for real).</p>
+    <section class="slide next-class-slide" data-slide="33">
+      <h1>Next Class</h1>
+      <div class="two-col topic-layout">
+        <ul>
+          <li>We will be <strong class="hot-phrase">vibe coding</strong></li>
+          <li>Setup <strong>VS Code</strong>, <strong>Codex</strong>, and <strong>Portkey</strong></li>
+          <li>Bring <strong>ideas</strong> for things you want to build</li>
+          <li>We might try them in class <em>for fun</em></li>
+        </ul>
+        <img class="topic-photo" src="../images/lec01/next-class-terminator-vibe.jpg" alt="Terminator student in class with VS Code open, sticky note saying BRING IDEAS, Next Class on the whiteboard" loading="lazy">
+      </div>
     </section>
 
   </div>
-  <p class="slide-hint">← → or Space to advance · ~40 min slides + ~40 min vibe coding</p>
+  <p class="slide-hint">← → or Space to advance · F for full screen</p>
   <footer class="slide-deck-footer">
     <button type="button" id="prev" aria-label="Previous slide">← Previous</button>
     <button type="button" id="next" aria-label="Next slide">Next →</button>
   </footer>
   <script src="../../js/slides.js"></script>
   <script src="../../js/theme.js"></script>
+  <script src="../../js/chart.umd.min.js"></script>
+  <script>
+  (function () {
+    const TIMELINE = {
+      openai: [
+        { t: "2018-06-11", y: 1.0, label: "GPT-1", approx: true },
+        { t: "2019-02-14", y: 1.0, label: "GPT-2", approx: true },
+        { t: "2020-06-11", y: 1.0, label: "GPT-3", approx: true },
+        { t: "2022-11-30", y: 3.6, label: "GPT-3.5 Turbo" },
+        { t: "2023-03-14", y: 7.0, label: "GPT-4" },
+        { t: "2023-11-06", y: 7.9, label: "GPT-4 Turbo" },
+        { t: "2024-05-13", y: 8.6, label: "GPT-4o (May '24)" },
+        { t: "2024-09-12", y: 17.0, label: "o1-preview" },
+        { t: "2024-12-05", y: 23.4, label: "o1" },
+        { t: "2025-04-16", y: 30.4, label: "o3" },
+        { t: "2025-06-10", y: 32.5, label: "o3-pro" },
+        { t: "2025-08-07", y: 34.7, label: "GPT-5" },
+        { t: "2025-11-13", y: 36.9, label: "GPT-5.1" },
+        { t: "2025-12-11", y: 42.2, label: "GPT-5.2" },
+        { t: "2026-03-05", y: 51.4, label: "GPT-5.4" },
+        { t: "2026-04-23", y: 54.8, label: "GPT-5.5" },
+        { t: "2026-07-09", y: 60.9, label: "GPT-5.6 Sol" }
+      ],
+      anthropic: [
+        { t: "2023-03-14", y: 2.1, label: "Claude Instant" },
+        { t: "2023-07-11", y: 3.6, label: "Claude 2.0" },
+        { t: "2024-03-04", y: 11.8, label: "Claude 3 Opus" },
+        { t: "2025-02-24", y: 27.1, label: "Claude 3.7 Sonnet" },
+        { t: "2025-05-22", y: 31.0, label: "Claude 4 Opus" },
+        { t: "2025-08-05", y: 33.7, label: "Claude 4.1 Opus" },
+        { t: "2025-11-24", y: 40.8, label: "Claude Opus 4.5" },
+        { t: "2026-02-05", y: 43.7, label: "Claude Opus 4.6" },
+        { t: "2026-04-16", y: 53.5, label: "Claude Opus 4.7" },
+        { t: "2026-05-28", y: 55.7, label: "Claude Opus 4.8" },
+        { t: "2026-06-09", y: 59.9, label: "Claude Fable 5" },
+        { t: "2026-07-24", y: 63.0, label: "Claude Opus 5" }
+      ],
+      google: [
+        { t: "2024-05-15", y: 6.3, label: "Gemini 1.5 Pro" },
+        { t: "2025-03-25", y: 23.0, label: "Gemini 2.5 Pro Preview" },
+        { t: "2025-06-05", y: 25.8, label: "Gemini 2.5 Pro" },
+        { t: "2026-02-19", y: 48.0, label: "Gemini 3.1 Pro Preview" },
+        { t: "2026-05-19", y: 50.2, label: "Gemini 3.5 Flash (high)" },
+        { t: "2026-07-21", y: 52.0, label: "Gemini 3.6 Flash (high)" },
+        { t: "2026-08-13", y: 56.0, label: "Gemini 3.7 Flash (high)" }
+      ],
+      xai: [
+        { t: "2025-02-19", y: 18.4, label: "Grok 3" },
+        { t: "2025-07-10", y: 34.0, label: "Grok 4" },
+        { t: "2026-04-30", y: 38.0, label: "Grok 4.3 (high)" },
+        { t: "2026-07-08", y: 56.0, label: "Grok 4.5 (high)" },
+        { t: "2026-08-12", y: 61.0, label: "Grok 4.6 (high)" }
+      ],
+      deepseek: [
+        { t: "2024-12-26", y: 14.2, label: "DeepSeek V3" },
+        { t: "2025-01-20", y: 18.5, label: "DeepSeek R1" },
+        { t: "2025-05-28", y: 20.1, label: "DeepSeek R1 0528" },
+        { t: "2025-12-01", y: 32.0, label: "DeepSeek V3.2 (Reasoning)" },
+        { t: "2026-04-24", y: 44.3, label: "DeepSeek V4 Pro (max)" },
+        { t: "2026-07-31", y: 52.0, label: "DeepSeek V4 Flash 0731" }
+      ]
+    };
+
+    let chart = null;
+    const slide = document.querySelector(".intel-race-slide");
+    const canvas = document.getElementById("intelRaceChart");
+    const wrap = slide && slide.querySelector(".intel-chart-wrap");
+    if (!slide || !canvas) return;
+
+    function toPoints(rows) {
+      return rows.map((p) => ({
+        x: Date.parse(p.t + "T00:00:00Z"),
+        y: p.y,
+        label: p.label,
+        t: p.t,
+        approx: !!p.approx
+      }));
+    }
+
+    function monthTick(ms) {
+      const d = new Date(ms);
+      return d.toLocaleDateString(undefined, { year: "numeric", month: "short" });
+    }
+
+    function build() {
+      if (!slide.classList.contains("active")) return;
+      if (!window.Chart) {
+        if (wrap) wrap.innerHTML = "<p style='padding:1rem;font-weight:700;'>Chart library failed to load.</p>";
+        return;
+      }
+      if (chart) {
+        chart.resize();
+        return;
+      }
+
+      const dark = document.documentElement.getAttribute("data-theme") === "dark";
+      const tick = dark ? "#c9d6e5" : "#3a4a5c";
+      const grid = dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
+
+      try {
+        chart = new Chart(canvas.getContext("2d"), {
+          type: "line",
+          data: {
+            datasets: [
+              {
+                label: "OpenAI (GPT / o-series)",
+                data: toPoints(TIMELINE.openai),
+                borderColor: "#0a7a5c",
+                backgroundColor: "#10a37f",
+                pointBackgroundColor: "#10a37f",
+                pointBorderColor: "#0a7a5c",
+                pointRadius: 5,
+                pointHoverRadius: 8,
+                borderWidth: 3,
+                tension: 0.15
+              },
+              {
+                label: "Anthropic (Claude)",
+                data: toPoints(TIMELINE.anthropic),
+                borderColor: "#9a3412",
+                backgroundColor: "#c96442",
+                pointBackgroundColor: "#c96442",
+                pointBorderColor: "#9a3412",
+                pointRadius: 5,
+                pointHoverRadius: 8,
+                borderWidth: 3,
+                tension: 0.15
+              },
+              {
+                label: "Google (Gemini)",
+                data: toPoints(TIMELINE.google),
+                borderColor: "#1a56db",
+                backgroundColor: "#4285f4",
+                pointBackgroundColor: "#4285f4",
+                pointBorderColor: "#1a56db",
+                pointRadius: 5,
+                pointHoverRadius: 8,
+                borderWidth: 3,
+                tension: 0.15
+              },
+              {
+                label: "xAI (Grok)",
+                data: toPoints(TIMELINE.xai),
+                borderColor: dark ? "#cbd5e1" : "#374151",
+                backgroundColor: dark ? "#e2e8f0" : "#6b7280",
+                pointBackgroundColor: dark ? "#e2e8f0" : "#6b7280",
+                pointBorderColor: dark ? "#cbd5e1" : "#374151",
+                pointRadius: 5,
+                pointHoverRadius: 8,
+                borderWidth: 3,
+                tension: 0.15
+              },
+              {
+                label: "DeepSeek (open weights)",
+                data: toPoints(TIMELINE.deepseek),
+                borderColor: "#0e7490",
+                backgroundColor: "#06b6d4",
+                pointBackgroundColor: "#06b6d4",
+                pointBorderColor: "#0e7490",
+                pointRadius: 5,
+                pointHoverRadius: 8,
+                borderWidth: 3,
+                tension: 0.15
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            parsing: false,
+            interaction: { mode: "nearest", intersect: true },
+            plugins: {
+              legend: {
+                position: "top",
+                labels: {
+                  color: tick,
+                  font: { weight: "700", size: 12 },
+                  boxWidth: 14,
+                  padding: 10
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  title(items) {
+                    return items[0]?.raw?.label || "";
+                  },
+                  label(item) {
+                    const base = monthTick(item.raw.x) + ": Intelligence Index " + item.raw.y;
+                    return item.raw.approx ? base + " (illustrative)" : base;
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                type: "linear",
+                title: { display: true, text: "Release date", color: tick, font: { weight: "700", size: 14 } },
+                ticks: {
+                  color: tick,
+                  maxRotation: 0,
+                  callback(value) { return monthTick(value); }
+                },
+                grid: { color: grid }
+              },
+              y: {
+                title: { display: true, text: "Intelligence Index", color: tick, font: { weight: "700", size: 14 } },
+                ticks: { color: tick },
+                grid: { color: grid },
+                min: 0,
+                max: 70
+              }
+            }
+          }
+        });
+        requestAnimationFrame(() => chart && chart.resize());
+      } catch (err) {
+        console.error(err);
+        if (wrap) wrap.innerHTML = "<p style='padding:1rem;font-weight:700;'>Could not draw chart: " + String(err.message || err) + "</p>";
+      }
+    }
+
+    new MutationObserver(build).observe(slide, { attributes: true, attributeFilter: ["class"] });
+    document.addEventListener("fullscreenchange", () => chart && setTimeout(() => chart.resize(), 50));
+    window.addEventListener("resize", () => chart && chart.resize());
+    document.getElementById("next")?.addEventListener("click", () => setTimeout(build, 30));
+    document.getElementById("prev")?.addEventListener("click", () => setTimeout(build, 30));
+    document.addEventListener("keydown", () => setTimeout(build, 30));
+    setTimeout(build, 0);
+  })();
+  </script>
+  <script>
+  (function () {
+    // Matched from Terminal-Bench v2.1 score + cost charts (Artificial Analysis, 27 Aug 2026)
+    const POINTS = [
+      { label: "GPT-5.6 Sol (xhigh)", score: 89.5, cost: 0.38, org: "OpenAI" },
+      { label: "Claude Opus 5 (max)", score: 89.1, cost: 2.42, org: "Anthropic" },
+      { label: "Grok 4.6 (high)", score: 88.4, cost: 0.81, org: "xAI" },
+      { label: "Claude Opus 5 (xhigh)", score: 88.0, cost: 1.87, org: "Anthropic" },
+      { label: "GPT-5.6 Sol (max)", score: 88.0, cost: 0.54, org: "OpenAI" },
+      { label: "GPT-5.6 Terra (max)", score: 88.0, cost: 0.57, org: "OpenAI" },
+      { label: "Gemini 3.7 Flash (high)", score: 85.8, cost: 0.49, org: "Google" },
+      { label: "Kimi K3 (max)", score: 85.0, cost: 0.63, org: "Moonshot" },
+      { label: "Claude Fable 5 (with fallback)", score: 84.6, cost: 3.36, org: "Anthropic" },
+      { label: "GLM-5.3-Flash", score: 84.3, cost: 0.08, org: "Z AI" },
+      { label: "GLM-5.3 (max)", score: 83.9, cost: 0.66, org: "Z AI" },
+      { label: "Qwen3.8 2.4T A95B", score: 82.0, cost: 0.69, org: "Alibaba" },
+      { label: "GPT-5.6 Luna (max)", score: 80.9, cost: 0.05, org: "OpenAI" },
+      { label: "Muse Spark 1.2 (xhigh)", score: 80.1, cost: 0.80, org: "Muse" },
+      { label: "Qwen3.8 27B (xhigh)", score: 79.8, cost: 0.60, org: "Alibaba" },
+      { label: "DeepSeek V4 Pro 0813 (max)", score: 78.7, cost: 0.41, org: "DeepSeek" },
+      { label: "MiniMax-M3", score: 65.2, cost: 0.28, org: "MiniMax" },
+      { label: "Inkling", score: 55.1, cost: 0.85, org: "Other" },
+      { label: "Nemotron 3 Ultra", score: 53.9, cost: 1.13, org: "NVIDIA" },
+      { label: "Gemini 3.5 Flash-Lite", score: 53.6, cost: 0.26, org: "Google" },
+      { label: "GPT-5.6 Luna (medium)", score: 53.2, cost: 0.02, org: "OpenAI" },
+      { label: "Muse Glimmer (high)", score: 51.7, cost: 0.18, org: "Muse" },
+      { label: "Mistral Medium 3.5", score: 50.6, cost: 1.21, org: "Mistral" },
+      { label: "Claude 4.5 Haiku", score: 44.2, cost: 0.70, org: "Anthropic" }
+    ];
+
+    const COLORS = {
+      OpenAI: "#10a37f",
+      Anthropic: "#c96442",
+      Google: "#4285f4",
+      xAI: "#111111",
+      "Z AI": "#1c7ff8",
+      Alibaba: "#ff6a00",
+      Moonshot: "#6b5cff",
+      DeepSeek: "#4d6bfe",
+      Muse: "#0668e1",
+      MiniMax: "#e91e8c",
+      NVIDIA: "#76b900",
+      Mistral: "#f54e00",
+      Other: "#888888"
+    };
+
+    function paretoFront(points) {
+      const sorted = points.slice().sort((a, b) => a.cost - b.cost || b.score - a.score);
+      const front = [];
+      let bestScore = -Infinity;
+      for (const p of sorted) {
+        if (p.score > bestScore) {
+          front.push(p);
+          bestScore = p.score;
+        }
+      }
+      return front;
+    }
+
+    let chart = null;
+    const slide = document.querySelector(".frontier-pareto-slide");
+    const canvas = document.getElementById("frontierParetoChart");
+    const wrap = slide && slide.querySelector(".pareto-chart-wrap");
+    if (!slide || !canvas) return;
+
+    function build() {
+      if (!slide.classList.contains("active")) return;
+      if (!window.Chart) {
+        if (wrap) wrap.innerHTML = "<p style='padding:1rem;font-weight:700;'>Chart library failed to load.</p>";
+        return;
+      }
+      if (chart) {
+        chart.resize();
+        return;
+      }
+
+      const dark = document.documentElement.getAttribute("data-theme") === "dark";
+      const tick = dark ? "#c9d6e5" : "#3a4a5c";
+      const grid = dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
+      const front = paretoFront(POINTS);
+      const byOrg = {};
+      for (const p of POINTS) {
+        (byOrg[p.org] || (byOrg[p.org] = [])).push(p);
+      }
+
+      const datasets = Object.keys(byOrg).map((org) => ({
+        label: org,
+        data: byOrg[org].map((p) => ({ x: p.cost, y: p.score, label: p.label, org: p.org })),
+        backgroundColor: COLORS[org] || "#888",
+        borderColor: COLORS[org] || "#888",
+        pointRadius: 7,
+        pointHoverRadius: 10,
+        showLine: false
+      }));
+
+      datasets.push({
+        label: "Cost–score frontier",
+        data: front.map((p) => ({ x: p.cost, y: p.score, label: p.label, org: p.org })),
+        borderColor: dark ? "#fff" : "#111",
+        backgroundColor: "transparent",
+        borderWidth: 2,
+        borderDash: [7, 5],
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        showLine: true,
+        tension: 0.05,
+        order: 0
+      });
+
+      const LABEL_STYLE = {
+        "GPT-5.6 Sol (xhigh)": { text: "GPT-5.6 Sol (xhigh)", dx: 10, dy: -6 },
+        "GPT-5.6 Sol (max)": { text: "GPT-5.6 Sol (max)", dx: 10, dy: 16 },
+        "GPT-5.6 Terra (max)": { text: "GPT-5.6 Terra (max)", dx: 10, dy: -2 },
+        "GPT-5.6 Luna (max)": { text: "GPT-5.6 Luna (max)", dx: 10, dy: -8 },
+        "GPT-5.6 Luna (medium)": { text: "GPT-5.6 Luna (medium)", dx: 10, dy: 14 },
+        "Claude Opus 5 (max)": { text: "Claude Opus 5 (max)", dx: -10, dy: -10, align: "right" },
+        "Grok 4.6 (high)": { text: "Grok 4.6 (high)", dx: 10, dy: -8 },
+        "Gemini 3.7 Flash (high)": { text: "Gemini 3.7 Flash (high)", dx: 10, dy: 14 }
+      };
+
+      const labelPlugin = {
+        id: "calloutLabels",
+        afterDatasetsDraw(c) {
+          const { ctx } = c;
+          ctx.save();
+          ctx.font = "700 13px Inter, system-ui, sans-serif";
+          ctx.fillStyle = dark ? "#e8eef5" : "#1a2e42";
+          c.data.datasets.forEach((ds, di) => {
+            if (ds.showLine) return;
+            const meta = c.getDatasetMeta(di);
+            ds.data.forEach((pt, i) => {
+              const style = LABEL_STYLE[pt.label];
+              if (!style || !meta.data[i]) return;
+              const { x, y } = meta.data[i].getProps(["x", "y"], true);
+              ctx.textAlign = style.align || "left";
+              ctx.textBaseline = "middle";
+              // halo for readability on projector
+              ctx.lineWidth = 4;
+              ctx.strokeStyle = dark ? "rgba(8,17,31,0.85)" : "rgba(255,255,255,0.92)";
+              ctx.strokeText(style.text, x + style.dx, y + style.dy);
+              ctx.fillText(style.text, x + style.dx, y + style.dy);
+            });
+          });
+          ctx.restore();
+        }
+      };
+
+      try {
+        chart = new Chart(canvas.getContext("2d"), {
+          type: "scatter",
+          data: { datasets },
+          plugins: [labelPlugin],
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            parsing: false,
+            interaction: { mode: "nearest", intersect: true },
+            layout: { padding: { right: 28, top: 8 } },
+            plugins: {
+              legend: {
+                position: "top",
+                labels: {
+                  color: tick,
+                  font: { weight: "700", size: 12 },
+                  filter(item) { return item.text !== "Cost–score frontier"; }
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  title(items) { return items[0]?.raw?.label || ""; },
+                  label(item) {
+                    if (item.dataset.label === "Cost–score frontier") return "";
+                    return "Score " + item.raw.y + "%  ·  $" + item.raw.x.toFixed(2) + " / task";
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                type: "linear",
+                title: { display: true, text: "Cost per task (USD)", color: tick, font: { weight: "700", size: 14 } },
+                ticks: {
+                  color: tick,
+                  callback(v) { return "$" + Number(v).toFixed(2); }
+                },
+                grid: { color: grid },
+                min: 0
+              },
+              y: {
+                title: { display: true, text: "Terminal-Bench score (%)", color: tick, font: { weight: "700", size: 14 } },
+                ticks: { color: tick },
+                grid: { color: grid },
+                min: 40,
+                max: 95
+              }
+            }
+          }
+        });
+        requestAnimationFrame(() => chart && chart.resize());
+      } catch (err) {
+        console.error(err);
+        if (wrap) wrap.innerHTML = "<p style='padding:1rem;font-weight:700;'>Could not draw chart: " + String(err.message || err) + "</p>";
+      }
+    }
+
+    new MutationObserver(build).observe(slide, { attributes: true, attributeFilter: ["class"] });
+    document.addEventListener("fullscreenchange", () => chart && setTimeout(() => chart.resize(), 50));
+    window.addEventListener("resize", () => chart && chart.resize());
+    document.getElementById("next")?.addEventListener("click", () => setTimeout(build, 30));
+    document.getElementById("prev")?.addEventListener("click", () => setTimeout(build, 30));
+    document.addEventListener("keydown", () => setTimeout(build, 30));
+    setTimeout(build, 0);
+  })();
+  </script>
 </body>
 </html>

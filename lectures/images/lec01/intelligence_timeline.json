@@ -1,0 +1,60 @@
+{
+  "openai": [
+    { "t": "2018-06-11", "y": 1.0, "label": "GPT-1", "approx": true },
+    { "t": "2019-02-14", "y": 1.0, "label": "GPT-2", "approx": true },
+    { "t": "2020-06-11", "y": 1.0, "label": "GPT-3", "approx": true },
+    { "t": "2022-11-30", "y": 3.6, "label": "GPT-3.5 Turbo" },
+    { "t": "2023-03-14", "y": 7.0, "label": "GPT-4" },
+    { "t": "2023-11-06", "y": 7.9, "label": "GPT-4 Turbo" },
+    { "t": "2024-05-13", "y": 8.6, "label": "GPT-4o (May '24)" },
+    { "t": "2024-09-12", "y": 17.0, "label": "o1-preview" },
+    { "t": "2024-12-05", "y": 23.4, "label": "o1" },
+    { "t": "2025-04-16", "y": 30.4, "label": "o3" },
+    { "t": "2025-06-10", "y": 32.5, "label": "o3-pro" },
+    { "t": "2025-08-07", "y": 34.7, "label": "GPT-5" },
+    { "t": "2025-11-13", "y": 36.9, "label": "GPT-5.1" },
+    { "t": "2025-12-11", "y": 42.2, "label": "GPT-5.2" },
+    { "t": "2026-03-05", "y": 51.4, "label": "GPT-5.4" },
+    { "t": "2026-04-23", "y": 54.8, "label": "GPT-5.5" },
+    { "t": "2026-07-09", "y": 60.9, "label": "GPT-5.6 Sol" }
+  ],
+  "anthropic": [
+    { "t": "2023-03-14", "y": 2.1, "label": "Claude Instant" },
+    { "t": "2023-07-11", "y": 3.6, "label": "Claude 2.0" },
+    { "t": "2024-03-04", "y": 11.8, "label": "Claude 3 Opus" },
+    { "t": "2025-02-24", "y": 27.1, "label": "Claude 3.7 Sonnet" },
+    { "t": "2025-05-22", "y": 31.0, "label": "Claude 4 Opus" },
+    { "t": "2025-08-05", "y": 33.7, "label": "Claude 4.1 Opus" },
+    { "t": "2025-11-24", "y": 40.8, "label": "Claude Opus 4.5" },
+    { "t": "2026-02-05", "y": 43.7, "label": "Claude Opus 4.6" },
+    { "t": "2026-04-16", "y": 53.5, "label": "Claude Opus 4.7" },
+    { "t": "2026-05-28", "y": 55.7, "label": "Claude Opus 4.8" },
+    { "t": "2026-06-09", "y": 59.9, "label": "Claude Fable 5" },
+    { "t": "2026-07-24", "y": 63.0, "label": "Claude Opus 5" }
+  ],
+  "google": [
+    { "t": "2024-05-15", "y": 6.3, "label": "Gemini 1.5 Pro" },
+    { "t": "2025-03-25", "y": 23.0, "label": "Gemini 2.5 Pro Preview" },
+    { "t": "2025-06-05", "y": 25.8, "label": "Gemini 2.5 Pro" },
+    { "t": "2026-02-19", "y": 48.0, "label": "Gemini 3.1 Pro Preview" },
+    { "t": "2026-05-19", "y": 50.2, "label": "Gemini 3.5 Flash (high)" },
+    { "t": "2026-07-21", "y": 52.0, "label": "Gemini 3.6 Flash (high)" },
+    { "t": "2026-08-13", "y": 56.0, "label": "Gemini 3.7 Flash (high)" }
+  ],
+  "xai": [
+    { "t": "2025-02-19", "y": 18.4, "label": "Grok 3" },
+    { "t": "2025-07-10", "y": 34.0, "label": "Grok 4" },
+    { "t": "2026-04-30", "y": 38.0, "label": "Grok 4.3 (high)" },
+    { "t": "2026-07-08", "y": 56.0, "label": "Grok 4.5 (high)" },
+    { "t": "2026-08-12", "y": 61.0, "label": "Grok 4.6 (high)" }
+  ],
+  "deepseek": [
+    { "t": "2024-12-26", "y": 14.2, "label": "DeepSeek V3" },
+    { "t": "2025-01-20", "y": 18.5, "label": "DeepSeek R1" },
+    { "t": "2025-05-28", "y": 20.1, "label": "DeepSeek R1 0528" },
+    { "t": "2025-12-01", "y": 32.0, "label": "DeepSeek V3.2 (Reasoning)" },
+    { "t": "2026-04-24", "y": 44.3, "label": "DeepSeek V4 Pro (max)" },
+    { "t": "2026-07-31", "y": 52.0, "label": "DeepSeek V4 Flash 0731" }
+  ],
+  "note": "GPT-1/2/3 near Index 1 are illustrative (predate AA Index). Other points from Artificial Analysis leaderboard snapshot, model pages, and changelog (v4.1.1 for 2026 frontier). Index methodology shifts over time."
+}
