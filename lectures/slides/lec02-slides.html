@@ -3,38 +3,160 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lecture 2 Slides — Structured Data from Free Text</title>
+  <title>Lecture 2 Slides — Vibe Coding Python</title>
   <link rel="stylesheet" href="../../css/style.css">
-  <link rel="stylesheet" href="../../css/slides.css?v=7">
+  <link rel="stylesheet" href="../../css/slides.css?v=8">
   <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
   <style>
-    .lec02-accent { --hot: #ff4d6d; --teal: #00c2a8; --gold: #ffc857; --grape: #7c5cfc; }
-    .slide-deck-body { overflow: hidden; }
-    .slide { max-height: calc(100vh - 220px); }
-    .slide h1 { font-size: clamp(1.9rem, 4.4vw, 2.55rem); }
+    /* Lec02: short anatomy deck — Yale blue + punchy accents; shared slides.css runs nav/present. */
+    .slide-deck-body {
+      --hot: #ff4d6d;
+      --teal: #00c2a8;
+      --gold: #ffc857;
+      --grape: #7c5cfc;
+      --ink: #08111f;
+      overflow: hidden;
+    }
+    .slide-deck-body nav.site-nav { flex-shrink: 0; position: relative; }
+    .slide {
+      max-width: 980px;
+      max-height: calc(100vh - 210px);
+    }
+    .slide > h1:first-child { margin-top: 0; }
+    .slide h1 {
+      font-size: clamp(1.85rem, 4.4vw, 2.65rem);
+      line-height: 1.12;
+    }
     .slide p, .slide li { font-size: clamp(1.08rem, 2.3vw, 1.28rem); }
-    .joke {
+
+    /* Title slide: one centered cluster. Shared slides.css fullscreen otherwise
+       sets padding:0 and flex:1 on .title-hero, which pins h1 top / name bottom. */
+    .slide.title-slide {
+      background: #000;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      max-width: none;
+      width: 100%;
+      text-align: center;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      max-height: calc(100vh - 210px);
+      box-sizing: border-box;
+    }
+    .slide.title-slide.active {
+      display: flex;
+      padding: 2rem 1.25rem !important;
+    }
+    .slide.title-slide .title-cluster {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.85rem;
+      width: min(100%, 1100px);
+      margin: 0 auto;
+    }
+    .slide.title-slide h1 {
+      font-size: clamp(3.75rem, 9vw, 6.5rem);
+      color: #fff;
+      text-transform: none;
+      letter-spacing: -0.03em;
+      margin: 0;
+      line-height: 1.05;
+      font-weight: 800;
+      border: none;
+      border-left: none;
+      padding: 0;
+      flex: none;
+    }
+    [data-theme="dark"] .slide.title-slide h1 { color: #fff; }
+    .slide.title-slide .title-hero {
+      display: block;
+      width: min(100%, 920px);
+      max-height: min(58vh, 540px);
+      height: auto;
+      margin: 0;
+      object-fit: contain;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      flex: none;
+    }
+    .slide.title-slide .instructor-name {
+      margin: 0;
+      font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+      font-weight: 700;
+      color: #fff;
+      flex: none;
+    }
+
+    html:fullscreen .slide.active.title-slide,
+    html:-webkit-full-screen .slide.active.title-slide,
+    body.is-fullscreen-deck .slide.active.title-slide {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 2.75rem 2rem !important;
+      gap: 0 !important;
+      background: #000 !important;
+    }
+    html:fullscreen .slide.title-slide .title-cluster,
+    html:-webkit-full-screen .slide.title-slide .title-cluster,
+    body.is-fullscreen-deck .slide.title-slide .title-cluster {
+      gap: 1rem;
+      width: min(92vw, 1200px);
+    }
+    html:fullscreen .slide.title-slide h1,
+    html:-webkit-full-screen .slide.title-slide h1,
+    body.is-fullscreen-deck .slide.title-slide h1 {
+      font-size: clamp(4.75rem, 11vh, 8rem) !important;
+      margin: 0 !important;
+      flex: none !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+    html:fullscreen .slide.title-slide .title-hero,
+    html:-webkit-full-screen .slide.title-slide .title-hero,
+    body.is-fullscreen-deck .slide.title-slide .title-hero {
+      flex: none !important;
+      width: min(88vw, 1000px) !important;
+      max-width: 100% !important;
+      max-height: min(58vh, 620px) !important;
+      height: auto !important;
+      margin: 0 !important;
+      object-fit: contain !important;
+    }
+    html:fullscreen .slide.title-slide .instructor-name,
+    html:-webkit-full-screen .slide.title-slide .instructor-name,
+    body.is-fullscreen-deck .slide.title-slide .instructor-name {
+      font-size: clamp(1.5rem, 3.2vh, 2.15rem) !important;
+      margin: 0 !important;
+      flex: none !important;
+    }
+
+    .hot-phrase {
+      color: var(--hot);
+      font-style: normal;
+      font-weight: 800;
+    }
+    .takeaway {
       margin: 0.85rem 0 0;
       padding: 0.7rem 1rem;
-      background: linear-gradient(90deg, #fff3d6, #ffe8f0);
-      border-left: 5px solid #ff4d6d;
+      background: linear-gradient(90deg, #e8eef4, #f0f7ff);
+      border-left: 5px solid var(--yale-blue);
       border-radius: 0 10px 10px 0;
       font-weight: 700;
-      color: #5a2040;
+      color: var(--yale-blue-dark);
     }
-    [data-theme="dark"] .joke {
-      background: linear-gradient(90deg, #3d2a12, #3a1830);
-      color: #ffd6e5;
+    [data-theme="dark"] .takeaway {
+      background: linear-gradient(90deg, #132a45, #1a3354);
+      color: #c8d8ea;
+      border-left-color: var(--teal);
     }
-    .news-card {
-      display: block;
-      width: 100%;
-      max-height: 220px;
-      object-fit: contain;
-      border-radius: 12px;
-      margin: 0.4rem 0 0.5rem;
-      box-shadow: 0 8px 24px rgba(0, 53, 107, 0.18);
-    }
+
     .pill-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.75rem 0; }
     .pill {
       display: inline-block;
@@ -44,51 +166,348 @@
       font-size: 0.95rem;
       color: #fff;
     }
-    .pill-hot { background: #ff4d6d; }
-    .pill-teal { background: #00c2a8; }
+    .pill-hot { background: var(--hot); }
+    .pill-teal { background: var(--teal); color: #08111f; }
     .pill-gold { background: #c98900; }
-    .pill-grape { background: #7c5cfc; }
-    .slide .stat-box .num { font-size: 1.9rem; }
-    .split-llm {
+    .pill-grape { background: var(--grape); }
+    .pill-yale { background: var(--yale-blue); }
+
+    .code-panel {
+      margin: 0.7rem 0;
+      padding: 1rem 1.15rem;
+      background: #0b1628;
+      color: #e8eef4;
+      border-radius: 14px;
+      border: 1px solid rgba(126, 182, 255, 0.18);
+      box-shadow: 0 8px 24px rgba(8, 17, 31, 0.18);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: clamp(0.92rem, 1.9vw, 1.1rem);
+      line-height: 1.45;
+      overflow-x: auto;
+    }
+    .code-panel .cmt { color: #8fa3b8; }
+    .code-panel .kw { color: var(--teal); }
+    .code-panel .str { color: var(--gold); }
+    .code-panel .fn { color: #7eb6ff; }
+    .code-panel.terminal-panel {
+      background: #071018;
+      border-color: rgba(0, 194, 168, 0.28);
+    }
+
+    .split-2 {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 0.7rem;
-      margin: 0.8rem 0;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin: 0.75rem 0;
     }
-    .split-llm div {
+    .split-2 > div {
+      border-radius: 16px;
+      padding: 0.9rem 1rem;
+      min-height: 7.5rem;
+    }
+    .split-2.compare-cards {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.55rem;
+      margin: 0.9rem 0 0.2rem;
+      max-width: 52rem;
+    }
+    .split-2.compare-cards > div:not(.compare-arrow) {
+      border-radius: 18px;
+      padding: 1.05rem 1.15rem;
+      min-height: 0;
+    }
+    .compare-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.85rem;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--yale-blue);
+      user-select: none;
+      min-height: 0 !important;
+      padding: 0 !important;
+      background: transparent !important;
+      border-radius: 0 !important;
+    }
+    [data-theme="dark"] .compare-arrow { color: var(--teal); }
+
+    /* Two-column content + side photo (Python / API keys) */
+    .python-intro-slide,
+    .api-keys-slide,
+    .dash-slide,
+    .json-slide {
+      flex-direction: column;
+    }
+    .slide.python-intro-slide.active,
+    .slide.api-keys-slide.active,
+    .slide.dash-slide.active,
+    .slide.json-slide.active {
+      display: flex;
+    }
+    .python-intro-slide h1,
+    .api-keys-slide h1,
+    .dash-slide h1,
+    .json-slide h1 {
+      flex-shrink: 0;
+    }
+    .lec02-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      gap: 1.15rem;
+      align-items: start;
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      margin-top: 0.25rem;
+    }
+    .lec02-split-copy {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .lec02-split-copy > ul {
+      margin: 0.15rem 0 0.35rem;
+    }
+    .lec02-side-photo {
+      display: block;
+      width: 100%;
+      max-height: min(var(--slide-figure-max-h), var(--slide-figure-max-px));
+      height: auto;
+      object-fit: contain;
+      object-position: center;
+      border-radius: 14px;
+      align-self: center;
+    }
+    .api-keys-slide .lec02-side-photo {
+      max-height: min(42vh, 380px);
+    }
+    .dash-slide .lec02-split {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+      align-items: center;
+    }
+    .dash-slide .lec02-side-photo {
+      max-height: min(52vh, 480px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+    }
+    .dash-slide .code-panel {
+      flex-shrink: 0;
+      font-size: clamp(0.82rem, 1.55vw, 0.98rem);
+    }
+    .venv-slide {
+      flex-direction: column;
+    }
+    .slide.venv-slide.active { display: flex; }
+    .venv-slide h1 { flex-shrink: 0; }
+    .venv-slide .lec02-split {
+      align-items: stretch;
+    }
+    .file-tree {
+      margin: 0;
+      padding: 0.95rem 1.1rem;
+      border-radius: 14px;
+      background: #0b1628;
+      color: #e8eef4;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: clamp(0.88rem, 1.7vw, 1.05rem);
+      line-height: 1.45;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .file-tree .tree-title {
+      display: block;
+      font-weight: 800;
+      color: var(--gold);
+      margin-bottom: 0.45rem;
+    }
+    .file-tree .dir { color: var(--teal); font-weight: 700; }
+    .file-tree .file { color: #c8d8ea; }
+    .file-tree .note { color: #8fa3b8; }
+    [data-theme="dark"] .file-tree { background: #08111f; }
+
+    .split-2 h3 {
+      margin: 0 0 0.4rem;
+      font-size: 1.1rem;
+      color: #fff;
+    }
+    .split-2 p, .split-2 li {
+      margin: 0;
+      font-size: 0.98rem !important;
+      color: #fff !important;
+      line-height: 1.4;
+    }
+    .split-2 ul { margin: 0.3rem 0 0; padding-left: 1.1rem; }
+    .box-once { background: linear-gradient(160deg, #00356b, #286dc0); }
+    .box-every { background: linear-gradient(160deg, #0b6b5a, #00c2a8); }
+    .box-messy { background: linear-gradient(160deg, #5a2040, #ff4d6d); }
+    .box-clean { background: linear-gradient(160deg, #1a3354, #7c5cfc); }
+    .box-clean .json-sample {
+      margin: 0.35rem 0 0;
+      padding: 0;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: clamp(0.92rem, 1.85vw, 1.08rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+    }
+    .box-layout { background: linear-gradient(160deg, #00356b, #286dc0); }
+    .box-callback { background: linear-gradient(160deg, #5c3d00, #c98900); }
+
+    .pkg-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.55rem;
+      margin: 0.7rem 0;
+    }
+    .pkg-card {
       border-radius: 12px;
-      padding: 0.85rem 0.9rem;
-      color: #fff;
-      min-height: 8.5rem;
+      padding: 0.7rem 0.75rem;
+      background: var(--yale-blue-pale);
+      border: 2px solid transparent;
     }
-    .split-llm h3 { margin: 0 0 0.4rem; font-size: 1.05rem; color: #fff; }
-    .split-llm p { font-size: 0.95rem !important; color: #fff !important; margin: 0; line-height: 1.4; }
-    .box-extract { background: linear-gradient(160deg, #00356b, #286dc0); }
-    .box-judge { background: linear-gradient(160deg, #7c5cfc, #ff4d6d); }
-    .box-math { background: linear-gradient(160deg, #0b6b5a, #00c2a8); }
-    .instructor-banner {
-      display: inline-block;
-      margin: 0 0 0.7rem;
-      padding: 0.28rem 0.7rem;
-      border-radius: 999px;
-      background: #ff4d6d;
+    .pkg-card code {
+      display: block;
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--yale-blue);
+      margin-bottom: 0.25rem;
+    }
+    .pkg-card span {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.3;
+    }
+    [data-theme="dark"] .pkg-card { background: #132a45; }
+    [data-theme="dark"] .pkg-card code { color: #7eb6ff; }
+
+    .warn-box {
+      margin: 0.7rem 0 0;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      background: #fff0f3;
+      border: 2px solid var(--hot);
+      font-weight: 700;
+      color: #5a2040;
+    }
+    [data-theme="dark"] .warn-box {
+      background: #3a1830;
+      color: #ffd6e5;
+    }
+
+    .pipeline-slide { flex-direction: column; }
+    .slide.pipeline-slide.active { display: flex; }
+    .pipeline-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 0.45rem;
+      align-items: stretch;
+      margin: 0.6rem 0 0.5rem;
+      width: 100%;
+    }
+    .pipe-stage {
+      border-radius: 14px;
+      padding: 0.9rem 0.75rem;
+      text-align: center;
       color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.35rem;
+    }
+    .pipe-stage .n {
       font-size: 0.78rem;
       font-weight: 800;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
+      opacity: 0.9;
     }
-    .pace-table td:first-child {
+    .pipe-stage .t {
+      font-size: clamp(1rem, 2.1vw, 1.2rem);
       font-weight: 800;
-      white-space: nowrap;
-      width: 5.5rem;
+      line-height: 1.2;
+    }
+    .pipe-stage .d {
+      font-size: 0.88rem;
+      line-height: 1.3;
+      opacity: 0.95;
+    }
+    .flow-slide .pipeline-row {
+      margin-top: 0.85rem;
+    }
+    .flow-slide .flow-label {
+      margin: 0.55rem 0 0;
+      font-size: clamp(0.95rem, 1.9vw, 1.1rem);
+      font-weight: 800;
       color: var(--yale-blue);
     }
-    [data-theme="dark"] .pace-table td:first-child { color: #6ba3e0; }
-    @media (max-width: 720px) { .split-llm { grid-template-columns: 1fr; } }
+    [data-theme="dark"] .flow-slide .flow-label { color: var(--teal); }
+    .pipe-1 { background: linear-gradient(160deg, #5a2040, #ff4d6d); }
+    .pipe-2 { background: linear-gradient(160deg, #00356b, #286dc0); }
+    .pipe-3 { background: linear-gradient(160deg, #0b6b5a, #00c2a8); }
+    .pipe-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--yale-blue);
+    }
+    [data-theme="dark"] .pipe-arrow { color: var(--teal); }
+
+    .agenda-list { list-style: none; padding-left: 0; margin: 0.4rem 0; }
+    .agenda-list li {
+      display: grid;
+      grid-template-columns: 2.2rem 1fr;
+      gap: 0.65rem;
+      align-items: start;
+      margin: 0.4rem 0;
+      font-size: clamp(1rem, 2.1vw, 1.22rem);
+    }
+    .agenda-n {
+      font-weight: 900;
+      color: var(--hot);
+      font-variant-numeric: tabular-nums;
+    }
+    [data-theme="dark"] .agenda-n { color: var(--teal); }
+
+    .section-slide {
+      background: linear-gradient(145deg, var(--yale-blue-dark), var(--yale-blue));
+      color: #fff;
+      text-align: center;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+    }
+    .slide.section-slide.active { display: flex; }
+    .section-slide h1 { color: #fff; }
+    .section-slide p { color: #d6e4f5; margin: 0; max-width: 36rem; }
+    .section-slide a {
+      color: var(--gold);
+      font-weight: 800;
+      font-size: clamp(1.1rem, 2.4vw, 1.35rem);
+    }
+
+    @media (max-width: 720px) {
+      .split-2 { grid-template-columns: 1fr; }
+      .pkg-grid { grid-template-columns: 1fr 1fr; }
+      .pipeline-row {
+        grid-template-columns: 1fr;
+        gap: 0.35rem;
+      }
+      .pipe-arrow { transform: rotate(90deg); padding: 0.1rem 0; }
+      .lec02-split { grid-template-columns: 1fr; }
+      .lec02-side-photo { max-height: 34vh; }
+    }
   </style>
 </head>
-<body class="slide-deck-body lec02-accent">
+<body class="slide-deck-body">
   <nav class="site-nav">
     <ul class="navbar">
       <li><a href="../../index.html">Home</a></li>
@@ -101,252 +520,306 @@
   </nav>
   <header class="slide-deck-header">
     <a href="../../lectures.html">← Lectures</a>
-    <span>Lecture 2: Structured Data from Free Text</span>    <div class="slide-deck-header-end">
+    <span>Lecture 2: Vibe Coding Python</span>
+    <div class="slide-deck-header-end">
       <button type="button" id="present" class="slide-present-btn" aria-pressed="false" aria-label="Start presentation" title="Start presentation">
         <svg class="present-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M12 16v2.5M8 21h8M10 18.5h4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
       </button>
-      <span class="slide-counter">1 / 15</span>
+      <span class="slide-counter">1 / 8</span>
     </div>
   </header>
   <div class="slide-viewport">
 
-      <section class="slide active title-slide" data-slide="1">
-        <h1>Structured Data from Free Text</h1>
-        <p class="subtitle">MGT 409 · Lecture 2 · Tauhid Zaman</p>
-        <p class="subtitle">PDFs do not close the books. JSON might.</p>
-      </section>
+    <!-- 1. Title -->
+    <section class="slide active title-slide" data-slide="1">
+      <div class="title-cluster">
+        <h1>Vibe Coding Python</h1>
+        <img
+          class="title-hero"
+          src="../images/lec02/title-terminator-python.jpg"
+          alt="Photoreal Terminator in a hoodie with a python snake coiled by a laptop"
+          width="1184"
+          height="864"
+        >
+        <p class="instructor-name">Tauhid Zaman</p>
+      </div>
+    </section>
 
-      <section class="slide" data-slide="2">
-        <p class="instructor-banner">Instructor outline — remove before class.</p>
-        <h1>40 minutes, then vibe</h1>
-        <table class="pace-table">
-          <tr><th>Clock</th><th>Beat</th></tr>
-          <tr><td>0–4</td><td>Cold open: last week an API call; this week fields a spreadsheet can eat</td></tr>
-          <tr><td>4–10</td><td>Fluency is not a receipt. ERP / audit / P&amp;L want fields. Gartner pile + IDP TAM</td></tr>
-          <tr><td>10–16</td><td>Homework 1 is a pipeline, not a chatbot — walk the diagram</td></tr>
-          <tr><td>16–22</td><td>JSON is the contract. Two files named “prompts.” Do not mix them</td></tr>
-          <tr><td>22–32</td><td>Spine: LLM extract → LLM recon → Python P&amp;L. One purchase, three docs</td></tr>
-          <tr><td>32–37</td><td>Schema ≠ truth. Validator. Prompt anatomy for the lab</td></tr>
-          <tr><td>37–40</td><td>Handoff: 40-min vibe (P2 miniature) + HW1 map. Do not solve the zip</td></tr>
-        </table>
-        <p class="takeaway">Then 40 minutes of vibe. If you are still on news at minute 18, skip to the pipeline.</p>
-      </section>
-
-      <section class="slide" data-slide="3">
-        <h1>Last week you called an API. This week it has a job.</h1>
-        <ul>
-          <li>Lecture 1: one prompt, one reply, tokens cost money.</li>
-          <li>Lecture 2: force the reply into <strong>fields a spreadsheet can eat</strong>.</li>
-          <li>Homework 1: Spoke &amp; Wrench’s January shoebox → an income statement.</li>
-        </ul>
-        <div class="pill-row">
-          <span class="pill pill-hot">receipts</span>
-          <span class="pill pill-teal">bank PDF</span>
-          <span class="pill pill-gold">credit card</span>
-          <span class="pill pill-grape">emails / notes</span>
-        </div>
-        <p class="takeaway">Unstructured in. Typed rows out.</p>
-      </section>
-
-      <section class="slide" data-slide="4">
-        <h1>The intern who never says “I don’t know”</h1>
-        <div class="stat-grid">
-          <div class="stat-box">
-            <div class="num">ERP</div>
-            <div class="label">Wants vendor, date, amount, account — not a paragraph</div>
-          </div>
-          <div class="stat-box">
-            <div class="num">Audit</div>
-            <div class="label">Wants <code>source_file</code> and a number a human can re-check</div>
-          </div>
-          <div class="stat-box">
-            <div class="num">P&amp;L</div>
-            <div class="label">Wants one booked amount after conflicts are resolved</div>
+    <!-- 2. Python & .py -->
+    <section class="slide python-intro-slide" data-slide="2">
+      <h1>What Is Python?</h1>
+      <div class="lec02-split">
+        <div class="lec02-split-copy">
+          <ul>
+            <li><strong>Python</strong> is a popular coding language
+              <ul>
+                <li>Think of it like an <em class="hot-phrase">execution engine</em> — it runs instructions on your machine.</li>
+              </ul>
+            </li>
+            <li>A Python file has the extension <code>.py</code>
+              <ul>
+                <li>Python files are just text files</li>
+                <li>They are repeatable scripts you can run</li>
+              </ul>
+            </li>
+            <li>You run a Python file to produce outputs (text, plots, images, etc.)</li>
+            <li>Your vibe coder can handle all parts of the Python flow
+              <ul>
+                <li>Write Python files (for sure)</li>
+                <li>Run Python files (if you want)</li>
+              </ul>
+            </li>
+          </ul>
+          <div class="code-panel">
+            <span class="cmt"># extract_leases.py — a reusable SOP</span><br>
+            <span class="kw">def</span> <span class="fn">main</span>():<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;leases = load_pdfs(<span class="str">"sample_leases/"</span>)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;save_json(leases, <span class="str">"leases_data.json"</span>)
           </div>
         </div>
-        <ul>
-          <li>Frontier models are <strong>fluent</strong>. Fluency is not a receipt.</li>
-          <li>Homework 1: missing fields go in <code>fields_not_found</code>. <strong>Do not invent values.</strong></li>
+        <img
+          class="lec02-side-photo"
+          src="../images/lec02/python-snake.jpg"
+          alt="Photoreal ball python coiled beside a laptop showing code"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <!-- 3. Packages -->
+    <section class="slide" data-slide="3">
+      <h1>Python Packages</h1>
+      <ul>
+        <li>Packages are bundles of code that have functions for specific purposes</li>
+        <li>To use a package you need to do two things:</li>
+          <ul>
+            <li>Install the package (do this once)</li>
+            <li>Import the package (do this in your python file)</li>
+          </ul>
         </ul>
-        <p class="takeaway">Fast intern, not a creative bookkeeper. If it is not on the page, it is <code>null</code>.</p>
-      </section>
+      <div class="split-2">
+        <div class="box-once">
+          <h3>Install once (terminal)</h3>
+          <p><code>pip install pandas dash</code></p>
+          <p style="margin-top:0.5rem !important;">Downloads code into your environment. Do this when setting up a project.</p>
+        </div>
+        <div class="box-every">
+          <h3>Import in code</h3>
+          <p><code>import pandas as pd</code></p>
+          <p style="margin-top:0.5rem !important;">Loads the package into <em>this</em> script so you can call its functions.</p>
+        </div>
+      </div>
+      <li>Some useful python packages:</li>
+      <div class="pkg-grid">
+        <div class="pkg-card"><code>python-dotenv</code><span>Load secrets from <code>.env</code></span></div>
+        <div class="pkg-card"><code>openai</code> / <code>google-genai</code><span>Call LLM APIs</span></div>
+        <div class="pkg-card"><code>pydantic</code><span>Validate schemas / types</span></div>
+        <div class="pkg-card"><code>pandas</code><span>Tables &amp; analysis</span></div>
+        <div class="pkg-card"><code>dash</code><span>Interactive web apps</span></div>
+        <div class="pkg-card"><code>plotly</code><span>Charts &amp; maps</span></div>
+      </div>
+    </section>
 
-      <section class="slide" data-slide="5">
-        <h1>The pile is still 70–90% unstructured</h1>
-        <img class="news-card" src="../images/lec02/news-gartner-unstructured.svg" alt="News card: Gartner 2026, 70 to 90 percent of enterprise data is unstructured">
-        <p class="source-note">Gartner MQ for Document Management 2026: 70–90% of enterprise data is unstructured. Fortune Business Insights: IDP $10.57B (2025) → <strong>$14.16B (2026)</strong>, $91B by 2034 — order of magnitude, not a precise TAM. <a href="https://www.gartner.com/reviews/market/document-management">Gartner</a> · <a href="https://www.fortunebusinessinsights.com/intelligent-document-processing-market-108590">Fortune Business Insights</a></p>
-        <p class="joke">Homework 1 is a $14 billion industry wearing a bicycle-shop costume.</p>
-      </section>
-
-      <section class="slide" data-slide="6">
-        <h1>Homework 1 is a pipeline, not a chatbot</h1>
-        <svg class="flow-svg" viewBox="0 0 860 210" aria-label="Homework 1 document pipeline">
-          <defs>
-            <marker id="a2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path class="arrow" d="M0,0 L6,3 L0,6 Z"/></marker>
-          </defs>
-          <rect class="box-light" x="8" y="70" width="118" height="70" rx="8"/>
-          <text x="67" y="100" text-anchor="middle" font-size="13" font-weight="700">PDF pack</text>
-          <text x="67" y="118" text-anchor="middle" font-size="11">receipts / bank / card</text>
-          <line x1="126" y1="105" x2="150" y2="105" stroke="#286dc0" stroke-width="3" marker-end="url(#a2)"/>
-          <rect class="box-dark" x="150" y="18" width="150" height="54" rx="8"/>
-          <text class="on-dark" x="225" y="40" text-anchor="middle" font-size="13">read_receipts</text>
-          <text class="on-dark" x="225" y="58" text-anchor="middle" font-size="11">LLM · P2</text>
-          <rect class="box-dark" x="150" y="80" width="150" height="54" rx="8"/>
-          <text class="on-dark" x="225" y="102" text-anchor="middle" font-size="13">read_bank</text>
-          <text class="on-dark" x="225" y="120" text-anchor="middle" font-size="11">LLM · P3</text>
-          <rect class="box-dark" x="150" y="142" width="150" height="54" rx="8"/>
-          <text class="on-dark" x="225" y="164" text-anchor="middle" font-size="13">read_card</text>
-          <text class="on-dark" x="225" y="182" text-anchor="middle" font-size="11">LLM · P4</text>
-          <line x1="300" y1="105" x2="330" y2="105" stroke="#286dc0" stroke-width="3" marker-end="url(#a2)"/>
-          <rect class="box-dark" x="330" y="70" width="150" height="70" rx="8"/>
-          <text class="on-dark" x="405" y="100" text-anchor="middle" font-size="13">reconcile.py</text>
-          <text class="on-dark" x="405" y="118" text-anchor="middle" font-size="11">LLM · P5</text>
-          <line x1="480" y1="105" x2="508" y2="105" stroke="#286dc0" stroke-width="3" marker-end="url(#a2)"/>
-          <rect class="box-light" x="508" y="70" width="150" height="70" rx="8"/>
-          <text x="583" y="96" text-anchor="middle" font-size="13" font-weight="700">income_statement</text>
-          <text x="583" y="116" text-anchor="middle" font-size="11">Python math · P7</text>
-          <line x1="658" y1="105" x2="686" y2="105" stroke="#286dc0" stroke-width="3" marker-end="url(#a2)"/>
-          <rect class="box-light" x="686" y="70" width="160" height="70" rx="8"/>
-          <text x="766" y="96" text-anchor="middle" font-size="13" font-weight="700">HTML report</text>
-          <text x="766" y="116" text-anchor="middle" font-size="11">P8 + pipeline P9</text>
-        </svg>
-        <p>Dark boxes call the LLM. Light boxes are your code. One script per problem — testable and gradable.</p>
-      </section>
-
-      <section class="slide" data-slide="7">
-        <h1>JSON is the contract</h1>
-        <ul>
-          <li>Name every field. Type every field. Enums beat vibes: <code>business</code> | <code>personal</code>.</li>
-          <li>Missing → <code>null</code> + <code>fields_not_found</code>. Never a creative <code>$0.00</code>.</li>
-          <li>If two PDFs disagree, a recon-log row — not a silent average.</li>
-        </ul>
-        <div class="diagram">{
-  "vendor": "Park Tool",
-  "date": "2026-01-12",
-  "amount_usd": 88.70,
-  "category": "tools_equipment",
-  "source_file": "receipt_park_tool.pdf",
-  "fields_not_found": []
-}</div>
-        <p class="takeaway">A schema that asks for unobservable fields is a hallucination machine.</p>
-      </section>
-
-      <section class="slide" data-slide="8">
-        <h1>Two files both named “prompts.” Do not mix them.</h1>
-        <div class="two-col">
-          <div class="compare-box">
-            <h3><code>prompts/*.md</code></h3>
-            <p>Runtime contracts your <strong>scripts</strong> load. HW1 wants <code>receipts_extract.md</code>, <code>bank_extract.md</code>, <code>card_extract.md</code>, <code>reconcile.md</code>.</p>
+    <!-- 4. API keys & .env -->
+    <section class="slide api-keys-slide" data-slide="4">
+      <h1>API Keys &amp; Security</h1>
+      <div class="lec02-split">
+        <div class="lec02-split-copy">
+          <ul>
+            <li>API — application programming interface</li>
+            <li>Many applications need an <strong>API key</strong> — proof you can bill / access the service.</li>
+            <li>Store keys as <strong>environment variables</strong> in a local <code>.env</code> file — <strong>not in python files!</strong></li>
+            <li>Load them in Python with the <code>python-dotenv</code> package.</li>
+          </ul>
+          <div class="code-panel">
+            <span class="cmt"># .env  (never commit this file)</span><br>
+            PORTKEY_API_KEY=<span class="str">dffds-…</span><br>
+            GEMINI_API_KEY=<span class="str">f433d-…</span><br>
+            STRIPE_API_KEY=<span class="str">jyut-…</span><br>
+            ELEVENLABS_API_KEY=<span class="str">12de-…</span>
           </div>
-          <div class="compare-box">
-            <h3><code>AI_prompts.md</code></h3>
-            <p>The log of what <strong>you typed to Codex/Cursor</strong>, in your own words, problem by problem. Graders read this. Do not paste the assignment URL.</p>
+          <ul>
+            <li>If a key leaks online, treat it as stolen and rotate it immediately
+              <ul>
+                <li>Public sites get scraped for credentials (sometimes <a href="https://openai.com/index/hugging-face-incident-and-the-road-ahead/" target="_blank" rel="noopener noreferrer">by AI</a>)</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <img
+          class="lec02-side-photo"
+          src="../images/lec02/terminator-hack-network.jpg"
+          alt="Photoreal T-800 Terminator hacking into a computer network"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <!-- 5. JSON -->
+    <section class="slide json-slide" data-slide="5">
+      <h1>Structured Data &amp; <code>.json</code> Files</h1>
+      <ul>
+        <li>JSON — JavaScript Object Notation</li>
+        <li>JSON is a text format for structured data (key–value pairs, lists)</li>
+        <li>AI models need a <strong>strict schema</strong> for inputs and outputs
+          <ul>
+            <li>Otherwise you get essays, not rows.</li>
+            <li>For complex agentic flows, we need JSON formats so data can be passed between agents safely</li>
+          </ul>
+        </li>
+      </ul>
+      <div class="split-2 compare-cards">
+        <div class="box-messy">
+          <h3>Messy text</h3>
+          <p>“Tenant ACME Corp pays $42/sf at 100 Chapel St, lease ends Dec 2027…”</p>
+          <p style="margin-top:0.55rem !important;">Human-readable. Machine-hostile.</p>
+        </div>
+        <div class="compare-arrow" aria-hidden="true">↓</div>
+        <div class="box-clean">
+          <h3>Clean JSON object</h3>
+          <pre class="json-sample">{
+  "tenant": "ACME",
+  "rent_psf": 42,
+  "address": "100 Chapel St",
+  "end": "2027-12-31"
+}</pre>
+          <p style="margin-top:0.55rem !important;">Key–value pairs.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Plotly Dash -->
+    <section class="slide dash-slide" data-slide="6">
+      <h1>Dashboards With Dash</h1>
+      <div class="lec02-split">
+        <div class="lec02-split-copy">
+          <ul>
+            <li>We can view the data through a web dashboard</li>
+            <li>Python's Dash package lets us do this easily
+              <ul>
+                <li>Write the app in a file <code>app.py</code></li>
+                <li>Run the file from the terminal</li>
+              </ul>
+            </li>
+          </ul>
+          <div class="code-panel">
+            <span class="cmt"># app.py — a simple Dash app</span><br>
+            <span class="kw">from</span> dash <span class="kw">import</span> Dash, html<br><br>
+            app = Dash(__name__)<br>
+            app.layout = html.Div([<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;html.H1(<span class="str">"Lease Dashboard"</span>),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;html.P(<span class="str">"Filter leases and explore the map."</span>),<br>
+            ])<br><br>
+            <span class="kw">if</span> __name__ == <span class="str">"__main__"</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;app.run(debug=<span class="kw">True</span>)
+          </div>
+          <div class="code-panel terminal-panel">
+            <span class="cmt"># in the terminal, from your project folder</span><br>
+            python app.py<br>
+            <span class="cmt"># → open</span> <span class="str">http://127.0.0.1:8050</span>
           </div>
         </div>
-        <p class="takeaway">One file the script reads. One file the grader reads. Both required.</p>
-      </section>
+        <img
+          class="lec02-side-photo"
+          src="../images/lec02/dash-app-example.png"
+          alt="Example Plotly Dash dashboard with KPI cards and live charts"
+          loading="lazy"
+        >
+      </div>
+    </section>
 
-      <section class="slide" data-slide="9">
-        <h1>Who does which job?</h1>
-        <div class="split-llm">
-          <div class="box-extract">
-            <h3>LLM · extract</h3>
-            <p>Messy PDF text → typed rows. Layout, vendor names, “is this a debit?” Language understanding. P2–P4.</p>
-          </div>
-          <div class="box-judge">
-            <h3>LLM · reconcile</h3>
-            <p>Same purchase on a receipt <em>and</em> a card. Mixed deposits. Emails that explain a mismatch. Written <code>resolution</code>. P5.</p>
-          </div>
-          <div class="box-math">
-            <h3>Python · roll up</h3>
-            <p>Income statement math from the recon log. No LLM. If you hardcode totals, you failed the assignment. P7.</p>
-          </div>
-        </div>
-        <p class="takeaway">Extract with the LLM. Reconcile with the LLM. Add with Python.</p>
-      </section>
-
-      <section class="slide" data-slide="10">
-        <h1>One purchase, three documents</h1>
-        <svg class="flow-svg" viewBox="0 0 860 150" aria-label="Same purchase appearing in three sources">
-          <rect class="box-light" x="20" y="40" width="180" height="70" rx="8"/>
-          <text x="110" y="70" text-anchor="middle" font-size="14" font-weight="700">Receipt PDF</text>
-          <text x="110" y="92" text-anchor="middle" font-size="13">Park Tool  $88.70</text>
-          <rect class="box-light" x="250" y="40" width="180" height="70" rx="8"/>
-          <text x="340" y="70" text-anchor="middle" font-size="14" font-weight="700">Card statement</text>
-          <text x="340" y="92" text-anchor="middle" font-size="13">PARKTOOL  $88.70</text>
-          <rect class="box-light" x="480" y="40" width="180" height="70" rx="8"/>
-          <text x="570" y="70" text-anchor="middle" font-size="14" font-weight="700">Bank line</text>
-          <text x="570" y="92" text-anchor="middle" font-size="13">card payment?</text>
-          <rect class="box-dark" x="700" y="40" width="140" height="70" rx="8"/>
-          <text class="on-dark" x="770" y="70" text-anchor="middle" font-size="14">Book once</text>
-          <text class="on-dark" x="770" y="92" text-anchor="middle" font-size="12">or exclude</text>
-        </svg>
-        <ul>
-          <li>Sum all three and you triple-count. P5 log row = <strong>one reconciled amount</strong>.</li>
-          <li>Owner’s card + shop checking: <code>business</code> vs <code>personal</code> is not a vibe. Show what you excluded.</li>
-          <li>P6: three calls you were least sure about. At least one <code>confidence: low</code>.</li>
-        </ul>
-      </section>
-
-      <section class="slide" data-slide="11">
-        <h1>Schema ≠ truth. Your Python is the adult.</h1>
-        <img class="news-card" src="../images/lec02/news-structured-outputs.svg" alt="News card: Analytics Insight 17 Aug 2026 on OpenAI Structured Outputs">
-        <div class="two-col">
-          <div class="compare-box">
-            <h3>Model</h3>
-            <p>Reads messy layout. Invents enums. Swaps 8 and 3. Writes a novel inside a JSON string.</p>
-          </div>
-          <div class="compare-box">
-            <h3>Your Python</h3>
-            <p>Required keys exist. <code>amount_usd</code> is a number ≥ 0. Date looks like ISO. Category is in the allow-list.</p>
+    <!-- 7. Virtual environment -->
+    <section class="slide venv-slide" data-slide="7">
+      <h1>Virtual Environments</h1>
+      <div class="lec02-split">
+        <div class="lec02-split-copy">
+          <ul>
+            <li>A <strong>virtual environment</strong> keeps a project self-contained</li>
+            <li>It is a folder in your project with its own Python + installed packages</li>
+            <li>Ask your vibe coder to create and use one for you</li>
+            <li>Good software practice
+              <ul>
+                <li>Other people can recreate your project from <code>requirements.txt</code></li>
+                <li>If a package version changes globally, your project is not affected</li>
+              </ul>
+            </li>
+          </ul>
+          <div class="code-panel terminal-panel">
+            <span class="cmt"># create a virtual environment (once)</span><br>
+            python -m venv .venv<br><br>
+            <span class="cmt"># Windows: activate it</span><br>
+            .venv\Scripts\activate<br><br>
+            <span class="cmt"># Mac / Linux: activate it</span><br>
+            source .venv/bin/activate<br><br>
+            <span class="cmt"># then install packages into THIS project only</span><br>
+            pip install -r requirements.txt
           </div>
         </div>
-        <p class="source-note">Analytics Insight, 17 Aug 2026: “Reliable structure does not mean correct facts.” <a href="https://www.analyticsinsight.net/amp/story/openai/openai-structured-outputs-how-to-generate-reliable-json-responses">Analytics Insight</a> · <a href="https://developers.openai.com/api/docs/guides/structured-outputs">OpenAI Structured Outputs</a></p>
-        <p class="takeaway">Constrained decoding will not save you from a hallucinated amount. Fail → retry or park it. Never silently “fix” dollars.</p>
-      </section>
+        <pre class="file-tree" aria-label="Typical .venv folder tree"><span class="tree-title">lec02/</span>app.py
+requirements.txt
+.env                 <span class="note"># secrets — gitignore this</span>
+<span class="dir">.venv/</span>               <span class="note"># created by venv</span>
+├── <span class="dir">Scripts/</span>         <span class="note"># Windows</span>
+│   ├── python.exe
+│   ├── pip.exe
+│   └── activate
+├── <span class="dir">bin/</span>             <span class="note"># Mac / Linux</span>
+│   ├── python
+│   ├── pip
+│   └── activate
+└── <span class="dir">Lib/site-packages/</span>
+    ├── dash/
+    ├── plotly/
+    └── …</pre>
+      </div>
+    </section>
 
-      <section class="slide" data-slide="12">
-        <h1>Extraction prompt anatomy</h1>
-        <ol>
-          <li><strong>Role:</strong> AP clerk for a New Haven bike shop — not “helpful assistant.”</li>
-          <li><strong>Input:</strong> document text + <code>source_file</code> name.</li>
-          <li><strong>Schema:</strong> every field, type, example, enum.</li>
-          <li><strong>Null policy:</strong> if it is not on the page, <code>null</code> + list the field.</li>
-          <li><strong>Output:</strong> JSON only. No markdown fences. No “sure, here you go.”</li>
-        </ol>
-        <p class="takeaway">That file lives in <code>prompts/</code>. The chat you used to write the script lives in <code>AI_prompts.md</code>.</p>
-      </section>
-
-      <section class="slide section-slide" data-slide="13">
-        <h1>→ Vibe coding (~40 min)</h1>
-        <p>One fake receipt → JSON. Prompt file. Validator. Then a miniature recon + Python total.</p>
-        <p>This is a <strong>miniature of HW1 Problems 2 / 5 / 7</strong> — not the Spoke &amp; Wrench zip.</p>
-        <p><a href="../vibe/lec02-vibe.html">Open the in-class prompts →</a></p>
-      </section>
-
-      <section class="slide" data-slide="14">
-        <h1>Homework 1 map (do not solve it from this slide)</h1>
-        <ul>
-          <li><strong>P1</strong> log · <strong>P2–P4</strong> extract receipts / bank / card · <strong>P5</strong> LLM recon log</li>
-          <li><strong>P6</strong> three judgment calls (one must be low confidence) · <strong>P7</strong> Python P&amp;L</li>
-          <li><strong>P8</strong> HTML for humans · <strong>P9</strong> pipeline diagram · <strong>P10</strong> <code>hw1.zip</code></li>
-        </ul>
-        <p>Work <strong>one problem at a time</strong>. Screenshot the card. Do not paste the assignment URL and ask for the complete zip.</p>
-        <p><a href="../../hw1/p1.html">Homework 1, Problem 1 →</a> · data: <a href="../../data/hw1/hw1_spoke_and_wrench.zip">hw1_spoke_and_wrench.zip</a></p>
-      </section>
-
-      <section class="slide" data-slide="15">
-        <h1>What to remember</h1>
-        <ul>
-          <li>Business runs on fields. LLMs map messy text → JSON <em>if</em> the contract is strict.</li>
-          <li>Schema guarantees shape. Code guarantees the number is sane. You guarantee the policy.</li>
-          <li>Extract with the LLM. Reconcile conflicts with the LLM. Add with Python.</li>
-        </ul>
-        <p class="takeaway">Next lecture: give the model <strong>tools</strong> — search, APIs — so it can leave the PDF.</p>
-      </section>
+    <!-- 8. Mapping Your Flow -->
+    <section class="slide pipeline-slide flow-slide" data-slide="8">
+      <h1>Mapping Your Flow</h1>
+      <ul>
+        <li>Before vibe coding, think first — then prompt</li>
+        <li>Sketch:
+          <ul>
+            <li><strong>Type</strong> of project (Python script, Dash app, React, etc.)</li>
+            <li>Project <strong>structure</strong> and <strong>flow</strong></li>
+            <li><strong>Data</strong> needed (an API, or files already on your machine)</li>
+            <li><strong>Keys</strong> you will need (<code>.env</code>)</li>
+            <li><strong>Packages</strong> you will install</li>
+            <li><strong>Styles</strong> you like (layout, colors, chart look)</li>
+          </ul>
+        </li>
+        <li>Draw a <strong>flow diagram</strong> so the AI builds the path you want</li>
+      </ul>
+      <p class="flow-label">Example: Lease Analyzer</p>
+      <div class="pipeline-row" aria-label="Lease vibe coding flow">
+        <div class="pipe-stage pipe-1">
+          <span class="n">1</span>
+          <span class="t">Raw PDF Leases</span>
+          <span class="d"><code>sample_leases.zip</code></span>
+        </div>
+        <div class="pipe-arrow" aria-hidden="true">→</div>
+        <div class="pipe-stage pipe-2">
+          <span class="n">2</span>
+          <span class="t">AI → JSON</span>
+          <span class="d"><code>extract_leases.py</code><br><code>leases_data.json</code></span>
+        </div>
+        <div class="pipe-arrow" aria-hidden="true">→</div>
+        <div class="pipe-stage pipe-3">
+          <span class="n">3</span>
+          <span class="t">Dash Map</span>
+          <span class="d"><code>app.py</code> · portfolio view</span>
+        </div>
+      </div>
+      <p style="margin:0.85rem 0 0;font-size:clamp(1.05rem,2.2vw,1.25rem);font-weight:800">
+        <a href="../vibe/lec02-vibe.html">Open the vibe coding page →</a>
+      </p>
+    </section>
 
   </div>
-  <p class="slide-hint">Swipe or use buttons to advance � projector icon for presentation</p>
+  <p class="slide-hint">Swipe or use buttons to advance · projector icon for presentation</p>
   <footer class="slide-deck-footer">
     <button type="button" id="prev" aria-label="Previous slide">← Previous</button>
     <button type="button" id="next" aria-label="Next slide">Next →</button>

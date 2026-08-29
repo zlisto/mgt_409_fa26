@@ -601,6 +601,7 @@ html:fullscreen .slide .cursor-shot,
 html:fullscreen .slide .cursor-founder-shot,
 html:fullscreen .slide .cursor-email-shot,
 html:fullscreen .slide .slide-media,
+html:fullscreen .slide .lec02-side-photo,
 html:-webkit-full-screen .slide .news-shot,
 html:-webkit-full-screen .slide .covers-photo,
 html:-webkit-full-screen .slide .website-prometheus,
@@ -621,6 +622,7 @@ html:-webkit-full-screen .slide .cursor-shot,
 html:-webkit-full-screen .slide .cursor-founder-shot,
 html:-webkit-full-screen .slide .cursor-email-shot,
 html:-webkit-full-screen .slide .slide-media,
+html:-webkit-full-screen .slide .lec02-side-photo,
 body.is-fullscreen-deck .slide .news-shot,
 body.is-fullscreen-deck .slide .covers-photo,
 body.is-fullscreen-deck .slide .website-prometheus,
@@ -640,7 +642,8 @@ body.is-fullscreen-deck .slide .robot-pigs,
 body.is-fullscreen-deck .slide .cursor-shot,
 body.is-fullscreen-deck .slide .cursor-founder-shot,
 body.is-fullscreen-deck .slide .cursor-email-shot,
-body.is-fullscreen-deck .slide .slide-media {
+body.is-fullscreen-deck .slide .slide-media,
+body.is-fullscreen-deck .slide .lec02-side-photo {
   flex: 1 1 auto;
   min-height: 0;
   width: 100%;

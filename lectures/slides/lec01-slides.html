@@ -21,51 +21,114 @@
       line-height: 1.12;
     }
     .slide p, .slide li { font-size: clamp(1.08rem, 2.3vw, 1.32rem); }
+    /* Title slide: centered .title-cluster (title + hero + name). Beats shared
+       fullscreen padding:0 / title-hero flex:1 that pin text to top/bottom. */
     .slide.title-slide {
       background: #000;
+      border: none;
       border-radius: 0;
-      padding: 1.2rem 1rem 1.1rem;
+      box-shadow: none;
+      max-width: none;
+      width: 100%;
       text-align: center;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 0.55rem;
       max-height: calc(100vh - 210px);
+      box-sizing: border-box;
     }
     .slide.title-slide.active {
       display: flex;
+      padding: 2rem 1.25rem !important;
+    }
+    .slide.title-slide .title-cluster {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.85rem;
+      width: min(100%, 1100px);
+      margin: 0 auto;
     }
     .slide.title-slide h1 {
-      font-size: clamp(1.85rem, 4.8vw, 2.85rem);
+      font-size: clamp(3.75rem, 9vw, 6.5rem);
       color: #fff;
       text-transform: none;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
       margin: 0;
-      line-height: 1.15;
+      line-height: 1.05;
       font-weight: 800;
+      border: none;
+      border-left: none;
+      padding: 0;
+      flex: none;
     }
     [data-theme="dark"] .slide.title-slide h1 { color: #fff; }
-    .slide.title-slide .instructor-name {
-      margin: 0;
-      order: 3;
-      font-size: clamp(1.05rem, 2.2vw, 1.35rem);
-      font-weight: 700;
-      color: #fff;
-    }
     .slide.title-slide .title-hero {
       display: block;
-      order: 2;
-      width: min(100%, 520px);
-      max-height: min(52vh, 460px);
-      margin: 0.15rem auto;
+      width: min(100%, 920px);
+      max-height: min(58vh, 540px);
+      height: auto;
+      margin: 0;
       object-fit: contain;
-      border-radius: 4px;
       border: none;
+      border-radius: 0;
       box-shadow: none;
+      flex: none;
     }
-    [data-theme="dark"] .slide.title-slide .title-hero {
-      box-shadow: none;
+    .slide.title-slide .instructor-name {
+      margin: 0;
+      font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+      font-weight: 700;
+      color: #fff;
+      flex: none;
     }
+
+    html:fullscreen .slide.active.title-slide,
+    html:-webkit-full-screen .slide.active.title-slide,
+    body.is-fullscreen-deck .slide.active.title-slide {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 2.75rem 2rem !important;
+      gap: 0 !important;
+      background: #000 !important;
+    }
+    html:fullscreen .slide.title-slide .title-cluster,
+    html:-webkit-full-screen .slide.title-slide .title-cluster,
+    body.is-fullscreen-deck .slide.title-slide .title-cluster {
+      gap: 1rem;
+      width: min(92vw, 1200px);
+    }
+    html:fullscreen .slide.title-slide h1,
+    html:-webkit-full-screen .slide.title-slide h1,
+    body.is-fullscreen-deck .slide.title-slide h1 {
+      font-size: clamp(4.75rem, 11vh, 8rem) !important;
+      margin: 0 !important;
+      flex: none !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+    html:fullscreen .slide.title-slide .title-hero,
+    html:-webkit-full-screen .slide.title-slide .title-hero,
+    body.is-fullscreen-deck .slide.title-slide .title-hero {
+      flex: none !important;
+      width: min(88vw, 1000px) !important;
+      max-width: 100% !important;
+      max-height: min(58vh, 620px) !important;
+      height: auto !important;
+      margin: 0 !important;
+      object-fit: contain !important;
+    }
+    html:fullscreen .slide.title-slide .instructor-name,
+    html:-webkit-full-screen .slide.title-slide .instructor-name,
+    body.is-fullscreen-deck .slide.title-slide .instructor-name {
+      font-size: clamp(1.5rem, 3.2vh, 2.15rem) !important;
+      margin: 0 !important;
+      flex: none !important;
+    }
+
     .hot-phrase {
       color: var(--hot);
       font-style: normal;
@@ -1180,9 +1243,11 @@
   <div class="slide-viewport">
 
     <section class="slide active title-slide" data-slide="1">
-      <h1>AI Foundations<br>for Managers</h1>
-      <img class="title-hero" src="../../images/prometheus%20AI%20inpaint.jpg" alt="Prometheus bringing AI fire to humanity">
-      <p class="instructor-name">Tauhid Zaman</p>
+      <div class="title-cluster">
+        <h1>AI Foundations<br>for Managers</h1>
+        <img class="title-hero" src="../../images/prometheus%20AI%20inpaint.jpg" alt="Prometheus bringing AI fire to humanity">
+        <p class="instructor-name">Tauhid Zaman</p>
+      </div>
     </section>
 
     <section class="slide" data-slide="2">
