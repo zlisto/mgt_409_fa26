@@ -81,21 +81,16 @@
 
   function updatePresentButton() {
     const btn = document.getElementById("present");
-    const exitBtn = document.getElementById("exit-present");
     const on = isPresentationActive();
 
     if (btn) {
-      btn.hidden = on;
+      btn.hidden = false;
       btn.setAttribute("aria-pressed", on ? "true" : "false");
       btn.setAttribute(
         "aria-label",
         on ? "Exit presentation mode" : "Start presentation"
       );
       btn.title = on ? "Exit presentation" : "Start presentation";
-    }
-
-    if (exitBtn) {
-      exitBtn.hidden = !on;
     }
   }
 
@@ -131,14 +126,6 @@
     updateFullscreenLayout();
   }
 
-  function exitPresentIconSvg() {
-    return (
-      '<svg class="exit-present-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
-      '<path d="M7 7l10 10M17 7L7 17" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"/>' +
-      "</svg>"
-    );
-  }
-
   if (!document.getElementById("present")) {
     const header = document.querySelector(".slide-deck-header");
     const headerEnd = document.createElement("div");
@@ -163,19 +150,6 @@
     presentBtn.dataset.bound = "1";
     presentBtn.addEventListener("click", togglePresentation);
     updatePresentButton();
-  }
-
-  if (!document.getElementById("exit-present")) {
-    const exitBtn = document.createElement("button");
-    exitBtn.type = "button";
-    exitBtn.id = "exit-present";
-    exitBtn.className = "slide-exit-present-btn";
-    exitBtn.innerHTML = exitPresentIconSvg();
-    exitBtn.hidden = true;
-    exitBtn.setAttribute("aria-label", "Exit presentation");
-    exitBtn.title = "Exit presentation";
-    exitBtn.addEventListener("click", exitPresentation);
-    document.body.appendChild(exitBtn);
   }
 
   function onFullscreenChange() {

@@ -324,55 +324,21 @@ body.is-fullscreen-deck .slide-present-btn {
   box-shadow: 0 4px 14px rgba(0, 53, 107, 0.35);
 }
 
-.slide-exit-present-btn {
-  display: none;
-  position: fixed;
-  top: max(0.5rem, env(safe-area-inset-top, 0px));
-  right: max(0.5rem, env(safe-area-inset-right, 0px));
-  z-index: 10002;
-  align-items: center;
-  justify-content: center;
-  width: 2.85rem;
-  height: 2.85rem;
-  padding: 0;
-  border: 2px solid rgba(255, 255, 255, 0.85);
-  border-radius: 999px;
-  background: rgba(8, 17, 31, 0.72);
-  color: #fff;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-  cursor: pointer;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-
-.slide-exit-present-btn:not([hidden]) {
-  display: inline-flex;
-}
-
-.slide-exit-present-btn .exit-present-icon {
-  width: 1.35rem;
-  height: 1.35rem;
-}
-
-.slide-exit-present-btn:hover {
-  background: rgba(8, 17, 31, 0.9);
-}
-
-body.is-fullscreen-deck #present,
-html:fullscreen #present,
-html:-webkit-full-screen #present {
-  display: none !important;
-}
-
-body.is-fullscreen-deck .slide-deck-header-end,
-html:fullscreen .slide-deck-header-end,
-html:-webkit-full-screen .slide-deck-header-end {
-  display: none !important;
-}
+/* During presentation: keep only the projector toggle (tap/F again to exit). */
 html:fullscreen .slide-deck-header,
 html:-webkit-full-screen .slide-deck-header,
 body.is-fullscreen-deck .slide-deck-header {
-  display: none !important;
+  display: block !important;
+  position: fixed;
+  top: max(0.5rem, env(safe-area-inset-top, 0px));
+  right: max(0.5rem, env(safe-area-inset-right, 0px));
+  left: auto;
+  z-index: 10002;
+  width: auto;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 html:fullscreen .slide-deck-header a,
@@ -384,6 +350,18 @@ body.is-fullscreen-deck .slide-deck-header > span {
   display: none !important;
 }
 
+html:fullscreen .slide-deck-header-end,
+html:-webkit-full-screen .slide-deck-header-end,
+body.is-fullscreen-deck .slide-deck-header-end {
+  display: flex !important;
+  position: static;
+  margin: 0;
+  gap: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
 html:fullscreen .slide-deck-header .slide-counter,
 html:-webkit-full-screen .slide-deck-header .slide-counter,
 body.is-fullscreen-deck .slide-deck-header .slide-counter {
@@ -393,9 +371,11 @@ body.is-fullscreen-deck .slide-deck-header .slide-counter {
 html:fullscreen .slide-deck-header .slide-present-btn,
 html:-webkit-full-screen .slide-deck-header .slide-present-btn,
 body.is-fullscreen-deck .slide-deck-header .slide-present-btn {
-  background: var(--yale-blue);
-  border-color: var(--yale-blue-light);
+  display: inline-flex !important;
+  background: rgba(8, 17, 31, 0.72);
+  border: 2px solid rgba(255, 255, 255, 0.85);
   color: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
 }
 
 @media (max-width: 720px) {
@@ -447,18 +427,6 @@ body.is-fullscreen-deck .slide-deck-header .slide-present-btn {
   .slide-deck-header .slide-counter {
     font-size: 0.8rem;
     white-space: nowrap;
-  }
-
-  .slide-exit-present-btn {
-    width: 3rem;
-    height: 3rem;
-    top: max(0.65rem, env(safe-area-inset-top, 0px));
-    right: max(0.65rem, env(safe-area-inset-right, 0px));
-  }
-
-  .slide-exit-present-btn .exit-present-icon {
-    width: 1.5rem;
-    height: 1.5rem;
   }
 
   .slide-viewport {
