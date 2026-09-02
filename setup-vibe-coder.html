@@ -151,16 +151,94 @@
       word-break: break-word;
     }
 
-    .flow {
+    .codebox.config-file {
+      border-color: #3d8b63;
+      background: #0f1f17;
+    }
+
+    .codebox.config-file .codebar {
+      background: #1a3d2b;
+      color: #c8e6d4;
+    }
+
+    .codebox.config-file .codebar .copy {
+      border-color: #5a9e78;
+    }
+
+    .codebox.config-file pre {
+      color: #e8f7ee;
+    }
+
+    [data-theme="dark"] .codebox.config-file {
+      border-color: #4a9e6e;
+      background: #0a1812;
+    }
+
+    [data-theme="dark"] .codebox.config-file .codebar {
+      background: #143322;
+    }
+
+    .prompt-card {
       margin: 0.75rem 0;
-      padding: 0.85rem 1rem;
+      border: 1px solid #c9d6f0;
       border-radius: 8px;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      font-family: var(--font-mono);
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      white-space: pre-wrap;
+      overflow: hidden;
+      background: #eef3fb;
+    }
+
+    .prompt-card-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.4rem 0.75rem;
+      background: #dce8fa;
+      border-bottom: 1px solid #c9d6f0;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--yale-blue);
+    }
+
+    .prompt-card-bar .copy {
+      border: 1px solid #a8bde8;
+      background: #fff;
+      color: var(--yale-blue);
+      border-radius: 6px;
+      padding: 0.2rem 0.55rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .prompt-card-bar .copy:hover {
+      background: #f5f8ff;
+    }
+
+    .prompt-card-body {
+      padding: 0.85rem 1rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-heading);
+    }
+
+    [data-theme="dark"] .prompt-card {
+      background: #1a2438;
+      border-color: #3d5278;
+    }
+
+    [data-theme="dark"] .prompt-card-bar {
+      background: #243352;
+      border-bottom-color: #3d5278;
+      color: #9ec0f5;
+    }
+
+    [data-theme="dark"] .prompt-card-bar .copy {
+      background: #1a2438;
+      border-color: #4a6288;
+      color: #c5daf8;
+    }
+
+    [data-theme="dark"] .prompt-card-body {
+      color: #e8f0fc;
     }
 
     .mini {
@@ -279,9 +357,8 @@
       <a href="#step-5">5. Save Portkey key</a>
       <a href="#step-6">6. Verify key saved</a>
       <a href="#step-7">7. Restart VS Code</a>
-      <a href="#step-8">8. Verify VS Code sees key</a>
-      <a href="#step-9">9. Open Codex</a>
-      <a href="#step-10">10. Test Codex</a>
+      <a href="#step-8">8. Open Codex</a>
+      <a href="#step-9">9. Test Codex</a>
     </nav>
 
     <main class="content setup-page">
@@ -358,7 +435,7 @@
     <section class="setup-step" id="step-4">
       <h2><span class="n">4</span> Configure Codex to use Portkey</h2>
       <p>Paste this into <code>config.toml</code>:</p>
-      <div class="codebox">
+      <div class="codebox config-file">
         <div class="codebar"><span>config.toml</span><button class="copy" type="button">Copy</button></div>
         <pre><code>model = "gpt-5.6-luna"
 model_provider = "portkey"
@@ -422,31 +499,12 @@ env_key = "PORTKEY_API_KEY"</code></pre>
     <section class="setup-step" id="step-7">
       <h2><span class="n">7</span> Completely restart VS Code</h2>
       <p>Close <strong>all VS Code windows</strong>, then reopen VS Code.</p>
-      <p>This matters because the new VS Code process needs to inherit the <code>PORTKEY_API_KEY</code> environment variable.</p>
+      <p>This matters because the new VS Code process needs to inherit the <code>PORTKEY_API_KEY</code> environment variable. Once VS Code is back open, you can talk to Codex.</p>
     </section>
 
     <section class="setup-step" id="step-8">
-      <h2><span class="n">8</span> Verify that VS Code can see the key</h2>
-      <p>Open a new PowerShell terminal in the restarted VS Code and run:</p>
-      <div class="codebox">
-        <div class="codebar"><span>PowerShell</span><button class="copy" type="button">Copy</button></div>
-        <pre><code>if ($env:PORTKEY_API_KEY) {
-    "VS Code can see Portkey key"
-} else {
-    "VS Code cannot see Portkey key"
-}</code></pre>
-      </div>
-      <p>The expected result is:</p>
-      <div class="codebox">
-        <div class="codebar"><span>Expected result</span></div>
-        <pre><code>VS Code can see Portkey key</code></pre>
-      </div>
-    </section>
-
-    <section class="setup-step" id="step-9">
-      <h2><span class="n">9</span> Open Codex</h2>
-      <p>Open the Codex panel.</p>
-      <p>If everything is configured correctly, Codex should no longer require the normal OpenAI login screen.</p>
+      <h2><span class="n">8</span> Open Codex</h2>
+      <p>Open the Codex panel. If everything is configured correctly, Codex should no longer require the normal OpenAI login screen.</p>
       <p>On Windows, Codex may instead say:</p>
       <div class="codebox">
         <div class="codebar"><span>Windows prompt</span></div>
@@ -454,7 +512,7 @@ env_key = "PORTKEY_API_KEY"</code></pre>
       </div>
       <p>Click <strong>Continue</strong> and approve the Windows administrator/UAC prompt if one appears.</p>
       <p>Codex may then automatically add this to <code>config.toml</code>:</p>
-      <div class="codebox">
+      <div class="codebox config-file">
         <div class="codebar"><span>config.toml</span><button class="copy" type="button">Copy</button></div>
         <pre><code>[windows]
 sandbox = "elevated"</code></pre>
@@ -462,19 +520,14 @@ sandbox = "elevated"</code></pre>
       <p>Leave that setting in place.</p>
     </section>
 
-    <section class="setup-step" id="step-10">
-      <h2><span class="n">10</span> Test Codex</h2>
+    <section class="setup-step" id="step-9">
+      <h2><span class="n">9</span> Test Codex</h2>
       <p>Send a simple test message, for example:</p>
-      <div class="codebox">
-        <div class="codebar"><span>Test prompt</span><button class="copy" type="button">Copy</button></div>
-        <pre><code>Reply with exactly: Portkey connection works</code></pre>
+      <div class="prompt-card">
+        <div class="prompt-card-bar"><span>Test prompt</span><button class="copy" type="button">Copy</button></div>
+        <div class="prompt-card-body">Yo</div>
       </div>
-      <p>If Codex responds, the connection is working:</p>
-      <div class="flow">VS Code Codex
-      ↓
-Portkey API
-      ↓
-Configured model</div>
+      <p>If Codex responds, the connection is working.</p>
       <div class="setup-callout ok">
         <p>The default model is <code>gpt-5.6-luna</code> because that is what is specified in <code>config.toml</code>. You can still select another available model from Codex's model picker when needed.</p>
       </div>
@@ -490,9 +543,11 @@ Configured model</div>
   <script>
     document.querySelectorAll(".copy").forEach((button) => {
       button.addEventListener("click", async () => {
-        const code = button.closest(".codebox").querySelector("code").innerText;
+        const container = button.closest(".codebox, .prompt-card");
+        const code = container.querySelector("code");
+        const text = code ? code.innerText : container.querySelector(".prompt-card-body").textContent.trim();
         try {
-          await navigator.clipboard.writeText(code);
+          await navigator.clipboard.writeText(text);
           const old = button.textContent;
           button.textContent = "Copied";
           setTimeout(() => {

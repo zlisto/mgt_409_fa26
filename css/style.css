@@ -221,6 +221,30 @@ main.home {
   text-align: left;
 }
 
+main.setup-page {
+  text-align: left;
+}
+
+main.setup-page h1,
+main.setup-page .setup-lede,
+main.setup-page .setup-callout,
+main.setup-page .setup-callout p,
+main.setup-page .setup-callout li,
+main.setup-page .setup-step,
+main.setup-page .setup-step p,
+main.setup-page .setup-step li,
+main.setup-page .setup-step ol,
+main.setup-page .setup-step ul,
+main.setup-page .setup-video p,
+main.setup-page .mini {
+  text-align: left;
+}
+
+main.setup-page .setup-step ol,
+main.setup-page .setup-step ul {
+  list-style-position: outside;
+}
+
 .home-hero {
   display: flex;
   flex-wrap: wrap;
