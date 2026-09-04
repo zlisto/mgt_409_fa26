@@ -32,6 +32,10 @@ Read this before authoring or editing any lecture deck.
 }
 ```
 
+**Tight bounding box:** The CSS box must match the image aspect ratio (square → square box; 16:9 → wide box). Hug the bitmap — never a big empty rectangle around a smaller picture. For square below-table shots use equal width/height (or `aspect-ratio: 1 / 1`). For landscape, prefer `width: auto; max-width: 100%; max-height: …; margin-inline: auto` — do **not** force `width: 100%` + `object-fit: contain` on a short image.
+
+**Gemini generation:** Fill the frame edge-to-edge, tight crop on the subject. Use **square 1:1** for small below-table / card shots; **16:9** for full-bleed / title heroes. If the model returns the wrong ratio, center-crop before shipping.
+
 **Do not** use fixed pixel-only `max-height` (e.g. `480px`) without a `vh` term — that prevents scaling on tall screens.
 
 **Do not** use `object-fit: cover` on screenshots, charts, or diagrams unless you deliberately want cropping (rare).
