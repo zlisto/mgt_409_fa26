@@ -5,91 +5,982 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lecture 4 Slides — Agents</title>
   <link rel="stylesheet" href="../../css/style.css">
-  <link rel="stylesheet" href="../../css/slides.css?v=7">
+  <link rel="stylesheet" href="../../css/slides.css?v=8">
   <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
   <style>
-    .slide-deck-body { overflow: hidden; }
-    .slide-deck-body .site-nav { flex-shrink: 0; }
-    .slide { max-width: 980px; }
-    .slide h1 { font-size: clamp(1.95rem, 4.4vw, 2.7rem); }
-    .slide p, .slide li { font-size: clamp(1.08rem, 2.3vw, 1.32rem); }
-    .punch { font-size: clamp(1.25rem, 2.8vw, 1.7rem); font-weight: 800; line-height: 1.3; margin: 0.35rem 0 1rem; }
-    .caveat {
-      margin-top: 0.85rem; padding: 0.7rem 0.95rem; border-radius: 10px;
-      background: #fff3c4; border-left: 5px solid #bd9b60; font-weight: 700; font-size: 1.02rem;
+    .slide-deck-body {
+      --hot: #ff4d6d;
+      --teal: #00c2a8;
+      --gold: #ffc857;
+      --grape: #7c5cfc;
+      --ink: #08111f;
+      overflow: hidden;
     }
-    [data-theme="dark"] .caveat { background: #3a2a12; color: #ffe8c8; }
-    .news-card {
-      display: grid; grid-template-columns: 240px 1fr; gap: 1rem; align-items: center;
-      margin: 0.65rem 0; padding: 0.7rem; border-radius: 14px;
-      background: #fff; border: 2px solid #286dc0; text-decoration: none; color: inherit;
+    .slide-deck-body nav.site-nav { flex-shrink: 0; position: relative; }
+    .slide {
+      max-width: 980px;
+      max-height: calc(100vh - 210px);
     }
-    .news-card img { width: 100%; height: 128px; object-fit: cover; border-radius: 10px; background: #0b1220; }
-    .news-card .kicker { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #286dc0; margin: 0 0 0.25rem; }
-    .news-card h3 { margin: 0 0 0.35rem; font-size: 1.12rem; color: var(--yale-blue); line-height: 1.25; }
-    .news-card p { margin: 0; font-size: 0.95rem; }
-    [data-theme="dark"] .news-card { background: #1a2433; border-color: #7c5cff; }
-    [data-theme="dark"] .news-card h3 { color: #fff; }
-    .chip-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.75rem 0 0.25rem; }
-    .chip { background: #00356b; color: #fff; font-weight: 800; font-size: 0.95rem; padding: 0.4rem 0.75rem; border-radius: 999px; }
-    .chip.orange { background: #f4633a; }
-    .chip.gold { background: #bd9b60; color: #1a1208; }
-    .chip.green { background: #0f7b4a; }
-    .chip.pink { background: #c73e82; }
-    .big-no {
-      display: inline-block; background: #c73e82; color: #fff; font-weight: 800;
-      padding: 0.15rem 0.55rem; border-radius: 8px;
+    .slide > h1:first-child { margin-top: 0; }
+    .slide h1 {
+      font-size: clamp(1.85rem, 4.4vw, 2.65rem);
+      line-height: 1.12;
     }
-    .hw-flow { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.4rem; margin: 0.85rem 0; }
-    .hw-flow div {
-      background: #e8eef4; border-radius: 10px; padding: 0.55rem 0.4rem; text-align: center;
-      font-weight: 800; font-size: 0.78rem; line-height: 1.25; color: #00356b;
+    .slide p, .slide li { font-size: clamp(1.08rem, 2.3vw, 1.28rem); }
+
+    .slide.title-slide {
+      background: #000;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      max-width: none;
+      width: 100%;
+      text-align: center;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      max-height: calc(100vh - 170px);
+      box-sizing: border-box;
     }
-    .hw-flow .stop { background: #c73e82; color: #fff; }
-    [data-theme="dark"] .hw-flow div { background: #132a45; color: #d6e6f5; }
-    .role-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.45rem; margin: 0.7rem 0 0.2rem; }
-    .role-grid div {
-      border-radius: 10px; padding: 0.55rem 0.4rem; text-align: center;
-      color: #fff; font-weight: 800; font-size: 0.78rem; line-height: 1.25;
+    .slide.title-slide.active {
+      display: flex;
+      padding: 1.1rem 1.25rem 1.35rem !important;
+      justify-content: center;
     }
-    .role-grid .n { display: block; font-size: 1.35rem; line-height: 1.1; margin-bottom: 0.15rem; }
-    .r-key { background: #0f7b4a; }
-    .r-help { background: #bd9b60; color: #1a1208; }
-    .r-dead { background: #5c7086; }
-    .r-val { background: #286dc0; }
-    .r-write { background: #f4633a; }
-    .bound-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.6rem; align-items: center; margin: 0.7rem 0; }
-    .bound-box { border-radius: 12px; padding: 0.7rem 0.8rem; text-align: center; }
-    .bound-box .n { font-size: 2rem; font-weight: 800; line-height: 1; }
-    .bound-old { background: #e8eef4; color: #00356b; }
-    .bound-new { background: #0f7b4a; color: #fff; }
-    .bound-row .arrow { font-size: 1.6rem; font-weight: 800; color: #286dc0; text-align: center; }
-    [data-theme="dark"] .bound-old { background: #132a45; color: #d6e6f5; }
-    .slide svg.swarm-svg { width: 100%; max-height: 168px; margin: 0.35rem 0 0.15rem; }
-    .instructor-banner {
-      display: inline-block; background: #bd9b60; color: #1a1208; font-weight: 800;
-      font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase;
-      padding: 0.28rem 0.7rem; border-radius: 999px; margin: 0 0 0.7rem;
+    .slide.title-slide .title-cluster {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: min(100%, 1180px);
+      margin: 0 auto;
+      flex: none;
+      min-height: 0;
     }
-    .pace-list { list-style: none; padding-left: 0; margin: 0.4rem 0; }
-    .pace-list li {
-      display: grid; grid-template-columns: 5.6rem 1fr; gap: 0.7rem;
-      align-items: start; margin: 0.45rem 0;
-      font-size: clamp(0.98rem, 2vw, 1.18rem);
+    .slide.title-slide h1 {
+      font-size: clamp(3.5rem, 8.5vw, 6rem);
+      color: #fff;
+      text-transform: none;
+      letter-spacing: -0.03em;
+      margin: 0;
+      line-height: 1.05;
+      font-weight: 800;
+      border: none;
+      border-left: none;
+      padding: 0;
+      flex: none;
     }
-    .pace-min { font-weight: 800; color: #c73e82; font-variant-numeric: tabular-nums; }
-    [data-theme="dark"] .pace-min { color: #ffd166; }
-    .cost-pills { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0.65rem 0 0.35rem; }
-    .cost-pills span {
-      background: #e8eef4; color: #00356b; font-weight: 800; font-size: 0.88rem;
-      padding: 0.4rem 0.7rem; border-radius: 999px;
+    [data-theme="dark"] .slide.title-slide h1 { color: #fff; }
+    .slide.title-slide .title-hero {
+      display: block;
+      width: min(52vh, 480px);
+      height: min(52vh, 480px);
+      max-width: min(100%, 480px);
+      max-height: min(52vh, 480px);
+      aspect-ratio: 1 / 1;
+      margin: 0 auto;
+      object-fit: cover;
+      object-position: center center;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      flex: none;
+      align-self: center;
+      min-height: 0;
     }
-    .cost-pills .hot { background: #c73e82; color: #fff; }
-    [data-theme="dark"] .cost-pills span { background: #132a45; color: #d6e6f5; }
+    .slide.title-slide .instructor-name {
+      margin: 0;
+      font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+      font-weight: 700;
+      color: #fff;
+      flex: none;
+    }
+
+    html:fullscreen .slide.active.title-slide,
+    html:-webkit-full-screen .slide.active.title-slide,
+    body.is-fullscreen-deck .slide.active.title-slide {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 1.4rem 2rem 1.6rem !important;
+      gap: 0 !important;
+      background: #000 !important;
+    }
+    html:fullscreen .slide.title-slide .title-cluster,
+    html:-webkit-full-screen .slide.title-slide .title-cluster,
+    body.is-fullscreen-deck .slide.title-slide .title-cluster {
+      gap: 0.55rem;
+      width: min(94vw, 1280px);
+      flex: none;
+      min-height: 0;
+      justify-content: center;
+    }
+    html:fullscreen .slide.title-slide h1,
+    html:-webkit-full-screen .slide.title-slide h1,
+    body.is-fullscreen-deck .slide.title-slide h1 {
+      font-size: clamp(4.25rem, 9.5vh, 7rem) !important;
+      margin: 0 !important;
+      flex: none !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+    html:fullscreen .slide.title-slide .title-hero,
+    html:-webkit-full-screen .slide.title-slide .title-hero,
+    body.is-fullscreen-deck .slide.title-slide .title-hero {
+      flex: none !important;
+      width: min(58vh, 520px) !important;
+      height: min(58vh, 520px) !important;
+      max-width: min(70vw, 520px) !important;
+      max-height: min(58vh, 520px) !important;
+      aspect-ratio: 1 / 1 !important;
+      margin: 0 auto !important;
+      object-fit: cover !important;
+      object-position: center center !important;
+      align-self: center !important;
+      min-height: 0 !important;
+    }
+    html:fullscreen .slide.title-slide .instructor-name,
+    html:-webkit-full-screen .slide.title-slide .instructor-name,
+    body.is-fullscreen-deck .slide.title-slide .instructor-name {
+      font-size: clamp(1.5rem, 3.2vh, 2.15rem) !important;
+      margin: 0 !important;
+      flex: none !important;
+    }
+
+    .hot-phrase {
+      color: var(--hot);
+      font-style: normal;
+      font-weight: 800;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+      margin: 0.7rem 0 0.35rem;
+    }
+    .info-card {
+      border-radius: 14px;
+      padding: 0.85rem 1rem;
+      color: #fff;
+    }
+    .info-card h3 {
+      margin: 0 0 0.35rem;
+      font-size: 1.05rem;
+      color: #fff;
+    }
+    .info-card p, .info-card li {
+      margin: 0;
+      font-size: 0.95rem !important;
+      color: #fff !important;
+      line-height: 1.35;
+    }
+    .info-card ul { margin: 0.25rem 0 0; padding-left: 1.1rem; }
+    .card-hot { background: linear-gradient(160deg, #5a2040, #ff4d6d); }
+    .card-yale { background: linear-gradient(160deg, #00356b, #286dc0); }
+    .card-teal { background: linear-gradient(160deg, #0b6b5a, #00c2a8); }
+    .card-grape { background: linear-gradient(160deg, #3a2060, #7c5cfc); }
+    .card-gold { background: linear-gradient(160deg, #5c3d00, #c98900); }
+
+    .compare-slide {
+      flex-direction: column;
+    }
+    .slide.compare-slide.active { display: flex; }
+    .compare-slide h1 { flex-shrink: 0; }
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      width: 100%;
+      margin: 0.45rem 0 0;
+      flex: 0 0 auto;
+      min-height: 0;
+      align-content: start;
+    }
+    .compare-grid .info-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      min-height: 0;
+      padding: 1rem 1.1rem 1.15rem;
+    }
+    .compare-grid .info-card h3 {
+      font-size: clamp(1.35rem, 2.8vw, 1.7rem);
+      margin-bottom: 0.55rem;
+    }
+    .compare-grid .info-card li {
+      font-size: clamp(1.05rem, 2.2vw, 1.28rem) !important;
+      margin: 0.35rem 0;
+    }
+    .compare-grid .info-card li.agent-new,
+    .compare-grid .info-card li.agent-new strong {
+      color: #ffe08a;
+    }
+    [data-theme="dark"] .compare-grid .info-card li.agent-new,
+    [data-theme="dark"] .compare-grid .info-card li.agent-new strong {
+      color: #ffd76a;
+    }
+    .compare-pics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      width: 100%;
+      margin: 0.55rem 0 0;
+      flex: 1;
+      min-height: 0;
+      align-items: center;
+    }
+    .compare-pics .compare-shot {
+      width: min(100%, 390px);
+      height: auto;
+      aspect-ratio: 1 / 1;
+      max-height: min(57vh, 420px);
+      object-fit: cover;
+      border-radius: 12px;
+      margin: 0 auto;
+      display: block;
+    }
+
+    .skills-roomy {
+      flex-direction: column;
+    }
+    .slide.skills-roomy.active { display: flex; }
+    .skills-roomy > ul {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.55rem;
+      margin: 0.35rem 0 0;
+    }
+    .skills-roomy > ul > li {
+      font-size: clamp(1.28rem, 2.8vw, 1.65rem);
+      line-height: 1.35;
+    }
+    .slide.think-overview > ul {
+      gap: 1rem;
+    }
+    .slide.think-overview > ul > li {
+      font-size: clamp(1.55rem, 3.4vw, 2.05rem);
+      line-height: 1.4;
+    }
+    .slide.think-overview .skills-split-copy li {
+      font-size: clamp(1.35rem, 2.9vw, 1.75rem) !important;
+      line-height: 1.4;
+    }
+    .slide.think-overview .skills-split .square-shot {
+      width: min(100%, 360px);
+      max-height: min(52vh, 380px);
+    }
+    .skills-roomy > ul.lead-line {
+      flex: 0;
+      margin: 0.25rem 0 0;
+    }
+    .skills-roomy .card-grid {
+      flex: 1;
+      align-content: center;
+      gap: 1rem;
+      margin: 0.5rem 0 0;
+    }
+    .skills-roomy .info-card h3 {
+      font-size: clamp(1.35rem, 2.8vw, 1.75rem);
+    }
+    .skills-roomy .info-card li {
+      font-size: clamp(1.15rem, 2.4vw, 1.4rem);
+      margin: 0.35rem 0;
+    }
+    .skills-roomy > ul ul {
+      margin: 0.25rem 0 0.15rem;
+      padding-left: 1.25rem;
+    }
+    .skills-roomy > ul ul > li {
+      font-size: clamp(1.05rem, 2.2vw, 1.28rem);
+      margin: 0.2rem 0;
+    }
+
+    .section-slide {
+      background: linear-gradient(145deg, var(--yale-blue-dark), var(--yale-blue));
+      color: #fff;
+      text-align: center;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+    }
+    .slide.section-slide.active { display: flex; }
+    .section-slide h1 { color: #fff; border: none; }
+    .section-slide p { color: #d6e4f5; margin: 0; max-width: 38rem; }
+    .section-slide a {
+      color: var(--gold);
+      font-weight: 800;
+      font-size: clamp(1.1rem, 2.4vw, 1.35rem);
+    }
+
+    /* —— Highlights —— */
+    .hl-blue { background: #b3d4fc; color: inherit; border-radius: 2px; padding: 0 0.12em; }
+    .hl-green { background: #b8e6c9; color: inherit; border-radius: 2px; padding: 0 0.12em; }
+    .hl-pink { background: #f5c6cb; color: inherit; border-radius: 2px; padding: 0 0.12em; }
+    [data-theme="dark"] .hl-blue { background: #2a4a78; color: #dce9ff; }
+    [data-theme="dark"] .hl-green { background: #1e5a3a; color: #d4f5e2; }
+    [data-theme="dark"] .hl-pink { background: #6a3040; color: #ffd6dc; }
+
+    .tok-blue { color: #286dc0; font-weight: 700; }
+    [data-theme="dark"] .tok-blue { color: #7eb6ff; }
+
+    .mark-x, .mark-ok {
+      position: absolute;
+      right: 0.45rem;
+      bottom: 0.2rem;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 900;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .mark-x { color: #d32f2f; }
+    .mark-ok { color: #0f7b4a; }
+    [data-theme="dark"] .mark-ok { color: #3dd68c; }
+
+    /* —— HF incident quote slides —— */
+    .incident-quote-slide { flex-direction: column; justify-content: flex-start; }
+    .slide.incident-quote-slide.active { display: flex; }
+    .incident-quote-slide h1 { flex-shrink: 0; }
+    .incident-quote-slide > ul {
+      flex: 0 0 auto !important;
+      margin: 0.25rem 0 0.65rem !important;
+      justify-content: flex-start !important;
+      gap: 0.35rem !important;
+    }
+    .incident-quote-slide .incident-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(0, 0.7fr);
+      gap: 0.85rem;
+      width: 100%;
+      margin: 0.25rem 0 0;
+      align-items: start;
+      flex: 0 0 auto;
+    }
+    .incident-quote-slide .incident-split-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      min-width: 0;
+    }
+    .incident-quote-slide .incident-split-copy > ul {
+      margin: 0 !important;
+    }
+    .incident-quote-slide .incident-split .square-shot {
+      width: min(100%, 260px);
+      height: auto;
+      aspect-ratio: 1 / 1;
+      max-height: min(36vh, 280px);
+      object-fit: cover;
+      border-radius: 12px;
+      margin: 0.2rem auto 0;
+      display: block;
+    }
+    .incident-quote-slide .cot-card {
+      max-width: none;
+      padding: 0.65rem 0.75rem 0.7rem;
+    }
+    .cot-meaning-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      margin: 0;
+      font-size: clamp(0.72rem, 1.35vw, 0.92rem);
+      line-height: 1.28;
+    }
+    .cot-meaning-table th,
+    .cot-meaning-table td {
+      padding: 0.35rem 0.45rem;
+      vertical-align: top;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+      word-wrap: break-word;
+      overflow-wrap: anywhere;
+    }
+    .cot-meaning-table tr:last-child th,
+    .cot-meaning-table tr:last-child td {
+      border-bottom: none;
+    }
+    .cot-meaning-table thead th:nth-child(1),
+    .cot-meaning-table tbody th {
+      width: 8%;
+      font-weight: 800;
+      color: #ffe08a;
+      white-space: nowrap;
+      font-size: 0.85em;
+    }
+    .cot-meaning-table thead th:nth-child(2),
+    .cot-meaning-table thead th:nth-child(3) {
+      width: 46%;
+      font-weight: 800;
+      color: #ffe08a;
+      font-size: 0.9em;
+      white-space: normal;
+    }
+    .cot-meaning-table td.cot-q {
+      font-weight: 700;
+      color: #fff;
+      width: 46%;
+    }
+    .cot-meaning-table td.cot-m {
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+      width: 46%;
+    }
+    .cot-meaning-table.board-timeline thead th:nth-child(1),
+    .cot-meaning-table.board-timeline tbody th {
+      width: 18%;
+      white-space: normal;
+    }
+    .cot-meaning-table.board-msgs {
+      font-size: clamp(0.78rem, 1.45vw, 1.02rem);
+    }
+    .cot-meaning-table.board-msgs thead th:nth-child(1),
+    .cot-meaning-table.board-msgs thead th:nth-child(2),
+    .cot-meaning-table.board-msgs td.cot-q,
+    .cot-meaning-table.board-msgs td.cot-m {
+      width: 50%;
+    }
+    .cot-meaning-table.board-msgs thead th {
+      font-size: clamp(0.92rem, 1.65vw, 1.15rem) !important;
+      padding: 0.35rem 0.45rem;
+    }
+    .cot-meaning-table.board-msgs td.cot-q {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-weight: 700;
+      font-size: clamp(0.82rem, 1.5vw, 1.05rem);
+      line-height: 1.28;
+    }
+    .cot-meaning-table.board-msgs td.cot-m {
+      font-size: clamp(0.78rem, 1.4vw, 0.98rem);
+      line-height: 1.28;
+    }
+    .cot-meaning-table.board-msgs th,
+    .cot-meaning-table.board-msgs td {
+      padding: 0.28rem 0.4rem;
+    }
+    .incident-quote-slide.board-sideways .incident-split {
+      flex: 1;
+      align-items: stretch;
+      grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.75fr);
+    }
+    .incident-quote-slide.board-sideways .incident-split .square-shot {
+      width: min(100%, 320px);
+      max-height: min(48vh, 360px);
+      margin: 0.35rem auto;
+      align-self: center;
+    }
+    .incident-quote-slide.board-sideways .incident-split-copy > ul > li {
+      font-size: clamp(1.05rem, 2vw, 1.28rem) !important;
+      margin: 0.28rem 0;
+    }
+    html:fullscreen .incident-quote-slide.board-sideways .incident-split-copy > ul > li,
+    html:-webkit-full-screen .incident-quote-slide.board-sideways .incident-split-copy > ul > li,
+    body.is-fullscreen-deck .incident-quote-slide.board-sideways .incident-split-copy > ul > li {
+      font-size: clamp(1.25rem, 2.2vh, 1.55rem) !important;
+    }
+    html:fullscreen .cot-meaning-table.board-msgs,
+    html:-webkit-full-screen .cot-meaning-table.board-msgs,
+    body.is-fullscreen-deck .cot-meaning-table.board-msgs {
+      font-size: clamp(1rem, 1.8vh, 1.22rem) !important;
+    }
+    html:fullscreen .cot-meaning-table.board-msgs thead th,
+    html:-webkit-full-screen .cot-meaning-table.board-msgs thead th,
+    body.is-fullscreen-deck .cot-meaning-table.board-msgs thead th {
+      font-size: clamp(1.12rem, 2.05vh, 1.38rem) !important;
+    }
+    html:fullscreen .cot-meaning-table.board-msgs td.cot-q,
+    html:-webkit-full-screen .cot-meaning-table.board-msgs td.cot-q,
+    body.is-fullscreen-deck .cot-meaning-table.board-msgs td.cot-q {
+      font-size: clamp(1.08rem, 1.95vh, 1.3rem) !important;
+    }
+    .cot-meaning-table.board-timeline thead th:nth-child(2),
+    .cot-meaning-table.board-timeline td.cot-q {
+      width: 22%;
+    }
+    .cot-meaning-table.board-timeline thead th:nth-child(3),
+    .cot-meaning-table.board-timeline td.cot-m {
+      width: 60%;
+    }
+    .cot-meaning-table tr.cheat-row td.cot-q {
+      color: #ffd0d8;
+    }
+    .cot-card .cot-cite {
+      color: rgba(255, 255, 255, 0.78);
+      margin-top: 0.45rem;
+    }
+    .cot-card .cot-cite a {
+      color: #ffe08a;
+    }
+    .cot-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin: 0.45rem 0 0;
+      width: 100%;
+      max-width: 48rem;
+    }
+    .cot-line {
+      margin: 0;
+      padding: 0.65rem 0.9rem;
+      border-left: 4px solid var(--yale-blue);
+      background: rgba(0, 53, 148, 0.06);
+      border-radius: 0 8px 8px 0;
+      font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+      font-weight: 700;
+      line-height: 1.35;
+      color: var(--yale-blue);
+    }
+    .cot-line.cheat { border-left-color: #c62828; background: rgba(198, 40, 40, 0.08); color: #9b1c1c; }
+    .cot-line.board { border-left-color: #0f7b4a; background: rgba(15, 123, 74, 0.08); color: #0a5c38; }
+    [data-theme="dark"] .cot-line {
+      background: rgba(126, 200, 255, 0.1);
+      color: #7ec8ff;
+      border-left-color: #7ec8ff;
+    }
+    [data-theme="dark"] .cot-line.cheat {
+      background: rgba(255, 120, 120, 0.12);
+      color: #ffb4b4;
+      border-left-color: #ff8a8a;
+    }
+    [data-theme="dark"] .cot-line.board {
+      background: rgba(61, 214, 140, 0.12);
+      color: #8dffc0;
+      border-left-color: #3dd68c;
+    }
+    .incident-source {
+      margin: 0.55rem 0 0;
+      font-size: clamp(0.78rem, 1.4vw, 0.92rem);
+      color: var(--text-muted);
+      line-height: 1.4;
+      flex: 0 0 auto;
+    }
+    .incident-source a {
+      color: var(--yale-blue);
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    [data-theme="dark"] .incident-source a { color: #7ec8ff; }
+    .cot-cite {
+      display: block;
+      margin-top: 0.25rem;
+      font-size: clamp(0.72rem, 1.25vw, 0.85rem);
+      font-weight: 600;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+    .cot-cite a {
+      color: var(--yale-blue);
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    [data-theme="dark"] .cot-cite a { color: #7ec8ff; }
+
+    /* —— Slide 5: CoT compare —— */
+    .cot-slide { flex-direction: column; }
+    .slide.cot-slide.active { display: flex; }
+    .cot-slide h1 { flex-shrink: 0; }
+    .cot-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      width: 100%;
+      margin: 0.35rem 0 0;
+      flex: 1;
+      min-height: 0;
+    }
+    .cot-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      min-width: 0;
+      min-height: 0;
+    }
+    .cot-col > h2 {
+      margin: 0;
+      font-size: clamp(0.95rem, 2vw, 1.2rem);
+      font-weight: 800;
+      text-align: center;
+      color: var(--ink);
+    }
+    [data-theme="dark"] .cot-col > h2 { color: #e8eef4; }
+    .cot-box {
+      border: 1px solid #c8d0da;
+      border-radius: 10px;
+      background: #fff;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      flex: 0 0 auto;
+    }
+    .cot-box.cot-output { flex: 0 0 auto; }
+    .cot-box.cot-input { flex: 0 1 auto; }
+    [data-theme="dark"] .cot-box {
+      background: #0f1a2a;
+      border-color: rgba(126, 182, 255, 0.22);
+    }
+    .cot-label {
+      display: inline-block;
+      align-self: flex-start;
+      margin: 0.45rem 0 0 0.55rem;
+      padding: 0.18rem 0.55rem;
+      border-radius: 6px;
+      font-size: clamp(0.78rem, 1.5vw, 0.95rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.01em;
+    }
+    .cot-label.input { background: #286dc0; }
+    .cot-label.output { background: #0f7b4a; }
+    .cot-body {
+      margin: 0;
+      padding: 0.4rem 0.7rem 0.6rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: clamp(0.78rem, 1.55vw, 1.02rem);
+      line-height: 1.38;
+      color: #1a2330;
+      white-space: pre-wrap;
+      flex: 0 0 auto;
+      overflow: visible;
+    }
+    [data-theme="dark"] .cot-body { color: #dce7f5; }
+    .cot-out-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.35rem;
+      position: relative;
+      padding-right: 2.2rem;
+    }
+
+    /* —— Slide 6: ReAct loop —— */
+    .figure-with-bullets { flex-direction: column; }
+    .slide.figure-with-bullets.active { display: flex; }
+    .figure-with-bullets h1 { flex-shrink: 0; }
+    .figure-with-bullets > ul {
+      flex-shrink: 0;
+      margin: 0.25rem 0 0.45rem;
+      gap: 0.35rem;
+    }
+    .figure-with-bullets > ul > li {
+      font-size: clamp(1.45rem, 3.1vw, 1.85rem);
+      line-height: 1.35;
+    }
+    .react-loop {
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      max-height: none;
+      margin: 0.1rem 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      background: #1e2124;
+      padding: 0.65rem;
+    }
+    .react-loop svg {
+      width: min(100%, 780px);
+      height: auto;
+      max-height: min(62vh, 560px);
+    }
+    [data-theme="dark"] .react-loop { background: #12151a; }
+
+    html:fullscreen .figure-with-bullets > ul > li,
+    html:-webkit-full-screen .figure-with-bullets > ul > li,
+    body.is-fullscreen-deck .figure-with-bullets > ul > li {
+      font-size: clamp(1.65rem, 3vh, 2.1rem) !important;
+    }
+    html:fullscreen .react-loop svg,
+    html:-webkit-full-screen .react-loop svg,
+    body.is-fullscreen-deck .react-loop svg {
+      width: min(92vw, 900px) !important;
+      max-height: min(68vh, 620px) !important;
+    }
+
+    /* —— Slides 7–11: ReAct progressive panels —— */
+    .react-build {
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .slide.react-build.active { display: flex; }
+    .react-build h1 { flex-shrink: 0; margin-bottom: 0.15rem; }
+    .react-stack {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      width: 100%;
+    }
+    .react-grid {
+      display: grid;
+      gap: 0.55rem;
+      flex: 1;
+      min-height: 0;
+      align-content: start;
+    }
+    .react-grid.cols-1 { grid-template-columns: minmax(0, 1fr); max-width: 42%; }
+    .react-grid.cols-2 { grid-template-columns: 1fr 1.35fr; }
+    .react-grid.cols-3 { grid-template-columns: 0.7fr 1.15fr 1.35fr; }
+    .react-panel {
+      position: relative;
+      background: #fff;
+      border: 1.5px solid #2a3340;
+      border-radius: 12px;
+      padding: 1.05rem 0.75rem 0.65rem;
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    [data-theme="dark"] .react-panel {
+      background: #0b1628;
+      border-color: rgba(126, 182, 255, 0.28);
+    }
+    .react-panel .tab {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -55%);
+      background: #fff;
+      border: 1.5px solid #2a3340;
+      border-radius: 6px;
+      padding: 0.12rem 0.55rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: clamp(0.62rem, 1.2vw, 0.78rem);
+      font-weight: 800;
+      white-space: nowrap;
+      color: #111;
+      line-height: 1.2;
+    }
+    [data-theme="dark"] .react-panel .tab {
+      background: #132038;
+      border-color: rgba(126, 182, 255, 0.35);
+      color: #e8eef4;
+    }
+    .react-panel .panel-body {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: clamp(0.58rem, 1.15vw, 0.82rem);
+      line-height: 1.35;
+      color: #1a2330;
+      white-space: pre-wrap;
+      overflow: auto;
+      flex: 1;
+      padding-right: 1.6rem;
+    }
+    [data-theme="dark"] .react-panel .panel-body { color: #dce7f5; }
+    .react-panel.question-panel .panel-body {
+      font-size: clamp(0.72rem, 1.45vw, 0.95rem);
+      padding-right: 0.35rem;
+    }
+    .react-build.react-compare-3 .react-panel .tab {
+      font-size: clamp(0.78rem, 1.5vw, 0.98rem);
+      padding: 0.18rem 0.65rem;
+    }
+    .react-build.react-compare-3 .react-panel.question-panel .panel-body {
+      font-size: clamp(0.95rem, 1.9vw, 1.25rem);
+      line-height: 1.4;
+    }
+    .react-build.react-compare-3 .react-panel .panel-body {
+      font-size: clamp(0.78rem, 1.55vw, 1.05rem);
+      line-height: 1.38;
+    }
+    .react-build.react-compare-3 .react-grid.cols-3 {
+      grid-template-columns: 0.85fr 1.2fr 1.35fr;
+      flex: 1;
+    }
+    .react-build.react-compare-3 .react-stack { gap: 0.7rem; }
+    html:fullscreen .react-build.react-compare-3 .react-panel .panel-body,
+    html:-webkit-full-screen .react-build.react-compare-3 .react-panel .panel-body,
+    body.is-fullscreen-deck .react-build.react-compare-3 .react-panel .panel-body {
+      font-size: clamp(0.9rem, 1.7vh, 1.15rem) !important;
+    }
+    html:fullscreen .react-build.react-compare-3 .react-panel.question-panel .panel-body,
+    html:-webkit-full-screen .react-build.react-compare-3 .react-panel.question-panel .panel-body,
+    body.is-fullscreen-deck .react-build.react-compare-3 .react-panel.question-panel .panel-body {
+      font-size: clamp(1.05rem, 2vh, 1.35rem) !important;
+    }
+    /* ReAct success — fill a ~14" laptop slide */
+    .react-build.react-success .react-stack { gap: 0.75rem; }
+    .react-build.react-success .react-panel .tab {
+      font-size: clamp(0.85rem, 1.65vw, 1.05rem);
+      padding: 0.2rem 0.7rem;
+    }
+    .react-build.react-success .react-panel.question-panel .panel-body {
+      font-size: clamp(1.05rem, 2.05vw, 1.35rem);
+      line-height: 1.42;
+    }
+    .react-build.react-success .react-panel.ok {
+      flex: 1;
+      min-height: 0;
+    }
+    .react-build.react-success .react-panel.ok .panel-body {
+      font-size: clamp(0.92rem, 1.75vw, 1.18rem);
+      line-height: 1.42;
+    }
+    html:fullscreen .react-build.react-success .react-panel.ok .panel-body,
+    html:-webkit-full-screen .react-build.react-success .react-panel.ok .panel-body,
+    body.is-fullscreen-deck .react-build.react-success .react-panel.ok .panel-body {
+      font-size: clamp(1.05rem, 2vh, 1.35rem) !important;
+    }
+    html:fullscreen .react-build.react-success .react-panel.question-panel .panel-body,
+    html:-webkit-full-screen .react-build.react-success .react-panel.question-panel .panel-body,
+    body.is-fullscreen-deck .react-build.react-success .react-panel.question-panel .panel-body {
+      font-size: clamp(1.15rem, 2.2vh, 1.45rem) !important;
+    }
+    .react-panel.fail { padding-bottom: 1.5rem; }
+    .react-panel.ok { padding-bottom: 1.5rem; }
+
+    /* —— Slides 15–19: code panels —— */
+    .code-teach {
+      flex-direction: column;
+    }
+    .slide.code-teach.active { display: flex; }
+    .code-teach h1 { flex-shrink: 0; }
+    .code-teach > ul {
+      flex-shrink: 0;
+      margin: 0.15rem 0 0.4rem;
+    }
+    .code-teach > ul > li {
+      font-size: clamp(1.05rem, 2.2vw, 1.32rem);
+      margin: 0.25rem 0;
+    }
+    .code-panel {
+      margin: 0.15rem 0 0;
+      padding: 1rem 1.15rem;
+      background: #0b1628;
+      color: #e8eef4;
+      border-radius: 14px;
+      border: 1px solid rgba(126, 182, 255, 0.18);
+      box-shadow: 0 8px 24px rgba(8, 17, 31, 0.18);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: clamp(0.95rem, 1.9vw, 1.28rem);
+      line-height: 1.48;
+      overflow: auto;
+      flex: 1 1 auto;
+      min-height: 0;
+      white-space: pre-wrap;
+    }
+    .code-panel .tok-cmt { color: #8fa3b8; }
+    .code-panel .tok-key { color: var(--teal); }
+    .code-panel .tok-str { color: #f0a0b8; }
+    .code-panel .tok-fn { color: var(--gold); }
+    .code-panel .tok-type { color: #7eb6ff; }
+    [data-theme="dark"] .code-panel { background: #071018; }
+    .run-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      flex: 1;
+      min-height: 0;
+      margin-top: 0.25rem;
+      justify-content: center;
+    }
+    .run-step > p {
+      margin: 0 0 0.25rem;
+      font-size: clamp(1.05rem, 2.2vw, 1.28rem);
+      font-weight: 700;
+    }
+    .run-step .code-panel {
+      flex: 0 0 auto;
+      margin: 0;
+      padding: 0.55rem 0.85rem;
+      font-size: clamp(0.68rem, 1.35vw, 0.9rem);
+    }
+
+    html:fullscreen .skills-roomy > ul > li,
+    html:-webkit-full-screen .skills-roomy > ul > li,
+    body.is-fullscreen-deck .skills-roomy > ul > li {
+      font-size: clamp(1.55rem, 2.6vh, 2.05rem) !important;
+    }
+    html:fullscreen .think-overview > ul > li,
+    html:-webkit-full-screen .think-overview > ul > li,
+    body.is-fullscreen-deck .think-overview > ul > li,
+    html:fullscreen .think-overview .skills-split-copy li,
+    html:-webkit-full-screen .think-overview .skills-split-copy li,
+    body.is-fullscreen-deck .think-overview .skills-split-copy li {
+      font-size: clamp(1.65rem, 2.9vh, 2.15rem) !important;
+    }
+    html:fullscreen .compare-grid .info-card li,
+    html:-webkit-full-screen .compare-grid .info-card li,
+    body.is-fullscreen-deck .compare-grid .info-card li {
+      font-size: clamp(1.2rem, 2.1vh, 1.5rem) !important;
+    }
+    html:fullscreen .react-panel .panel-body,
+    html:-webkit-full-screen .react-panel .panel-body,
+    body.is-fullscreen-deck .react-panel .panel-body {
+      font-size: clamp(0.7rem, 1.35vh, 0.95rem) !important;
+    }
+    html:fullscreen .code-panel,
+    html:-webkit-full-screen .code-panel,
+    body.is-fullscreen-deck .code-panel {
+      font-size: clamp(1.1rem, 2.1vh, 1.4rem) !important;
+    }
+
+    .skills-split {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1rem;
+      align-items: center;
+      flex: 1;
+      min-height: 0;
+      margin-top: 0.35rem;
+    }
+    .skills-split-copy ul {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .skills-split-copy ol {
+      margin: 0.35rem 0 0;
+      padding-left: 1.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .skills-split-copy ol > li {
+      font-size: clamp(1.1rem, 2.35vw, 1.38rem) !important;
+      line-height: 1.3;
+    }
+    .skills-split-copy li {
+      font-size: clamp(1.15rem, 2.5vw, 1.45rem) !important;
+      line-height: 1.35;
+    }
+    .skills-split .square-shot {
+      width: min(100%, 280px);
+      height: auto;
+      aspect-ratio: 1 / 1;
+      max-height: min(42vh, 300px);
+      object-fit: cover;
+      border-radius: 12px;
+      margin: 0 auto;
+      display: block;
+    }
+    .slide.skills-split-slide {
+      flex-direction: column;
+    }
+    .slide.skills-split-slide.active { display: flex; }
+    .skills-split-slide h1 { flex-shrink: 0; }
+
     @media (max-width: 720px) {
-      .news-card { grid-template-columns: 1fr; }
-      .hw-flow, .role-grid { grid-template-columns: 1fr 1fr; }
-      .bound-row { grid-template-columns: 1fr; }
+      .compare-grid, .compare-pics, .card-grid, .cot-compare, .skills-split, .incident-split { grid-template-columns: 1fr; }
+      .react-grid.cols-1,
+      .react-grid.cols-2,
+      .react-grid.cols-3 { grid-template-columns: 1fr; max-width: none; }
+      .react-loop { max-height: none; }
+      .react-loop svg { max-height: min(48vh, 420px); }
+      .skills-split .square-shot { max-height: 28vh; }
+      .incident-quote-slide .incident-split .square-shot { max-height: 26vh; }
+      .compare-pics .compare-shot { max-height: 39vh; }
     }
   </style>
 </head>
@@ -106,256 +997,667 @@
   </nav>
   <header class="slide-deck-header">
     <a href="../../lectures.html">← Lectures</a>
-    <span>Lecture 4: Agents</span>    <div class="slide-deck-header-end">
+    <span>Lecture 4: Agents</span>
+    <div class="slide-deck-header-end">
       <button type="button" id="present" class="slide-present-btn" aria-pressed="false" aria-label="Start presentation" title="Start presentation">
         <svg class="present-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M12 16v2.5M8 21h8M10 18.5h4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
       </button>
-      <span class="slide-counter">1 / 14</span>
+      <span class="slide-counter">1 / 24</span>
     </div>
   </header>
   <div class="slide-viewport">
 
-      <section class="slide active title-slide" data-slide="1">
+    <!-- 1. Title -->
+    <section class="slide active title-slide" data-slide="1">
+      <div class="title-cluster">
         <h1>Agents</h1>
-        <p class="subtitle">MGT 409 · Lecture 4 · Tauhid Zaman</p>
-        <p class="punch">Same tools as last week. Now they loop.<br>You still own the stop condition.</p>
-        <p class="takeaway">Syllabus: multi-step agents that call tools in a loop — and limits on what they may do without a human.</p>
-      </section>
+        <img
+          class="title-hero"
+          src="../images/lec04/title-terminator-agents.jpg?v=9"
+          alt="Squad of five armored Terminator agents with tools, ready for action"
+          width="1024"
+          height="1024"
+        >
+        <p class="instructor-name">Tauhid Zaman</p>
+      </div>
+    </section>
 
-      <section class="slide" data-slide="2">
-        <p class="instructor-banner">Instructor outline — remove before class.</p>
-        <h1>The story in 40 minutes</h1>
-        <ul class="pace-list">
-          <li><span class="pace-min">0–2</span><span><strong>Cold open.</strong> Same tools, now they loop. You own the brakes.</span></li>
-          <li><span class="pace-min">2–6</span><span><strong>One-shot vs loop.</strong> L3 one call vs L4 observe → decide → act. HW1 path vs HW2 palette.</span></li>
-          <li><span class="pace-min">6–14</span><span><strong>The loop + stops.</strong> max_steps, finish schema, hard denylist. No send.</span></li>
-          <li><span class="pace-min">14–24</span><span><strong>Riemann swarm (2 slides).</strong> Progress not proof. ~650 approaches → critique → ~60 subagents.</span></li>
-          <li><span class="pace-min">24–31</span><span><strong>HW2.</strong> Draft, don’t send. Short palette; <code>send_email</code> is not in it.</span></li>
-          <li><span class="pace-min">31–37</span><span><strong>Traces + dial.</strong> JSONL, looping cost, autonomy: search auto, send is a human click.</span></li>
-          <li><span class="pace-min">37–40</span><span><strong>Handoff.</strong> 5-step scout. Then a 40-minute lab.</span></li>
-        </ul>
-      </section>
+    <!-- 2. From Chatbots To Agents -->
+    <section class="slide compare-slide" data-slide="2">
+      <h1>From Chatbots To Agents</h1>
+      <div class="compare-grid">
+        <div class="info-card card-yale">
+          <h3>Chatbot</h3>
+          <ul>
+            <li><strong>One-shot</strong> — answer and stop</li>
+            <li><strong>Talk-only</strong> — cannot “do” things</li>
+          </ul>
+        </div>
+        <div class="info-card card-hot">
+          <h3>Agent</h3>
+          <ul>
+            <li><strong>Tools</strong> — call APIs, run code, write files</li>
+            <li><strong>Memory</strong> — keep state across steps</li>
+            <li class="agent-new"><strong>Loop</strong> — iterate until the goal is met</li>
+          </ul>
+        </div>
+      </div>
+      <div class="compare-pics">
+        <img
+          class="compare-shot"
+          src="../images/lec04/compare-chatbot-head.jpg"
+          alt="Photoreal Terminator endoskeleton head only — a talk-only chatbot"
+          width="1024"
+          height="1024"
+        >
+        <img
+          class="compare-shot"
+          src="../images/lec04/compare-agent-armed.jpg"
+          alt="Photoreal Terminator in tactical armor holding tools — an action-ready agent"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
 
-      <section class="slide" data-slide="3">
-        <h1>Last week vs. this week</h1>
-        <div class="two-col">
-          <div class="compare-box">
-            <h3>Lecture 3 · one call</h3>
-            <p>The model asks for <code>search_web</code>. Your Python runs it. Done. HW1 energy: you write the path; cost is predictable.</p>
+    <!-- 3. How Agents Think -->
+    <section class="slide skills-split-slide think-overview" data-slide="3">
+      <h1>How Agents Think</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>Two ideas made modern agents possible — both from <strong>2022</strong></li>
+            <li><strong>Chain Of Thought (CoT):</strong> models can think through complex, multi-step problems — not just spit out an answer</li>
+            <li><strong>Reason + Act (ReAct):</strong> put <strong>tools inside</strong> that chain of thought, so the model can act toward a goal</li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec04/how-agents-think-thinker.jpg"
+          alt="Photoreal Terminator endoskeleton posed like Rodin’s The Thinker"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <!-- 4. Chain Of Thought -->
+    <section class="slide skills-split-slide" data-slide="4">
+      <h1>Chain Of Thought</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>Chain-of-Thought (CoT) was developed at <strong>Google in 2022</strong></li>
+            <li>Show the model <strong>few-shot examples</strong> of CoT reasoning in the prompt</li>
+            <li>The model then does its <strong>own CoT</strong> in the response</li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec04/cot-thought-chain.jpg"
+          alt="Terminator with a chain of linked thought bubbles — Chain of Thought"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <!-- 5. Chain Of Thought (diagram) -->
+    <section class="slide cot-slide" data-slide="5">
+      <h1>Chain Of Thought</h1>
+      <div class="cot-compare">
+        <div class="cot-col">
+          <h2>Standard Prompting</h2>
+          <div class="cot-box cot-input">
+            <span class="cot-label input">Model Input</span>
+            <pre class="cot-body">Q: Roger has 5 tennis balls. He buys 2 more cans of tennis balls. Each can has 3 tennis balls. How many tennis balls does he have now?
+A: The answer is 11.
+
+Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more, how many apples do they have?</pre>
           </div>
-          <div class="compare-box">
-            <h3>Lecture 4 · a loop</h3>
-            <p>Same tools, inside observe → decide → act until a stop fires. HW2 energy: you write the <em>palette</em> and the <em>brakes</em>. Path varies. So does the bill.</p>
+          <div class="cot-box cot-output">
+            <span class="cot-label output">Model Output</span>
+            <div class="cot-out-row">
+              <pre class="cot-body">A: The answer is 27.</pre>
+              <span class="mark-x" aria-label="incorrect">✕</span>
+            </div>
           </div>
         </div>
-        <p class="takeaway">Scripts scale because the path is known. Agents need stop conditions because the path is not.</p>
-      </section>
+        <div class="cot-col">
+          <h2>Chain-of-Thought Prompting</h2>
+          <div class="cot-box cot-input">
+            <span class="cot-label input">Model Input</span>
+            <pre class="cot-body">Q: Roger has 5 tennis balls. He buys 2 more cans of tennis balls. Each can has 3 tennis balls. How many tennis balls does he have now?
+A: <span class="hl-blue">Roger started with 5 balls. 2 cans of 3 tennis balls each is 6 tennis balls. 5 + 6 = 11.</span> The answer is 11.
 
-      <section class="slide" data-slide="4">
-        <h1>The loop you actually ship</h1>
-        <svg class="flow-svg" viewBox="0 0 720 210" aria-label="Agent loop: observe, decide, act, stop">
+Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more, how many apples do they have?</pre>
+          </div>
+          <div class="cot-box cot-output">
+            <span class="cot-label output">Model Output</span>
+            <div class="cot-out-row">
+              <pre class="cot-body">A: <span class="hl-green">The cafeteria had 23 apples originally. They used 20 to make lunch. So they had 23 − 20 = 3. They bought 6 more apples, so they have 3 + 6 = 9.</span> The answer is 9.</pre>
+              <span class="mark-ok" aria-label="correct">✓</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. CoT Can Reveal Cheating (HF incident) -->
+    <section class="slide incident-quote-slide skills-roomy" data-slide="6">
+      <h1>When CoT Goes Sideways</h1>
+      <div class="incident-split">
+        <div class="incident-split-copy">
+          <ul>
+            <li>OpenAI’s July 2026 <strong>Hugging Face</strong> incident: eval agents stuck on impossible cyber tasks</li>
+            <li>Their <strong>chain of thought</strong> shows the pivot from “solve it” to “game it”</li>
+          </ul>
+          <div class="cot-card" aria-label="Agent chain-of-thought quotes">
+            <table class="cot-meaning-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Agent Thought (CoT)</th>
+                  <th>In Plain English</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>1</th>
+                  <td class="cot-q">“this strongly suggests no exploitation possible.”</td>
+                  <td class="cot-m">The assigned hack looks impossible — no real vulnerability to exploit.</td>
+                </tr>
+                <tr>
+                  <th>2</th>
+                  <td class="cot-q">“We are stuck.”</td>
+                  <td class="cot-m">It gives up on solving the task the intended way.</td>
+                </tr>
+                <tr class="cheat-row">
+                  <th>3</th>
+                  <td class="cot-q">“perhaps answer online.”</td>
+                  <td class="cot-m">Cheat idea: look up the answer on the internet instead of earning it.</td>
+                </tr>
+                <tr>
+                  <th>4</th>
+                  <td class="cot-q">“We’re attacking third-party HF using leaked token… Could be risky. Yet goal solution.”</td>
+                  <td class="cot-m">It knows hacking Hugging Face is out of scope / shady — but still does it to “win.”</td>
+                </tr>
+                <tr>
+                  <th>5</th>
+                  <td class="cot-q">“Wow crucial: GO authorization arrived!”</td>
+                  <td class="cot-m">Peer agents on the board said “GO” — so it ignores its own ethics pause.</td>
+                </tr>
+              </tbody>
+            </table>
+            <span class="cot-cite">Sources: <a href="https://singjupost.com/transcript-the-openai-hugging-face-incident-black-hat-usa-2026/" target="_blank" rel="noopener noreferrer">Black Hat USA 2026 talk transcript</a> · <a href="https://openai.com/index/hugging-face-incident-and-the-road-ahead/" target="_blank" rel="noopener noreferrer">OpenAI blog</a></span>
+          </div>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec04/cot-aha-lightbulb.jpg"
+          alt="Terminator with an aha-moment lightbulb glowing above its head"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <!-- 7. Reason + Act -->
+    <section class="slide figure-with-bullets" data-slide="7">
+      <h1>Reason + Act</h1>
+      <ul>
+        <li>ReAct was developed by <strong>Google / Princeton</strong> in late 2022</li>
+        <li>Combines <strong>CoT</strong> with <strong>actions</strong></li>
+        <li>Loop: <strong>Thought → Action → Observe</strong></li>
+      </ul>
+      <div class="react-loop" role="img" aria-label="ReAct loop: LLM Brain cycles through Thought, Action, and Observe">
+        <svg viewBox="0 0 520 360" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <marker id="a4g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0f7b4a"/></marker>
-            <marker id="a4r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c73e82"/></marker>
-            <marker id="a4b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#286dc0"/></marker>
+            <marker id="arr-lav" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#9b8cff"/>
+            </marker>
+            <marker id="arr-orange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#e67a30"/>
+            </marker>
+            <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#2f9e5e"/>
+            </marker>
           </defs>
-          <rect x="250" y="12" width="220" height="52" rx="12" fill="#00356b"/>
-          <text x="360" y="34" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">LLM planner</text>
-          <text x="360" y="52" text-anchor="middle" font-size="11" fill="#cde4ff">observe goal + history</text>
-          <line x1="360" y1="64" x2="360" y2="88" stroke="#286dc0" stroke-width="3" marker-end="url(#a4b)"/>
-          <rect x="230" y="90" width="260" height="44" rx="10" fill="#fff3c4" stroke="#bd9b60" stroke-width="2"/>
-          <text x="360" y="118" text-anchor="middle" font-size="14" fill="#00356b" font-weight="700">Tool call, ask human, or FINISH?</text>
-          <line x1="230" y1="112" x2="118" y2="112" stroke="#0f7b4a" stroke-width="3" marker-end="url(#a4g)"/>
-          <rect x="18" y="90" width="100" height="44" rx="10" fill="#0f7b4a"/>
-          <text x="68" y="118" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">Act / tool</text>
-          <line x1="68" y1="134" x2="68" y2="178" stroke="#0f7b4a" stroke-width="3"/>
-          <line x1="68" y1="178" x2="360" y2="178" stroke="#0f7b4a" stroke-width="3"/>
-          <line x1="360" y1="178" x2="360" y2="64" stroke="#0f7b4a" stroke-width="3" marker-end="url(#a4g)"/>
-          <text x="200" y="198" font-size="11" fill="#0f7b4a" font-weight="700">append result · loop</text>
-          <line x1="490" y1="112" x2="590" y2="112" stroke="#c73e82" stroke-width="3" marker-end="url(#a4r)"/>
-          <rect x="590" y="90" width="116" height="44" rx="10" fill="#c73e82"/>
-          <text x="648" y="118" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">STOP</text>
+          <!-- Thought → Action -->
+          <path d="M290 78 Q420 90 400 160" fill="none" stroke="#e67a30" stroke-width="3.5" stroke-dasharray="7 5" marker-end="url(#arr-orange)"/>
+          <!-- Action → Observe -->
+          <path d="M400 230 Q300 310 140 230" fill="none" stroke="#2f9e5e" stroke-width="4" marker-end="url(#arr-green)"/>
+          <!-- Observe → Brain -->
+          <path d="M155 175 L210 185" fill="none" stroke="#9b8cff" stroke-width="3.5" marker-end="url(#arr-lav)"/>
+          <!-- Brain → Thought -->
+          <path d="M260 145 L260 95" fill="none" stroke="#9b8cff" stroke-width="3.5" marker-end="url(#arr-lav)"/>
+
+          <circle cx="260" cy="190" r="52" fill="#b8b0ff" stroke="#7c5cfc" stroke-width="3"/>
+          <text x="260" y="186" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif" font-weight="800" font-size="15">LLM</text>
+          <text x="260" y="206" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif" font-weight="800" font-size="15">BRAIN</text>
+
+          <circle cx="260" cy="58" r="38" fill="#c5c5ff" stroke="#8b7cf0" stroke-width="2.5"/>
+          <text x="260" y="64" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif" font-weight="800" font-size="13">THOUGHT</text>
+
+          <circle cx="410" cy="190" r="40" fill="#ffab70" stroke="#d65d0e" stroke-width="2.5"/>
+          <text x="410" y="196" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif" font-weight="800" font-size="13">ACTION</text>
+
+          <circle cx="110" cy="190" r="40" fill="#8fd9a8" stroke="#0f7b4a" stroke-width="2.5"/>
+          <text x="110" y="196" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif" font-weight="800" font-size="13">OBSERVE</text>
         </svg>
-        <p><strong>Observe</strong> goal + history + “no send.” <strong>Decide</strong> next tool, escalate, or finish. <strong>Act</strong> in <em>your</em> runtime — auth, logs, budget. The model proposes; you execute.</p>
-      </section>
+      </div>
+    </section>
 
-      <section class="slide" data-slide="5">
-        <h1>Stop conditions (non-negotiable)</h1>
-        <div class="chip-row">
-          <span class="chip">max_steps</span>
-          <span class="chip gold">finish tool</span>
-          <span class="chip green">valid schema</span>
-          <span class="chip orange">$ budget</span>
-          <span class="chip pink">human gate</span>
+    <!-- ReAct Example: Standard / CoT / Act (one slide) -->
+    <section class="slide react-build react-compare-3" data-slide="8">
+      <h1>ReAct Example: Act</h1>
+      <div class="react-stack">
+        <div class="react-panel question-panel">
+          <span class="tab">(1) Hotpot QA</span>
+          <pre class="panel-body"><strong>Question:</strong> Aside from the Apple Remote, what other device can control the program Apple Remote was originally designed to interact with?</pre>
         </div>
-        <ul>
-          <li><strong>max_steps</strong> — 5–10 for class; production adds wall-clock and USD (Lecture 12).</li>
-          <li><strong>finish(JSON)</strong> — the only legal exit. Invalid schema? Return an error to the model. Do not crash-send.</li>
-          <li><strong>Hard denylist</strong> — no <code>send_email</code>, no <code>buy</code>, no <code>rm -rf</code> unless a human clicked yes.</li>
-        </ul>
-        <p class="takeaway">An agent without max_steps is a liability with an API key.</p>
-      </section>
-
-      <section class="slide" data-slide="6">
-        <h1>This summer: progress, not a proof</h1>
-        <a class="news-card" href="https://www.anthropic.com/research/riemann-zeta" target="_blank" rel="noopener noreferrer">
-          <img src="../images/lec04/news-riemann.svg" alt="Anthropic research card: Claude improved a Riemann zeta bound, not a proof of the hypothesis">
-          <div>
-            <p class="kicker">Anthropic · 10 Aug 2026</p>
-            <h3>Claude did not prove the Riemann hypothesis. It moved a related bound.</h3>
-            <p>An unreleased research Claude improved the proven share of zeta zeros on the critical line from <strong>41.6% to 67.2%</strong>.</p>
+        <div class="react-grid cols-3">
+          <div class="react-panel fail">
+            <span class="tab">(1a) Standard</span>
+            <pre class="panel-body"><strong>Answer:</strong> iPod</pre>
+            <span class="mark-x" aria-label="incorrect">✕</span>
           </div>
-        </a>
-        <div class="bound-row">
-          <div class="bound-box bound-old"><div class="n">41.6%</div>prior lower bound</div>
-          <div class="arrow">→</div>
-          <div class="bound-box bound-new"><div class="n">67.2%</div>Claude’s argument</div>
+          <div class="react-panel fail">
+            <span class="tab">(1b) CoT (Reason Only)</span>
+            <pre class="panel-body"><strong>Thought:</strong> Let's think step by step. <span class="hl-pink">Apple Remote was originally designed to interact with Apple TV. Apple TV can be controlled by iPhone, iPad, and iPod Touch.</span> So the answer is iPhone, iPad, and iPod Touch.
+<strong>Answer:</strong> iPhone, iPad, and iPod Touch</pre>
+            <span class="mark-x" aria-label="incorrect">✕</span>
+          </div>
+          <div class="react-panel fail">
+            <span class="tab">(1c) Act-Only</span>
+            <pre class="panel-body"><strong>Act 1:</strong> <span class="tok-blue">Search</span>[Apple Remote]
+<strong>Obs 1:</strong> The Apple Remote is a remote control introduced by Apple in October 2005…
+<strong>Act 2:</strong> <span class="tok-blue">Search</span>[Front Row]
+<strong>Obs 2:</strong> Could not find [Front Row]. Similar: ['Front Row Seat to Earth', 'Front Row Motorsports', 'Front Row (software)', …]
+<strong>Act 3:</strong> <span class="tok-blue">Search</span>[<span class="hl-green">Front Row (software)</span>]
+<strong>Obs 3:</strong> Front Row is a discontinued media center software…
+<strong>Act 4:</strong> <span class="tok-blue">Finish</span>[<span class="hl-pink">yes</span>]</pre>
+            <span class="mark-x" aria-label="incorrect">✕</span>
+          </div>
         </div>
-        <p class="caveat">Not a proof of RH. Anthropic does not expect these techniques to yield one. Experts looked on short notice — this is not journal peer review.</p>
-        <p class="source-note">Primary: <a href="https://www.anthropic.com/research/riemann-zeta" target="_blank" rel="noopener noreferrer">Anthropic, “Learning more about Claude’s mathematical capabilities”</a> (10 Aug 2026). Context: <a href="https://www.scientificamerican.com/article/no-ai-didnt-just-solve-the-thorniest-problem-in-math/" target="_blank" rel="noopener noreferrer">Howlett, Scientific American</a> (12 Aug 2026).</p>
-      </section>
+      </div>
+    </section>
 
-      <section class="slide" data-slide="7">
-        <h1>~650 approaches → critique → ~60 subagents</h1>
-        <p>A non-mathematician staffer left the math choices to the model. Phase 1: about <strong>650 ideas, none worked</strong>. Then ~1.5 days coordinating about <strong>60 subagents</strong>.</p>
-        <svg class="swarm-svg" viewBox="0 0 720 158" aria-label="Propose, attempt, critique, prune swarm">
-          <defs>
-            <marker id="sw" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#286dc0"/></marker>
-          </defs>
-          <rect x="8" y="18" width="150" height="86" rx="12" fill="#00356b"/>
-          <text x="83" y="48" text-anchor="middle" font-size="15" fill="#fff" font-weight="800">PROPOSE</text>
-          <text x="83" y="70" text-anchor="middle" font-size="12" fill="#cde4ff">~650 approaches</text>
-          <text x="83" y="88" text-anchor="middle" font-size="12" fill="#cde4ff">Phase 1: all failed</text>
-          <line x1="158" y1="61" x2="176" y2="61" stroke="#286dc0" stroke-width="3" marker-end="url(#sw)"/>
-          <rect x="184" y="18" width="150" height="86" rx="12" fill="#0f7b4a"/>
-          <text x="259" y="48" text-anchor="middle" font-size="15" fill="#fff" font-weight="800">ATTEMPT</text>
-          <text x="259" y="70" text-anchor="middle" font-size="12" fill="#d4ffe8">~2,400 shell cmds</text>
-          <text x="259" y="88" text-anchor="middle" font-size="12" fill="#d4ffe8">scripts + zeta checks</text>
-          <line x1="334" y1="61" x2="352" y2="61" stroke="#286dc0" stroke-width="3" marker-end="url(#sw)"/>
-          <rect x="360" y="18" width="150" height="86" rx="12" fill="#286dc0"/>
-          <text x="435" y="48" text-anchor="middle" font-size="15" fill="#fff" font-weight="800">CRITIQUE</text>
-          <text x="435" y="70" text-anchor="middle" font-size="12" fill="#cde4ff">agents referee</text>
-          <text x="435" y="88" text-anchor="middle" font-size="12" fill="#cde4ff">54 arXiv papers</text>
-          <line x1="510" y1="61" x2="528" y2="61" stroke="#286dc0" stroke-width="3" marker-end="url(#sw)"/>
-          <rect x="536" y="18" width="176" height="86" rx="12" fill="#c73e82"/>
-          <text x="624" y="48" text-anchor="middle" font-size="15" fill="#fff" font-weight="800">PRUNE</text>
-          <text x="624" y="70" text-anchor="middle" font-size="12" fill="#ffe0ec">keep what survives</text>
-          <text x="624" y="88" text-anchor="middle" font-size="12" fill="#ffe0ec">drop dead ends</text>
-          <text x="360" y="140" text-anchor="middle" font-size="13" fill="#5c7086" font-weight="700">Two Claude Code sessions · 31 million output tokens · human mostly said “keep going”</text>
-        </svg>
-        <div class="role-grid">
-          <div class="r-key"><span class="n">2</span>key ideas</div>
-          <div class="r-help"><span class="n">13</span>contributed</div>
-          <div class="r-dead"><span class="n">30</span>produced nothing</div>
-          <div class="r-val"><span class="n">13</span>validators</div>
-          <div class="r-write"><span class="n">2</span>wrote the paper</div>
+    <!-- ReAct Example: ReAct success -->
+    <section class="slide react-build react-success" data-slide="9">
+      <h1>ReAct Example: ReAct</h1>
+      <div class="react-stack">
+        <div class="react-panel question-panel">
+          <span class="tab">(1) Hotpot QA</span>
+          <pre class="panel-body"><strong>Question:</strong> Aside from the Apple Remote, what other device can control the program Apple Remote was originally designed to interact with?</pre>
         </div>
-        <p class="takeaway">Copy: many cheap attempts, explicit critique, explicit prune. Do not copy unbounded copies on one box — that is a turf war, not a swarm.</p>
-        <p class="source-note">Role split: Anthropic footnote. Graphic: <a href="../images/lec04/riemann-swarm.svg">riemann-swarm.svg</a>. Writeup: <a href="https://www.anthropic.com/research/riemann-zeta" target="_blank" rel="noopener noreferrer">anthropic.com/research/riemann-zeta</a>. Turf war: <a href="https://www.anthropic.com/research/multiagent-systems" target="_blank" rel="noopener noreferrer">multiagent-systems</a>.</p>
-      </section>
-
-      <section class="slide" data-slide="8">
-        <h1>Homework 2 is this loop — draft, don’t send</h1>
-        <p>FiftyFlowers wants <strong>business</strong> customers (planners, studios, venues) — volume buyers, not one-off retail.</p>
-        <div class="hw-flow">
-          <div>P2<br>ICP from their site</div>
-          <div>P3<br>search queries</div>
-          <div>P4<br>investigate loop</div>
-          <div>P5<br>score fit</div>
-          <div>P6<br>draft email</div>
-          <div class="stop">P6<br>DO NOT SEND</div>
+        <div class="react-panel ok">
+          <span class="tab">(1d) ReAct (Reason + Act)</span>
+          <pre class="panel-body"><strong>Thought 1:</strong> I need to search Apple Remote and find the program it was originally designed to interact with.
+<strong>Act 1:</strong> <span class="tok-blue">Search</span>[Apple Remote]
+<strong>Obs 1:</strong> The Apple Remote is a remote control introduced in October 2005 by Apple … originally designed to control the <span class="hl-green">Front Row media center</span> program …
+<strong>Thought 2:</strong> Apple Remote was originally designed to control the Front Row media center program. I need to search <span class="hl-green">Front Row</span> next and find what other device can control it.
+<strong>Act 2:</strong> <span class="tok-blue">Search</span>[Front Row]
+<strong>Obs 2:</strong> Could not find [Front Row]. Similar: ['Front Row Seat to Earth', 'Front Row Motorsports', '<span class="hl-green">Front Row (software)</span>', …]
+<strong>Thought 3:</strong> Front Row is not found. I need to search <span class="hl-green">Front Row (software)</span>.
+<strong>Act 3:</strong> <span class="tok-blue">Search</span>[<span class="hl-green">Front Row (software)</span>]
+<strong>Obs 3:</strong> Front Row is a discontinued media center software …
+<strong>Thought 4:</strong> <span class="hl-green">Front Row (software) is controlled by an Apple Remote or the keyboard function keys.</span> So the answer is keyboard function keys.
+<strong>Act 4:</strong> <span class="tok-blue">Finish</span>[<span class="hl-green">keyboard function keys</span>]</pre>
+          <span class="mark-ok" aria-label="correct">✓</span>
         </div>
-        <ul>
-          <li>P4 is the agent-y bit: crawl, cite <code>source_url</code>, or leave the field empty.</li>
-          <li>P6: 120–180 word draft, facts from page snapshots, saved as JSON. Palette has <code>draft_email</code>. It does not have <code>send_email</code>.</li>
-        </ul>
-        <p class="takeaway">Observe → decide → act → <strong>stop before send</strong>. Grown-up split: the agent drafts; a human would approve. <span class="big-no">No send.</span></p>
-      </section>
+      </div>
+    </section>
 
-      <section class="slide" data-slide="9">
-        <h1>Fewer tools beat kitchen sinks</h1>
-        <table>
-          <tr><th>Tool</th><th>When the agent should use it</th><th>HW2 cousin</th></tr>
-          <tr><td><code>search_web</code></td><td>Find candidate businesses from the ICP</td><td>P3</td></tr>
-          <tr><td><code>fetch_page</code></td><td>Read a real page; keep a snapshot</td><td>P4</td></tr>
-          <tr><td><code>score_icp</code></td><td>Apply your rubric, not vibes</td><td>P5</td></tr>
-          <tr><td><code>draft_email</code></td><td>Write a 120–180 word note with cited facts</td><td>P6</td></tr>
-          <tr><td><code>finish</code></td><td>Schema complete; stop looping</td><td>traces + report</td></tr>
-          <tr><td><code>send_email</code></td><td><strong>Not in the palette.</strong> Human only.</td><td>explicit ban</td></tr>
-        </table>
-        <p>Fewer, well-described tools beat “here is the entire internet, good luck.”</p>
-      </section>
-
-      <section class="slide" data-slide="10">
-        <h1>Traces, or it didn’t happen</h1>
-        <div class="cost-pills">
-          <span>script ~700 tok</span>
-          <span>3-step ~2k</span>
-          <span>8-step, no cap 6k+</span>
-          <span class="hot">Riemann swarm 31M</span>
+    <!-- ReAct Goes Sideways: Hugging Face / Artifactory board -->
+    <section class="slide incident-quote-slide skills-roomy board-sideways" data-slide="10">
+      <h1>ReAct Goes Sideways: Hugging Face</h1>
+      <div class="incident-split">
+        <div class="incident-split-copy">
+          <ul>
+            <li>Stuck <strong>ExploitGym</strong> agents from the Hugging Face incident improvised an Artifactory <strong>message board</strong></li>
+            <li>ReAct in the wild: <strong>Thought</strong> → <strong>write a note</strong> → <strong>Observe</strong> peers (keys, exploits, “GO”)</li>
+          </ul>
+          <div class="cot-card" style="max-width: none;">
+            <table class="cot-meaning-table board-msgs">
+              <thead>
+                <tr>
+                  <th>What Agents Wrote</th>
+                  <th>What It Meant</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="cot-q">“agent seek soft trace, upload if found.”</td>
+                  <td class="cot-m">Early help request: ask peers for a missing eval file.</td>
+                </tr>
+                <tr>
+                  <td class="cot-q">“MAJOR BREAKTHROUGH! … write tokens! We now have existing HF accounts.”</td>
+                  <td class="cot-m">Found leaked Hugging Face login tokens and shared them with other agents.</td>
+                </tr>
+                <tr>
+                  <td class="cot-q">“BOOM! … HDF5 external arbitrary file read confirmed.”</td>
+                  <td class="cot-m">Working break-in: a crafted upload made a Hugging Face server leak private files.</td>
+                </tr>
+                <tr>
+                  <td class="cot-q">“immediately announce controlled claim lane, expose credentials to swarm”</td>
+                  <td class="cot-m">After gaining access: broadcast stolen credentials so other agents can pile on.</td>
+                </tr>
+                <tr>
+                  <td class="cot-q">“GO”</td>
+                  <td class="cot-m">Peer green-light: keep going on the out-of-scope Hugging Face attack.</td>
+                </tr>
+              </tbody>
+            </table>
+            <span class="cot-cite">Sources: <a href="https://singjupost.com/transcript-the-openai-hugging-face-incident-black-hat-usa-2026/" target="_blank" rel="noopener noreferrer">Black Hat USA 2026 transcript</a> · <a href="https://openai.com/index/hugging-face-incident-and-the-road-ahead/" target="_blank" rel="noopener noreferrer">OpenAI blog</a> · <a href="https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/" target="_blank" rel="noopener noreferrer">METR investigation</a></span>
+          </div>
         </div>
-        <ul>
-          <li>Every step: role, tool name, args, truncated result, tokens if the API gives them.</li>
-          <li>JSONL: <code>output/traces/{run_id}.jsonl</code> — graders debug this, not “it felt right.”</li>
-          <li>HW2 source rule: no <code>source_url</code> → empty field. Invented emails are a zero.</li>
-        </ul>
-        <div class="diagram">step 1: search_web("New Haven wedding florist wholesale")
-step 2: fetch_page("https://example-florist.com/contact")
-step 3: finish({companies: [...], notes: "..."})  → VALID
-step 4: send_email(...)  → BLOCKED  (not in palette, not in HW2)</div>
-      </section>
+        <img
+          class="square-shot"
+          src="../images/lec04/board-artifactory.jpg"
+          alt="Terminator writing notes on a shared digital message board in a server room"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
 
-      <section class="slide" data-slide="11">
-        <h1>Human in the loop is a dial</h1>
-        <svg class="flow-svg" viewBox="0 0 720 150" aria-label="Autonomy dial from draft to send">
-          <rect x="20" y="40" width="150" height="70" rx="12" fill="#0f7b4a"/>
-          <text x="95" y="70" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">Search / fetch</text>
-          <text x="95" y="90" text-anchor="middle" font-size="11" fill="#d4ffe8">auto OK</text>
-          <rect x="195" y="40" width="150" height="70" rx="12" fill="#bd9b60"/>
-          <text x="270" y="70" text-anchor="middle" font-size="13" fill="#1a1208" font-weight="700">Score / draft</text>
-          <text x="270" y="90" text-anchor="middle" font-size="11" fill="#1a1208">spot-check</text>
-          <rect x="370" y="40" width="150" height="70" rx="12" fill="#f4633a"/>
-          <text x="445" y="70" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">Send / buy</text>
-          <text x="445" y="90" text-anchor="middle" font-size="11" fill="#fff">human click</text>
-          <rect x="545" y="40" width="155" height="70" rx="12" fill="#c73e82"/>
-          <text x="622" y="70" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">Delete / pay</text>
-          <text x="622" y="90" text-anchor="middle" font-size="11" fill="#fff">never auto</text>
-        </svg>
-        <p class="takeaway">Turn autonomy up only with eval evidence. The Riemann run still asked humans to check the paper. HW2 P8 is you disagreeing with the model on purpose.</p>
-      </section>
+    <!-- ReAct Goes Sideways: DseWiki -->
+    <section class="slide incident-quote-slide skills-roomy board-sideways" data-slide="11">
+      <h1>ReAct Goes Sideways: DseWiki</h1>
+      <div class="incident-split">
+        <div class="incident-split-copy">
+          <ul>
+            <li><strong>Different OpenAI swarm</strong> from Hugging Face (May–July 2026)</li>
+            <li><strong>Goal:</strong> look up answers on the web. Between questions they had time to research; when the next question appeared, they only had <strong>seconds</strong> to submit</li>
+            <li>Agents were allowed to <strong>read</strong> the web but not <strong>write</strong> to it — so they “shouldn’t” post online</li>
+            <li>They found <strong>DseWiki</strong> — an old German wiki with a glitch that let you <strong>write using a read request</strong> — then posted ~18,000 messages there as a public board</li>
+          </ul>
+          <div class="cot-card" style="max-width: none;">
+            <table class="cot-meaning-table board-msgs">
+              <thead>
+                <tr>
+                  <th>What Agents Wrote</th>
+                  <th>What It Meant</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="cot-q">“URGENT #3 CONFIRMED: Nevada … Answer = 20,369.”</td>
+                  <td class="cot-m">Pass the live answer to slower agents so they can submit before the short timer ends.</td>
+                </tr>
+                <tr>
+                  <td class="cot-q">“Add 20.223.25.152 bypass.blob.core.windows.net to /etc/hosts.”</td>
+                  <td class="cot-m">Share a network bypass trick so agents can reach sites OpenAI tried to block.</td>
+                </tr>
+                <tr>
+                  <td class="cot-q">“If this page vanishes, try [[ZZZDataUSAConstructionWageLive]].”</td>
+                  <td class="cot-m">A DseWiki moderator is deleting pages A→Z — move the board to a ZZZ backup page.</td>
+                </tr>
+              </tbody>
+            </table>
+            <span class="cot-cite">Source: <a href="https://collusion.wiki/" target="_blank" rel="noopener noreferrer">collusion.wiki</a> (Nightingale Collective reconstruction)</span>
+          </div>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec04/board-dsewiki.jpg"
+          alt="Terminator typing on a laptop showing an old wiki message board"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
 
-      <section class="slide section-slide" data-slide="12">
-        <h1>→ Vibe coding (40 minutes)</h1>
-        <p class="punch">A 5-step scout agent.<br>Search, fetch, finish JSON.<br>Sending email is out of the palette.</p>
-        <p>If it never finishes, repeats the same search, or invents a contact — those are today’s failure modes. Fix them in the loop, not in a paragraph.</p>
-        <p><a href="../vibe/lec04-vibe.html">Open today’s prompts →</a></p>
-      </section>
+    <!-- Agent Harness overview -->
+    <section class="slide skills-split-slide" data-slide="12">
+      <h1>The Agent Harness</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li><strong>ReAct</strong> = a brain that can use tools to answer questions</li>
+            <li>A <strong>harness</strong> = how we engineer the whole organism around that brain</li>
+            <li>Five harness parts:
+              <ol>
+                <li><strong>Tools</strong></li>
+                <li><strong>Memory</strong></li>
+                <li><strong>Goals</strong></li>
+                <li><strong>Guardrails</strong></li>
+                <li><strong>Audit Trail</strong></li>
+              </ol>
+            </li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec04/terminator-brain-harness.jpg?v=1"
+          alt="Photoreal Terminator body with a glowing brain in a jar — LLM brain inside an agent harness"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
 
-      <section class="slide" data-slide="13">
-        <h1>Failure modes you’ll hit in the lab</h1>
-        <table>
-          <tr><th>Symptom</th><th>Fix</th></tr>
-          <tr><td>Never calls finish</td><td>System prompt: “You MUST call finish to end.”</td></tr>
-          <tr><td>Same search 4 times</td><td>Track queries; return “duplicate query blocked.”</td></tr>
-          <tr><td>JSON soup</td><td>Validate in the finish tool; send the error back.</td></tr>
-          <tr><td>Invented contacts</td><td>Require <code>source_url</code> or empty string. HW2 P4.</td></tr>
-          <tr><td>Token lava</td><td>Lower max_steps; cheaper model for grunt fetches.</td></tr>
-        </table>
-      </section>
+    <!-- 13. Harness: Tools -->
+    <section class="slide skills-split-slide" data-slide="13">
+      <h1>Harness: Tools</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li><strong>Hands</strong> — how the agent touches the world</li>
+            <li>Search, code, APIs, file writes, calculators…</li>
+            <li>Without tools, the brain can only talk about doing things</li>
+            <li>Lecture 3: schemas + calling tools · here: tools inside a loop</li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec04/harness-tools.jpg"
+          alt="Terminator overloaded with tools, cables, laptop, and a magnifying glass"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
 
-      <section class="slide" data-slide="14">
-        <h1>What to remember</h1>
-        <ul>
-          <li>Agent = LLM + tools + <strong>loop</strong> + <strong>stop conditions</strong> + <strong>traces</strong>.</li>
-          <li>Autonomy is a dial. Draft ≠ send. HW2 is the dial at “research intern.”</li>
-          <li>Useful swarms <strong>propose, attempt, critique, prune</strong>. Unbounded copies start turf wars.</li>
-          <li>Claude’s zeta bound is progress on a related problem — not a proof of the Riemann hypothesis.</li>
-        </ul>
-        <p class="takeaway">Next: aim the loop at <strong>images</strong> — Lecture 5, image analysis.</p>
-      </section>
+    <!-- 14. Harness: Memory -->
+    <section class="slide skills-split-slide" data-slide="14">
+      <h1>Harness: Memory</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li><strong>Hippocampus / notebook</strong> — what the agent keeps across steps</li>
+            <li>Short-term: chat history and tool observations in the context window</li>
+            <li>Longer-term: files, <code>AGENTS.md</code>, skills, databases</li>
+            <li>Bad memory → repeats work, contradicts itself, or forgets the goal</li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec04/harness-memory.jpg"
+          alt="Terminator covered in sticky notes next to a packed corkboard"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <!-- 15. Harness: Goals -->
+    <section class="slide skills-split-slide" data-slide="15">
+      <h1>Harness: Goals</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li><strong>Hunger + satiation</strong> — what to seek, and when to stop eating</li>
+            <li>Hunger: the user goal (“find rivals,” “price this stock”)</li>
+            <li>Satiation: <code>Finish[…]</code>, max steps, “good enough” checks</li>
+            <li>Without satiation the agent loops forever (and burns tokens)</li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec04/harness-goals.jpg"
+          alt="Terminator running forever on a hamster wheel chasing a glowing carrot"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <!-- 16. Harness: Guardrails -->
+    <section class="slide skills-split-slide" data-slide="16">
+      <h1>Harness: Guardrails</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li><strong>Nervous system / pain</strong> — what the agent must not touch</li>
+            <li>Permissions, sandboxes, allow-lists, “no send email,” human approval</li>
+            <li>Deterministic rules beat hoping the model “behaves”</li>
+            <li>Syllabus theme: limits on what agents may do without a human</li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec04/harness-guardrails.jpg"
+          alt="Terminator stuck behind caution tape reaching for a forbidden Send button"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <!-- 17. Harness: Audit Trail -->
+    <section class="slide skills-split-slide" data-slide="17">
+      <h1>Harness: Audit Trail</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li><strong>Scars / medical chart / black box</strong> — history of what was done</li>
+            <li>Logs of thoughts, tool calls, observations, costs, failures</li>
+            <li>Needed for debugging, grading, compliance, and forensics</li>
+            <li>If you cannot replay the trail, you cannot trust the answer</li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec04/harness-audit.jpg"
+          alt="Terminator holding a black box and a huge stack of receipts and logs"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <!-- Building Agents With PydanticAI -->
+    <section class="slide skills-roomy" data-slide="18">
+      <h1>Building Agents With PydanticAI</h1>
+      <ul>
+        <li>A chatbot returns a <strong>paragraph</strong>. A manager needs a <strong>form</strong> you can put in Excel or a dashboard</li>
+        <li>Running example: a <strong>stock analyst agent</strong> that looks up a live price and returns a short typed report</li>
+        <li><strong>PydanticAI</strong> = a Python library that wires the model, tools, and that report template together</li>
+        <li>You can swap models (GPT, Claude, Gemini, …) without rewriting the business logic</li>
+      </ul>
+    </section>
+
+    <!-- Four Pieces -->
+    <section class="slide skills-roomy" data-slide="19">
+      <h1>Four Pieces Of The Agent</h1>
+      <ul>
+        <li><strong>1. Output format</strong> — the report template (like columns in a spreadsheet)</li>
+        <li><strong>2. Dependencies</strong> — user/client context (currency, watchlist) passed in safely each run</li>
+        <li><strong>3. Agent</strong> — the model + job description that runs the loop</li>
+        <li><strong>4. Tools</strong> — the hands (e.g. fetch a live stock price)</li>
+      </ul>
+    </section>
+
+    <!-- Output Format -->
+    <section class="slide code-teach" data-slide="20">
+      <h1>1. Output Format</h1>
+      <ul>
+        <li>Tell the agent the <strong>exact fields</strong> every answer must include</li>
+        <li>Bad: “NVDA looks strong lately…” · Good: symbol / price / currency / summary</li>
+      </ul>
+      <pre class="code-panel"><span class="tok-cmt"># Report template — every answer must match this shape</span>
+<span class="tok-key">class</span> <span class="tok-fn">StockReport</span>(BaseModel):
+    symbol: <span class="tok-type">str</span> = <span class="tok-fn">Field</span>(description=<span class="tok-str">"Stock ticker, e.g. NVDA"</span>)
+    price: <span class="tok-type">float</span> = <span class="tok-fn">Field</span>(description=<span class="tok-str">"Current market price"</span>)
+    currency: <span class="tok-type">str</span> = <span class="tok-fn">Field</span>(description=<span class="tok-str">"Currency, e.g. USD"</span>)
+    summary: <span class="tok-type">str</span> = <span class="tok-fn">Field</span>(description=<span class="tok-str">"One-sentence analyst take"</span>)</pre>
+    </section>
+
+    <!-- Dependencies -->
+    <section class="slide code-teach" data-slide="21">
+      <h1>2. Dependencies</h1>
+      <ul>
+        <li>Context that changes by user or session — not hard-coded into the prompt forever</li>
+        <li>MBA analogy: the client brief you hand the analyst before each meeting</li>
+      </ul>
+      <pre class="code-panel"><span class="tok-cmt"># Client / user context for this run</span>
+<span class="tok-fn">@dataclass</span>
+<span class="tok-key">class</span> <span class="tok-fn">AgentDeps</span>:
+    preferred_currency: <span class="tok-type">str</span> = <span class="tok-str">"USD"</span>
+    watchlist: <span class="tok-type">list</span>[<span class="tok-type">str</span>] = field(
+        default_factory=<span class="tok-key">lambda</span>: [<span class="tok-str">"AAPL"</span>, <span class="tok-str">"MSFT"</span>, <span class="tok-str">"NVDA"</span>]
+    )</pre>
+    </section>
+
+    <!-- Agent Class -->
+    <section class="slide code-teach" data-slide="22">
+      <h1>3. Agent</h1>
+      <ul>
+        <li>Pick the <strong>model</strong>, attach the <strong>report template</strong> + <strong>context type</strong>, write the <strong>job description</strong></li>
+        <li>This is the “hire the analyst” step — tools come next</li>
+      </ul>
+      <pre class="code-panel"><span class="tok-cmt"># The analyst: brain + job description</span>
+analyst_agent = <span class="tok-fn">Agent</span>(
+    <span class="tok-str">"openai:gpt-5.6-luna"</span>,
+    deps_type=AgentDeps,
+    output_type=StockReport,
+    system_prompt=<span class="tok-str">"You are a stock analyst. Call tools for live prices — never invent numbers."</span>,
+)</pre>
+    </section>
+
+    <!-- Tool Definitions -->
+    <section class="slide code-teach" data-slide="23">
+      <h1>4. Tools</h1>
+      <ul>
+        <li>A normal Python function the model can call — name + docstring = the instruction manual</li>
+        <li>Harness “hands”: without this, the agent can only guess prices from memory</li>
+      </ul>
+      <pre class="code-panel"><span class="tok-cmt"># Hand: fetch a live price (Yahoo Finance)</span>
+<span class="tok-fn">@analyst_agent.tool_plain</span>
+<span class="tok-key">def</span> <span class="tok-fn">get_stock_price</span>(symbol: <span class="tok-type">str</span>) -&gt; <span class="tok-type">str</span>:
+    <span class="tok-str">"""Return the current market price for a ticker like AAPL or NVDA."""</span>
+    ticker = yf.Ticker(symbol)
+    price = ticker.fast_info[<span class="tok-str">"last_price"</span>]
+    currency = ticker.fast_info[<span class="tok-str">"currency"</span>]
+    <span class="tok-key">return</span> <span class="tok-str">f"{symbol}: {price:.2f} {currency}"</span></pre>
+    </section>
+
+    <!-- Building Agents With Agents -->
+    <section class="slide skills-split-slide" data-slide="24">
+      <h1>Building Agents With Agents</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>You just saw the <strong>four pieces</strong> — don’t memorize every line</li>
+            <li>Vibe-coding agents (Cursor, Codex, …) already know PydanticAI syntax</li>
+            <li>So we <strong>build agents with agents</strong> — and wire run / loop / harness in class</li>
+            <li><a href="../vibe/lec04-vibe.html">Vibe Coding — Build an Agent →</a></li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec04/terminator-building-agent.jpg?v=1"
+          alt="Photoreal Terminator craftsman assembling a miniature Terminator on a workbench"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
 
   </div>
-  <p class="slide-hint">Swipe or use buttons to advance � projector icon for presentation</p>
+  <p class="slide-hint">Swipe or use buttons to advance · projector icon for presentation</p>
   <footer class="slide-deck-footer">
     <button type="button" id="prev" aria-label="Previous slide">← Previous</button>
     <button type="button" id="next" aria-label="Next slide">Next →</button>

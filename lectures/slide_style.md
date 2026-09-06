@@ -6,6 +6,16 @@ Read this before authoring or editing any lecture deck.
 
 ---
 
+## Fill the slide (14" laptop target)
+
+**Goal:** Layout and fonts should **fill the content area** on a standard ~14" laptop screen (typical window ≈1366–1512×864–982 CSS px), not float as a small sparse block with large empty margins.
+
+- Size type (bullets, tables, code panels, transcript panels) so the slide feels full when taught in a normal browser window, then verify fullscreen.
+- Prefer flex column + `flex: 1` / larger `clamp()` fonts over tiny monospace that leaves half the slide blank.
+- Dense slides (long ReAct / code traces) still get **as-large-as-fits** type — increase until height is used without overflow scrolling if possible.
+
+---
+
 ## Responsive figures (the cursor-founder pattern)
 
 **Goal:** Photos, screenshots, PNG charts, and diagrams should grow on larger viewports and fill available space in full-screen mode — same behavior as the **Cursor Founder** slide.

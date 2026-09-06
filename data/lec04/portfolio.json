@@ -1,0 +1,13 @@
+{
+  "as_of": "2026-09-01",
+  "currency": "USD",
+  "cash": 5000,
+  "holdings": [
+    { "ticker": "AAPL", "shares": 40 },
+    { "ticker": "MSFT", "shares": 20 },
+    { "ticker": "NVDA", "shares": 15 },
+    { "ticker": "GOOGL", "shares": 25 },
+    { "ticker": "JPM", "shares": 30 }
+  ],
+  "notes": "Sample portfolio for MGT 409 Lecture 4 vibe. Replacements must stay inside the allowed universe in the agent prompt."
+}
