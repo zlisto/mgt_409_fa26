@@ -581,6 +581,11 @@
       text-underline-offset: 2px;
     }
     [data-theme="dark"] .cot-cite a { color: #7ec8ff; }
+    .cot-slide .cot-slide-footnote {
+      flex-shrink: 0;
+      margin: 0.45rem 0 0;
+      font-size: clamp(0.68rem, 1.2vw, 0.82rem);
+    }
 
     /* —— Slide 5: CoT compare —— */
     .cot-slide { flex-direction: column; }
@@ -647,16 +652,35 @@
       line-height: 1.38;
       color: #1a2330;
       white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      max-width: 100%;
+      min-width: 0;
       flex: 0 0 auto;
       overflow: visible;
     }
     [data-theme="dark"] .cot-body { color: #dce7f5; }
+    .cot-body .hl-green,
+    .cot-body .hl-blue,
+    .cot-body .hl-pink {
+      white-space: inherit;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+    }
     .cot-out-row {
       display: flex;
       align-items: flex-start;
       gap: 0.35rem;
       position: relative;
       padding-right: 2.2rem;
+      min-width: 0;
+      width: 100%;
+    }
+    .cot-out-row .cot-body {
+      flex: 1 1 auto;
+      min-width: 0;
     }
 
     /* —— Slide 6: ReAct loop —— */
@@ -836,6 +860,11 @@
     body.is-fullscreen-deck .react-build.react-success .react-panel.question-panel .panel-body {
       font-size: clamp(1.15rem, 2.2vh, 1.45rem) !important;
     }
+    .react-build .cot-slide-footnote {
+      flex-shrink: 0;
+      margin: 0.35rem 0 0;
+      font-size: clamp(0.68rem, 1.2vw, 0.82rem);
+    }
     .react-panel.fail { padding-bottom: 1.5rem; }
     .react-panel.ok { padding-bottom: 1.5rem; }
 
@@ -874,7 +903,70 @@
     .code-panel .tok-str { color: #f0a0b8; }
     .code-panel .tok-fn { color: var(--gold); }
     .code-panel .tok-type { color: #7eb6ff; }
+    .code-panel .tok-num { color: #c4b5fd; }
     [data-theme="dark"] .code-panel { background: #071018; }
+
+    /* Agent loop: code left + chat card right */
+    .agent-loop-slide { flex-direction: column; }
+    .slide.agent-loop-slide.active { display: flex; }
+    .agent-loop-slide h1 { flex-shrink: 0; }
+    .agent-loop-slide > ul {
+      flex-shrink: 0;
+      margin: 0.1rem 0 0.35rem;
+    }
+    .agent-loop-slide > ul > li {
+      font-size: clamp(0.98rem, 2vw, 1.2rem);
+      margin: 0.2rem 0;
+    }
+    .agent-loop-split {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 0.85rem;
+      align-items: stretch;
+    }
+    .agent-loop-split .code-panel {
+      margin: 0;
+      font-size: clamp(0.72rem, 1.45vw, 0.98rem);
+      line-height: 1.42;
+      padding: 0.75rem 0.9rem;
+    }
+    .chat-trace-card {
+      margin: 0;
+      padding: 0.7rem 0.85rem;
+      background: #0b1628;
+      color: #e8eef4;
+      border-radius: 14px;
+      border: 1.5px solid rgba(255, 110, 180, 0.45);
+      box-shadow: 0 8px 24px rgba(8, 17, 31, 0.18);
+      overflow: auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      font-size: clamp(0.68rem, 1.35vw, 0.9rem);
+      line-height: 1.35;
+    }
+    [data-theme="dark"] .chat-trace-card { background: #071018; }
+    .chat-trace-card .chat-trace-label {
+      flex-shrink: 0;
+      font-weight: 800;
+      font-size: 0.78em;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #ff6eb4;
+    }
+    .chat-trace-card .chat-line {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .chat-trace-card .chat-user { color: #7eb6ff; font-weight: 700; }
+    .chat-trace-card .chat-tool { color: #ffc857; }
+    .chat-trace-card .chat-obs { color: #8fa3b8; }
+    .chat-trace-card .chat-final { color: #7dcea0; font-weight: 600; }
     .run-steps {
       display: flex;
       flex-direction: column;
@@ -955,6 +1047,14 @@
       font-size: clamp(1.15rem, 2.5vw, 1.45rem) !important;
       line-height: 1.35;
     }
+    .skills-split-copy a.vibe-link {
+      font-size: inherit;
+      font-weight: inherit;
+      font-family: inherit;
+      line-height: inherit;
+      color: inherit;
+      text-decoration: underline;
+    }
     .skills-split .square-shot {
       width: min(100%, 280px);
       height: auto;
@@ -964,6 +1064,10 @@
       border-radius: 12px;
       margin: 0 auto;
       display: block;
+    }
+    .skills-split .square-shot.build-agents-shot {
+      width: min(100%, 350px);
+      max-height: min(52vh, 375px);
     }
     .slide.skills-split-slide {
       flex-direction: column;
@@ -979,6 +1083,7 @@
       .react-loop { max-height: none; }
       .react-loop svg { max-height: min(48vh, 420px); }
       .skills-split .square-shot { max-height: 28vh; }
+      .skills-split .square-shot.build-agents-shot { max-height: 35vh; }
       .incident-quote-slide .incident-split .square-shot { max-height: 26vh; }
       .compare-pics .compare-shot { max-height: 39vh; }
     }
@@ -1002,7 +1107,7 @@
       <button type="button" id="present" class="slide-present-btn" aria-pressed="false" aria-label="Start presentation" title="Start presentation">
         <svg class="present-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M12 16v2.5M8 21h8M10 18.5h4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
       </button>
-      <span class="slide-counter">1 / 24</span>
+      <span class="slide-counter">1 / 25</span>
     </div>
   </header>
   <div class="slide-viewport">
@@ -1141,9 +1246,10 @@ Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more,
           </div>
         </div>
       </div>
+      <p class="cot-cite cot-slide-footnote">Source: Wei et al., <a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener noreferrer">Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</a> (arXiv:2201.11903)</p>
     </section>
 
-    <!-- 6. CoT Can Reveal Cheating (HF incident) -->
+    <!-- 6. When CoT Goes Sideways -->
     <section class="slide incident-quote-slide skills-roomy" data-slide="6">
       <h1>When CoT Goes Sideways</h1>
       <div class="incident-split">
@@ -1281,6 +1387,7 @@ Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more,
           </div>
         </div>
       </div>
+      <p class="cot-cite cot-slide-footnote">Source: Yao et al., <a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener noreferrer">ReAct: Synergizing Reasoning and Acting in Language Models</a> (arXiv:2210.03629)</p>
     </section>
 
     <!-- ReAct Example: ReAct success -->
@@ -1307,6 +1414,7 @@ Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more,
           <span class="mark-ok" aria-label="correct">✓</span>
         </div>
       </div>
+      <p class="cot-cite cot-slide-footnote">Source: Yao et al., <a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener noreferrer">ReAct: Synergizing Reasoning and Acting in Language Models</a> (arXiv:2210.03629)</p>
     </section>
 
     <!-- ReAct Goes Sideways: Hugging Face / Artifactory board -->
@@ -1415,13 +1523,14 @@ Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more,
       <div class="skills-split">
         <div class="skills-split-copy">
           <ul>
+            <li><strong>CoT</strong> = the brain of the AI</li>
             <li><strong>ReAct</strong> = a brain that can use tools to answer questions</li>
-            <li>A <strong>harness</strong> = how we engineer the whole organism around that brain</li>
+            <li><strong style="color: #ff6eb4;">Harness</strong> = how we engineer the whole agent around that brain</li>
             <li>Five harness parts:
               <ol>
                 <li><strong>Tools</strong></li>
                 <li><strong>Memory</strong></li>
-                <li><strong>Goals</strong></li>
+                <li><strong>Stopping Rules</strong></li>
                 <li><strong>Guardrails</strong></li>
                 <li><strong>Audit Trail</strong></li>
               </ol>
@@ -1445,9 +1554,8 @@ Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more,
         <div class="skills-split-copy">
           <ul>
             <li><strong>Hands</strong> — how the agent touches the world</li>
-            <li>Search, code, APIs, file writes, calculators…</li>
+            <li>Custom code, web search, writing files, etc.</li>
             <li>Without tools, the brain can only talk about doing things</li>
-            <li>Lecture 3: schemas + calling tools · here: tools inside a loop</li>
           </ul>
         </div>
         <img
@@ -1482,9 +1590,9 @@ Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more,
       </div>
     </section>
 
-    <!-- 15. Harness: Goals -->
+    <!-- 15. Harness: Stopping Rules -->
     <section class="slide skills-split-slide" data-slide="15">
-      <h1>Harness: Goals</h1>
+      <h1>Harness: Stopping Rules</h1>
       <div class="skills-split">
         <div class="skills-split-copy">
           <ul>
@@ -1496,8 +1604,8 @@ Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more,
         </div>
         <img
           class="square-shot"
-          src="../images/lec04/harness-goals.jpg"
-          alt="Terminator running forever on a hamster wheel chasing a glowing carrot"
+          src="../images/lec04/harness-goals.jpg?v=2"
+          alt="Terminator running sideways on the inner track of a hamster wheel, chasing a carrot on a stick"
           width="1024"
           height="1024"
         >
@@ -1511,9 +1619,8 @@ Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more,
         <div class="skills-split-copy">
           <ul>
             <li><strong>Nervous system / pain</strong> — what the agent must not touch</li>
-            <li>Permissions, sandboxes, allow-lists, “no send email,” human approval</li>
+            <li>Concrete guardrails: <strong>sandboxes</strong>, <strong>permissions</strong>, <strong>allow-lists</strong>, and <strong>human approval</strong></li>
             <li>Deterministic rules beat hoping the model “behaves”</li>
-            <li>Syllabus theme: limits on what agents may do without a human</li>
           </ul>
         </div>
         <img
@@ -1532,10 +1639,10 @@ Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more,
       <div class="skills-split">
         <div class="skills-split-copy">
           <ul>
-            <li><strong>Scars / medical chart / black box</strong> — history of what was done</li>
+            <li><strong>Medical chart</strong> — history of what was done</li>
             <li>Logs of thoughts, tool calls, observations, costs, failures</li>
-            <li>Needed for debugging, grading, compliance, and forensics</li>
-            <li>If you cannot replay the trail, you cannot trust the answer</li>
+            <li>Similar to <strong>memory</strong>, but denser: a forensic record for humans, not just what the agent needs next</li>
+            <li>Needed for debugging, compliance, and forensics</li>
           </ul>
         </div>
         <img
@@ -1549,24 +1656,34 @@ Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more,
     </section>
 
     <!-- Building Agents With PydanticAI -->
-    <section class="slide skills-roomy" data-slide="18">
+    <section class="slide skills-split-slide" data-slide="18">
       <h1>Building Agents With PydanticAI</h1>
-      <ul>
-        <li>A chatbot returns a <strong>paragraph</strong>. A manager needs a <strong>form</strong> you can put in Excel or a dashboard</li>
-        <li>Running example: a <strong>stock analyst agent</strong> that looks up a live price and returns a short typed report</li>
-        <li><strong>PydanticAI</strong> = a Python library that wires the model, tools, and that report template together</li>
-        <li>You can swap models (GPT, Claude, Gemini, …) without rewriting the business logic</li>
-      </ul>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li><strong>Pydantic</strong> — a Python library for typing: makes sure variables in code are the right type (integers, floats, strings, etc.)</li>
+            <li><strong>PydanticAI</strong> — typing for agents: makes sure agents receive and spit out data in well-structured forms for complex agentic flows</li>
+            <li><strong>Model-agnostic</strong> — swap models (GPT, Claude, Gemini, …) without rewriting the business logic</li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec04/pydantic-robot-python.jpg"
+          alt="Photoreal chrome robotic python snake with glowing red eyes"
+          width="1024"
+          height="1024"
+        >
+      </div>
     </section>
 
     <!-- Four Pieces -->
     <section class="slide skills-roomy" data-slide="19">
-      <h1>Four Pieces Of The Agent</h1>
+      <h1>Four Pieces Of A PydanticAI Agent</h1>
       <ul>
-        <li><strong>1. Output format</strong> — the report template (like columns in a spreadsheet)</li>
-        <li><strong>2. Dependencies</strong> — user/client context (currency, watchlist) passed in safely each run</li>
-        <li><strong>3. Agent</strong> — the model + job description that runs the loop</li>
-        <li><strong>4. Tools</strong> — the hands (e.g. fetch a live stock price)</li>
+        <li><strong>1. Output format</strong> — a typed schema for what the agent must return (fields + types), not free-form text</li>
+        <li><strong>2. Dependencies</strong> — per-run context you inject (user settings, files, API clients) without baking it into the prompt</li>
+        <li><strong>3. Agent</strong> — the model + system prompt + output/deps types wired together to run the loop</li>
+        <li><strong>4. Tools</strong> — Python functions the agent can call to act on the world (search, code, files, APIs, …)</li>
       </ul>
     </section>
 
@@ -1575,7 +1692,6 @@ Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more,
       <h1>1. Output Format</h1>
       <ul>
         <li>Tell the agent the <strong>exact fields</strong> every answer must include</li>
-        <li>Bad: “NVDA looks strong lately…” · Good: symbol / price / currency / summary</li>
       </ul>
       <pre class="code-panel"><span class="tok-cmt"># Report template — every answer must match this shape</span>
 <span class="tok-key">class</span> <span class="tok-fn">StockReport</span>(BaseModel):
@@ -1590,7 +1706,6 @@ Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more,
       <h1>2. Dependencies</h1>
       <ul>
         <li>Context that changes by user or session — not hard-coded into the prompt forever</li>
-        <li>MBA analogy: the client brief you hand the analyst before each meeting</li>
       </ul>
       <pre class="code-panel"><span class="tok-cmt"># Client / user context for this run</span>
 <span class="tok-fn">@dataclass</span>
@@ -1606,14 +1721,19 @@ Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more,
       <h1>3. Agent</h1>
       <ul>
         <li>Pick the <strong>model</strong>, attach the <strong>report template</strong> + <strong>context type</strong>, write the <strong>job description</strong></li>
-        <li>This is the “hire the analyst” step — tools come next</li>
       </ul>
       <pre class="code-panel"><span class="tok-cmt"># The analyst: brain + job description</span>
 analyst_agent = <span class="tok-fn">Agent</span>(
     <span class="tok-str">"openai:gpt-5.6-luna"</span>,
     deps_type=AgentDeps,
     output_type=StockReport,
-    system_prompt=<span class="tok-str">"You are a stock analyst. Call tools for live prices — never invent numbers."</span>,
+    system_prompt=(
+        <span class="tok-str">"You are a stock analyst agent. "</span>
+        <span class="tok-str">"Always call tools for live prices — never invent numbers. "</span>
+        <span class="tok-str">"Use the user's preferred currency from deps when reporting. "</span>
+        <span class="tok-str">"Stay within the watchlist unless the user asks about another ticker. "</span>
+        <span class="tok-str">"Keep the summary to one clear sentence with the key takeaway."</span>
+    ),
 )</pre>
     </section>
 
@@ -1622,7 +1742,6 @@ analyst_agent = <span class="tok-fn">Agent</span>(
       <h1>4. Tools</h1>
       <ul>
         <li>A normal Python function the model can call — name + docstring = the instruction manual</li>
-        <li>Harness “hands”: without this, the agent can only guess prices from memory</li>
       </ul>
       <pre class="code-panel"><span class="tok-cmt"># Hand: fetch a live price (Yahoo Finance)</span>
 <span class="tok-fn">@analyst_agent.tool_plain</span>
@@ -1634,22 +1753,54 @@ analyst_agent = <span class="tok-fn">Agent</span>(
     <span class="tok-key">return</span> <span class="tok-str">f"{symbol}: {price:.2f} {currency}"</span></pre>
     </section>
 
+    <!-- Agent Loop -->
+    <section class="slide code-teach agent-loop-slide" data-slide="24">
+      <h1>5. The Agent Loop</h1>
+      <ul>
+        <li>One <code>run(...)</code> = the whole ReAct loop — here it needs <strong>two tools</strong> before it can finish</li>
+      </ul>
+      <div class="agent-loop-split">
+        <pre class="code-panel"><span class="tok-cmt"># One user turn — loop runs inside .run()</span>
+result = <span class="tok-key">await</span> analyst_agent.<span class="tok-fn">run</span>(
+    <span class="tok-str">"What is the 1-year return of NVDA?"</span>,
+    deps=<span class="tok-fn">AgentDeps</span>(),
+    message_history=chat_history,
+    usage_limits=<span class="tok-fn">UsageLimits</span>(
+        request_limit=<span class="tok-num">8</span>
+    ),
+)
+reply: AnalystReply = result.output
+chat_history = result.<span class="tok-fn">all_messages</span>()</pre>
+        <div class="chat-trace-card" aria-label="Chat history this run would produce">
+          <div class="chat-trace-label">Chat history from this run</div>
+          <p class="chat-line chat-user">User: What is the 1-year return of NVDA?</p>
+          <p class="chat-line chat-tool">Tool call: get_yahoo_prices({"ticker": "NVDA", "years": 1})</p>
+          <p class="chat-line chat-obs">Tool result (get_yahoo_prices): {"ticker": "NVDA", "years": 1, "n_days": 252, "first_close": 170.12, "last_close": 230.36, "cached": true}</p>
+          <p class="chat-line chat-tool">Tool call: compute_cagr({"ticker": "NVDA", "years": 1})</p>
+          <p class="chat-line chat-obs">Tool result (compute_cagr): {"ticker": "NVDA", "cagr_pct": 35.4}</p>
+          <p class="chat-line chat-tool">Tool call: final_result({"answer": "NVDA 1-year return ≈ 35.4%.", "tools_used": ["get_yahoo_prices", "compute_cagr"]})</p>
+          <p class="chat-line chat-obs">Tool result (final_result): Final result processed.</p>
+          <p class="chat-line chat-final">Answer: NVDA’s 1-year return is about 35.4%.</p>
+        </div>
+      </div>
+    </section>
+
     <!-- Building Agents With Agents -->
-    <section class="slide skills-split-slide" data-slide="24">
+    <section class="slide skills-split-slide" data-slide="25">
       <h1>Building Agents With Agents</h1>
       <div class="skills-split">
         <div class="skills-split-copy">
           <ul>
-            <li>You just saw the <strong>four pieces</strong> — don’t memorize every line</li>
-            <li>Vibe-coding agents (Cursor, Codex, …) already know PydanticAI syntax</li>
-            <li>So we <strong>build agents with agents</strong> — and wire run / loop / harness in class</li>
-            <li><a href="../vibe/lec04-vibe.html">Vibe Coding — Build an Agent →</a></li>
+            <li>PydanticAI code is complicated</li>
+            <li>We will use an AI vibe coder to write the code</li>
+            <li>We will be building agents with agents</li>
+            <li><a class="vibe-link" href="../vibe/lec04-vibe.html">Vibe Coding — Build an Agent →</a></li>
           </ul>
         </div>
         <img
-          class="square-shot"
-          src="../images/lec04/terminator-building-agent.jpg?v=1"
-          alt="Photoreal Terminator craftsman assembling a miniature Terminator on a workbench"
+          class="square-shot build-agents-shot"
+          src="../images/lec04/terminator-building-agent.jpg?v=3"
+          alt="Photoreal Terminator craftsman assembling a clearly visible miniature Terminator on a workbench"
           width="1024"
           height="1024"
         >

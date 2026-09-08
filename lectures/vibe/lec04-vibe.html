@@ -27,17 +27,35 @@
     .assignment-box li {
       text-align: left;
     }
-    .data-note {
-      margin: 0.75rem 0 0;
-      padding: 0.65rem 0.85rem;
-      border-radius: 8px;
-      background: var(--yale-blue-pale);
-      border-left: 4px solid var(--yale-blue);
-      font-size: 0.95rem;
+    .tts-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.4rem;
+      height: 2.4rem;
+      padding: 0;
+      border: none;
+      border-radius: 999px;
+      background: #111;
+      color: #ff2d95;
+      cursor: pointer;
+      flex-shrink: 0;
     }
-    [data-theme="dark"] .data-note {
-      background: #132a45;
-      border-left-color: #7eb6ff;
+    .tts-btn:hover {
+      background: #000;
+      color: #ff6bb5;
+    }
+    .tts-btn[aria-pressed="true"] {
+      box-shadow: 0 0 0 2px #ff2d95;
+    }
+    .tts-btn svg {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+    .tts-end {
+      display: flex;
+      justify-content: flex-end;
+      margin: 0.35rem 0 1.15rem;
     }
   </style>
 </head>
@@ -72,60 +90,134 @@
     <div class="assignment-box">
       <h2>The Scenario</h2>
       <p>
-        Upgrade last lecture’s stock chatbot into a <strong>financial analyst agent</strong>.
-        It loads a portfolio from a JSON file, chats about risk and replacements, and can act —
-        compute metrics, swap a holding within a fixed universe, and dig into a name with price,
-        news, and analyst coverage. Answers must come from tools and live data, not memory.
+        Make a <strong>financial analyst agent</strong>. It can get stock prices from a fixed
+        universe, compute metrics on those stocks, and analyze a portfolio’s historical
+        performance. 
       </p>
+      <div class="tts-end">
+        <button
+          type="button"
+          class="tts-btn"
+          data-tts="../audio/lec04/scenario.mp3?v=2"
+          aria-pressed="false"
+          aria-label="Play scenario reading"
+          title="Play scenario"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+        </button>
+      </div>
 
       <h2>The Task</h2>
       <p>
-        <strong>1.</strong> Keep (or refresh) your semester <code>AGENTS.md</code>: model, API keys,
-        black-and-pink UI, Dash run rules (no auto-reloader / kill the whole process). Add agent
-        house rules: max steps, never invent prices, only trade within the allowed universe, and
-        always log every thought and tool call.
+        Build a <strong>PydanticAI</strong> financial analyst agent with:
       </p>
+      <ul>
+        <li><strong>Data collection tools</strong> — pull real prices from Yahoo Finance</li>
+        <li><strong>Individual stock analysis tools</strong> — metrics like returns, CAGR, Sharpe ratio, and max drawdown</li>
+        <li><strong>Portfolio analysis tools</strong> — historical performance of the whole book</li>
+      </ul>
       <p>
-        <strong>2.</strong> Reuse your <strong>chatbot</strong> skill for the Dash chat UI. Extend
-        it (or add an <strong>agent</strong> skill) so the UI shows: chat history memory, the model’s
-        <em>thinking</em> in a lighter font before the final answer, and a clear trail when a tool runs.
-      </p>
-      <p>
-        <strong>3.</strong> Build a portfolio analyst agent (PydanticAI or your own loop) with a strong
-        system prompt. Load <code>portfolio.json</code>. Put this fixed replacement universe in the
-        prompt (top large-cap names — keep it simple):
+        Stock universe (stay inside this list):
         <strong>AAPL, MSFT, NVDA, GOOGL, AMZN, META, AVGO, TSLA, BRK-B, JPM</strong>.
       </p>
       <p>
-        <strong>4.</strong> Wire tools the agent can call:
+        Wrap the agent in a nice <strong>Dash chatbot</strong> app.
       </p>
-      <ul>
-        <li><strong>Portfolio metrics</strong> — one-year mean return, volatility, Sharpe, max drawdown</li>
-        <li><strong>Replace a holding</strong> — swap one ticker for another only from the universe above; update the portfolio file</li>
-        <li><strong>Analyze a stock</strong> — live price (Yahoo Finance), recent news (web search), and analyst-report style summaries (web search / filings snippets)</li>
-        <li><strong>Portfolio optimization</strong> — suggest weights or a swap that improves risk/return under simple constraints</li>
-      </ul>
       <p>
-        <strong>5.</strong> Harness checklist in the build:
-      </p>
-      <ul>
-        <li><strong>Tools</strong> — the list above (hands)</li>
-        <li><strong>Memory</strong> — chat history + current portfolio state</li>
-        <li><strong>Goals</strong> — clear finish / max-step satiation so it cannot loop forever</li>
-        <li><strong>Guardrails</strong> — universe allow-list; no inventing prices; refuse unsafe asks</li>
-        <li><strong>Audit trail</strong> — forensic log of thoughts, tool calls, observations (file or on-screen)</li>
-      </ul>
-      <p>
-        Prove it: ask for portfolio risk metrics, ask it to replace one name with another from the
-        universe, then ask it to analyze a ticker with thinking visible in the chat.
-      </p>
-      <p class="data-note">
-        Sample portfolio:
+        Portfolio file:
         <a href="../../data/lec04/portfolio.json" download>portfolio.json</a>
-        — copy it into your project and let the agent read/update it.
+      </p>
+      <div class="tts-end">
+        <button
+          type="button"
+          class="tts-btn"
+          data-tts="../audio/lec04/task.mp3"
+          aria-pressed="false"
+          aria-label="Play task reading"
+          title="Play task"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+        </button>
+      </div>
+      <audio id="tts-audio" preload="none"></audio>
+      <p>
+        <strong>Harness checklist:</strong>
+      </p>
+      <ul>
+        <li><strong>Tools</strong> — the list above</li>
+        <li><strong>Memory</strong> — chat history + current portfolio state</li>
+        <li><strong>Stopping Rules</strong> — clear finish / max-step cutoff so it cannot loop forever</li>
+        <li><strong>Guardrails</strong> — universe allow-list; no inventing prices; refuse unsafe asks</li>
+        <li><strong>Audit trail</strong> — forensic log of thoughts, tool calls, observations</li>
+      </ul>
+      <p>
+        <strong>Install tip:</strong> if you use PydanticAI, put
+        <code>pydantic-ai-slim[openai]</code> in <code>requirements.txt</code>
+        (not full <code>pydantic-ai</code>). The full package pulls Anthropic, Google,
+        MCP, Logfire, and dozens of extras you do not need for Portkey/OpenAI — installs
+        get huge and often stall. Slim is enough for this vibe.
+      </p>
+      <p>
+        <strong>Dash tip:</strong> run with <code>use_reloader=False</code> (or debug off) so one
+        edit doesn’t spawn many servers, and when stopping the app, kill the whole process — not
+        only whatever is on the port.
+      </p>
+      <p>
+        <strong>Dropbox / OneDrive:</strong> pause syncing (or exclude <code>.venv</code>)
+        while you create the virtualenv and run <code>pip install</code>. Live sync during
+        the install often breaks the venv.
       </p>
     </div>
   </main>
+  <script>
+    (function () {
+      const audio = document.getElementById("tts-audio");
+      const buttons = [...document.querySelectorAll(".tts-btn[data-tts]")];
+      if (!audio || !buttons.length) return;
+
+      let activeBtn = null;
+
+      function setPressed(btn, on) {
+        buttons.forEach((b) => b.setAttribute("aria-pressed", "false"));
+        if (btn) btn.setAttribute("aria-pressed", on ? "true" : "false");
+      }
+
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const src = btn.getAttribute("data-tts");
+          if (!src) return;
+
+          if (activeBtn === btn && !audio.paused) {
+            audio.pause();
+            setPressed(null, false);
+            activeBtn = null;
+            return;
+          }
+
+          if (audio.getAttribute("src") !== src) {
+            audio.setAttribute("src", src);
+            audio.load();
+          }
+          audio.play().then(() => {
+            activeBtn = btn;
+            setPressed(btn, true);
+          }).catch(() => {
+            setPressed(null, false);
+            activeBtn = null;
+          });
+        });
+      });
+
+      audio.addEventListener("ended", () => {
+        setPressed(null, false);
+        activeBtn = null;
+      });
+    })();
+  </script>
   <script src="../../js/theme.js"></script>
   <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
 </body>
