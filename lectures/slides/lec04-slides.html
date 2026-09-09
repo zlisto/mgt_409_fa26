@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -247,7 +247,8 @@
       flex-direction: column;
     }
     .slide.skills-roomy.active { display: flex; }
-    .skills-roomy > ul {
+    .skills-roomy > ul,
+    .skills-roomy > ol {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -255,9 +256,26 @@
       gap: 0.55rem;
       margin: 0.35rem 0 0;
     }
-    .skills-roomy > ul > li {
+    .skills-roomy > ol {
+      padding-left: 1.6rem;
+      list-style: decimal;
+    }
+    .skills-roomy > ul > li,
+    .skills-roomy > ol > li {
       font-size: clamp(1.28rem, 2.8vw, 1.65rem);
       line-height: 1.35;
+    }
+    .slide.pieces-big > ol {
+      gap: 0.95rem;
+      padding-left: 3.25rem;
+      margin-left: 0.75rem;
+      list-style-position: outside;
+    }
+    .slide.pieces-big > ol > li {
+      font-size: clamp(1.6rem, 4.15vw, 2.55rem);
+      font-weight: 650;
+      line-height: 1.25;
+      padding-left: 0.35rem;
     }
     .slide.think-overview > ul {
       gap: 1rem;
@@ -990,8 +1008,16 @@
 
     html:fullscreen .skills-roomy > ul > li,
     html:-webkit-full-screen .skills-roomy > ul > li,
-    body.is-fullscreen-deck .skills-roomy > ul > li {
+    body.is-fullscreen-deck .skills-roomy > ul > li,
+    html:fullscreen .skills-roomy > ol > li,
+    html:-webkit-full-screen .skills-roomy > ol > li,
+    body.is-fullscreen-deck .skills-roomy > ol > li {
       font-size: clamp(1.55rem, 2.6vh, 2.05rem) !important;
+    }
+    html:fullscreen .pieces-big > ol > li,
+    html:-webkit-full-screen .pieces-big > ol > li,
+    body.is-fullscreen-deck .pieces-big > ol > li {
+      font-size: clamp(1.85rem, 5vh, 2.85rem) !important;
     }
     html:fullscreen .think-overview > ul > li,
     html:-webkit-full-screen .think-overview > ul > li,
@@ -1676,15 +1702,16 @@ Q: The cafeteria had 23 apples. If they used 20 to make lunch and bought 6 more,
       </div>
     </section>
 
-    <!-- Four Pieces -->
-    <section class="slide skills-roomy" data-slide="19">
-      <h1>Four Pieces Of A PydanticAI Agent</h1>
-      <ul>
-        <li><strong>1. Output format</strong> — a typed schema for what the agent must return (fields + types), not free-form text</li>
-        <li><strong>2. Dependencies</strong> — per-run context you inject (user settings, files, API clients) without baking it into the prompt</li>
-        <li><strong>3. Agent</strong> — the model + system prompt + output/deps types wired together to run the loop</li>
-        <li><strong>4. Tools</strong> — Python functions the agent can call to act on the world (search, code, files, APIs, …)</li>
-      </ul>
+    <!-- Five Pieces -->
+    <section class="slide skills-roomy pieces-big" data-slide="19">
+      <h1>Five Pieces Of A PydanticAI Agent</h1>
+      <ol>
+        <li>Output format</li>
+        <li>Dependencies</li>
+        <li>Agent</li>
+        <li>Tools</li>
+        <li>The agent loop</li>
+      </ol>
     </section>
 
     <!-- Output Format -->

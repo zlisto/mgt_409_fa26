@@ -98,7 +98,7 @@
         <button
           type="button"
           class="tts-btn"
-          data-tts="../audio/lec04/scenario.mp3?v=2"
+          data-tts="../audio/lec04/scenario.mp3?v=silence1"
           aria-pressed="false"
           aria-label="Play scenario reading"
           title="Play scenario"
@@ -120,7 +120,7 @@
       </ul>
       <p>
         Stock universe (stay inside this list):
-        <strong>AAPL, MSFT, NVDA, GOOGL, AMZN, META, AVGO, TSLA, BRK-B, JPM</strong>.
+        <strong>AAPL, MSFT, NVDA, GOOGL, AMZN, META, TSLA, JPM, BAC, GS</strong>.
       </p>
       <p>
         Wrap the agent in a nice <strong>Dash chatbot</strong> app.
@@ -133,7 +133,7 @@
         <button
           type="button"
           class="tts-btn"
-          data-tts="../audio/lec04/task.mp3"
+          data-tts="../audio/lec04/task.mp3?v=mag7banks"
           aria-pressed="false"
           aria-label="Play task reading"
           title="Play task"
@@ -166,6 +166,12 @@
         edit doesn’t spawn many servers, and when stopping the app, kill the whole process — not
         only whatever is on the port.
       </p>
+      <p>
+        <strong>Dash tip (ports):</strong> Codex may leave orphan servers on the same port.
+        Before starting the app again, free the port (PowerShell; change <code>8050</code> if yours differs):
+      </p>
+      <pre><code>netstat -ano | findstr :8050
+taskkill /PID &lt;pid&gt; /F</code></pre>
       <p>
         <strong>Dropbox / OneDrive:</strong> pause syncing (or exclude <code>.venv</code>)
         while you create the virtualenv and run <code>pip install</code>. Live sync during
