@@ -2,17 +2,30 @@
   var root = document.documentElement;
   if (!root.hasAttribute("data-mgt409")) return;
 
-  // Shared scenario/brief: <div data-hw-brief="scenario.html"></div>
+  // Shared scenario/brief:
+  //   <div data-hw-brief="scenario.html"></div>
+  //   <div data-hw-brief="scenario.html" data-hw-brief-open></div>  ← open on P1
   document.querySelectorAll("[data-hw-brief]").forEach(function (slot) {
     var src = slot.getAttribute("data-hw-brief");
     if (!src) return;
+    var startOpen = slot.hasAttribute("data-hw-brief-open");
     fetch(src)
       .then(function (res) {
         if (!res.ok) throw new Error("brief " + res.status);
         return res.text();
       })
       .then(function (html) {
-        slot.outerHTML = html;
+        var wrap = document.createElement("div");
+        wrap.innerHTML = String(html).trim();
+        var node = wrap.firstElementChild;
+        if (node && startOpen && node.tagName === "DETAILS") {
+          node.setAttribute("open", "");
+        }
+        if (node) {
+          slot.replaceWith(node);
+        } else {
+          slot.outerHTML = html;
+        }
       })
       .catch(function () {
         slot.innerHTML =
