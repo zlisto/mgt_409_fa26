@@ -98,7 +98,7 @@
         <button
           type="button"
           class="tts-btn"
-          data-tts="../audio/lec03/scenario.mp3"
+          data-tts="../audio/lec03/scenario.mp3?v=silence2"
           aria-pressed="false"
           aria-label="Play scenario reading"
           title="Play scenario"
@@ -118,13 +118,15 @@
         kill the whole process — not only whatever is on port 8050.
       </p>
       <p>
-        <strong>2.</strong> Write a <strong>chatbot</strong> skill you’ll reuse for chat apps all
-        semester. Cover the mechanics and look of the chat UI: message history, a text box to type
-        in, Enter (or a Send button) to submit, how replies appear, and the styling you prefer.
+        <strong>2.</strong> Paste the <code>app.py</code> chat shell from below into your vibe coder.
+        Ask it to restyle that UI to your taste (colors, layout, fonts — keep the chat mechanics:
+        message history, a text box, Enter / Send to submit, how replies appear, thinking dots).
+        When it looks right, save what you learned as a reusable <strong>chatbot</strong> skill
+        you’ll use for chat apps all semester.
       </p>
       <p>
-        <strong>3.</strong> Use that skill to build a Dash stock research chat app. Wire up tools
-        the model can call:
+        <strong>3.</strong> Use that skill (and this shell) to finish the stock research chat app.
+        Fill in <code>get_reply()</code> so the model can call tools:
       </p>
       <ul>
         <li>Live market data from Yahoo Finance (never invent prices)</li>
@@ -134,12 +136,12 @@
       <p>
         The model should return live answers and show you when a tool ran.
       </p>
-  
+
       <div class="tts-end">
         <button
           type="button"
           class="tts-btn"
-          data-tts="../audio/lec03/task.mp3"
+          data-tts="../audio/lec03/task.mp3?v=silence2"
           aria-pressed="false"
           aria-label="Play task reading"
           title="Play task"
@@ -149,8 +151,257 @@
           </svg>
         </button>
       </div>
-      <audio id="tts-audio" preload="none"></audio>
-    </div>
+
+      <h2>Dash chat shell (paste this)</h2>
+      <p>
+        This is the chat window for Lecture 3. It is <strong>not</strong> a PydanticAI
+        <code>agent.py</code> setup — replies come from <code>get_reply()</code> in
+        <code>app.py</code> (your model + tools). Copy the prompt first, then the code.
+      </p>
+
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">Prompt for your AI</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy prompt">Copy</button>
+        </div>
+        <pre class="vibe-code vibe-prompt"><code>We&#x27;re building a Dash stock research chatbot (Lecture 3 — tools + chat UI, not a PydanticAI agent yet).
+
+1. Create app.py from the Python code I paste in my next message. Save it as app.py in this project folder. Keep this lean shell for now — do not do a big themed redesign until I ask.
+
+2. This file is the chat UI. Replies come from get_reply() in the same file (you can later move that into chatbot.py if you want). There is NO agent.py in this lecture.
+
+3. get_reply(user_text, conversation_history) must return {&quot;text&quot;: &quot;...&quot;}. Optional: &quot;tool_events&quot;: [{&quot;name&quot;: &quot;...&quot;, &quot;status&quot;: &quot;completed&quot;}, ...] so the UI can show which tools ran. A plain string is also fine for early tests.
+
+4. After the shell runs, I&#x27;ll ask you to restyle the UI and then save a reusable chatbot skill from what we learned.
+
+5. Then wire get_reply with PORTKEY_API_KEY from .env, model gpt-5.6-luna, and tools (Yahoo Finance prices/metrics, web search for news). Never invent prices.
+
+6. Run with: python app.py → http://127.0.0.1:8050
+   Keep debug=False and use_reloader=False.
+
+Wait for my next message with the app.py code, then write the file.</code></pre>
+      </div>
+
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">app.py</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy app.py">Copy</button>
+        </div>
+        <pre class="vibe-code"><code>&quot;&quot;&quot;Minimal Dash chat shell for a Lecture 3 chatbot (tools + LLM).
+
+Run:  python app.py
+Open: http://127.0.0.1:8050
+
+Wire your model + tools inside get_reply() (same file or import from chatbot.py).
+Return {&quot;text&quot;: &quot;...&quot;} and optionally &quot;tool_events&quot;.
+&quot;&quot;&quot;
+
+from __future__ import annotations
+
+import traceback
+from typing import Any
+
+from dash import Dash, Input, Output, State, dcc, html, no_update, clientside_callback
+
+
+def get_reply(user_text: str, conversation_history: list[dict[str, Any]] | None = None) -&gt; dict[str, Any]:
+    &quot;&quot;&quot;Replace this with your OpenAI / Portkey call + tools.
+
+    Must return at least {&quot;text&quot;: &quot;...&quot;}.
+    Optional: &quot;tool_events&quot;: [{&quot;name&quot;: &quot;Yahoo price&quot;, &quot;status&quot;: &quot;completed&quot;}, ...]
+    so the UI can list what ran under the reply.
+    &quot;&quot;&quot;
+    _ = conversation_history
+    return {
+        &quot;text&quot;: (
+            f&quot;You said: {user_text}
+
+&quot;
+            &quot;Replace get_reply() with your real chatbot (model + tools).&quot;
+        ),
+        &quot;tool_events&quot;: [],
+    }
+
+
+app = Dash(__name__)
+
+app.index_string = &quot;&quot;&quot;&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        {%metas%}
+        &lt;title&gt;{%title%}&lt;/title&gt;
+        {%favicon%}
+        {%css%}
+        &lt;style&gt;
+            @keyframes chat-pulse {
+                0%, 100% { opacity: 0.25; }
+                50% { opacity: 1; }
+            }
+            .chat-thinking::after {
+                content: &quot;...&quot;;
+                letter-spacing: 0.05em;
+                animation: chat-pulse 1s ease-in-out infinite;
+            }
+            .chat-tool-steps {
+                color: #666;
+                font-size: 0.85rem;
+                margin: -4px 0 12px 0;
+                padding-left: 0.25rem;
+            }
+            .chat-tool-steps li { margin: 2px 0; }
+        &lt;/style&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        {%app_entry%}
+        &lt;footer&gt;
+            {%config%}
+            {%scripts%}
+            {%renderer%}
+        &lt;/footer&gt;
+    &lt;/body&gt;
+&lt;/html&gt;&quot;&quot;&quot;
+
+app.layout = html.Div(
+    [
+        html.H2(&quot;Stock research chat&quot;),
+        dcc.Store(
+            id=&quot;chat-history&quot;,
+            data=[{&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: &quot;Hi — ask me about a stock.&quot;}],
+        ),
+        dcc.Store(id=&quot;pending-request&quot;, data=None),
+        dcc.Interval(id=&quot;agent-poll&quot;, interval=250, n_intervals=0, max_intervals=0, disabled=True),
+        html.Div(
+            id=&quot;chat-window&quot;,
+            style={
+                &quot;height&quot;: &quot;420px&quot;,
+                &quot;overflowY&quot;: &quot;auto&quot;,
+                &quot;border&quot;: &quot;1px solid #ccc&quot;,
+                &quot;padding&quot;: &quot;12px&quot;,
+                &quot;marginBottom&quot;: &quot;12px&quot;,
+            },
+        ),
+        dcc.Textarea(id=&quot;composer&quot;, style={&quot;width&quot;: &quot;80%&quot;, &quot;height&quot;: &quot;70px&quot;}, placeholder=&quot;Type a message…&quot;),
+        html.Button(&quot;Send&quot;, id=&quot;send-button&quot;, n_clicks=0),
+        html.P(&quot;Enter to send · Shift+Enter for a new line&quot;),
+    ],
+    style={&quot;maxWidth&quot;: &quot;720px&quot;, &quot;margin&quot;: &quot;24px auto&quot;, &quot;fontFamily&quot;: &quot;sans-serif&quot;},
+)
+
+
+def render_messages(history, pending):
+    blocks = []
+    for msg in history or []:
+        who = &quot;Bot&quot; if msg[&quot;role&quot;] == &quot;assistant&quot; else &quot;You&quot;
+        blocks.append(
+            html.Div(
+                [html.Strong(f&quot;{who}: &quot;), dcc.Markdown(msg[&quot;content&quot;])],
+                style={&quot;marginBottom&quot;: &quot;10px&quot;},
+            )
+        )
+        tools = msg.get(&quot;tool_events&quot;) or []
+        if tools:
+            blocks.append(
+                html.Ul(
+                    [html.Li(f&quot;Used: {t.get(&#x27;name&#x27;, &#x27;?&#x27;)}&quot;) for t in tools],
+                    className=&quot;chat-tool-steps&quot;,
+                )
+            )
+    if pending:
+        blocks.append(
+            html.Div(
+                [html.Strong(&quot;Bot &quot;), html.Span(className=&quot;chat-thinking&quot;)],
+                style={&quot;color&quot;: &quot;#888&quot;},
+                role=&quot;status&quot;,
+                **{&quot;aria-live&quot;: &quot;polite&quot;},
+            )
+        )
+    return blocks
+
+
+@app.callback(Output(&quot;chat-window&quot;, &quot;children&quot;), Input(&quot;chat-history&quot;, &quot;data&quot;), Input(&quot;pending-request&quot;, &quot;data&quot;))
+def update_chat(history, pending):
+    return render_messages(history, pending)
+
+
+@app.callback(
+    Output(&quot;chat-history&quot;, &quot;data&quot;, allow_duplicate=True),
+    Output(&quot;pending-request&quot;, &quot;data&quot;),
+    Output(&quot;composer&quot;, &quot;value&quot;),
+    Output(&quot;agent-poll&quot;, &quot;disabled&quot;),
+    Output(&quot;agent-poll&quot;, &quot;n_intervals&quot;),
+    Output(&quot;agent-poll&quot;, &quot;max_intervals&quot;),
+    Input(&quot;send-button&quot;, &quot;n_clicks&quot;),
+    State(&quot;composer&quot;, &quot;value&quot;),
+    State(&quot;chat-history&quot;, &quot;data&quot;),
+    State(&quot;pending-request&quot;, &quot;data&quot;),
+    prevent_initial_call=True,
+)
+def submit_message(_, text, history, pending):
+    if pending or not text or not text.strip():
+        return no_update, no_update, no_update, no_update, no_update, no_update
+    updated = [*(history or []), {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: text.strip()}]
+    return updated, {&quot;text&quot;: text.strip()}, &quot;&quot;, False, 0, 1
+
+
+@app.callback(
+    Output(&quot;chat-history&quot;, &quot;data&quot;, allow_duplicate=True),
+    Output(&quot;pending-request&quot;, &quot;data&quot;, allow_duplicate=True),
+    Output(&quot;agent-poll&quot;, &quot;disabled&quot;, allow_duplicate=True),
+    Input(&quot;agent-poll&quot;, &quot;n_intervals&quot;),
+    State(&quot;pending-request&quot;, &quot;data&quot;),
+    State(&quot;chat-history&quot;, &quot;data&quot;),
+    prevent_initial_call=True,
+)
+def complete_chat_turn(_, pending, history):
+    if not pending:
+        return no_update, no_update, True
+    try:
+        print(f&quot;
+chat turn: {pending[&#x27;text&#x27;]!r}&quot;, flush=True)
+        result = get_reply(pending[&quot;text&quot;], (history or [])[:-1])
+        tools = result.get(&quot;tool_events&quot;, []) if isinstance(result, dict) else []
+        text = result[&quot;text&quot;] if isinstance(result, dict) else str(result)
+        if tools:
+            print(&quot;tools this turn: &quot; + &quot;, &quot;.join(t.get(&quot;name&quot;, &quot;?&quot;) for t in tools), flush=True)
+        else:
+            print(&quot;tools this turn: (none)&quot;, flush=True)
+        reply = {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: text, &quot;tool_events&quot;: tools}
+    except Exception:
+        traceback.print_exc()
+        reply = {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: &quot;Something went wrong. Check .env / Portkey and try again.&quot;}
+    return [*(history or []), reply], None, True
+
+
+# Enter sends; Shift+Enter keeps a newline
+clientside_callback(
+    &quot;&quot;&quot;
+    function(n) {
+        const el = document.getElementById(&#x27;composer&#x27;);
+        if (!el || el.dataset.bound) return window.dash_clientside.no_update;
+        el.dataset.bound = &#x27;1&#x27;;
+        el.addEventListener(&#x27;keydown&#x27;, function(e) {
+            if (e.key === &#x27;Enter&#x27; &amp;&amp; !e.shiftKey) {
+                e.preventDefault();
+                document.getElementById(&#x27;send-button&#x27;).click();
+            }
+        });
+        return window.dash_clientside.no_update;
+    }
+    &quot;&quot;&quot;,
+    Output(&quot;send-button&quot;, &quot;n_clicks&quot;),
+    Input(&quot;send-button&quot;, &quot;n_clicks&quot;),
+)
+
+
+if __name__ == &quot;__main__&quot;:
+    app.run(host=&quot;127.0.0.1&quot;, port=8050, debug=False, use_reloader=False)</code></pre>
+      </div>
+      <p>
+        Also fine to download:
+        <a href="snippets/dash_chat_shell_lec03.py" download="app.py"><code>app.py</code></a>
+      </p>
+</div>
+    <audio id="tts-audio" preload="none"></audio>
   </main>
   <script>
     (function () {
@@ -202,6 +453,7 @@
     })();
   </script>
   <script src="../../js/theme.js"></script>
+  <script src="../../js/vibe-copy.js"></script>
   <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
 </body>
 </html>

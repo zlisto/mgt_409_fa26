@@ -123,12 +123,15 @@
         <strong>AAPL, MSFT, NVDA, GOOGL, AMZN, META, TSLA, JPM, BAC, GS</strong>.
       </p>
       <p>
-        Wrap the agent in a nice <strong>Dash chatbot</strong> app.
+        Wrap the agent in a lean <strong>Dash chatbot</strong> shell (prompt + code below).
+        Build <code>agent.py</code> in class; the UI just calls <code>run_agent</code>.
       </p>
       <p>
         Portfolio file:
         <a href="../../data/lec04/portfolio.json" download>portfolio.json</a>
+        — put it next to <code>app.py</code> / <code>agent.py</code>.
       </p>
+
       <div class="tts-end">
         <button
           type="button"
@@ -143,8 +146,228 @@
           </svg>
         </button>
       </div>
-      <audio id="tts-audio" preload="none"></audio>
+
+      <h2>Dash chat shell (paste this)</h2>
       <p>
+        This is the chat window only. Your vibe coder should write <code>app.py</code> from
+        the code block, and wait on the real <code>agent.py</code> you’ll build for the
+        PydanticAI tools / loop.
+      </p>
+
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">Prompt for your AI</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy prompt">Copy</button>
+        </div>
+        <pre class="vibe-code vibe-prompt"><code>We're building a Dash chat UI around a PydanticAI financial analyst agent.
+
+1. Create app.py from the Python code I paste in my next message. Save it as app.py in this project folder. Keep this lean shell — do not redesign it into a big themed UI unless I ask later.
+
+2. app.py imports run_agent from agent.py. That agent.py (PydanticAI + Yahoo / portfolio tools) is what we build in class. Until it exists, do NOT invent a full fake agent. If needed, create only this tiny stub as agent.py:
+
+def run_agent(user_text, portfolio_path, conversation_history=None):
+    return {"text": "Agent not built yet — finish agent.py in class.", "tool_events": []}
+
+Replace the stub when we write the real agent. Keep portfolio.json next to these files (download from the course site if you do not have it yet).
+
+3. run_agent must return {"text": "..."}. Optional: "tool_events": [{"name": "...", "status": "completed"}, ...]. The UI shows thinking dots while waiting, and lists tools under a reply when tool_events is present. Missing tool_events is fine — the app still works.
+
+4. Run with: python app.py → open http://127.0.0.1:8050
+   Keep debug=False and use_reloader=False. If the port is stuck, free it before restarting.
+
+5. Real agent: PORTKEY_API_KEY from .env, model gpt-5.6-luna, pydantic-ai-slim[openai] (not full pydantic-ai).
+
+Wait for my next message with the app.py code, then write the file.</code></pre>
+      </div>
+
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">app.py</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy app.py">Copy</button>
+        </div>
+        <pre class="vibe-code"><code>&quot;&quot;&quot;Minimal Dash chat shell for a PydanticAI agent.
+
+Run:  python app.py
+Open: http://127.0.0.1:8050
+
+Plug your agent into run_agent() below (or import it).
+&quot;&quot;&quot;
+
+from __future__ import annotations
+
+import traceback
+from pathlib import Path
+
+from dash import Dash, Input, Output, State, dcc, html, no_update, clientside_callback
+
+from agent import run_agent
+
+HERE = Path(__file__).resolve().parent
+PORTFOLIO_PATH = HERE / &quot;portfolio.json&quot;
+
+app = Dash(__name__)
+
+app.index_string = &quot;&quot;&quot;&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        {%metas%}
+        &lt;title&gt;{%title%}&lt;/title&gt;
+        {%favicon%}
+        {%css%}
+        &lt;style&gt;
+            @keyframes lisa-pulse {
+                0%, 100% { opacity: 0.25; }
+                50% { opacity: 1; }
+            }
+            .lisa-thinking::after {
+                content: &quot;...&quot;;
+                letter-spacing: 0.05em;
+                animation: lisa-pulse 1s ease-in-out infinite;
+            }
+            .lisa-tool-steps {
+                color: #666;
+                font-size: 0.85rem;
+                margin: -4px 0 12px 0;
+                padding-left: 0.25rem;
+            }
+            .lisa-tool-steps li { margin: 2px 0; }
+        &lt;/style&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        {%app_entry%}
+        &lt;footer&gt;
+            {%config%}
+            {%scripts%}
+            {%renderer%}
+        &lt;/footer&gt;
+    &lt;/body&gt;
+&lt;/html&gt;&quot;&quot;&quot;
+
+app.layout = html.Div(
+    [
+        html.H2(&quot;Lisa — portfolio chat&quot;),
+        dcc.Store(
+            id=&quot;chat-history&quot;,
+            data=[{&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: &quot;Hi — ask me about a stock or your portfolio.&quot;}],
+        ),
+        dcc.Store(id=&quot;pending-request&quot;, data=None),
+        dcc.Interval(id=&quot;agent-poll&quot;, interval=250, n_intervals=0, max_intervals=0, disabled=True),
+        html.Div(id=&quot;chat-window&quot;, style={&quot;height&quot;: &quot;420px&quot;, &quot;overflowY&quot;: &quot;auto&quot;, &quot;border&quot;: &quot;1px solid #ccc&quot;, &quot;padding&quot;: &quot;12px&quot;, &quot;marginBottom&quot;: &quot;12px&quot;}),
+        dcc.Textarea(id=&quot;composer&quot;, style={&quot;width&quot;: &quot;80%&quot;, &quot;height&quot;: &quot;70px&quot;}, placeholder=&quot;Type a message…&quot;),
+        html.Button(&quot;Send&quot;, id=&quot;send-button&quot;, n_clicks=0),
+        html.P(&quot;Enter to send · Shift+Enter for a new line&quot;),
+    ],
+    style={&quot;maxWidth&quot;: &quot;720px&quot;, &quot;margin&quot;: &quot;24px auto&quot;, &quot;fontFamily&quot;: &quot;sans-serif&quot;},
+)
+
+
+def render_messages(history, pending):
+    blocks = []
+    for msg in history or []:
+        who = &quot;Lisa&quot; if msg[&quot;role&quot;] == &quot;assistant&quot; else &quot;You&quot;
+        blocks.append(html.Div([html.Strong(f&quot;{who}: &quot;), dcc.Markdown(msg[&quot;content&quot;])], style={&quot;marginBottom&quot;: &quot;10px&quot;}))
+        tools = msg.get(&quot;tool_events&quot;) or []
+        if tools:
+            blocks.append(
+                html.Ul(
+                    [html.Li(f&quot;Used: {t.get(&#x27;name&#x27;, &#x27;?&#x27;)}&quot;) for t in tools],
+                    className=&quot;lisa-tool-steps&quot;,
+                )
+            )
+    if pending:
+        blocks.append(
+            html.Div(
+                [html.Strong(&quot;Lisa &quot;), html.Span(className=&quot;lisa-thinking&quot;)],
+                style={&quot;color&quot;: &quot;#888&quot;},
+                role=&quot;status&quot;,
+                **{&quot;aria-live&quot;: &quot;polite&quot;},
+            )
+        )
+    return blocks
+
+
+@app.callback(Output(&quot;chat-window&quot;, &quot;children&quot;), Input(&quot;chat-history&quot;, &quot;data&quot;), Input(&quot;pending-request&quot;, &quot;data&quot;))
+def update_chat(history, pending):
+    return render_messages(history, pending)
+
+
+@app.callback(
+    Output(&quot;chat-history&quot;, &quot;data&quot;, allow_duplicate=True),
+    Output(&quot;pending-request&quot;, &quot;data&quot;),
+    Output(&quot;composer&quot;, &quot;value&quot;),
+    Output(&quot;agent-poll&quot;, &quot;disabled&quot;),
+    Output(&quot;agent-poll&quot;, &quot;n_intervals&quot;),
+    Output(&quot;agent-poll&quot;, &quot;max_intervals&quot;),
+    Input(&quot;send-button&quot;, &quot;n_clicks&quot;),
+    State(&quot;composer&quot;, &quot;value&quot;),
+    State(&quot;chat-history&quot;, &quot;data&quot;),
+    State(&quot;pending-request&quot;, &quot;data&quot;),
+    prevent_initial_call=True,
+)
+def submit_message(_, text, history, pending):
+    if pending or not text or not text.strip():
+        return no_update, no_update, no_update, no_update, no_update, no_update
+    updated = [*(history or []), {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: text.strip()}]
+    return updated, {&quot;text&quot;: text.strip()}, &quot;&quot;, False, 0, 1
+
+
+@app.callback(
+    Output(&quot;chat-history&quot;, &quot;data&quot;, allow_duplicate=True),
+    Output(&quot;pending-request&quot;, &quot;data&quot;, allow_duplicate=True),
+    Output(&quot;agent-poll&quot;, &quot;disabled&quot;, allow_duplicate=True),
+    Input(&quot;agent-poll&quot;, &quot;n_intervals&quot;),
+    State(&quot;pending-request&quot;, &quot;data&quot;),
+    State(&quot;chat-history&quot;, &quot;data&quot;),
+    prevent_initial_call=True,
+)
+def complete_agent_turn(_, pending, history):
+    if not pending:
+        return no_update, no_update, True
+    try:
+        print(f&quot;
+agent turn: {pending[&#x27;text&#x27;]!r}&quot;, flush=True)
+        result = run_agent(pending[&quot;text&quot;], PORTFOLIO_PATH, (history or [])[:-1])
+        tools = result.get(&quot;tool_events&quot;, [])
+        if tools:
+            print(&quot;tools this turn: &quot; + &quot;, &quot;.join(t.get(&quot;name&quot;, &quot;?&quot;) for t in tools), flush=True)
+        else:
+            print(&quot;tools this turn: (none)&quot;, flush=True)
+        reply = {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: result[&quot;text&quot;], &quot;tool_events&quot;: tools}
+    except Exception:
+        traceback.print_exc()
+        reply = {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: &quot;Something went wrong. Check .env / Portkey and try again.&quot;}
+    return [*(history or []), reply], None, True
+
+
+# Enter sends; Shift+Enter keeps a newline
+clientside_callback(
+    &quot;&quot;&quot;
+    function(n) {
+        const el = document.getElementById(&#x27;composer&#x27;);
+        if (!el || el.dataset.bound) return window.dash_clientside.no_update;
+        el.dataset.bound = &#x27;1&#x27;;
+        el.addEventListener(&#x27;keydown&#x27;, function(e) {
+            if (e.key === &#x27;Enter&#x27; &amp;&amp; !e.shiftKey) {
+                e.preventDefault();
+                document.getElementById(&#x27;send-button&#x27;).click();
+            }
+        });
+        return window.dash_clientside.no_update;
+    }
+    &quot;&quot;&quot;,
+    Output(&quot;send-button&quot;, &quot;n_clicks&quot;),
+    Input(&quot;send-button&quot;, &quot;n_clicks&quot;),
+)
+
+
+if __name__ == &quot;__main__&quot;:
+    app.run(host=&quot;127.0.0.1&quot;, port=8050, debug=False, use_reloader=False)</code></pre>
+      </div>
+      <p>
+        Also fine to download:
+        <a href="snippets/dash_chat_shell.py" download="app.py"><code>app.py</code></a>
+      </p>
+<p>
         <strong>Harness checklist:</strong>
       </p>
       <ul>
@@ -178,6 +401,7 @@ taskkill /PID &lt;pid&gt; /F</code></pre>
         the install often breaks the venv.
       </p>
     </div>
+    <audio id="tts-audio" preload="none"></audio>
   </main>
   <script>
     (function () {
@@ -225,6 +449,7 @@ taskkill /PID &lt;pid&gt; /F</code></pre>
     })();
   </script>
   <script src="../../js/theme.js"></script>
+  <script src="../../js/vibe-copy.js"></script>
   <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
 </body>
 </html>
