@@ -16,6 +16,16 @@ Read this before authoring or editing any lecture deck.
 
 ---
 
+## Say what it is
+
+Student-facing slide copy should **name the thing**, not define it by attacking an alternative.
+
+- Avoid: “not a flaky iframe…”, “not a toy classifier…”, “this is X, not Y” contrast lines.
+- Prefer: “Use a real embedded browser (Qt / PySide6 WebEngine).” / “We can use AI vision capabilities to do this.”
+- Hard constraints students must follow (“Do not send emails”) are fine.
+
+---
+
 ## Responsive figures (the cursor-founder pattern)
 
 **Goal:** Photos, screenshots, PNG charts, and diagrams should grow on larger viewports and fill available space in full-screen mode — same behavior as the **Cursor Founder** slide.

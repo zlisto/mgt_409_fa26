@@ -42,6 +42,7 @@
       <a href="#python">Python</a>
       <a href="#react">React + Node.js</a>
       <a href="#github">GitHub</a>
+      <a href="#vibe-coding">Vibe Coding</a>
       <a href="#cursor">Cursor (optional)</a>
     </div>
 
@@ -159,6 +160,49 @@ npm -v</code></pre>
       <p><em>"Help me connect VS Code to GitHub. Set my global git user.name to Your Name and user.email to your@yale.edu, then walk me through signing in to GitHub in VS Code."</em></p>
       <p>Use the same email as your GitHub account. Codex will run the Git commands for you. When it tells you to sign in, click the <strong>Accounts</strong> icon (bottom-left) → <strong>Sign in with GitHub</strong> and complete the browser prompt once — Codex cannot do that part for you.</p>
       <p>After that, tell Codex what you want in plain English when you need to clone, commit, or push.</p>
+
+      <h2 id="vibe-coding">Vibe Coding</h2>
+      <p>
+        This is how we run vibe coding in class (and how you should start each homework or lecture project).
+        Use Codex in VS Code. Work one folder at a time.
+      </p>
+      <ol>
+        <li>
+          <strong>Open your class folder</strong> in your vibe coder
+          (<strong>File &gt; Open Folder</strong>). It should contain folders like
+          <code>Lecture 1</code>, <code>Lecture 2</code>, … and
+          <code>Homework 1</code>, <code>Homework 2</code>, and so on.
+        </li>
+        <li>
+          <strong>Tell the AI which folder you’re using today.</strong>
+          Example: <em>“Today we are working in Lecture 3. Put all my stuff there.”</em>
+        </li>
+        <li>
+          <strong>Make it prove it’s in the right folder.</strong>
+          Ask it to write a short joke there, then check that
+          <code>joke.txt</code> appears inside that lecture or homework folder.
+        </li>
+        <li>
+          <strong>Tell the AI to set up the software environment in that folder.</strong>
+          For Python, ask it to create a virtual environment (<code>venv</code>).
+          For React, ask it to scaffold a React app there.
+        </li>
+        <li>
+          <strong>Tell the AI to install the packages you need.</strong>
+          For Python, that usually means a <code>requirements.txt</code> and
+          <code>pip install -r requirements.txt</code>.
+          For React, that usually means <code>package.json</code> and
+          <code>npm install</code>.
+        </li>
+        <li>
+          <strong>Point the AI at your API keys.</strong>
+          Example: <em>“My Portkey API key is in the <code>.env</code> file in the root of my class folder.”</em>
+          Do not paste the key into chat.
+        </li>
+        <li>
+          <strong>Start vibe coding</strong> the lecture or homework project for that session.
+        </li>
+      </ol>
 
       <h2 id="cursor">Cursor (optional)</h2>
       <p>Cursor is another AI vibe-coding tool built on VS Code with some extra features. Codex + Portkey is what we use in class; Cursor is optional if you want to explore on your own.</p>
