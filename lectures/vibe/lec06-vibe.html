@@ -8,32 +8,67 @@
   <link rel="stylesheet" href="../../css/vibe-session.css">
   <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
   <style>
-    .vibe-header h1 { font-size: 2.1rem; }
-    .vibe-goal {
-      background: linear-gradient(90deg, #e8fff8, #ffe8f4);
-      border-left-color: #ff2d7b;
-    }
-    .vibe-step .step-num { background: #ff2d7b; }
-    .vibe-note {
-      background: #fff4cc; border-radius: 10px; padding: 0.75rem 1rem;
-      margin: 1rem 0; font-size: 0.95rem;
-    }
-    [data-theme="dark"] .vibe-note { background: #3d3210; }
     .vibe-hero {
-      width: 100%; max-height: 220px; object-fit: cover; border-radius: 12px;
-      border: 3px solid #14c8c8; margin: 0.5rem 0 1rem;
+      display: block;
+      width: 100%;
+      max-width: 640px;
+      max-height: 240px;
+      height: auto;
+      margin: 0 auto 1.25rem;
+      object-fit: contain;
+      object-position: center;
+      border-radius: 12px;
     }
-    .vibe-clock {
-      background: linear-gradient(90deg, #00356b, #ff2d7b);
-      color: #fff; border-radius: 12px; padding: 0.85rem 1.1rem; margin: 0.75rem 0 0;
-      font-weight: 700; font-size: 0.98rem; line-height: 1.45;
+    .assignment-box h2 { text-align: center; }
+    .assignment-box p,
+    .assignment-box ul,
+    .assignment-box li { text-align: left; }
+    .file-tree {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      margin: 0.75rem 0 1rem;
+      padding: 0.9rem 1rem;
+      border-radius: 10px;
+      background: #0f1c33;
+      color: #e8eef8;
+      text-align: left;
     }
-    .vibe-clock .mins { color: #f5c518; font-weight: 800; }
-    .step-time {
-      display: inline-block; background: #0f1c33; color: #7ef0ff;
-      font-size: 0.78rem; font-weight: 800; letter-spacing: 0.04em;
-      padding: 0.12rem 0.45rem; border-radius: 6px; margin-left: 0.35rem;
-      vertical-align: middle;
+    [data-theme="dark"] .file-tree { background: #0a1220; }
+    .tts-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.4rem;
+      height: 2.4rem;
+      padding: 0;
+      border: none;
+      border-radius: 999px;
+      background: #111;
+      color: #ff2d95;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .tts-btn:hover {
+      background: #000;
+      color: #ff6bb5;
+    }
+    .tts-btn[aria-pressed="true"] {
+      box-shadow: 0 0 0 2px #ff2d95;
+    }
+    .tts-btn svg {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+    .tts-end {
+      display: flex;
+      justify-content: flex-end;
+      margin: 0.35rem 0 1.15rem;
     }
   </style>
 </head>
@@ -49,94 +84,722 @@
     <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
   </nav>
   <main class="vibe-main">
+    <img
+      class="vibe-hero"
+      src="../images/lec06/video-agent-tool.jpg"
+      alt="Agent reviewing extracted video frames with vision"
+      width="1376"
+      height="768"
+    >
     <div class="vibe-header">
       <h1>Lecture 6: Video Analysis</h1>
       <p class="meta">
         <a href="../slides/lec06-slides.html">← Slides</a>
         <a href="../../lectures.html">All lectures</a>
-        · 40 minutes in class
+        · In-class vibe coding
       </p>
     </div>
-    <img class="vibe-hero" src="../images/lec06/campus-customs-phone-ask.png" alt="Phone video of a Yale shirt in a merch shop">
-    <div class="vibe-clock">
-      <strong>Timed lab (40 min).</strong>
-      <span class="mins">0–6</span> scaffold ·
-      <span class="mins">6–13</span> transcribe ·
-      <span class="mins">13–20</span> frames ·
-      <span class="mins">20–30</span> crop ·
-      <span class="mins">30–38</span> lookup / refuse ·
-      <span class="mins">38–40</span> log prompts.
-      If ffmpeg stalls, use 5 stills and keep going — the crop file and the refuse path matter more than a perfect mp4.
-    </div>
-    <div class="vibe-goal">
-      <strong>In-class goal:</strong> Wire a <em>tiny</em> video lookup: transcribe a short clip, sample frames, crop a region in code, describe it, and match against a 3-SKU toy catalog — or honestly say it is not in inventory. This is the Homework 3 <em>shape</em>, not the assignment. Do not download HW3 and finish it in class.
-    </div>
-    <div class="vibe-note">
-      <strong>Media:</strong> Record an 8–12 second phone video of any garment (a hoodie on a chair is fine). Put it at <code>media/ask.mp4</code>. If video capture is painful, use 5 stills in <code>media/frames/</code> and skip ffmpeg — still do crop + vision. No starter zip required.
-    </div>
-    <div class="vibe-note">
-      <strong>Homework 3</strong> is Campus Customs (20 product photos + a customer clip). Work that later, one problem card at a time. Today: three fake SKUs you invent. Last class priced a still; today do not build a CLIP index or a token spreadsheet.
-    </div>
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 1</span> Scaffold lec06 (toy catalog, not HW3) <span class="step-time">0–6 min</span></h2>
-      <p>Prompts in files. Outputs in a folder. Secrets in <code>.env</code>. A catalog so small you can see when the agent is lying.</p>
-      <pre class="prompt">Create lec06/ with:
-- media/ (I will add ask.mp4)
-- prompts/transcribe_ask.md, pick_frame.md, describe_crop.md, match_sku.md
-- toy_catalog.json with exactly 3 products: sku, name, color, sizes[], image_note (one sentence of what the photo would show)
-- sample_frames.py, transcribe_ask.py, inspect_region.py, mini_lookup.py
-- output/frames/, output/crops/, requirements.txt (openai, python-dotenv, pillow). Optional: opencv-python or imageio-ffmpeg for video.
-- .env.example, .gitignore for .env
-README: how to drop in a phone video. Do not write a real API key.</pre>
-      <div class="vibe-check"><strong>Check:</strong> Three SKUs in JSON; prompt files exist; no key in the repo.</div>
-    </div>
+    <div class="assignment-box">
+      <h2>Scenario</h2>
+      <p>
+        You’re building a sports video desk. Short clips come in two flavors —
+        basketball dunks and soccer foul or flop moments. You need one agent that
+        can <strong>look at a clip</strong>, figure out which sport it is, call the
+        right judging tool, and return a structured verdict you can show on a webpage.
+      </p>
+      <p>
+        Download <a href="../video/videos.zip">videos.zip</a> and unzip next to your
+        app so you get a <code>videos/</code> folder with dunks and soccer fouls
+        ready to judge.
+      </p>
+      <div class="tts-end">
+        <button
+          type="button"
+          class="tts-btn"
+          data-tts="../audio/lec06/scenario.mp3?v=silence1"
+          aria-pressed="false"
+          aria-label="Play scenario reading"
+          title="Play scenario"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+        </button>
+      </div>
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 2</span> Transcribe the ask <span class="step-time">6–13 min</span></h2>
-      <p>Speech carries size/color. Pixels carry the mascot. Do not merge those jobs in one mushy prompt yet.</p>
-      <pre class="prompt">Write prompts/transcribe_ask.md and transcribe_ask.py --video media/ask.mp4 --out-dir output
-Use Whisper or the OpenAI audio API. Save output/query_text.json with video_path, transcript, requested_color, requested_size (empty string if not spoken). Never invent a size.</pre>
-      <div class="vibe-check"><strong>Check:</strong> JSON exists. If you whispered “medium navy,” those fields are filled; if you only waved the shirt, they are empty strings.</div>
-    </div>
+      <h2>Task</h2>
+      <p>
+        Build a <strong>PydanticAI</strong> video agent with tools, then wrap it in a
+        <strong>Dash</strong> app. The app has tabs for dunks and fouls/flops. In each
+        tab is a dropdown menu for the videos. When you choose a video it appears in a
+        player so you can watch it. Below is a Judge button that, when pressed, calls
+        your agent to judge the video. As the agent calls tools, they show up below the
+        button, and a spinner spins so you know the agent is working. At the end a card
+        appears with the tools used, the video description, the judgment, the reason why,
+        and some key frames from the video.
+      </p>
+      <p>Your agent should have the following tools:</p>
+      <ul>
+        <li><strong>Sample frames</strong> — pull stills from a video to disk</li>
+        <li><strong>Describe video</strong> — AI receives the frames and returns a detailed text description</li>
+        <li><strong>Score dunk</strong> — takes frame paths and the text description and returns structured dunk scores and rationale</li>
+        <li><strong>Call foul / flop</strong> — takes frame paths and the text description and returns structured foul/flop verdict plus the rationale</li>
+      </ul>
+      <div class="tts-end">
+        <button
+          type="button"
+          class="tts-btn"
+          data-tts="../audio/lec06/task.mp3?v=silence1"
+          aria-pressed="false"
+          aria-label="Play task reading"
+          title="Play task"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+        </button>
+      </div>
+      <audio id="tts-audio" preload="none"></audio>
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 3</span> Sample frames (you pick the method) <span class="step-time">13–20 min</span></h2>
-      <p>Video in this course is stills you can point to. OpenAI’s own cookbook samples frames; Gemini would take the mp4 — we stay on the frame path so evidence is a file.</p>
-      <pre class="prompt">sample_frames.py --video media/ask.mp4 --out-dir output
-Save at least 5 jpgs under output/frames/ and output/frames.json with path + timestamp_sec. Document the sampling rule in README (every N seconds is fine).</pre>
-      <div class="vibe-check"><strong>Check:</strong> Five images on disk. Opening frame_000.jpg does not require a video player.</div>
-    </div>
+      <h2>Software Details</h2>
+      <p>Copy this into your project as <code>requirements.txt</code>:</p>
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 4</span> Pick a best frame, then crop in code <span class="step-time">20–30 min</span></h2>
-      <p>The model may propose a box. Pillow (or similar) must write the crop. No “I cropped it in my head.”</p>
-      <pre class="prompt">1) Using prompts/pick_frame.md, have vision pick the best product frame from output/frames.json. Save output/best_frame.json with path + reason.
-2) inspect_region.py --frame PATH --x --y --w --h --out-dir output
-   writes a crop under output/crops/, calls vision with prompts/describe_crop.md, saves output/crop_inspect.json with source_frame, crop_path, box, description.
-You may hard-code a box on the CLI for the first run if the model’s box is nonsense — the crop file must still come from code.</pre>
-      <div class="vibe-check"><strong>Check:</strong> <code>output/crops/</code> has an image you can open. Description talks about the garment, not the whole room.</div>
-    </div>
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">requirements.txt</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy requirements.txt">Copy</button>
+        </div>
+        <pre class="vibe-code"><code>pydantic-ai-slim[openai]&gt;=1.0.0
+python-dotenv&gt;=1.0.1
+dash&gt;=2.17.0
+pillow&gt;=10.4.0
+imageio&gt;=2.34.0
+imageio-ffmpeg&gt;=0.5.1
+numpy&gt;=1.26.0</code></pre>
+      </div>
+      <p>
+        Put this <code>app.py</code> desk shell in your Lecture 6 folder (after venv +
+        <code>requirements.txt</code>). Unzip <code>videos.zip</code> next to it so you have
+        <code>videos/dunks/</code> and <code>videos/fouls/</code>.
+      </p>
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 5</span> Mini lookup: text shortlist, then vision, then refuse <span class="step-time">30–38 min</span></h2>
-      <p>Same order as the lecture diagram. Three SKUs only. Helpful hallucination is a fail.</p>
-      <pre class="prompt">mini_lookup.py reads query_text.json, crop_inspect.json, toy_catalog.json.
-Prompt match_sku.md: score each of the 3 SKUs 0-100 from the crop description + transcript; then if the top score is weak, status=not_in_inventory and sku="".
-Write output/mini_lookup.json with status (match|not_in_inventory), sku, reply (one sentence an associate could say), evidence (best_frame, crop_path, transcript_snippet).
-Do not invent a fourth SKU. Do not build an embedding index.</pre>
-      <div class="vibe-check"><strong>Check:</strong> JSON validates. If you film a banana, you get <code>not_in_inventory</code>, not a creative Yale banana tee.</div>
-    </div>
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">app.py</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy app.py">Copy</button>
+        </div>
+        <pre class="vibe-code"><code>&quot;&quot;&quot;Dash desk for dunk / foul video judging.
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 6</span> Log prompts <span class="step-time">38–40 min</span></h2>
-      <p>Course habit: what you typed, in your words. If you are still debugging the crop, skip the stretch and log what you have.</p>
-      <pre class="prompt">Append a Lecture 6 section to AI_prompts.md with the prompts you actually used (paraphrase is required). Note one thing the first prompt got wrong (box, transcript, or over-eager match).</pre>
-      <div class="vibe-check"><strong>Check:</strong> AI_prompts.md has Lecture 6 with at least four bullets.</div>
-      <p class="vibe-extend"><strong>Stretch (after 40, or if you finish early):</strong> Second run on a still that should not match (a coffee mug). Save <code>output/mini_lookup_no_match.json</code>. Do not spend class time on a frame-count cost spreadsheet — that is Lecture 5 / Lecture 12 territory.</p>
+Run:  python app.py
+Open: http://127.0.0.1:8050
+&quot;&quot;&quot;
+
+from __future__ import annotations
+
+import threading
+import traceback
+import uuid
+from pathlib import Path
+from typing import Any
+
+from dash import Dash, Input, Output, State, dcc, html, no_update
+from flask import send_from_directory
+
+from agent import run_agent
+from models import DunkVerdict, FoulVerdict
+
+HERE = Path(__file__).resolve().parent
+VIDEOS = HERE / &quot;videos&quot;
+DUNKS = VIDEOS / &quot;dunks&quot;
+FOULS = VIDEOS / &quot;fouls&quot;
+FRAMES = HERE / &quot;frames&quot;
+
+# Live job state (agent runs in a background thread; Dash Interval polls this).
+_JOB_LOCK = threading.Lock()
+_JOB: dict[str, Any] | None = None
+
+app = Dash(__name__)
+server = app.server
+
+app.index_string = &quot;&quot;&quot;&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        {%metas%}
+        &lt;title&gt;{%title%}&lt;/title&gt;
+        {%favicon%}
+        {%css%}
+        &lt;style&gt;
+            @keyframes desk-spin {
+                to { transform: rotate(360deg); }
+            }
+            .desk-spinner {
+                width: 36px;
+                height: 36px;
+                border: 3px solid #ddd;
+                border-top-color: #ff2d95;
+                border-radius: 50%;
+                animation: desk-spin 0.75s linear infinite;
+                flex-shrink: 0;
+            }
+            .desk-thinking {
+                display: flex;
+                align-items: flex-start;
+                gap: 14px;
+                padding: 16px;
+                border: 1px solid #ccc;
+                border-radius: 12px;
+                background: #fafafa;
+            }
+            .desk-tool-steps {
+                color: #555;
+                font-size: 0.9rem;
+                margin: 8px 0 0 0;
+                padding-left: 1.1rem;
+            }
+            .desk-tool-steps li { margin: 4px 0; }
+            .desk-tool-steps li.live { color: #e01870; font-weight: 600; }
+            .desk-call-badge {
+                display: inline-block;
+                font-weight: 700;
+                font-size: 1.1rem;
+                padding: 6px 12px;
+                border-radius: 8px;
+                background: #1a1a2e;
+                color: #fff;
+            }
+            .judge-btn {
+                appearance: none;
+                border: none;
+                cursor: pointer;
+                font-family: inherit;
+                font-size: 0.95rem;
+                font-weight: 650;
+                letter-spacing: 0.02em;
+                color: #fff;
+                background: linear-gradient(135deg, #ff2d95 0%, #e01870 100%);
+                padding: 12px 28px;
+                border-radius: 999px;
+                box-shadow: 0 8px 20px rgba(255, 45, 149, 0.28);
+                transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+            }
+            .judge-btn:hover {
+                filter: brightness(1.06);
+                transform: translateY(-1px);
+                box-shadow: 0 10px 24px rgba(255, 45, 149, 0.36);
+            }
+            .judge-btn:active {
+                transform: translateY(1px);
+                box-shadow: 0 4px 12px rgba(255, 45, 149, 0.22);
+            }
+            .judge-btn:focus-visible {
+                outline: 2px solid #ff2d95;
+                outline-offset: 3px;
+            }
+            .judge-row {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                margin-top: 14px;
+            }
+        &lt;/style&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        {%app_entry%}
+        &lt;footer&gt;
+            {%config%}
+            {%scripts%}
+            {%renderer%}
+        &lt;/footer&gt;
+    &lt;/body&gt;
+&lt;/html&gt;&quot;&quot;&quot;
+
+
+@server.route(&quot;/media/&lt;path:filename&gt;&quot;)
+def serve_media(filename: str):
+    return send_from_directory(HERE, filename)
+
+
+def list_clips(tab: str) -&gt; list[dict]:
+    &quot;&quot;&quot;Return dropdown options. value is path relative to videos/ (e.g. dunks/howard_1.mp4).&quot;&quot;&quot;
+    folder = DUNKS if tab == &quot;dunk&quot; else FOULS
+    if not folder.exists():
+        return []
+    files = sorted(folder.glob(&quot;*.mp4&quot;), key=lambda p: p.name)
+    opts = []
+    for p in files:
+        rel = p.relative_to(VIDEOS).as_posix()  # dunks/howard_1.mp4
+        opts.append({&quot;label&quot;: p.name, &quot;value&quot;: rel})
+    return opts
+
+
+def foul_call_label(raw: str) -&gt; str:
+    key = (raw or &quot;&quot;).strip().lower()
+    return {
+        &quot;foul&quot;: &quot;Foul&quot;,
+        &quot;flop&quot;: &quot;Flop&quot;,
+        &quot;no_call&quot;: &quot;No Foul&quot;,
+    }.get(key, &quot;No Foul&quot;)
+
+
+def _tool_steps_list(
+    tool_events: list[dict[str, Any]] | list[str] | None,
+    *,
+    live: bool = False,
+) -&gt; html.Ul | None:
+    if not tool_events:
+        return None
+    items = []
+    for i, t in enumerate(tool_events):
+        name = t.get(&quot;name&quot;, &quot;?&quot;) if isinstance(t, dict) else str(t)
+        is_latest = live and i == len(tool_events) - 1
+        label = f&quot;Using: {name}…&quot; if is_latest else f&quot;Used: {name}&quot;
+        items.append(html.Li(label, className=&quot;live&quot; if is_latest else None))
+    return html.Ul(items, className=&quot;desk-tool-steps&quot;)
+
+
+def _thumb_row(frame_paths: list[str], n: int = 4) -&gt; html.Div | None:
+    if not frame_paths:
+        return None
+    imgs = []
+    for fp in frame_paths[:n]:
+        rel = str(fp).replace(&quot;\\&quot;, &quot;/&quot;)
+        if not rel.startswith(&quot;frames/&quot;):
+            p = Path(fp)
+            try:
+                rel = str(p.relative_to(HERE)).replace(&quot;\\&quot;, &quot;/&quot;)
+            except ValueError:
+                rel = p.name
+        imgs.append(
+            html.Img(
+                src=f&quot;/media/{rel}&quot;,
+                style={&quot;width&quot;: &quot;22%&quot;, &quot;margin&quot;: &quot;1%&quot;, &quot;borderRadius&quot;: &quot;6px&quot;},
+            )
+        )
+    return html.Div(imgs, style={&quot;marginTop&quot;: &quot;12px&quot;})
+
+
+def render_thinking(tools: list[str] | None = None) -&gt; html.Div:
+    tools = tools or []
+    steps = _tool_steps_list(tools, live=True)
+    body: list[Any] = [
+        html.P(&quot;Judging…&quot;, style={&quot;margin&quot;: &quot;0 0 4px 0&quot;, &quot;fontWeight&quot;: &quot;600&quot;}),
+        html.P(
+            &quot;Tool calls show up here as the agent runs.&quot;
+            if not tools
+            else &quot;Still working…&quot;,
+            style={&quot;margin&quot;: 0, &quot;color&quot;: &quot;#666&quot;, &quot;fontSize&quot;: &quot;0.9rem&quot;},
+        ),
+    ]
+    if steps:
+        body.append(steps)
+    return html.Div(
+        [
+            html.Div(className=&quot;desk-spinner&quot;, role=&quot;status&quot;, **{&quot;aria-label&quot;: &quot;Judging&quot;}),
+            html.Div(body),
+        ],
+        className=&quot;desk-thinking&quot;,
+    )
+
+
+def render_verdict(payload: dict[str, Any] | None) -&gt; html.Div | html.P:
+    if not payload:
+        return html.P(&quot;No verdict yet.&quot;)
+    if payload.get(&quot;error&quot;):
+        return html.P(payload[&quot;error&quot;])
+
+    tool_block = _tool_steps_list(payload.get(&quot;tool_events&quot;))
+    verdict_raw = payload.get(&quot;verdict&quot;)
+    if verdict_raw is None:
+        return html.P(&quot;No verdict yet.&quot;)
+
+    if isinstance(verdict_raw, dict):
+        data = verdict_raw
+    elif hasattr(verdict_raw, &quot;model_dump&quot;):
+        data = verdict_raw.model_dump()
+    else:
+        data = dict(verdict_raw)
+
+    card_style = {
+        &quot;border&quot;: &quot;1px solid #ccc&quot;,
+        &quot;borderRadius&quot;: &quot;12px&quot;,
+        &quot;padding&quot;: &quot;16px&quot;,
+        &quot;background&quot;: &quot;#fafafa&quot;,
+    }
+    kind = data.get(&quot;kind&quot;)
+    thumbs = _thumb_row(list(data.get(&quot;frame_paths&quot;) or []))
+
+    if kind == &quot;dunk&quot;:
+        scores = data.get(&quot;scores&quot;) or {}
+        children: list[Any] = [html.H3(&quot;Dunk verdict&quot;)]
+        if tool_block:
+            children.append(tool_block)
+        children.extend(
+            [
+                html.P(data.get(&quot;play_by_play&quot;, &quot;&quot;)),
+                html.Ul([html.Li(f&quot;{k}: {v}&quot;) for k, v in scores.items()]),
+                html.P([html.Strong(&quot;Total: &quot;), str(data.get(&quot;total&quot;))]),
+                html.P(data.get(&quot;rationale&quot;, &quot;&quot;)),
+            ]
+        )
+        if thumbs:
+            children.append(thumbs)
+        return html.Div(children, style=card_style)
+
+    call_label = foul_call_label(str(data.get(&quot;call&quot;, &quot;&quot;)))
+    conf = data.get(&quot;confidence&quot;)
+    children = [html.H3(&quot;Foul / flop verdict&quot;)]
+    if tool_block:
+        children.append(tool_block)
+    children.extend(
+        [
+            html.P(
+                [
+                    html.Strong(&quot;Call: &quot;),
+                    html.Span(call_label, className=&quot;desk-call-badge&quot;),
+                    html.Span(f&quot;  (confidence {conf})&quot; if conf is not None else &quot;&quot;),
+                ]
+            ),
+            html.P(data.get(&quot;play_by_play&quot;, &quot;&quot;)),
+            html.P(data.get(&quot;rationale&quot;, &quot;&quot;)),
+        ]
+    )
+    if thumbs:
+        children.append(thumbs)
+    return html.Div(children, style=card_style)
+
+
+def _serialize_result(result: dict[str, Any]) -&gt; dict[str, Any]:
+    verdict = result.get(&quot;verdict&quot;)
+    if isinstance(verdict, (DunkVerdict, FoulVerdict)):
+        verdict = verdict.model_dump()
+    elif hasattr(verdict, &quot;model_dump&quot;):
+        verdict = verdict.model_dump()
+    return {
+        &quot;verdict&quot;: verdict,
+        &quot;tool_events&quot;: result.get(&quot;tool_events&quot;) or [],
+        &quot;error&quot;: result.get(&quot;error&quot;),
+    }
+
+
+def _snapshot_job() -&gt; dict[str, Any] | None:
+    with _JOB_LOCK:
+        if _JOB is None:
+            return None
+        return {
+            &quot;id&quot;: _JOB[&quot;id&quot;],
+            &quot;status&quot;: _JOB[&quot;status&quot;],
+            &quot;tools&quot;: list(_JOB[&quot;tools&quot;]),
+            &quot;result&quot;: _JOB.get(&quot;result&quot;),
+            &quot;error&quot;: _JOB.get(&quot;error&quot;),
+        }
+
+
+def _start_job(clip_rel: str) -&gt; str:
+    global _JOB
+    job_id = uuid.uuid4().hex[:8]
+    # clip_rel is like dunks/howard_1.mp4 or fouls/ronaldo-1.mp4
+    path = VIDEOS / clip_rel
+
+    with _JOB_LOCK:
+        _JOB = {
+            &quot;id&quot;: job_id,
+            &quot;status&quot;: &quot;running&quot;,
+            &quot;tools&quot;: [],
+            &quot;result&quot;: None,
+            &quot;error&quot;: None,
+        }
+
+    def on_tool(name: str) -&gt; None:
+        with _JOB_LOCK:
+            if _JOB is not None and _JOB[&quot;id&quot;] == job_id:
+                _JOB[&quot;tools&quot;].append(name)
+
+    def worker() -&gt; None:
+        global _JOB
+        try:
+            if not path.is_file():
+                raise FileNotFoundError(f&quot;Missing clip file: {clip_rel}&quot;)
+            result = run_agent(str(path), on_tool=on_tool)
+            payload = _serialize_result(result)
+            with _JOB_LOCK:
+                if _JOB is not None and _JOB[&quot;id&quot;] == job_id:
+                    _JOB[&quot;result&quot;] = payload
+                    _JOB[&quot;status&quot;] = &quot;done&quot;
+        except Exception as exc:
+            traceback.print_exc()
+            with _JOB_LOCK:
+                if _JOB is not None and _JOB[&quot;id&quot;] == job_id:
+                    _JOB[&quot;error&quot;] = str(exc) or &quot;Something went wrong — check .env / Portkey.&quot;
+                    _JOB[&quot;status&quot;] = &quot;error&quot;
+
+    threading.Thread(target=worker, daemon=True).start()
+    return job_id
+
+
+app.layout = html.Div(
+    [
+        html.H2(&quot;Sports video desk&quot;),
+        dcc.Store(id=&quot;judge-job-id&quot;, data=None),
+        dcc.Store(id=&quot;judge-result&quot;, data=None),
+        dcc.Interval(id=&quot;judge-poll&quot;, interval=400, n_intervals=0, disabled=True),
+        dcc.Tabs(
+            id=&quot;sport-tabs&quot;,
+            value=&quot;dunk&quot;,
+            children=[
+                dcc.Tab(label=&quot;Dunks&quot;, value=&quot;dunk&quot;),
+                dcc.Tab(label=&quot;Fouls / Flops&quot;, value=&quot;foul&quot;),
+            ],
+        ),
+        html.Label(&quot;Clip&quot;),
+        dcc.Dropdown(id=&quot;clip-dropdown&quot;, clearable=False),
+        html.Video(
+            id=&quot;clip-player&quot;,
+            controls=True,
+            style={&quot;width&quot;: &quot;100%&quot;, &quot;maxWidth&quot;: &quot;720px&quot;, &quot;marginTop&quot;: &quot;12px&quot;},
+        ),
+        html.Div(
+            [
+                html.Button(&quot;Judge&quot;, id=&quot;judge-btn&quot;, n_clicks=0, className=&quot;judge-btn&quot;),
+                html.Span(id=&quot;judge-status&quot;, style={&quot;color&quot;: &quot;#666&quot;, &quot;fontSize&quot;: &quot;0.95rem&quot;}),
+            ],
+            className=&quot;judge-row&quot;,
+        ),
+        html.Div(id=&quot;verdict-card&quot;, style={&quot;marginTop&quot;: &quot;20px&quot;}),
+    ],
+    style={
+        &quot;maxWidth&quot;: &quot;800px&quot;,
+        &quot;margin&quot;: &quot;24px auto&quot;,
+        &quot;fontFamily&quot;: &quot;sans-serif&quot;,
+        &quot;padding&quot;: &quot;0 16px&quot;,
+    },
+)
+
+
+@app.callback(
+    Output(&quot;clip-dropdown&quot;, &quot;options&quot;),
+    Output(&quot;clip-dropdown&quot;, &quot;value&quot;),
+    Input(&quot;sport-tabs&quot;, &quot;value&quot;),
+)
+def fill_dropdown(tab):
+    opts = list_clips(tab)
+    value = opts[0][&quot;value&quot;] if opts else None
+    return opts, value
+
+
+@app.callback(
+    Output(&quot;judge-result&quot;, &quot;data&quot;, allow_duplicate=True),
+    Output(&quot;judge-job-id&quot;, &quot;data&quot;, allow_duplicate=True),
+    Output(&quot;judge-poll&quot;, &quot;disabled&quot;, allow_duplicate=True),
+    Output(&quot;verdict-card&quot;, &quot;children&quot;, allow_duplicate=True),
+    Output(&quot;judge-status&quot;, &quot;children&quot;, allow_duplicate=True),
+    Input(&quot;sport-tabs&quot;, &quot;value&quot;),
+    prevent_initial_call=True,
+)
+def clear_card_on_tab(_tab):
+    return None, None, True, [], &quot;&quot;
+
+
+@app.callback(Output(&quot;clip-player&quot;, &quot;src&quot;), Input(&quot;clip-dropdown&quot;, &quot;value&quot;))
+def set_video(rel):
+    if not rel:
+        return None
+    # rel is dunks/howard_1.mp4 → /media/videos/dunks/howard_1.mp4
+    return f&quot;/media/videos/{rel}&quot;
+
+
+@app.callback(
+    Output(&quot;judge-job-id&quot;, &quot;data&quot;),
+    Output(&quot;judge-result&quot;, &quot;data&quot;),
+    Output(&quot;judge-poll&quot;, &quot;disabled&quot;),
+    Output(&quot;judge-poll&quot;, &quot;n_intervals&quot;),
+    Input(&quot;judge-btn&quot;, &quot;n_clicks&quot;),
+    State(&quot;clip-dropdown&quot;, &quot;value&quot;),
+    State(&quot;judge-job-id&quot;, &quot;data&quot;),
+    prevent_initial_call=True,
+)
+def start_judge(_, name, job_id):
+    snap = _snapshot_job()
+    if job_id and snap and snap[&quot;id&quot;] == job_id and snap[&quot;status&quot;] == &quot;running&quot;:
+        return no_update, no_update, no_update, no_update
+    if not name:
+        return None, {&quot;error&quot;: &quot;Pick a clip first.&quot;}, True, 0
+    new_id = _start_job(name)
+    return new_id, None, False, 0
+
+
+@app.callback(
+    Output(&quot;verdict-card&quot;, &quot;children&quot;),
+    Output(&quot;judge-status&quot;, &quot;children&quot;),
+    Output(&quot;judge-result&quot;, &quot;data&quot;, allow_duplicate=True),
+    Output(&quot;judge-job-id&quot;, &quot;data&quot;, allow_duplicate=True),
+    Output(&quot;judge-poll&quot;, &quot;disabled&quot;, allow_duplicate=True),
+    Input(&quot;judge-poll&quot;, &quot;n_intervals&quot;),
+    Input(&quot;judge-job-id&quot;, &quot;data&quot;),
+    Input(&quot;judge-result&quot;, &quot;data&quot;),
+    prevent_initial_call=True,
+)
+def poll_and_render(_, job_id, stored_result):
+    if job_id:
+        snap = _snapshot_job()
+        if snap and snap[&quot;id&quot;] == job_id:
+            if snap[&quot;status&quot;] == &quot;running&quot;:
+                return render_thinking(snap[&quot;tools&quot;]), &quot;Judging…&quot;, no_update, no_update, False
+            if snap[&quot;status&quot;] == &quot;done&quot;:
+                payload = snap[&quot;result&quot;] or {&quot;error&quot;: &quot;Empty result.&quot;}
+                return render_verdict(payload), &quot;Done&quot;, payload, None, True
+            if snap[&quot;status&quot;] == &quot;error&quot;:
+                payload = {&quot;error&quot;: snap.get(&quot;error&quot;) or &quot;Something went wrong.&quot;}
+                return render_verdict(payload), &quot;Error&quot;, payload, None, True
+        # job id set but not found yet — show empty spinner
+        return render_thinking([]), &quot;Judging…&quot;, no_update, no_update, False
+
+    if stored_result:
+        return render_verdict(stored_result), &quot;Done&quot;, no_update, no_update, True
+    return [], &quot;&quot;, no_update, no_update, True
+
+
+if __name__ == &quot;__main__&quot;:
+    FRAMES.mkdir(exist_ok=True)
+    app.run(host=&quot;127.0.0.1&quot;, port=8050, debug=False, use_reloader=False)
+</code></pre>
+      </div>
+
+      <p>
+        Then give this prompt to your vibe coder to build the agent
+        (<code>agent.py</code>, <code>video_tools.py</code>, <code>models.py</code>,
+        <code>prompts/prompt.md</code>).
+      </p>
+
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">How the app works (for your AI)</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy architecture notes">Copy</button>
+        </div>
+        <pre class="vibe-code vibe-prompt"><code>We're building a sports video judge in this folder: one PydanticAI agent + a Dash desk UI.
+
+How it runs
+- Command: python app.py → open http://127.0.0.1:8050
+- app.py is the Dash shell from the course page (paste it as app.py). Keep debug=False and use_reloader=False.
+- Unzip videos.zip next to the app → videos/dunks/*.mp4 and videos/fouls/*.mp4
+- Tabs: Dunks (videos/dunks) and Fouls/Flops (videos/fouls). Dropdown values are relative paths like dunks/clip.mp4
+- Video player src is /media/videos/&lt;relative path&gt; (Flask route on Dash's server)
+- Judge starts the agent in a background thread so the UI stays responsive
+- While judging: spinner + live tool names (sample_frames, describe_video, score_dunk or call_foul)
+- When done: render a verdict card. Foul labels in English: Foul, Flop, No Foul (map from foul / flop / no_call)
+- Switching tabs clears the verdict card
+- Pressing Judge again clears the old card, shows the spinner, and re-runs on the selected clip
+
+What app.py expects from agent.py
+- Define: def run_agent(video_path: str, on_tool=None) -&gt; dict
+- on_tool(name: str) is called as each tool starts (so Dash can show tools in real time). Wire this inside your tools.
+- Agent final output_type is a union: DunkVerdict | FoulVerdict (Pydantic models in models.py)
+- run_agent returns:
+  {
+    "verdict": &lt;DunkVerdict or FoulVerdict (or .model_dump())&gt;,
+    "tool_events": [{"name": "sample_frames"}, ...]
+  }
+
+Tools (implement in video_tools.py, wire on the agent in agent.py)
+1) sample_frames(video_path, every_n_sec=0.5, max_frames=16) -&gt; dict with frame_paths under frames/&lt;stem&gt;/
+2) describe_video(frame_paths, clip_label) -&gt; {play_by_play, sport_guess: dunk|soccer|unclear, key_moments, notes}
+3) score_dunk(frame_paths, description: str, clip_label) -&gt; DunkVerdict (frames + text description required)
+4) call_foul(frame_paths, description: str, clip_label) -&gt; FoulVerdict (frames + text description required)
+
+Agent behavior (prompts/prompt.md)
+- Always sample_frames, then describe_video, then exactly one of score_dunk or call_foul based on what you saw
+- Prefer tools over guessing from the filename alone
+- Model: gpt-5.6-luna via Portkey; PORTKEY_API_KEY from .env (python-dotenv). Put .env in the Lecture 6 folder or in the parent folder (load both).
+- Use pydantic-ai-slim[openai]
+
+DunkVerdict fields: kind="dunk", clip_label, scores {height, creativity, difficulty, landing}, total, play_by_play, rationale, frame_paths
+FoulVerdict fields: kind="foul", clip_label, call in {foul, flop, no_call}, confidence 0-1, play_by_play, rationale, frame_paths
+
+File tree
+Lecture 6/
+  app.py                 # STARTER on the course page — Dash desk (tabs, video, Judge, live tools)
+  agent.py               # BUILD — PydanticAI agent + run_agent(video_path, on_tool=...)
+  video_tools.py         # BUILD — sample / describe / score_dunk / call_foul
+  models.py              # BUILD — DunkVerdict | FoulVerdict
+  prompts/
+    prompt.md            # BUILD — system prompt + rubrics
+  videos/                # from videos.zip
+    dunks/
+      *.mp4
+    fouls/
+      *.mp4
+  frames/                # CREATED at runtime
+  requirements.txt
+  .env                   # optional here — PORTKEY_API_KEY=... (or put .env in the parent folder)
+  .venv/
+
+Until agent.py exists, stub:
+
+def run_agent(video_path: str, on_tool=None):
+    return {"verdict": None, "error": "Agent not built yet — finish agent.py.", "tool_events": []}
+
+Do not put a real API key in any file.</code></pre>
+      </div>
+
+      <p>
+        <strong>Dash tip (ports):</strong> run with <code>debug=False</code> and
+        <code>use_reloader=False</code> (already set in the shell) so you don’t get orphan
+        processes on the port. If port <code>8050</code> is stuck (PowerShell):
+      </p>
+      <pre class="file-tree">netstat -ano | findstr :8050
+taskkill /PID &lt;pid&gt; /F</pre>
     </div>
   </main>
+  <script>
+    (function () {
+      const audio = document.getElementById("tts-audio");
+      const buttons = [...document.querySelectorAll(".tts-btn[data-tts]")];
+      if (!audio || !buttons.length) return;
+
+      let activeBtn = null;
+
+      function setPressed(btn, on) {
+        buttons.forEach((b) => b.setAttribute("aria-pressed", "false"));
+        if (btn) btn.setAttribute("aria-pressed", on ? "true" : "false");
+      }
+
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const src = btn.getAttribute("data-tts");
+          if (!src) return;
+
+          if (activeBtn === btn && !audio.paused) {
+            audio.pause();
+            setPressed(null, false);
+            activeBtn = null;
+            return;
+          }
+
+          if (audio.getAttribute("src") !== src) {
+            audio.setAttribute("src", src);
+            audio.load();
+          }
+          activeBtn = btn;
+          setPressed(btn, true);
+          audio.play().catch(() => {
+            setPressed(null, false);
+            activeBtn = null;
+          });
+        });
+      });
+
+      audio.addEventListener("ended", () => {
+        setPressed(null, false);
+        activeBtn = null;
+      });
+      audio.addEventListener("pause", () => {
+        if (!audio.ended && audio.paused && activeBtn) {
+          setPressed(null, false);
+        }
+      });
+    })();
+  </script>
   <script src="../../js/theme.js"></script>
-  <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
+  <script src="../../js/vibe-copy.js"></script>
 </body>
 </html>
