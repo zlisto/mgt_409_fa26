@@ -676,11 +676,18 @@ if __name__ == &quot;__main__&quot;:
           <span class="vibe-code-label">How the app works (for your AI)</span>
           <button type="button" class="vibe-code-copy" aria-label="Copy architecture notes">Copy</button>
         </div>
-        <pre class="vibe-code vibe-prompt"><code>We're building a sports video judge in this folder: one PydanticAI agent + a Dash desk UI.
+        <pre class="vibe-code vibe-prompt"><code>app.py is already saved in this folder (Dash sports video desk). Build the PydanticAI agent around it — do not rewrite or replace app.py unless I ask.
+
+Stack / keys
+- Use model gpt-5.6-luna
+- Put PORTKEY_API_KEY=... in a .env file (python-dotenv)
+- The .env may be in this Lecture 6 folder or in the parent folder (e.g. MGT409/.env when the app is in MGT409/Lectures 6 — exact folder names vary). Load both locations.
+
+We're building a sports video judge: one PydanticAI agent + that Dash desk UI.
 
 How it runs
 - Command: python app.py → open http://127.0.0.1:8050
-- app.py is the Dash shell from the course page (paste it as app.py). Keep debug=False and use_reloader=False.
+- Keep debug=False and use_reloader=False (already set in app.py)
 - Unzip videos.zip next to the app → videos/dunks/*.mp4 and videos/fouls/*.mp4
 - Tabs: Dunks (videos/dunks) and Fouls/Flops (videos/fouls). Dropdown values are relative paths like dunks/clip.mp4
 - Video player src is /media/videos/&lt;relative path&gt; (Flask route on Dash's server)
@@ -709,7 +716,7 @@ Tools (implement in video_tools.py, wire on the agent in agent.py)
 Agent behavior (prompts/prompt.md)
 - Always sample_frames, then describe_video, then exactly one of score_dunk or call_foul based on what you saw
 - Prefer tools over guessing from the filename alone
-- Model: gpt-5.6-luna via Portkey; PORTKEY_API_KEY from .env (python-dotenv). Put .env in the Lecture 6 folder or in the parent folder (load both).
+- Model: gpt-5.6-luna via Portkey with PORTKEY_API_KEY from .env
 - Use pydantic-ai-slim[openai]
 
 DunkVerdict fields: kind="dunk", clip_label, scores {height, creativity, difficulty, landing}, total, play_by_play, rationale, frame_paths
@@ -717,28 +724,28 @@ FoulVerdict fields: kind="foul", clip_label, call in {foul, flop, no_call}, conf
 
 File tree
 Lecture 6/
-  app.py                 # STARTER on the course page — Dash desk (tabs, video, Judge, live tools)
-  agent.py               # BUILD — PydanticAI agent + run_agent(video_path, on_tool=...)
-  video_tools.py         # BUILD — sample / describe / score_dunk / call_foul
-  models.py              # BUILD — DunkVerdict | FoulVerdict
+  app.py
+  agent.py
+  video_tools.py
+  models.py
   prompts/
-    prompt.md            # BUILD — system prompt + rubrics
-  videos/                # from videos.zip
+    prompt.md
+  videos/
     dunks/
       *.mp4
     fouls/
       *.mp4
-  frames/                # CREATED at runtime
+  frames/
   requirements.txt
-  .env                   # optional here — PORTKEY_API_KEY=... (or put .env in the parent folder)
+  .env
   .venv/
+
+.env may also live one level up in the parent folder (same PORTKEY_API_KEY). Never commit a real API key.
 
 Until agent.py exists, stub:
 
 def run_agent(video_path: str, on_tool=None):
-    return {"verdict": None, "error": "Agent not built yet — finish agent.py.", "tool_events": []}
-
-Do not put a real API key in any file.</code></pre>
+    return {"verdict": None, "error": "Agent not built yet — finish agent.py.", "tool_events": []}</code></pre>
       </div>
 
       <p>
