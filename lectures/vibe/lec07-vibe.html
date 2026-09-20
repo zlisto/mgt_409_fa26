@@ -102,7 +102,7 @@
     <div class="assignment-box">
       <h2>Scenario</h2>
       <p>
-        Today you’re building a <strong>Yale SOM course explorer</strong> — a React site
+        Today you’re building a <strong>Yale School of Management course explorer</strong> — a React site
         that shows the fall course list in a nice grid, plus a chat agent that can answer
         questions about those classes. FastAPI on the back, PydanticAI for the brain,
         and a big JSON pack of real SOM courses (titles, faculty, times, descriptions,
@@ -110,13 +110,13 @@
       </p>
       <p>
         Download <a href="../data/lec07/data.zip">data.zip</a> and unzip next to your
-        project so you get <code>data/yale_som_classes.json</code> (~230 course rows).
+        project so you get <code>data/yale_som_classes.json</code>.
       </p>
       <div class="tts-end">
         <button
           type="button"
           class="tts-btn"
-          data-tts="../audio/lec07/scenario.mp3?v=silence1"
+          data-tts="../audio/lec07/scenario.mp3?v=silence2"
           aria-pressed="false"
           aria-label="Play scenario reading"
           title="Play scenario"
@@ -131,33 +131,26 @@
       <p>
         Scaffold a <strong>React + Vite + TypeScript</strong> frontend and a
         <strong>FastAPI</strong> backend. The page should feel like a course catalog:
-        cards or a clean list for courses (number, title, faculty, day/time), maybe a
-        search box that filters what you see. Make it look intentional — Yale-ish colors,
-        readable type, not the default Vite starter vibe.
+        cards or a clean list for courses (number, title, faculty, day, time), maybe a
+        search box that filters what you see. Give it some style as well.  Be creative and have fun designing it.
       </p>
       <p>
         Also put a chat panel on the page (bottom-right drawer or a side column is fine).
         Ask things like “who teaches MGT 409?”, “how many core courses are there?”, or
-        “what does Katja Seim work on?” While the agent thinks, show a spinner. Under each
+        “what are some good AI courses?” While the agent thinks, show a spinner. Under each
         reply, list which tools ran.
       </p>
-      <p>
-        Two processes at once: Vite usually on <code>http://127.0.0.1:5173</code>,
-        Uvicorn on <code>http://127.0.0.1:8000</code>. The React app loads courses from
-        your API and sends chat to <code>/api/chat</code>.
-      </p>
-      <p>Give the agent these tools (build at least the first three; pick one stretch if you have time):</p>
+      
+      <p>Give the agent these tools:</p>
       <ul>
-        <li><strong>filter_courses</strong> — search/filter <code>yale_som_classes.json</code> by title, number, faculty, category, day, etc., and return matching rows</li>
-        <li><strong>count_courses</strong> — count rows with optional filters (e.g. how many Core courses, how many taught by a faculty member)</li>
+        <li><strong>search_courses</strong> — search <code>yale_som_classes.json</code> by title, number, faculty, category, day, etc., and return matching rows</li>
         <li><strong>web_search</strong> — search the public web when the JSON isn’t enough (faculty news, syllabus context, etc.)</li>
-        <li><em>Stretch:</em> <strong>get_faculty_bio</strong> — return the <code>faculty_bio</code> field for a named instructor from the JSON</li>
       </ul>
       <div class="tts-end">
         <button
           type="button"
           class="tts-btn"
-          data-tts="../audio/lec07/task.mp3?v=silence1"
+          data-tts="../audio/lec07/task.mp3?v=silence2"
           aria-pressed="false"
           aria-label="Play task reading"
           title="Play task"
@@ -170,6 +163,8 @@
       <audio id="tts-audio" preload="none"></audio>
 
       <h2>Software Details</h2>
+      <p>You will make a  <code>frontend</code> and <code>backend</code> folder for this project.  Your front end is React + Vite + TypeScript.
+      Your backend is FastAPI (Python).</p>
       <p>Copy this into your backend folder as <code>requirements.txt</code>:</p>
 
       <div class="vibe-code-wrap" data-vibe-copy>
@@ -189,9 +184,15 @@ httpx&gt;=0.27.0</code></pre>
         unzip <code>data.zip</code> so you have <code>data/yale_som_classes.json</code>.
         Then scaffold the frontend with Vite (React + TypeScript):
       </p>
-      <pre class="terminal">npm create vite@latest frontend -- --template react-ts
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">Scaffold Vite frontend</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy Vite scaffold commands">Copy</button>
+        </div>
+        <pre class="vibe-code" style="text-align: left;"><code>npm create vite@latest frontend -- --template react-ts
 cd frontend
-npm install</pre>
+npm install</code></pre>
+      </div>
       <p>
         That creates a <code>frontend/</code> app and downloads packages into
         <code>node_modules/</code>. Put the FastAPI shell below in
@@ -316,16 +317,15 @@ How it runs
 What main.py expects from agent.py
 - run_agent(message: str) -&gt; dict with:
   - reply: str
-  - tools_used: list[str]  (e.g. ["filter_courses","count_courses"] or ["web_search"])
+  - tools_used: list[str]  (e.g. ["search_courses"] or ["search_courses","web_search"])
 
 Tools (implement in tools.py, wire in agent.py)
-1) filter_courses(...) — filter the JSON by course number/title/faculty/category/day/keywords; return a short list of matching courses (cap results, e.g. 15)
-2) count_courses(...) — count matching courses with the same kind of filters (for “how many…” questions)
-3) web_search(query: str) — search the public web (httpx is fine) when the JSON is thin or the user asks for outside context
-4) Optional stretch: get_faculty_bio(name: str) — return faculty_bio from the JSON for that instructor
+1) search_courses — search yale_som_classes.json by title, number, faculty, category, day, etc., and return matching rows (cap results, e.g. 15)
+2) web_search — search the public web when the JSON isn’t enough (faculty news, syllabus context, etc.)
 
 Agent behavior
-- System prompt in prompts/prompt.md: helpful Yale SOM course assistant; prefer filter_courses / count_courses / get_faculty_bio on the JSON first; use web_search when needed; never invent course times or faculty; if unsure, say so
+- System prompt in prompts/prompt.md: helpful Yale SOM course assistant; use search_courses for questions answerable from the course JSON; use web_search when the JSON isn’t enough; never invent course times or faculty; if unsure, say so
+- Only these two tools — do not add filter_courses, count_courses, or other extras unless I ask
 - Model gpt-5.6-luna + PORTKEY_API_KEY
 - Package: pydantic-ai-slim[openai]
 
