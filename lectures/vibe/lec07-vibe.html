@@ -102,15 +102,15 @@
     <div class="assignment-box">
       <h2>Scenario</h2>
       <p>
-        Today you’re building a little <strong>Yale SOM chatbot</strong> — a React page in
-        the browser talking to a FastAPI backend, with a PydanticAI agent that knows
-        some school facts from a JSON file and can also search the web when the JSON
-        isn’t enough.
+        Today you’re building a <strong>Yale SOM course explorer</strong> — a React site
+        that shows the fall course list in a nice grid, plus a chat agent that can answer
+        questions about those classes. FastAPI on the back, PydanticAI for the brain,
+        and a big JSON pack of real SOM courses (titles, faculty, times, descriptions,
+        and a short faculty bio).
       </p>
       <p>
         Download <a href="../data/lec07/data.zip">data.zip</a> and unzip next to your
-        project so you get a <code>data/yale_som.json</code> file with programs,
-        location, and a few FAQs for the agent to read.
+        project so you get <code>data/yale_som_classes.json</code> (~230 course rows).
       </p>
       <div class="tts-end">
         <button
@@ -130,22 +130,28 @@
       <h2>Task</h2>
       <p>
         Scaffold a <strong>React + Vite + TypeScript</strong> frontend and a
-        <strong>FastAPI</strong> backend. The page is a simple chat: you type a question about Yale SOM, hit send,
-        and the answer streams back in the chat window. While the agent works, show a
-        spinner (or “thinking…” line) so you know something is happening. If the agent
-        used the school JSON or web search, show a small note under the reply so you can
-        see which tools fired.
+        <strong>FastAPI</strong> backend. The page should feel like a course catalog:
+        cards or a clean list for courses (number, title, faculty, day/time), maybe a
+        search box that filters what you see. Make it look intentional — Yale-ish colors,
+        readable type, not the default Vite starter vibe.
       </p>
       <p>
-        Two processes run at once: Vite for the UI (usually
-        <code>http://127.0.0.1:5173</code>) and Uvicorn for the API (usually
-        <code>http://127.0.0.1:8000</code>). The React app calls your FastAPI
-        <code>/api/chat</code> route; that route calls your agent.
+        Also put a chat panel on the page (bottom-right drawer or a side column is fine).
+        Ask things like “who teaches MGT 409?”, “how many core courses are there?”, or
+        “what does Katja Seim work on?” While the agent thinks, show a spinner. Under each
+        reply, list which tools ran.
       </p>
-      <p>Your agent should have these tools:</p>
+      <p>
+        Two processes at once: Vite usually on <code>http://127.0.0.1:5173</code>,
+        Uvicorn on <code>http://127.0.0.1:8000</code>. The React app loads courses from
+        your API and sends chat to <code>/api/chat</code>.
+      </p>
+      <p>Give the agent these tools (build at least the first three; pick one stretch if you have time):</p>
       <ul>
-        <li><strong>lookup_som</strong> — read <code>data/yale_som.json</code> and return relevant facts</li>
-        <li><strong>web_search</strong> — search the public web when the JSON doesn’t cover the question</li>
+        <li><strong>filter_courses</strong> — search/filter <code>yale_som_classes.json</code> by title, number, faculty, category, day, etc., and return matching rows</li>
+        <li><strong>count_courses</strong> — count rows with optional filters (e.g. how many Core courses, how many taught by a faculty member)</li>
+        <li><strong>web_search</strong> — search the public web when the JSON isn’t enough (faculty news, syllabus context, etc.)</li>
+        <li><em>Stretch:</em> <strong>get_faculty_bio</strong> — return the <code>faculty_bio</code> field for a named instructor from the JSON</li>
       </ul>
       <div class="tts-end">
         <button
@@ -180,9 +186,8 @@ httpx&gt;=0.27.0</code></pre>
 
       <p>
         In your Lecture 7 folder, make a Python venv, install those requirements, and
-        unzip <code>data.zip</code> so you have <code>data/yale_som.json</code>. Then
-        scaffold the frontend with Vite (React + TypeScript). From the lecture folder,
-        something like:
+        unzip <code>data.zip</code> so you have <code>data/yale_som_classes.json</code>.
+        Then scaffold the frontend with Vite (React + TypeScript):
       </p>
       <pre class="terminal">npm create vite@latest frontend -- --template react-ts
 cd frontend
@@ -198,7 +203,7 @@ npm install</pre>
           <span class="vibe-code-label">backend/main.py</span>
           <button type="button" class="vibe-code-copy" aria-label="Copy backend/main.py">Copy</button>
         </div>
-        <pre class="vibe-code"><code>&quot;&quot;&quot;Yale SOM chatbot API desk.
+        <pre class="vibe-code"><code>&quot;&quot;&quot;Yale SOM course explorer API desk.
 
 Run from backend/:  uvicorn main:app --reload --port 8000
 Open API docs:      http://127.0.0.1:8000/docs
@@ -207,10 +212,11 @@ Frontend (Vite):    http://127.0.0.1:5173
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
@@ -218,10 +224,11 @@ from agent import run_agent
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
+DATA_PATH = ROOT / &quot;data&quot; / &quot;yale_som_classes.json&quot;
 load_dotenv(ROOT / &quot;.env&quot;)
 load_dotenv(ROOT.parent / &quot;.env&quot;)
 
-app = FastAPI(title=&quot;Yale SOM Chat&quot;, version=&quot;0.1.0&quot;)
+app = FastAPI(title=&quot;Yale SOM Courses&quot;, version=&quot;0.1.0&quot;)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[&quot;*&quot;],
@@ -229,6 +236,10 @@ app.add_middleware(
     allow_methods=[&quot;*&quot;],
     allow_headers=[&quot;*&quot;],
 )
+
+
+def load_courses() -&gt; list[dict]:
+    return json.loads(DATA_PATH.read_text(encoding=&quot;utf-8&quot;))
 
 
 class ChatRequest(BaseModel):
@@ -242,7 +253,22 @@ class ChatResponse(BaseModel):
 
 @app.get(&quot;/api/health&quot;)
 def health():
-    return {&quot;ok&quot;: True, &quot;school&quot;: &quot;Yale SOM&quot;}
+    return {&quot;ok&quot;: True, &quot;courses_file&quot;: str(DATA_PATH.name)}
+
+
+@app.get(&quot;/api/courses&quot;)
+def list_courses(q: str | None = Query(default=None)):
+    &quot;&quot;&quot;Return courses for the React catalog (optional text filter).&quot;&quot;&quot;
+    courses = load_courses()
+    if not q:
+        return {&quot;count&quot;: len(courses), &quot;courses&quot;: courses}
+    needle = q.lower().strip()
+    matched = [
+        c
+        for c in courses
+        if needle in json.dumps(c, ensure_ascii=False).lower()
+    ]
+    return {&quot;count&quot;: len(matched), &quot;courses&quot;: matched}
 
 
 @app.post(&quot;/api/chat&quot;, response_model=ChatResponse)
@@ -260,14 +286,14 @@ if __name__ == &quot;__main__&quot;:
     uvicorn.run(&quot;main:app&quot;, host=&quot;127.0.0.1&quot;, port=8000, reload=False)</code></pre>
       </div>
 
-      <p>Then give your vibe coder this prompt to build the agent + React chat UI around the shell:</p>
+      <p>Then give your vibe coder this prompt to build the agent + React catalog UI around the shell:</p>
 
       <div class="vibe-code-wrap" data-vibe-copy>
         <div class="vibe-code-chrome">
           <span class="vibe-code-label">How the app works (for your AI)</span>
           <button type="button" class="vibe-code-copy" aria-label="Copy agent prompt">Copy</button>
         </div>
-        <pre class="vibe-code vibe-prompt"><code>backend/main.py is already saved in this project. Build the agent and React chat UI around it. Do not rewrite or replace main.py unless I ask.
+        <pre class="vibe-code vibe-prompt"><code>backend/main.py is already saved in this project. Build the agent and React course-explorer UI around it. Do not rewrite or replace main.py unless I ask.
 
 Stack / keys
 - Model: gpt-5.6-luna via Portkey
@@ -278,26 +304,28 @@ Stack / keys
 - Backend: FastAPI + uvicorn + pydantic-ai-slim[openai]
 
 Goal
-Build a Yale SOM chatbot: React chat UI + FastAPI /api/chat + PydanticAI agent with local JSON lookup and web search.
+Yale SOM course explorer: React catalog of courses + chat agent that answers questions using tools over data/yale_som_classes.json (and web search when needed). Make the UI look polished (Yale blue / clean type / nice cards) — not the default Vite starter.
 
 How it runs
-1) Backend: from backend/, run  uvicorn main:app --port 8000   (keep reload off in class if ports get sticky)
+1) Backend: from backend/, run  uvicorn main:app --port 8000
 2) Frontend: from frontend/, run  npm run dev   → http://127.0.0.1:5173
-3) UI: chat messages, send button, spinner while waiting, show tools_used under the assistant reply
-4) CORS is already open on the FastAPI app so Vite can call http://127.0.0.1:8000
-5) Data file: data/yale_som.json (unzipped from the course data.zip)
+3) UI: course grid/list from GET /api/courses, optional search box, chat panel with spinner + tools_used under replies
+4) CORS is already open so Vite can call http://127.0.0.1:8000
+5) Data file: data/yale_som_classes.json (unzipped from the course data.zip)
 
 What main.py expects from agent.py
 - run_agent(message: str) -&gt; dict with:
   - reply: str
-  - tools_used: list[str]  (e.g. ["lookup_som"] or ["lookup_som","web_search"])
+  - tools_used: list[str]  (e.g. ["filter_courses","count_courses"] or ["web_search"])
 
 Tools (implement in tools.py, wire in agent.py)
-1) lookup_som(query: str) — read data/yale_som.json and return the most relevant school facts for the query
-2) web_search(query: str) — search the public web (httpx is fine) and return a short digest of useful results when the JSON is thin
+1) filter_courses(...) — filter the JSON by course number/title/faculty/category/day/keywords; return a short list of matching courses (cap results, e.g. 15)
+2) count_courses(...) — count matching courses with the same kind of filters (for “how many…” questions)
+3) web_search(query: str) — search the public web (httpx is fine) when the JSON is thin or the user asks for outside context
+4) Optional stretch: get_faculty_bio(name: str) — return faculty_bio from the JSON for that instructor
 
 Agent behavior
-- System prompt in prompts/prompt.md: you are a helpful Yale SOM info assistant; prefer lookup_som first; use web_search when needed; say when you are unsure
+- System prompt in prompts/prompt.md: helpful Yale SOM course assistant; prefer filter_courses / count_courses / get_faculty_bio on the JSON first; use web_search when needed; never invent course times or faculty; if unsure, say so
 - Model gpt-5.6-luna + PORTKEY_API_KEY
 - Package: pydantic-ai-slim[openai]
 
@@ -308,7 +336,7 @@ File tree
 Lecture7/
   .env.example
   data/
-    yale_som.json
+    yale_som_classes.json
   backend/
     requirements.txt
     main.py
@@ -325,6 +353,7 @@ Lecture7/
       App.tsx
       main.tsx
       api.ts
+      components/   (optional: CourseCard, ChatPanel, …)
 
 .env reminder
 May also live one level up. Never commit a real key. Ship .env.example only.
