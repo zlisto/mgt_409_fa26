@@ -8,64 +8,67 @@
   <link rel="stylesheet" href="../../css/vibe-session.css">
   <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
   <style>
-    :root {
-      --lec7-pink: #ff3cac;
-      --lec7-cyan: #2de2e6;
-      --lec7-gold: #ffd166;
+    .vibe-hero {
+      display: block;
+      width: 100%;
+      max-width: 640px;
+      max-height: 240px;
+      height: auto;
+      margin: 0 auto 1.25rem;
+      object-fit: contain;
+      object-position: center;
     }
-    .vibe-header h1 {
-      font-size: clamp(1.9rem, 4vw, 2.6rem);
-      background: linear-gradient(90deg, #2de2e6, #ff3cac 60%, #ffd166);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-    }
-    .vibe-goal {
-      background: #12152c;
-      border-left: 6px solid var(--lec7-cyan);
-      color: #e8ecff;
-    }
-    .vibe-goal strong { color: var(--lec7-cyan); }
-    .vibe-step h2 { color: var(--lec7-pink); font-size: 1.4rem; }
-    .vibe-step .step-num { background: var(--lec7-pink); }
-    .vibe-check { border-left: 4px solid var(--lec7-gold); }
-    .joke-banner {
-      margin: 1rem 0 0;
-      padding: 0.75rem 1rem;
-      border-radius: 12px;
-      background: #2a1a00;
-      border: 2px solid var(--lec7-gold);
-      color: var(--lec7-gold);
-      font-weight: 700;
-    }
-    .clock {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0.4rem;
-      margin: 1rem 0 0.25rem;
-    }
-    .clock div {
-      background: #12152c;
-      color: #e8ecff;
+    .assignment-box h2 { text-align: center; }
+    .assignment-box p,
+    .assignment-box ul,
+    .assignment-box li { text-align: left; }
+    .file-tree {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      margin: 0.75rem 0 1rem;
+      padding: 0.9rem 1rem;
       border-radius: 10px;
-      padding: 0.55rem 0.4rem;
-      text-align: center;
-      font-size: 0.78rem;
-      font-weight: 700;
-      line-height: 1.3;
+      background: #0f1c33;
+      color: #e8eef8;
+      text-align: left;
     }
-    .clock .t { display: block; color: var(--lec7-cyan); font-size: 0.9rem; letter-spacing: 0.04em; }
-    .mins {
-      display: inline-block;
-      margin-left: 0.35rem;
-      padding: 0.12rem 0.5rem;
+    [data-theme="dark"] .file-tree { background: #0a1220; }
+    .tts-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.4rem;
+      height: 2.4rem;
+      padding: 0;
+      border: none;
       border-radius: 999px;
-      background: #12152c;
-      color: var(--lec7-cyan);
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      vertical-align: middle;
+      background: #111;
+      color: #ff2d95;
+      cursor: pointer;
+      flex-shrink: 0;
     }
-    @media (max-width: 720px) { .clock { grid-template-columns: 1fr 1fr; } }
+    .tts-btn:hover {
+      background: #000;
+      color: #ff6bb5;
+    }
+    .tts-btn[aria-pressed="true"] {
+      box-shadow: 0 0 0 2px #ff2d95;
+    }
+    .tts-btn svg {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+    .tts-end {
+      display: flex;
+      justify-content: flex-end;
+      margin: 0.35rem 0 1.15rem;
+    }
   </style>
 </head>
 <body>
@@ -80,81 +83,326 @@
     <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
   </nav>
   <main class="vibe-main">
+    <img
+      class="vibe-hero"
+      src="../images/lec07/front-back-split.jpg"
+      alt="Frontend browser UI talking to a FastAPI backend"
+      width="1024"
+      height="1024"
+    >
     <div class="vibe-header">
       <h1>Lecture 7: Web Applications</h1>
       <p class="meta">
         <a href="../slides/lec07-slides.html">← Slides</a>
         <a href="../../lectures.html">All lectures</a>
-        · 40 minutes in class · localhost only
+        · In-class vibe coding
       </p>
     </div>
-    <div class="clock" aria-label="40-minute clock">
-      <div><span class="t">0–5</span>Scaffold + SQLite</div>
-      <div><span class="t">5–14</span>FastAPI chat</div>
-      <div><span class="t">14–24</span>Vite UI</div>
-      <div><span class="t">24–34</span>Hash + persist</div>
-      <div><span class="t">34–40</span>Log + stretch</div>
-    </div>
-    <div class="vibe-goal"><strong>In-class goal:</strong> Leave with a React (Vite) page talking to FastAPI, with FAQ and chats in <strong>SQLite</strong> — the shape of Homework 4, not the assignment. Do not use the HW4 zip. Do not deploy (Lecture 8). Invent a 6-row fake venue FAQ.</div>
-    <p class="joke-banner">If it only works in the terminal, you built a lab. If a classmate can click it, you built an app. A public URL is next week.</p>
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 1</span> Two folders, SQLite seed <span class="mins">0–5 min</span></h2>
-      <p>Empty project. Not College Street Music Hall data — a toy so you learn the wiring. SQLite is the source of truth from minute one.</p>
-      <pre class="prompt">Create lec07_web/backend/ and lec07_web/frontend/.
-In backend/, write seed_db.py that creates venue.db with tables:
-  faq(id, category, question, answer)
-  users(id, username, salt, password_hash)
-  messages(id, username, role, text, created_at)
-Insert 6 FAQ rows (bag policy, door time, refunds, no elevator, food, tickets).
-Do not store a plaintext password. README: backend is FastAPI on 8000, frontend is Vite on 5173, database is venue.db.
-Do not copy Homework 4 files. Do not add a Render/Dockerfile.</pre>
-      <div class="vibe-check"><strong>Check:</strong> <code>sqlite3 venue.db "SELECT category, question FROM faq;"</code> prints 6 rows. README names both ports.</div>
-    </div>
+    <div class="assignment-box">
+      <h2>Scenario</h2>
+      <p>
+        Today you’re building a little <strong>Yale SOM chatbot</strong> — a React page in
+        the browser talking to a FastAPI backend, with a PydanticAI agent that knows
+        some school facts from a JSON file and can also search the web when the JSON
+        isn’t enough.
+      </p>
+      <p>
+        Download <a href="../data/lec07/data.zip">data.zip</a> and unzip next to your
+        project so you get a <code>data/yale_som.json</code> file with programs,
+        location, and a few FAQs for the agent to read.
+      </p>
+      <div class="tts-end">
+        <button
+          type="button"
+          class="tts-btn"
+          data-tts="../audio/lec07/scenario.mp3?v=silence1"
+          aria-pressed="false"
+          aria-label="Play scenario reading"
+          title="Play scenario"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+        </button>
+      </div>
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 2</span> FastAPI: health + chat from SQLite <span class="mins">5–14 min</span></h2>
-      <p>The browser never holds the API key. Chat reads FAQ rows with SQL — do not embed, do not dump the whole table into every prompt.</p>
-      <pre class="prompt">In backend/server.py make a FastAPI app with CORS for http://127.0.0.1:5173.
-GET /health → {"ok": true}.
-POST /chat JSON {message} SELECTs matching faq rows from venue.db (by category or keyword), asks the OpenAI API to answer only from those rows, returns {answer, refused, citations}.
-Never invent an elevator. Keys load from .env on the server only.
-Run: uvicorn server:app --host 127.0.0.1 --port 8000</pre>
-      <div class="vibe-check"><strong>Check:</strong> <code>curl http://127.0.0.1:8000/health</code> works. POST <code>{"message":"Is there an elevator?"}</code> returns refused true or an answer that cites the no-elevator row.</div>
-    </div>
+      <h2>Task</h2>
+      <p>
+        Scaffold a <strong>React + Vite + TypeScript</strong> frontend and a
+        <strong>FastAPI</strong> backend. The page is a simple chat: you type a question about Yale SOM, hit send,
+        and the answer streams back in the chat window. While the agent works, show a
+        spinner (or “thinking…” line) so you know something is happening. If the agent
+        used the school JSON or web search, show a small note under the reply so you can
+        see which tools fired.
+      </p>
+      <p>
+        Two processes run at once: Vite for the UI (usually
+        <code>http://127.0.0.1:5173</code>) and Uvicorn for the API (usually
+        <code>http://127.0.0.1:8000</code>). The React app calls your FastAPI
+        <code>/api/chat</code> route; that route calls your agent.
+      </p>
+      <p>Your agent should have these tools:</p>
+      <ul>
+        <li><strong>lookup_som</strong> — read <code>data/yale_som.json</code> and return relevant facts</li>
+        <li><strong>web_search</strong> — search the public web when the JSON doesn’t cover the question</li>
+      </ul>
+      <div class="tts-end">
+        <button
+          type="button"
+          class="tts-btn"
+          data-tts="../audio/lec07/task.mp3?v=silence1"
+          aria-pressed="false"
+          aria-label="Play task reading"
+          title="Play task"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+        </button>
+      </div>
+      <audio id="tts-audio" preload="none"></audio>
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 3</span> Vite React chat UI <span class="mins">14–24 min</span></h2>
-      <p>A real frontend folder, not index.html sitting next to Python. Stay on localhost — no deploy.</p>
-      <pre class="prompt">In frontend/ scaffold React + Vite. One CSS file (not only inline). Dark venue colors, big type.
-A text box + Send that POSTs to http://127.0.0.1:8000/chat and shows answer + refused.
-README: npm install && npm run dev. Document whether you use a Vite proxy or the full URL.
-Do not put OPENAI_API_KEY in any frontend file or VITE_ variable.</pre>
-      <div class="vibe-check"><strong>Check:</strong> From the browser you can ask about bags and see a reply without opening a terminal for that turn. FastAPI is still on 8000; Vite is on 5173.</div>
-    </div>
+      <h2>Software Details</h2>
+      <p>Copy this into your backend folder as <code>requirements.txt</code>:</p>
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 4</span> Hash a password, persist the thread <span class="mins">24–34 min</span></h2>
-      <p>HW4 uses PBKDF2 in SQLite. In class, prove two product rules: never store plaintext, and chats survive refresh.</p>
-      <pre class="prompt">Add backend/auth.py with hash_password(password, salt) and verify().
-Seed one user in venue.db (salt + hash only).
-POST /login {username, password} → {ok, token}. Never log or echo the password.
-POST /chat also INSERTs both the user message and the assistant reply into messages.
-GET /chats?username=... returns that user's turns from SQLite.
-Frontend: a login field that must succeed before chat is enabled. After a browser refresh, prior turns reappear from GET /chats.</pre>
-      <div class="vibe-check"><strong>Check:</strong> Wrong password → ok false. Right password unlocks chat. <code>SELECT username, password_hash FROM users;</code> has no plaintext. Refresh the page: the last turn is still there.</div>
-    </div>
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">requirements.txt</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy requirements.txt">Copy</button>
+        </div>
+        <pre class="vibe-code"><code>fastapi&gt;=0.115.0
+uvicorn[standard]&gt;=0.30.0
+pydantic-ai-slim[openai]&gt;=1.0.0
+python-dotenv&gt;=1.0.1
+httpx&gt;=0.27.0</code></pre>
+      </div>
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 5</span> AI_prompts.md <span class="mins">34–40 min</span></h2>
-      <p>Same habit as homework: log what you asked the vibe coder, in your words. If you still have minutes, screenshot is stretch — not required to “finish” class.</p>
-      <pre class="prompt">Create AI_prompts.md with a Lecture 7 section. One prompt summary per step above.
-Note what broke (CORS, ports, hash mismatch, chats vanishing) and the follow-up prompt that fixed it.</pre>
-      <div class="vibe-check"><strong>Check:</strong> Five step headings; at least one “what was lacking” sentence.</div>
-      <p class="vibe-extend"><strong>Stretch (if time):</strong> Screenshot button that captures the current page (not the webcam) and POSTs it with the message. Backend uses vision + the FAQ rows. Typed chat must still work if the button fails. Do not deploy.</p>
+      <p>
+        In your Lecture 7 folder, make a Python venv, install those requirements, and
+        unzip <code>data.zip</code> so you have <code>data/yale_som.json</code>. Then
+        scaffold the frontend with Vite (React + TypeScript). From the lecture folder,
+        something like:
+      </p>
+      <pre class="terminal">npm create vite@latest frontend -- --template react-ts
+cd frontend
+npm install</pre>
+      <p>
+        That creates a <code>frontend/</code> app and downloads packages into
+        <code>node_modules/</code>. Put the FastAPI shell below in
+        <code>backend/main.py</code> (create the <code>backend/</code> folder if needed).
+      </p>
+
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">backend/main.py</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy backend/main.py">Copy</button>
+        </div>
+        <pre class="vibe-code"><code>&quot;&quot;&quot;Yale SOM chatbot API desk.
+
+Run from backend/:  uvicorn main:app --reload --port 8000
+Open API docs:      http://127.0.0.1:8000/docs
+Frontend (Vite):    http://127.0.0.1:5173
+&quot;&quot;&quot;
+
+from __future__ import annotations
+
+from pathlib import Path
+
+from dotenv import load_dotenv
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field
+
+from agent import run_agent
+
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parent
+load_dotenv(ROOT / &quot;.env&quot;)
+load_dotenv(ROOT.parent / &quot;.env&quot;)
+
+app = FastAPI(title=&quot;Yale SOM Chat&quot;, version=&quot;0.1.0&quot;)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[&quot;*&quot;],
+    allow_credentials=True,
+    allow_methods=[&quot;*&quot;],
+    allow_headers=[&quot;*&quot;],
+)
+
+
+class ChatRequest(BaseModel):
+    message: str = Field(min_length=1)
+
+
+class ChatResponse(BaseModel):
+    reply: str
+    tools_used: list[str] = Field(default_factory=list)
+
+
+@app.get(&quot;/api/health&quot;)
+def health():
+    return {&quot;ok&quot;: True, &quot;school&quot;: &quot;Yale SOM&quot;}
+
+
+@app.post(&quot;/api/chat&quot;, response_model=ChatResponse)
+def chat(body: ChatRequest):
+    result = run_agent(body.message)
+    return ChatResponse(
+        reply=result.get(&quot;reply&quot;, &quot;&quot;),
+        tools_used=list(result.get(&quot;tools_used&quot;) or []),
+    )
+
+
+if __name__ == &quot;__main__&quot;:
+    import uvicorn
+
+    uvicorn.run(&quot;main:app&quot;, host=&quot;127.0.0.1&quot;, port=8000, reload=False)</code></pre>
+      </div>
+
+      <p>Then give your vibe coder this prompt to build the agent + React chat UI around the shell:</p>
+
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">How the app works (for your AI)</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy agent prompt">Copy</button>
+        </div>
+        <pre class="vibe-code vibe-prompt"><code>backend/main.py is already saved in this project. Build the agent and React chat UI around it. Do not rewrite or replace main.py unless I ask.
+
+Stack / keys
+- Model: gpt-5.6-luna via Portkey
+- PORTKEY_API_KEY=... in a .env (python-dotenv)
+- .env may be in this Lecture 7 folder OR the parent folder (e.g. MGT409/.env). Load both.
+- Use your vibe coder for this session (Cursor, Claude Code, Codex — your choice).
+- Frontend: React + Vite + TypeScript already scaffolded in frontend/
+- Backend: FastAPI + uvicorn + pydantic-ai-slim[openai]
+
+Goal
+Build a Yale SOM chatbot: React chat UI + FastAPI /api/chat + PydanticAI agent with local JSON lookup and web search.
+
+How it runs
+1) Backend: from backend/, run  uvicorn main:app --port 8000   (keep reload off in class if ports get sticky)
+2) Frontend: from frontend/, run  npm run dev   → http://127.0.0.1:5173
+3) UI: chat messages, send button, spinner while waiting, show tools_used under the assistant reply
+4) CORS is already open on the FastAPI app so Vite can call http://127.0.0.1:8000
+5) Data file: data/yale_som.json (unzipped from the course data.zip)
+
+What main.py expects from agent.py
+- run_agent(message: str) -&gt; dict with:
+  - reply: str
+  - tools_used: list[str]  (e.g. ["lookup_som"] or ["lookup_som","web_search"])
+
+Tools (implement in tools.py, wire in agent.py)
+1) lookup_som(query: str) — read data/yale_som.json and return the most relevant school facts for the query
+2) web_search(query: str) — search the public web (httpx is fine) and return a short digest of useful results when the JSON is thin
+
+Agent behavior
+- System prompt in prompts/prompt.md: you are a helpful Yale SOM info assistant; prefer lookup_som first; use web_search when needed; say when you are unsure
+- Model gpt-5.6-luna + PORTKEY_API_KEY
+- Package: pydantic-ai-slim[openai]
+
+Structured types (models.py)
+- AgentResult with fields: reply (str), tools_used (list[str])
+
+File tree
+Lecture7/
+  .env.example
+  data/
+    yale_som.json
+  backend/
+    requirements.txt
+    main.py
+    agent.py
+    tools.py
+    models.py
+    prompts/
+      prompt.md
+  frontend/
+    package.json
+    vite.config.ts
+    index.html
+    src/
+      App.tsx
+      main.tsx
+      api.ts
+
+.env reminder
+May also live one level up. Never commit a real key. Ship .env.example only.
+
+Stub until the real agent exists — put this in backend/agent.py so main.py imports cleanly:
+
+def run_agent(message: str) -&gt; dict:
+    return {
+        "reply": "Agent not wired yet. Build agent.py + tools.py.",
+        "tools_used": [],
+    }</code></pre>
+      </div>
+
+      <p>
+        <strong>Ports:</strong> Vite often uses <code>5173</code>; FastAPI uses
+        <code>8000</code>. If a port is stuck on Windows:
+      </p>
+      <pre class="terminal">netstat -ano | findstr :8000
+taskkill /PID &lt;pid&gt; /F
+
+netstat -ano | findstr :5173
+taskkill /PID &lt;pid&gt; /F</pre>
+      <p>
+        Keep the two terminals open — one for Uvicorn, one for
+        <code>npm run dev</code>.
+      </p>
     </div>
   </main>
+  <script>
+    (function () {
+      const audio = document.getElementById("tts-audio");
+      const buttons = [...document.querySelectorAll(".tts-btn[data-tts]")];
+      if (!audio || !buttons.length) return;
+
+      let activeBtn = null;
+
+      function setPressed(btn, on) {
+        buttons.forEach((b) => b.setAttribute("aria-pressed", "false"));
+        if (btn) btn.setAttribute("aria-pressed", on ? "true" : "false");
+      }
+
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const src = btn.getAttribute("data-tts");
+          if (!src) return;
+
+          if (activeBtn === btn && !audio.paused) {
+            audio.pause();
+            setPressed(null, false);
+            activeBtn = null;
+            return;
+          }
+
+          if (audio.getAttribute("src") !== src) {
+            audio.setAttribute("src", src);
+            audio.load();
+          }
+          activeBtn = btn;
+          setPressed(btn, true);
+          audio.play().catch(() => {
+            setPressed(null, false);
+            activeBtn = null;
+          });
+        });
+      });
+
+      audio.addEventListener("ended", () => {
+        setPressed(null, false);
+        activeBtn = null;
+      });
+      audio.addEventListener("pause", () => {
+        if (!audio.ended && audio.paused && activeBtn) {
+          setPressed(null, false);
+        }
+      });
+    })();
+  </script>
   <script src="../../js/theme.js"></script>
-  <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
+  <script src="../../js/vibe-copy.js"></script>
 </body>
 </html>

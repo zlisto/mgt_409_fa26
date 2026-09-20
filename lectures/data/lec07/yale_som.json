@@ -1,0 +1,32 @@
+﻿{
+  "school": "Yale School of Management",
+  "short_name": "Yale SOM",
+  "city": "New Haven, Connecticut",
+  "mission": "Educate leaders for business and society.",
+  "programs": [
+    {"name": "MBA", "length": "2 years", "notes": "Full-time MBA with integrated curriculum"},
+    {"name": "MBA for Executives", "length": "2 years", "notes": "EMBA for working professionals; Saturday delivery"},
+    {"name": "Master of Advanced Management", "length": "1 year", "notes": "For graduates of global MBA programs"},
+    {"name": "Master of Management Studies", "length": "1 year", "notes": "Specialized master's tracks"},
+    {"name": "PhD", "length": "Varies", "notes": "Doctoral research programs"}
+  ],
+  "building": "Evans Hall",
+  "address": "165 Whitney Avenue, New Haven, CT",
+  "known_for": [
+    "Rawlsian approach to leadership and society",
+    "Integrated MBA core",
+    "Strong nonprofit and public sector pathways",
+    "Global Network for Advanced Management"
+  ],
+  "course_context": {
+    "course_code": "MGT 409",
+    "course_title": "AI Foundations for Managers",
+    "instructor": "Tauhid Zaman",
+    "term": "Fall 2026"
+  },
+  "faqs": [
+    {"q": "Where is Yale SOM?", "a": "Evans Hall at 165 Whitney Avenue in New Haven, Connecticut."},
+    {"q": "What does Yale SOM emphasize?", "a": "Leaders for business and society — integrating private, public, and nonprofit perspectives."},
+    {"q": "Is there an EMBA?", "a": "Yes — the MBA for Executives, typically delivered on Saturdays for working professionals."}
+  ]
+}

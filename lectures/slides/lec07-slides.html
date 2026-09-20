@@ -5,118 +5,576 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lecture 7 Slides — Web Applications</title>
   <link rel="stylesheet" href="../../css/style.css">
-  <link rel="stylesheet" href="../../css/slides.css?v=7">
+  <link rel="stylesheet" href="../../css/slides.css?v=9">
+  <link rel="stylesheet" href="../../css/vibe-session.css">
   <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
   <style>
-    .slide-deck-body { --hot: #c73e82; --gold: #bd9b60; --teal: #0a7a74; }
-    .slide { max-width: 980px; }
-    .slide h1 { font-size: clamp(1.95rem, 4.6vw, 2.75rem); }
+    .slide-deck-body {
+      --hot: #ff4d6d;
+      --teal: #00c2a8;
+      --gold: #ffc857;
+      --ink: #08111f;
+      overflow: hidden;
+    }
+    .slide-deck-body nav.site-nav { flex-shrink: 0; position: relative; }
+    .slide {
+      max-width: 980px;
+      max-height: calc(100vh - 210px);
+    }
+    .slide > h1:first-child { margin-top: 0; }
+    .slide h1 {
+      font-size: clamp(1.85rem, 4.4vw, 2.65rem);
+      line-height: 1.12;
+    }
+    .slide p, .slide li { font-size: clamp(1.08rem, 2.3vw, 1.28rem); }
+
+    .slide.title-slide {
+      background: #000;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      max-width: none;
+      width: 100%;
+      text-align: center;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      max-height: calc(100vh - 170px);
+      box-sizing: border-box;
+    }
+    .slide.title-slide.active {
+      display: flex;
+      padding: 1.1rem 1.25rem 1.35rem !important;
+      justify-content: center;
+    }
+    .slide.title-slide .title-cluster {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: min(100%, 1180px);
+      margin: 0 auto;
+      flex: none;
+      min-height: 0;
+    }
     .slide.title-slide h1 {
-      font-size: clamp(2.4rem, 6vw, 3.5rem);
-      background: linear-gradient(90deg, #00356b, #286dc0 45%, #bd9b60);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    [data-theme="dark"] .slide.title-slide h1 {
-      background: linear-gradient(90deg, #7eb6ff, #ffd166 55%, #e8c37a);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .slide p, .slide li { font-size: clamp(1.1rem, 2.35vw, 1.34rem); }
-    .joke {
-      margin-top: 1rem;
-      padding: 0.85rem 1.1rem;
-      background: #fff6e4;
-      border-left: 6px solid var(--gold);
-      border-radius: 0 12px 12px 0;
-      font-weight: 700;
-      color: #4a3510;
-    }
-    [data-theme="dark"] .joke { background: #3a2e14; color: #ffe9c2; }
-    .slide .takeaway { font-size: 1.12rem; }
-    .chip {
-      display: inline-block;
-      padding: 0.2rem 0.65rem;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      background: var(--yale-blue);
+      font-size: clamp(3.2rem, 8vw, 5.5rem);
       color: #fff;
-      margin-bottom: 0.45rem;
-    }
-    .chip.gold { background: var(--gold); color: #1a1208; }
-    .instructor-banner {
-      display: inline-block;
-      margin: 0 0 0.7rem;
-      padding: 0.28rem 0.75rem;
-      border-radius: 999px;
-      background: var(--hot);
-      color: #fff;
-      font-size: 0.78rem;
+      text-transform: none;
+      letter-spacing: -0.03em;
+      margin: 0;
+      line-height: 1.05;
       font-weight: 800;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
+      border: none;
+      border-left: none;
+      padding: 0;
+      flex: none;
     }
-    .pace th:first-child, .pace td:first-child {
-      width: 5.5rem;
-      white-space: nowrap;
-      font-variant-numeric: tabular-nums;
-      font-weight: 800;
-      color: var(--yale-blue);
-    }
-    [data-theme="dark"] .pace td:first-child { color: #e8c37a; }
-    .news-card {
+    [data-theme="dark"] .slide.title-slide h1 { color: #fff; }
+    .slide.title-slide .title-hero {
       display: block;
-      margin: 0.75rem 0;
-      padding: 1rem 1.1rem;
-      border-radius: 14px;
-      background: #f7f1e6;
-      border: 2px solid var(--gold);
-      text-decoration: none;
-      color: inherit;
+      width: min(52vh, 480px);
+      height: min(52vh, 480px);
+      max-width: min(100%, 480px);
+      max-height: min(52vh, 480px);
+      aspect-ratio: 1 / 15;
+      margin: 0 auto;
+      object-fit: cover;
+      object-position: center center;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      flex: none;
+      align-self: center;
+      min-height: 0;
     }
-    .news-card .kicker {
-      font-size: 0.78rem;
+    .slide.title-slide .instructor-name {
+      margin: 0;
+      font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+      font-weight: 700;
+      color: #fff;
+      flex: none;
+    }
+
+    html:fullscreen .slide.active.title-slide,
+    html:-webkit-full-screen .slide.active.title-slide,
+    body.is-fullscreen-deck .slide.active.title-slide {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 1.4rem 2rem 1.6rem !important;
+      gap: 0 !important;
+      background: #000 !important;
+    }
+    html:fullscreen .slide.title-slide .title-cluster,
+    html:-webkit-full-screen .slide.title-slide .title-cluster,
+    body.is-fullscreen-deck .slide.title-slide .title-cluster {
+      gap: 0.55rem;
+      width: min(94vw, 1280px);
+      flex: none;
+      min-height: 0;
+      justify-content: center;
+    }
+    html:fullscreen .slide.title-slide h1,
+    html:-webkit-full-screen .slide.title-slide h1,
+    body.is-fullscreen-deck .slide.title-slide h1 {
+      font-size: clamp(3.8rem, 8.5vh, 6.5rem) !important;
+      margin: 0 !important;
+      flex: none !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+    html:fullscreen .slide.title-slide .title-hero,
+    html:-webkit-full-screen .slide.title-slide .title-hero,
+    body.is-fullscreen-deck .slide.title-slide .title-hero {
+      flex: none !important;
+      width: min(58vh, 520px) !important;
+      height: min(58vh, 520px) !important;
+      max-width: min(70vw, 520px) !important;
+      max-height: min(58vh, 520px) !important;
+      aspect-ratio: 1 / 1 !important;
+      margin: 0 auto !important;
+      object-fit: cover !important;
+      object-position: center center !important;
+      align-self: center !important;
+      min-height: 0 !important;
+    }
+    html:fullscreen .slide.title-slide .instructor-name,
+    html:-webkit-full-screen .slide.title-slide .instructor-name,
+    body.is-fullscreen-deck .slide.title-slide .instructor-name {
+      font-size: clamp(1.5rem, 3.2vh, 2.15rem) !important;
+      margin: 0 !important;
+      flex: none !important;
+    }
+
+    .hot-phrase {
+      color: var(--hot);
+      font-style: normal;
       font-weight: 800;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: #8a6a2a;
-      margin: 0 0 0.3rem;
     }
-    .news-card h2 {
-      margin: 0 0 0.4rem;
-      font-size: 1.22rem;
-      color: var(--yale-blue);
-      line-height: 1.25;
+
+    .skills-split-slide { flex-direction: column; }
+    .slide.skills-split-slide.active { display: flex; }
+    .skills-split-slide h1 { flex-shrink: 0; }
+    .skills-split {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1rem;
+      align-items: center;
+      flex: 1;
+      min-height: 0;
+      margin-top: 0.35rem;
+      width: 100%;
     }
-    .news-card p { margin: 0; font-size: 0.98rem !important; }
-    [data-theme="dark"] .news-card { background: #1a2433; border-color: #d4b57a; }
-    [data-theme="dark"] .news-card h2 { color: #fff; }
-    [data-theme="dark"] .news-card .kicker { color: #e8c37a; }
-    .compare-box.hot { border-color: var(--hot); border-width: 2px; }
-    .compare-box.cool { border-color: var(--yale-blue); border-width: 2px; }
-    .hw-grid {
+    .skills-split-copy ul {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+    .skills-split-copy li {
+      font-size: clamp(1.15rem, 2.45vw, 1.48rem) !important;
+      line-height: 1.35;
+    }
+    .skills-split-copy ul ul {
+      margin: 0.35rem 0 0.15rem;
+      padding-left: 1.15rem;
+      gap: 0.35rem;
+      list-style: disc;
+    }
+    .skills-split-copy ul ul li {
+      font-size: clamp(1.02rem, 2.15vw, 1.28rem) !important;
+      line-height: 1.32;
+    }
+    .skills-split-copy a.vibe-link {
+      font-size: inherit;
+      font-weight: inherit;
+      font-family: inherit;
+      line-height: inherit;
+      color: inherit;
+      text-decoration: underline;
+    }
+    .skills-split .square-shot {
+      width: min(100%, 380px);
+      height: auto;
+      aspect-ratio: 1 / 1;
+      max-height: min(54vh, 400px);
+      object-fit: cover;
+      border-radius: 12px;
+      margin: 0 auto;
+      display: block;
+    }
+    .skills-split .wide-shot {
+      width: min(100%, 420px);
+      height: auto;
+      max-height: min(42vh, 320px);
+      aspect-ratio: 16 / 9;
+      object-fit: contain;
+      border-radius: 12px;
+      margin: 0 auto;
+      display: block;
+      background: #fff;
+    }
+    .skills-split .app-shot {
+      width: min(100%, 572px);
+      height: auto;
+      max-height: min(65vh, 494px);
+      object-fit: contain;
+      border-radius: 12px;
+      margin: 0 auto;
+      display: block;
+      background: #111;
+    }
+    .skills-split .chat-shot {
+      width: min(100%, 320px);
+      height: auto;
+      max-height: min(62vh, 520px);
+      aspect-ratio: 720 / 900;
+      object-fit: contain;
+      border-radius: 12px;
+      margin: 0 auto;
+      display: block;
+      background: #f5f0f6;
+    }
+    .skills-split .logo-shot {
+      width: min(100%, 280px);
+      height: auto;
+      aspect-ratio: 1 / 1;
+      max-height: min(38vh, 280px);
+      object-fit: contain;
+      border-radius: 12px;
+      margin: 0 auto;
+      display: block;
+      background: #000;
+    }
+    .js-ts-compare {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+      min-height: 0;
+      align-self: stretch;
+    }
+    .js-ts-pane {
+      background: #0f1c33;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    [data-theme="dark"] .js-ts-pane { background: #0a1220; }
+    .js-ts-pane header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.4rem 0.7rem;
+      font-size: clamp(0.85rem, 1.6vw, 1rem);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+    .js-ts-pane.js header { background: #3d2e12; color: #ffc857; }
+    .js-ts-pane.ts header { background: #0d3a5c; color: #61dafb; }
+    .js-ts-pane pre {
+      margin: 0;
+      padding: 0.65rem 0.75rem 0.75rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: clamp(0.72rem, 1.45vw, 0.92rem);
+      line-height: 1.4;
+      color: #e8eef8;
+      white-space: pre;
+      overflow: auto;
+      flex: 1;
+    }
+    .js-ts-pane .note {
+      color: #ff8fab;
+      font-style: italic;
+    }
+    .js-ts-pane .ok {
+      color: #7dffa3;
+      font-style: italic;
+    }
+
+    .pipeline-slide { flex-direction: column; }
+    .slide.pipeline-slide.active { display: flex; }
+    .pipeline-slide h1 { flex-shrink: 0; margin-bottom: 0.25rem; }
+    .pipeline-slide > ul {
+      flex-shrink: 0;
+      margin: auto 0 0.55rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .pipeline-slide > ul > li {
+      font-size: clamp(1.25rem, 2.7vw, 1.55rem);
+      line-height: 1.32;
+    }
+    .pipeline-slide > ul ul {
+      margin: 0.3rem 0 0.1rem;
+      padding-left: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      list-style: disc;
+    }
+    .pipeline-slide > ul ul li {
+      font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+      line-height: 1.3;
+    }
+    .pipe-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+      gap: 0.5rem;
+      align-items: center;
+      justify-items: stretch;
+      flex: none;
+      min-height: 0;
+      width: 100%;
+      margin: 0 0 auto;
+      align-content: center;
+    }
+    .pipe-card {
+      background: linear-gradient(160deg, #001f3f, #00356b);
+      color: #fff;
+      border-radius: 14px;
+      padding: 0.95rem 0.8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.35rem;
+      width: 100%;
+      aspect-ratio: 5 / 4;
+      max-height: min(32vh, 250px);
+      box-sizing: border-box;
+      align-self: center;
+      min-height: 0;
+    }
+    .pipe-card.hot { background: linear-gradient(160deg, #5a2040, #ff4d6d); }
+    .pipe-card.teal { background: linear-gradient(160deg, #0a5c54, #00c2a8); }
+    .pipe-card.gold { background: linear-gradient(160deg, #6b4e12, #ffc857); color: #1a1200; }
+    .pipe-card h3 { margin: 0; font-size: clamp(1.2rem, 2.4vw, 1.55rem); font-weight: 800; }
+    .pipe-card p { margin: 0; font-size: clamp(1.05rem, 2.1vw, 1.35rem); opacity: 0.98; font-weight: 600; }
+    .pipe-card p.cmd {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: clamp(0.72rem, 1.35vw, 0.95rem);
+      font-weight: 600;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+    .pipe-arrow {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    [data-theme="dark"] .pipe-arrow { color: #e8eef8; }
+
+    .code-slide { flex-direction: column; }
+    .slide.code-slide.active { display: flex; }
+    .code-slide h1 { flex-shrink: 0; }
+    .code-slide ul {
+      margin: 0.35rem 0 0.65rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .code-slide .vibe-code-wrap { flex: 1; min-height: 0; margin: 0; }
+    .code-slide pre.vibe-code {
+      max-height: min(42vh, 360px);
+      font-size: clamp(0.85rem, 1.7vw, 1.05rem);
+    }
+
+    .scaffold-slide { flex-direction: column; }
+    .slide.scaffold-slide.active { display: flex; }
+    .scaffold-slide h1 { flex-shrink: 0; }
+    .scaffold-slide > ul {
+      flex-shrink: 0;
+      margin: 0.25rem 0 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .scaffold-slide > ul > li {
+      font-size: clamp(1.05rem, 2.2vw, 1.32rem);
+      line-height: 1.32;
+    }
+    .scaffold-slide > ul ul {
+      margin: 0.25rem 0 0;
+      padding-left: 1.1rem;
+      list-style: disc;
+    }
+    .scaffold-slide > ul ul li {
+      font-size: clamp(0.95rem, 1.9vw, 1.15rem);
+    }
+    .scaffold-row {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 0.85rem;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      align-items: stretch;
+    }
+    .scaffold-slide .vibe-code-wrap {
+      margin: 0;
+      align-self: start;
+      max-width: 100%;
+    }
+    .scaffold-slide pre.vibe-code {
+      max-height: min(28vh, 220px);
+      font-size: clamp(0.78rem, 1.5vw, 0.98rem);
+      margin: 0;
+    }
+    .scaffold-slide .scaffold-preview {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: min(48vh, 380px);
+      aspect-ratio: 9 / 7;
+      object-fit: contain;
+      border-radius: 12px;
+      background: #1a1a1a;
+      margin: 0;
+    }
+    @media (max-width: 820px) {
+      .scaffold-row { grid-template-columns: 1fr; }
+    }
+
+    .backend-layout-slide { flex-direction: column; }
+    .slide.backend-layout-slide.active { display: flex; }
+    .backend-layout-slide h1 { flex-shrink: 0; }
+    .backend-layout-slide > ul {
+      flex-shrink: 0;
+      margin: 0.25rem 0 0.55rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .backend-layout-slide > ul > li {
+      font-size: clamp(1.05rem, 2.2vw, 1.32rem);
+      line-height: 1.32;
+    }
+    .backend-layout-row {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 0.85rem;
+      flex: 0 0 auto;
+      width: 100%;
+      align-items: start;
+    }
+    .file-tree-card {
+      background: #0f1c33;
+      color: #e8eef8;
+      border-radius: 12px;
+      padding: 0.85rem 1rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: clamp(0.82rem, 1.55vw, 1.05rem);
+      line-height: 1.45;
+      white-space: pre;
+      overflow: auto;
+      margin: 0;
+      height: fit-content;
+    }
+    [data-theme="dark"] .file-tree-card { background: #0a1220; }
+    .backend-layout-slide .vibe-code-wrap {
+      margin: 0;
+      height: fit-content;
+    }
+    .backend-layout-slide pre.vibe-code {
+      max-height: none;
+      flex: none;
+      font-size: clamp(0.85rem, 1.6vw, 1.05rem);
+    }
+    @media (max-width: 820px) {
+      .backend-layout-row { grid-template-columns: 1fr; }
+    }
+
+    .components-slide { flex-direction: column; }
+    .slide.components-slide.active { display: flex; }
+    .components-slide h1 { flex-shrink: 0; margin-bottom: 0.2rem; }
+    .components-slide > ul {
+      flex-shrink: 0;
+      margin: 0 0 0.45rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .components-slide > ul > li {
+      font-size: clamp(1.05rem, 2.2vw, 1.32rem) !important;
+      line-height: 1.3;
+    }
+    .components-pair {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.55rem;
-      margin: 0.85rem 0;
+      gap: 0.75rem;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      align-items: stretch;
     }
-    .hw-grid div {
-      background: var(--yale-blue-pale);
-      border-left: 5px solid var(--gold);
+    .comp-card {
+      background: linear-gradient(160deg, #0b1628, #132338);
+      border-radius: 14px;
+      padding: 0.65rem 0.7rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      min-height: 0;
+      color: #e8eef8;
+    }
+    [data-theme="light"] .comp-card {
+      background: linear-gradient(160deg, #eef3fa, #e2ebf6);
+      color: #08111f;
+    }
+    .comp-card h3 {
+      margin: 0;
+      font-size: clamp(1.05rem, 2.1vw, 1.3rem);
+      color: #61dafb;
+    }
+    [data-theme="light"] .comp-card h3 { color: #0a6ea8; }
+    .comp-card .vibe-code-wrap {
+      margin: 0;
+      flex: 0 1 auto;
+      min-height: 0;
+    }
+    .comp-card pre.vibe-code {
+      margin: 0;
+      max-height: min(22vh, 200px);
+      font-size: clamp(0.62rem, 1.25vw, 0.82rem);
+      line-height: 1.35;
+      overflow: auto;
+    }
+    .comp-card .comp-shot {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: min(28vh, 240px);
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
       border-radius: 10px;
-      padding: 0.6rem 0.75rem;
-      font-size: 1.05rem;
-      font-weight: 600;
+      margin: 0 auto;
+      background: #0a0c10;
     }
-    [data-theme="dark"] .hw-grid div { background: #132a45; }
-    .slide table { font-size: 1.02rem; }
-    .flow-svg { width: 100%; height: auto; }
-    @media (max-width: 800px) { .hw-grid { grid-template-columns: 1fr; } }
+    .comp-card .comp-shot.form-shot {
+      aspect-ratio: 4 / 3;
+      max-height: min(26vh, 220px);
+      background: #f5f7fa;
+    }
+    @media (max-width: 820px) {
+      .components-pair { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 820px) {
+      .skills-split { grid-template-columns: 1fr; }
+      .pipe-row { grid-template-columns: 1fr; }
+      .pipe-arrow { display: none; }
+    }
   </style>
 </head>
 <body class="slide-deck-body">
@@ -130,206 +588,463 @@
     </ul>
     <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
   </nav>
+
   <header class="slide-deck-header">
     <a href="../../lectures.html">← Lectures</a>
-    <span>Lecture 7: Web Applications</span>    <div class="slide-deck-header-end">
+    <span>Lecture 7: Web Applications</span>
+    <div class="slide-deck-header-end">
       <button type="button" id="present" class="slide-present-btn" aria-pressed="false" aria-label="Start presentation" title="Start presentation">
         <svg class="present-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M12 16v2.5M8 21h8M10 18.5h4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
       </button>
-      <span class="slide-counter">1 / 14</span>
+      <span class="slide-counter">1 / 15</span>
     </div>
   </header>
+
   <div class="slide-viewport">
 
-      <section class="slide active title-slide" data-slide="1">
-        <p class="chip">Apps &amp; deployment · Lecture 7</p>
+    <section class="slide active title-slide" data-slide="1">
+      <div class="title-cluster">
         <h1>Web Applications</h1>
-        <p class="subtitle">MGT 409 · 40 min lecture + 40 min vibe · Homework 4</p>
-        <p>College Street Music Hall: a guest site, not a terminal demo.</p>
-        <p class="takeaway">Today is FastAPI + Vite + SQLite on your laptop. A public URL is Lecture 8.</p>
-      </section>
+        <img
+          class="title-hero"
+          src="../images/lec07/title-web-apps.jpg"
+          alt="Terminator at a dual-monitor web app desk"
+          width="1024"
+          height="1024"
+        >
+        <p class="instructor-name">Tauhid Zaman</p>
+      </div>
+    </section>
 
-      <section class="slide" data-slide="2">
-        <p class="instructor-banner">Instructor outline — remove before class.</p>
-        <h1>~40 minutes</h1>
-        <table class="pace">
-          <tr><th>Min</th><th>Beat</th></tr>
-          <tr><td>0–5</td><td>Cold open: guests do not run <code>python cs_agent.py</code></td></tr>
-          <tr><td>5–12</td><td>Lovable $13.3B — generating HTML is cheap; owning auth/data/session is the product</td></tr>
-          <tr><td>12–20</td><td>Stack: Vite :5173 → FastAPI :8000 → SQLite. CORS is the bouncer. Not a URL (L8)</td></tr>
-          <tr><td>20–26</td><td>Grounding: <code>SELECT</code> FAQ rows; one cite/refuse brain</td></tr>
-          <tr><td>26–34</td><td>Product: hashed login + chats that survive refresh</td></tr>
-          <tr><td>34–37</td><td>Screenshot / voice are extra cables — typed chat still has to work</td></tr>
-          <tr><td>37–40</td><td>HW4 map, failure modes, vibe handoff</td></tr>
-        </table>
-        <p class="takeaway">Then 40 min vibe: two processes + SQLite on localhost. Do not deploy today.</p>
-      </section>
+    <section class="slide skills-split-slide" data-slide="2">
+      <h1>Front End Vs Back End</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li><em class="hot-phrase">Front end</em> — what people see and click in the browser</li>
+            <li><em class="hot-phrase">Back end</em> — the server that holds logic and data</li>
+            <li>They talk over HTTP — the page sends a request, the server sends JSON back</li>
+            <li>Why split them?
+              <ul>
+                <li>Secrets and heavy work stay on the server — the browser is public</li>
+                <li>You can change the look without rewriting the server (and the other way around)</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec07/front-back-split.jpg"
+          alt="Browser frontend connected to an API backend"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
 
-      <section class="slide" data-slide="3">
-        <h1>Scripts shipped. Guests want a site.</h1>
-        <div class="two-col">
-          <div class="compare-box hot">
-            <h3><code>python cs_agent.py</code></h3>
-            <p>You, a TA, flags, JSON files. Fine for debugging.</p>
-            <p>Nobody at the merch table runs this.</p>
+    <section class="slide pipeline-slide" data-slide="3">
+      <h1>How A Web App Talks</h1>
+      <ul>
+        <li>User types in the front-end page</li>
+        <li>Browser calls a route on your back end
+          <ul>
+            <li>A <em class="hot-phrase">route</em> is a named URL path like <code>/api/chat</code> that runs one piece of server code</li>
+          </ul>
+        </li>
+        <li>Server runs the logic, data, and tools</li>
+        <li>JSON comes back and the UI updates</li>
+      </ul>
+      <div class="pipe-row" aria-label="Request response pipeline">
+        <div class="pipe-card">
+          <h3>1. Browser</h3>
+          <p>Front-end UI</p>
+        </div>
+        <div class="pipe-arrow" aria-hidden="true">→</div>
+        <div class="pipe-card teal">
+          <h3>2. HTTP</h3>
+          <p>Request</p>
+        </div>
+        <div class="pipe-arrow" aria-hidden="true">→</div>
+        <div class="pipe-card teal">
+          <h3>3. Back End</h3>
+          <p>Logic + data</p>
+        </div>
+        <div class="pipe-arrow" aria-hidden="true">→</div>
+        <div class="pipe-card">
+          <h3>4. JSON</h3>
+          <p>Reply on screen</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide skills-split-slide" data-slide="4">
+      <h1>JavaScript And Node.js</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>Modern polished front ends are built in <strong>JavaScript</strong> — it’s the language the browser already runs</li>
+            <li><strong>Node.js</strong> is the software that runs JavaScript on your laptop — like Python is the software that runs Python code</li>
+            <li><strong>Important JavaScript commands</strong> — <strong>npm</strong> means Node Package Manager; packages are listed in <code>package.json</code> (like Python’s <code>requirements.txt</code>)
+              <ul>
+                <li><code>npm install</code> — install all packages from <code>package.json</code> into <code>node_modules/</code></li>
+                <li><code>npm run dev</code> — run your app so you can open it in the browser</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec07/node-js-logo.jpg"
+          alt="Node.js logo with two simple JavaScript lines"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <section class="slide skills-split-slide" data-slide="5">
+      <h1>React</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li><strong>React</strong> is a JavaScript library for building interactive web UIs from reusable pieces called <em class="hot-phrase">components</em></li>
+            <li>Built at <strong>Facebook</strong> (now Meta) to power the Facebook UI</li>
+            <li>Called React because the page <strong>reacts</strong> when data changes — a new chat message shows up without reloading</li>
+            <li>You write React in <strong>JavaScript</strong> or <strong>TypeScript</strong></li>
+            <li>Popular for two main reasons
+              <ul>
+                <li><strong>Huge ecosystem</strong> — Facebook, Instagram, Netflix, Airbnb, and many apps you use daily</li>
+                <li><strong>Reusable components</strong> — a component is a UI piece you build once (a button, chat bubble, form, Labubu) and drop in anywhere</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec07/react-components.jpg"
+          alt="React UI components: buttons, chat bubbles, forms, and Labubu"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <section class="slide components-slide" data-slide="6">
+      <h1>React Components</h1>
+      <ul>
+        <li>A <em class="hot-phrase">component</em> is a function that returns a piece of UI — you call it like HTML: <code>&lt;SignupForm /&gt;</code></li>
+        <li><em class="hot-phrase">Props</em> (short for <strong>properties</strong>) are the inputs — change the props, change how it looks, without rewriting the design</li>
+      </ul>
+      <div class="components-pair">
+        <div class="comp-card">
+          <h3>Simple — a form</h3>
+          <div class="vibe-code-wrap" data-vibe-copy>
+            <div class="vibe-code-chrome">
+              <span class="vibe-code-label">SignupForm.jsx</span>
+              <button type="button" class="vibe-code-copy" aria-label="Copy SignupForm">Copy</button>
+            </div>
+            <pre class="vibe-code"><code>function SignupForm() {
+  return (
+    &lt;form&gt;
+      &lt;input placeholder=&quot;Name&quot; /&gt;
+      &lt;input placeholder=&quot;Email&quot; /&gt;
+      &lt;button&gt;Submit&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
           </div>
-          <div class="compare-box cool">
-            <h3>A page they can click</h3>
-            <p>Login, calendar, chat. SQLite keeps the thread.</p>
-            <p>This is what Homework 4 grades — still on localhost today.</p>
+          <img
+            class="comp-shot form-shot"
+            src="../images/lec07/simple-form-preview.jpg"
+            alt="Rendered signup form from the component"
+            width="640"
+            height="480"
+          >
+        </div>
+        <div class="comp-card">
+          <h3>Flexible — Labubu</h3>
+          <p style="margin:0;font-size:clamp(0.85rem,1.7vw,1.05rem);opacity:0.9;">Same SVG design; props change <code>fur</code>, <code>face</code>, <code>mood</code> (smile/eyes), <code>blush</code></p>
+          <div class="vibe-code-wrap" data-vibe-copy>
+            <div class="vibe-code-chrome">
+              <span class="vibe-code-label">using Labubu</span>
+              <button type="button" class="vibe-code-copy" aria-label="Copy Labubu usage">Copy</button>
+            </div>
+            <pre class="vibe-code"><code>&lt;Labubu
+  fur=&quot;#2f4a8a&quot;
+  face=&quot;#fbe9c9&quot;
+  mood=&quot;joy&quot;
+  blush={true}
+/&gt;</code></pre>
+          </div>
+          <img
+            class="comp-shot"
+            src="../images/lec07/labubu-component.jpg"
+            alt="Labubu React component with joy mood and blue fur"
+            width="768"
+            height="768"
+          >
+        </div>
+      </div>
+    </section>
+
+    <section class="slide skills-split-slide" data-slide="7">
+      <h1>JavaScript &amp; TypeScript</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li><strong>JavaScript (JS)</strong> — the language the browser runs for interactive pages</li>
+            <li><strong>TypeScript (TS)</strong> — JavaScript plus <em class="hot-phrase">types</em> (you label what a value should be: text, number, a user object, …)</li>
+            <li>Difference: JS lets almost anything through until it breaks in the browser; TS checks types while you write code and flags mismatches early</li>
+            <li>Why many developers prefer TS — fewer “undefined is not a function” surprises, clearer code for teammates, better editor autocomplete; the browser still gets plain JS after a build step</li>
+            <li>This course defaults to TypeScript with React for that safety net</li>
+          </ul>
+        </div>
+        <div class="js-ts-compare" aria-label="JavaScript versus TypeScript example">
+          <div class="js-ts-pane js">
+            <header><span>JavaScript</span><span>.js</span></header>
+            <pre>function greet(name) {
+  return "Hi " + name;
+}
+
+greet(42);
+<span class="note">// runs — then weird output later</span></pre>
+          </div>
+          <div class="js-ts-pane ts">
+            <header><span>TypeScript</span><span>.ts</span></header>
+            <pre>function greet(name: string) {
+  return "Hi " + name;
+}
+
+greet(42);
+<span class="ok">// error: number is not a string</span></pre>
           </div>
         </div>
-        <p class="takeaway">If a guest cannot click it, it is a lab notebook — not a product.</p>
-      </section>
+      </div>
+    </section>
 
-      <section class="slide" data-slide="4">
-        <h1>The market priced “English → running app”</h1>
-        <p class="chip gold">Aug 12, 2026</p>
-        <a class="news-card" href="https://techcrunch.com/2026/08/12/lovable-confirms-new-13-3b-valuation-raises-another-400m/" target="_blank" rel="noopener">
-          <p class="kicker">TechCrunch · Julie Bort</p>
-          <h2>Lovable confirms $13.3B valuation, raises another $400M</h2>
-          <p>$400M Series C (Menlo + EQT). They told the press a ~$500M ARR run-rate. The product is businesses that run on generated web apps — login, data, payments — not chat demos.</p>
-        </a>
-        <p class="source-note"><a href="https://techcrunch.com/2026/08/12/lovable-confirms-new-13-3b-valuation-raises-another-400m/" target="_blank" rel="noopener">TechCrunch</a> · <a href="https://lovable.dev/blog/series-c" target="_blank" rel="noopener">lovable.dev/blog/series-c</a></p>
-        <p class="takeaway">MBA translation: the scarce thing is no longer “can we generate a page.” It is “can we own auth, data, and the guest session.”</p>
-      </section>
+    <section class="slide skills-split-slide" data-slide="8">
+      <h1>Vite</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li><strong>Vite</strong> (French for <em class="hot-phrase">fast</em>) is the tool that runs and builds your front-end project</li>
+            <li>Different from React: React is the <strong>UI library</strong> (components on the page); Vite is the <strong>dev server + bundler</strong> that serves those files while you work</li>
+            <li>Developers like it because it starts quickly, refreshes the page almost instantly when you save, and turns TypeScript/React into JavaScript the browser can run</li>
+            <li>Common stack: <strong>React + Vite + TypeScript</strong></li>
+          </ul>
+        </div>
+        <img
+          class="wide-shot"
+          src="../images/lec07/react-vite-typescript.png"
+          alt="React plus Vite plus TypeScript logos"
+          width="1024"
+          height="576"
+        >
+      </div>
+    </section>
 
-      <section class="slide" data-slide="5">
-        <h1>You are not Lovable. You are the venue.</h1>
-        <ul>
-          <li>A prompt-to-app tool can fake a pretty UI in 90 seconds.</li>
-          <li>It will also invent an elevator to the balcony, store passwords in plaintext, and drop the chat on refresh.</li>
-          <li>HW4 is the opposite: <strong>FastAPI + React (Vite) + hashed login + SQLite threads</strong>, grounded in a closed FAQ.</li>
-        </ul>
-        <p class="takeaway">Buy a demo. Grade a repo. Managers who cannot tell the difference will ship the demo.</p>
-      </section>
-
-      <section class="slide" data-slide="6">
-        <h1>The stack, in one picture</h1>
-        <svg class="flow-svg" viewBox="0 0 980 250" aria-label="React talks to FastAPI, which talks to SQLite and the agent">
-          <defs>
-            <marker id="arr7" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#286dc0"/></marker>
-          </defs>
-          <rect class="box-light" x="20" y="70" width="220" height="110" rx="14" stroke-width="3"/>
-          <text x="130" y="116" text-anchor="middle" font-size="20" font-weight="800">React · Vite</text>
-          <text x="130" y="144" text-anchor="middle" font-size="14">port 5173 · UI</text>
-          <line class="arrow" x1="240" y1="125" x2="310" y2="125" stroke-width="3" marker-end="url(#arr7)"/>
-          <rect class="box-dark" x="320" y="55" width="250" height="140" rx="14" stroke-width="3"/>
-          <text class="on-dark" x="445" y="108" text-anchor="middle" font-size="20" font-weight="800">FastAPI</text>
-          <text class="on-dark" x="445" y="136" text-anchor="middle" font-size="14">/login /shows /chat</text>
-          <text class="on-dark" x="445" y="162" text-anchor="middle" font-size="14">port 8000 · API</text>
-          <line class="arrow" x1="570" y1="95" x2="640" y2="70" stroke-width="3" marker-end="url(#arr7)"/>
-          <line class="arrow" x1="570" y1="155" x2="640" y2="180" stroke-width="3" marker-end="url(#arr7)"/>
-          <rect class="box-light" x="650" y="25" width="300" height="90" rx="12" stroke-width="3"/>
-          <text x="800" y="62" text-anchor="middle" font-size="18" font-weight="800">SQLite</text>
-          <text x="800" y="88" text-anchor="middle" font-size="14">users · faq · chats</text>
-          <rect class="box-light" x="650" y="140" width="300" height="90" rx="12" stroke-width="3"/>
-          <text x="800" y="178" text-anchor="middle" font-size="18" font-weight="800">cite / refuse agent</text>
-          <text x="800" y="204" text-anchor="middle" font-size="14">no embeddings · keys stay here</text>
-        </svg>
-        <p class="joke">CORS is the bouncer between 5173 and 8000. Forget it and the browser fails — the model is not “broken.”</p>
-      </section>
-
-      <section class="slide" data-slide="7">
-        <h1>Two servers, one guest</h1>
-        <table>
-          <tr><th>Process</th><th>Job</th><th>Never put here</th></tr>
-          <tr><td><strong>Vite</strong></td><td>Buttons, brand, the box they type in</td><td>API keys, password hashes, the FAQ dump</td></tr>
-          <tr><td><strong>FastAPI</strong></td><td>Auth, SQL, agent</td><td>Hard-coded guest passwords in git</td></tr>
-          <tr><td><strong>SQLite</strong></td><td>The source of truth</td><td>A second copy of truth in random JSON</td></tr>
-        </table>
-        <p class="takeaway">React draws. FastAPI checks ID. The database is the guest list. Lecture 8 puts this at a URL — not today.</p>
-      </section>
-
-      <section class="slide" data-slide="8">
-        <h1>A venue FAQ is a SELECT, not a vector store</h1>
-        <ul>
-          <li>HW4 Problem 2: invent ≥4 categories, <code>SELECT</code> those rows, then answer.</li>
-          <li>Do <strong>not</strong> embed the FAQ. Do not stuff the whole policy into every prompt.</li>
-          <li>One customer-service brain. Conflicting agents on one venue policy start a turf war.</li>
-        </ul>
-        <p class="takeaway">If the bot invents lockers or an elevator, you stuffed the model instead of selected FAQ rows.</p>
-      </section>
-
-      <section class="slide" data-slide="9">
-        <h1>Passwords are not a prompt</h1>
-        <div class="two-col">
-          <div class="compare-box hot">
-            <h3>Fail</h3>
-            <p><code>password = "hunter2"</code> in JSON. Printed in the terminal. Logged in chat history.</p>
+    <section class="slide scaffold-slide" data-slide="9">
+      <h1>Scaffold A React Vite TS App</h1>
+      <ul>
+        <li><strong>1. Scaffold</strong> into a <code>frontend/</code> folder — use <code>npm create vite@latest</code></li>
+        <li><strong>2. Change into</strong> that folder: <code>cd frontend</code></li>
+        <li><strong>3. Install modules</strong>: <code>npm install</code> → fills <code>node_modules/</code></li>
+        <li><strong>4. Run the app</strong>: <code>npm run dev</code> → you get the default Vite + React starter screen</li>
+      </ul>
+      <div class="scaffold-row">
+        <div class="vibe-code-wrap" data-vibe-copy>
+          <div class="vibe-code-chrome">
+            <span class="vibe-code-label">terminal</span>
+            <button type="button" class="vibe-code-copy" aria-label="Copy scaffold commands">Copy</button>
           </div>
-          <div class="compare-box cool">
-            <h3>Pass</h3>
-            <p>Salt + hash in SQLite (PBKDF2 settings live in <code>meta</code>). Compare hashes. Never echo what they typed. Signup = new salt.</p>
+          <pre class="vibe-code"><code>npm create vite@latest frontend -- --template react-ts
+cd frontend
+npm install
+npm run dev</code></pre>
+        </div>
+        <img
+          class="scaffold-preview"
+          src="../images/lec07/vite-default-app.jpg"
+          alt="Default Vite plus React starter screen in the browser"
+          width="900"
+          height="700"
+        >
+      </div>
+    </section>
+
+
+    <section class="slide skills-split-slide" data-slide="10">
+      <h1>FastAPI Backend</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>We prefer <strong>Python</strong> for the back end — you already know it, and our agents (PydanticAI + Portkey) live there</li>
+            <li><strong>FastAPI</strong> is a Python package for building web APIs — routes like <code>/api/chat</code> that return JSON</li>
+            <li>Why it’s nice
+              <ul>
+                <li>Fast to write — little boilerplate for endpoints</li>
+                <li>Plays well with <strong>Pydantic</strong> types and PydanticAI agents</li>
+                <li>Auto docs at <code>/docs</code> — you can test the back end without a running front end</li>
+                <li>Perfect partner for a React front end that fetches JSON</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <img
+          class="logo-shot"
+          src="../images/lec07/fastapi-python.jpg"
+          alt="FastAPI logo next to the Python logo"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <section class="slide backend-layout-slide" data-slide="11">
+      <h1>Backend Layout &amp; Run</h1>
+      <ul>
+        <li>One project folder holds <code>frontend/</code> (React) and <code>backend/</code> (FastAPI + agent)</li>
+        <li><strong>Uvicorn</strong> is the server program that runs your FastAPI app and listens for HTTP requests (FastAPI is the code; Uvicorn is what keeps it online)</li>
+        <li>We run the back end from <code>main.py</code> — in <code>backend/</code>, <code>uvicorn main:app</code> means “load the <code>app</code> object inside <code>main.py</code>”</li>
+      </ul>
+      <div class="backend-layout-row">
+        <pre class="file-tree-card" aria-label="Example project file tree">Lecture7/
+  frontend/
+  backend/
+    main.py
+    agent.py
+    models.py
+    tools.py
+    prompts/
+      prompt.md</pre>
+        <div class="vibe-code-wrap" data-vibe-copy>
+          <div class="vibe-code-chrome">
+            <span class="vibe-code-label">terminal</span>
+            <button type="button" class="vibe-code-copy" aria-label="Copy uvicorn command">Copy</button>
           </div>
+          <pre class="vibe-code"><code>cd backend
+uvicorn main:app --port 8000</code></pre>
         </div>
-        <p class="takeaway">If the users table is plaintext, you do not have a web app. You have a leak with CSS.</p>
-      </section>
+      </div>
+    </section>
 
-      <section class="slide" data-slide="10">
-        <h1>Chats that survive a refresh</h1>
-        <ul>
-          <li><code>POST /chat</code> writes <strong>both</strong> sides of the turn into SQLite.</li>
-          <li><code>GET /chats</code> is that user’s threads only.</li>
-          <li>“New chat” starts a row. Old threads stay. That is the product.</li>
-        </ul>
-        <p class="takeaway">If the thread dies on refresh, you returned JSON and never <code>INSERT</code>ed.</p>
-      </section>
-
-      <section class="slide" data-slide="11">
-        <h1>Screenshot and voice are extra cables</h1>
-        <div class="stat-grid">
-          <div class="stat-box"><div class="num">Type</div><div class="label">Must work first. Graders start here.</div></div>
-          <div class="stat-box"><div class="num">Shot</div><div class="label">Capture the page they are staring at — not a webcam of the room</div></div>
-          <div class="stat-box"><div class="num">Mic</div><div class="label">STT → same agent → TTS. If typing is broken, the mic will not save you</div></div>
+    <section class="slide code-slide" data-slide="12">
+      <h1>API Routes &amp; <code>main.py</code></h1>
+      <ul>
+        <li><code>main.py</code> has the API routes for the back end</li>
+        <li>A <em class="hot-phrase">route</em> is one URL path + one function — FastAPI wires them with decorators like <code>@app.get</code> / <code>@app.post</code></li>
+        <li>Similar to how tools are created in PydanticAI — decorate a function, give it a job</li>
+      </ul>
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">backend/main.py (routes)</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy main.py routes">Copy</button>
         </div>
-        <p class="takeaway">HW4 P7–8. In vibe today these are stretch. The product is login + chat + a database.</p>
-      </section>
+        <pre class="vibe-code"><code>from fastapi import FastAPI
+from agent import run_agent
 
-      <section class="slide" data-slide="12">
-        <h1>Homework 4 is this lecture, unzipped</h1>
-        <div class="hw-grid">
-          <div>P2 · Categorize FAQ (no vectors)</div>
-          <div>P3 · Cite / refuse guest agent</div>
-          <div>P4 · Hash login + signup</div>
-          <div>P5 · FastAPI + saved chats</div>
-          <div>P6 · React Vite, venue CSS</div>
-          <div>P7–8 · Screenshot + voice</div>
+app = FastAPI()
+
+@app.get(&quot;/api/health&quot;)
+def health():
+    return {&quot;ok&quot;: True}
+
+@app.post(&quot;/api/chat&quot;)
+def chat(body: dict):
+    result = run_agent(body[&quot;message&quot;])
+    return {
+        &quot;reply&quot;: result[&quot;reply&quot;],
+        &quot;tools_used&quot;: result.get(&quot;tools_used&quot;, []),
+    }</code></pre>
+      </div>
+    </section>
+
+    <section class="slide pipeline-slide" data-slide="13">
+      <h1>Two Processes At Once</h1>
+      <ul>
+        <li>Our apps are <strong>front + back</strong> — two programs running at the same time</li>
+        <li>We run the <em class="hot-phrase">front</em> with Vite: <code>npm run dev</code> (browser UI)</li>
+        <li>We run the <em class="hot-phrase">back</em> with Uvicorn: <code>uvicorn main:app --port 8000</code> (API + agent)</li>
+        <li><em class="hot-phrase">CORS</em> (Cross-Origin Resource Sharing)
+          <ul>
+            <li>By default the browser <strong>blocks</strong> your React page (port 5173) from reading answers from the API (port 8000) — different origins</li>
+            <li>FastAPI CORS middleware <strong>allows</strong> it — the API response basically says “this front end is allowed to use me”</li>
+          </ul>
+        </li>
+      </ul>
+      <div class="pipe-row" aria-label="Two process layout">
+        <div class="pipe-card">
+          <h3>1. Front</h3>
+          <p class="cmd">cd frontend<br>npm run dev</p>
         </div>
-        <table>
-          <tr><th>Symptom</th><th>Actual problem</th></tr>
-          <tr><td>Browser “Failed to fetch”</td><td>CORS, wrong port, FastAPI not running</td></tr>
-          <tr><td>Bot invents lockers / refunds</td><td>You stuffed the model, not the selected FAQ rows</td></tr>
-          <tr><td>Login always fails</td><td>Wrong hash iterations, or you compared plaintext</td></tr>
-          <tr><td>Chats vanish</td><td>You returned JSON and forgot to <code>INSERT</code></td></tr>
-          <tr><td>API key in the React bundle</td><td>The key is now in every guest’s browser</td></tr>
-        </table>
-      </section>
+        <div class="pipe-arrow" aria-hidden="true">+</div>
+        <div class="pipe-card teal">
+          <h3>2. Back</h3>
+          <p class="cmd">cd backend<br>uvicorn main:app --port 8000</p>
+        </div>
+        <div class="pipe-arrow" aria-hidden="true">→</div>
+        <div class="pipe-card">
+          <h3>3. Front</h3>
+          <p>Browser UI</p>
+        </div>
+        <div class="pipe-arrow" aria-hidden="true">↔</div>
+        <div class="pipe-card teal">
+          <h3>4. Back</h3>
+          <p>API JSON</p>
+        </div>
+      </div>
+    </section>
 
-      <section class="slide section-slide" data-slide="13">
-        <h1>→ Vibe coding · 40 minutes</h1>
-        <p>Toy FastAPI + Vite + SQLite chat a classmate can click. Not the HW4 zip. Not a deploy.</p>
-        <p><a href="../vibe/lec07-vibe.html">Open the timed vibe prompts →</a></p>
-        <p class="source-note">Lecture 8 is the URL that is not <code>localhost</code>.</p>
-      </section>
 
-      <section class="slide" data-slide="14">
-        <h1>What to remember</h1>
-        <ul>
-          <li>A web app is <strong>UI + API + database</strong>, not a nicer print statement.</li>
-          <li>Hash passwords. Persist chats. Ground answers in <code>SELECT</code>ed rows.</li>
-          <li>Prompt-to-app tools make this cheaper to start — and easier to ship a demo that lies.</li>
-        </ul>
-        <p class="takeaway">Next: Lecture 8, Application Deployment — bind <code>0.0.0.0:$PORT</code>, hide secrets, smoke-test a URL.</p>
-      </section>
+    <section class="slide skills-split-slide" data-slide="14">
+      <h1>Full Stack Agent Chatbot App</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>Pretty chat front end — <strong>React + Vite + TypeScript</strong></li>
+            <li>Back end — <strong>FastAPI</strong> with a <strong>PydanticAI</strong> agent</li>
+            <li>Optional data sources — <code>data.json</code> or a database</li>
+          </ul>
+        </div>
+        <img
+          class="app-shot"
+          src="../images/lec07/fullstack-agent-chat.jpg"
+          alt="Campus Customs full stack agent chatbot with product page and chat"
+          width="1024"
+          height="844"
+        >
+      </div>
+    </section>
+
+    <section class="slide skills-split-slide" data-slide="15">
+      <h1>Build Full Stack Chat Agent</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>JSON data file</li>
+            <li>Web search tools</li>
+            <li>Make the chat window look pretty</li>
+            <li><a class="vibe-link" href="../vibe/lec07-vibe.html">Vibe coding session →</a></li>
+          </ul>
+        </div>
+        <img
+          class="chat-shot"
+          src="../images/lec07/cute-chat-window.jpg"
+          alt="Cute chat window with pink borders, robots, and customer conversation"
+          width="720"
+          height="900"
+        >
+      </div>
+    </section>
 
   </div>
-  <p class="slide-hint">Swipe or use buttons to advance � projector icon for presentation</p>
+  <p class="slide-hint">Swipe or use buttons to advance · projector icon for presentation</p>
   <footer class="slide-deck-footer">
     <button type="button" id="prev" aria-label="Previous slide">← Previous</button>
     <button type="button" id="next" aria-label="Next slide">Next →</button>
   </footer>
-  <script src="../../js/slides.js?v=7"></script>
+  <script src="../../js/slides.js?v=9"></script>
   <script src="../../js/theme.js"></script>
+  <script src="../../js/vibe-copy.js"></script>
 </body>
 </html>
