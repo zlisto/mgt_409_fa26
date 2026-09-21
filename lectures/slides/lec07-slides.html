@@ -395,6 +395,8 @@
     .scaffold-slide > ul {
       flex-shrink: 0;
       margin: 0.25rem 0 0.5rem;
+      padding-left: 0;
+      list-style: none;
       display: flex;
       flex-direction: column;
       gap: 0.35rem;
@@ -402,6 +404,7 @@
     .scaffold-slide > ul > li {
       font-size: clamp(1.05rem, 2.2vw, 1.32rem);
       line-height: 1.32;
+      list-style: none;
     }
     .scaffold-slide > ul ul {
       margin: 0.25rem 0 0;
@@ -539,31 +542,40 @@
     [data-theme="light"] .comp-card h3 { color: #0a6ea8; }
     .comp-card .vibe-code-wrap {
       margin: 0;
-      flex: 0 1 auto;
+      flex: 1 1 auto;
       min-height: 0;
+      display: flex;
+      flex-direction: column;
     }
     .comp-card pre.vibe-code {
       margin: 0;
-      max-height: min(22vh, 200px);
-      font-size: clamp(0.62rem, 1.25vw, 0.82rem);
+      flex: 1 1 auto;
+      min-height: 11rem;
+      max-height: none;
+      font-size: clamp(0.68rem, 1.35vw, 0.88rem);
       line-height: 1.35;
       overflow: auto;
+    }
+    .comp-card pre.vibe-code.labubu-code {
+      overflow-y: scroll;
+      max-height: min(40vh, 360px);
     }
     .comp-card .comp-shot {
       display: block;
       width: auto;
       height: auto;
       max-width: 100%;
-      max-height: min(28vh, 240px);
+      max-height: min(14vh, 120px);
       aspect-ratio: 1 / 1;
       object-fit: contain;
       border-radius: 10px;
       margin: 0 auto;
+      flex-shrink: 0;
       background: #0a0c10;
     }
     .comp-card .comp-shot.form-shot {
       aspect-ratio: 4 / 3;
-      max-height: min(26vh, 220px);
+      max-height: min(12vh, 100px);
       background: #f5f7fa;
     }
     @media (max-width: 820px) {
@@ -710,7 +722,6 @@
             <li><strong>React</strong> is a JavaScript library for building interactive web UIs from reusable pieces called <em class="hot-phrase">components</em></li>
             <li>Built at <strong>Facebook</strong> (now Meta) to power the Facebook UI</li>
             <li>Called React because the page <strong>reacts</strong> when data changes — a new chat message shows up without reloading</li>
-            <li>You write React in <strong>JavaScript</strong> or <strong>TypeScript</strong></li>
             <li>Popular for two main reasons
               <ul>
                 <li><strong>Huge ecosystem</strong> — Facebook, Instagram, Netflix, Airbnb, and many apps you use daily</li>
@@ -766,15 +777,31 @@
           <p style="margin:0;font-size:clamp(0.85rem,1.7vw,1.05rem);opacity:0.9;">Same SVG design; props change <code>fur</code>, <code>face</code>, <code>mood</code> (smile/eyes), <code>blush</code></p>
           <div class="vibe-code-wrap" data-vibe-copy>
             <div class="vibe-code-chrome">
-              <span class="vibe-code-label">using Labubu</span>
-              <button type="button" class="vibe-code-copy" aria-label="Copy Labubu usage">Copy</button>
+              <span class="vibe-code-label">Labubu.jsx</span>
+              <button type="button" class="vibe-code-copy" aria-label="Copy Labubu component">Copy</button>
             </div>
-            <pre class="vibe-code"><code>&lt;Labubu
-  fur=&quot;#2f4a8a&quot;
-  face=&quot;#fbe9c9&quot;
-  mood=&quot;joy&quot;
-  blush={true}
-/&gt;</code></pre>
+            <pre class="vibe-code labubu-code"><code>&lt;Labubu fur=&quot;#2f4a8a&quot; face=&quot;#fbe9c9&quot; mood=&quot;joy&quot; blush={true} /&gt;
+
+function Labubu({
+  fur = &quot;#e8778d&quot;,
+  face = &quot;#fbe9c9&quot;,
+  mood = &quot;classic&quot;,
+  blush,
+}) {
+  const preset = MOODS[mood] ?? MOODS.classic;
+  const blushColor = blush ?? preset.blush;
+
+  return (
+    &lt;svg viewBox=&quot;0 0 272 490&quot; role=&quot;img&quot;&gt;
+      &lt;Ear fur={fur} inner={face} /&gt;
+      &lt;path d={BODY} fill={fur} /&gt;
+      &lt;path d={FACE} fill={face} /&gt;
+      {blushColor &amp;&amp; &lt;Blush color={blushColor} /&gt;}
+      &lt;Eyes style={preset.eyes} /&gt;
+      &lt;Mouth style={preset.mouth} /&gt;
+    &lt;/svg&gt;
+  );
+}</code></pre>
           </div>
           <img
             class="comp-shot"

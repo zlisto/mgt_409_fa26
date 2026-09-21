@@ -163,9 +163,13 @@
       <audio id="tts-audio" preload="none"></audio>
 
       <h2>Software Details</h2>
-      <p>You will make a  <code>frontend</code> and <code>backend</code> folder for this project.  Your front end is React + Vite + TypeScript.
-      Your backend is FastAPI (Python).</p>
-      <p>Copy this into your backend folder as <code>requirements.txt</code>:</p>
+      <p>
+        In your Lecture 7 folder, make a <code>backend</code> folder and put a Python
+        virtual environment inside it (from that folder: <code>python -m venv .venv</code>,
+        then activate it). The backend is FastAPI. The front end is React + Vite + TypeScript,
+        in a <code>frontend</code> folder you’ll scaffold next.
+      </p>
+      <p>Copy this into the backend folder as <code>requirements.txt</code>, then install it in that venv with <code>pip install -r requirements.txt</code>:</p>
 
       <div class="vibe-code-wrap" data-vibe-copy>
         <div class="vibe-code-chrome">
@@ -180,9 +184,9 @@ httpx&gt;=0.27.0</code></pre>
       </div>
 
       <p>
-        In your Lecture 7 folder, make a Python venv, install those requirements, and
-        unzip <code>data.zip</code> so you have <code>data/yale_som_classes.json</code>.
-        Then scaffold the frontend with Vite (React + TypeScript):
+        Then scaffold the front end. These three commands make a <code>frontend</code> folder,
+        scaffold a React + Vite + TypeScript app inside it, and download packages into
+        <code>frontend/node_modules/</code>:
       </p>
       <div class="vibe-code-wrap" data-vibe-copy>
         <div class="vibe-code-chrome">
@@ -194,9 +198,7 @@ cd frontend
 npm install</code></pre>
       </div>
       <p>
-        That creates a <code>frontend/</code> app and downloads packages into
-        <code>node_modules/</code>. Put the FastAPI shell below in
-        <code>backend/main.py</code> (create the <code>backend/</code> folder if needed).
+        Put the FastAPI shell below in <code>backend/main.py</code>.
       </p>
 
       <div class="vibe-code-wrap" data-vibe-copy>
@@ -329,8 +331,16 @@ Agent behavior
 - Model gpt-5.6-luna + PORTKEY_API_KEY
 - Package: pydantic-ai-slim[openai]
 
-Structured types (models.py)
-- AgentResult with fields: reply (str), tools_used (list[str])
+Data objects (make backend/models.py)
+- Pydantic models the agent and tools use
+- Course: fields that match a row in yale_som_classes.json (title, number, faculty, day/time, description, faculty_bio, …)
+- AgentResult: reply (str), tools_used (list[str])
+- Use these types in tools.py and agent.py — do not leave models.py empty
+
+Audit trail
+- Append each agent loop to output/audit_trail.json (project root, next to backend/ and frontend/)
+- One entry per run: time, user message, thoughts, each tool name + args + short result, and why it stopped
+- Do not wipe earlier rows
 
 File tree
 Lecture7/
@@ -354,6 +364,8 @@ Lecture7/
       main.tsx
       api.ts
       components/   (optional: CourseCard, ChatPanel, …)
+  output/
+    audit_trail.json
 
 .env reminder
 May also live one level up. Never commit a real key. Ship .env.example only.
