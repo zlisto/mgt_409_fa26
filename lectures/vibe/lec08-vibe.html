@@ -8,67 +8,49 @@
   <link rel="stylesheet" href="../../css/vibe-session.css">
   <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
   <style>
-    .vibe-header h1 { font-size: 2rem; }
-    .vibe-goal {
-      background: linear-gradient(90deg, #f3e8ff, #e8fff8);
-      border-left-color: #7c4dff;
+    .vibe-hero {
+      display: block;
+      width: 100%;
+      max-width: 640px;
+      max-height: 240px;
+      height: auto;
+      margin: 0 auto 1.25rem;
+      object-fit: contain;
+      object-position: center;
     }
-    .joke-banner {
-      margin: 0.75rem 0 1.25rem;
-      padding: 0.85rem 1.1rem;
-      border-radius: 12px;
-      background: linear-gradient(90deg, #ff2d95, #7c4dff 55%, #00d4c8);
-      color: #fff;
-      font-weight: 800;
-      font-size: 1.12rem;
-      line-height: 1.35;
-    }
-    .vibe-clock {
-      margin: 1rem 0 1.25rem;
-      padding: 0.85rem 1.05rem;
-      border-radius: 12px;
-      background: var(--yale-blue-pale);
-      border: 1px solid var(--border, #c5d4e4);
-    }
-    .vibe-clock strong { color: var(--yale-blue); }
-    .vibe-clock ol {
-      margin: 0.45rem 0 0;
-      padding-left: 1.3rem;
-    }
-    .vibe-clock li { margin: 0.2rem 0; }
-    .vibe-mins {
-      display: inline-block;
-      background: #7c4dff;
-      color: #fff;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 0.12rem 0.5rem;
+    .assignment-box h2 { text-align: center; }
+    .assignment-box p,
+    .assignment-box ul,
+    .assignment-box li { text-align: left; }
+    .tts-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.4rem;
+      height: 2.4rem;
+      padding: 0;
+      border: none;
       border-radius: 999px;
-      margin-left: 0.35rem;
-      vertical-align: middle;
+      background: #111;
+      color: #ff2d95;
+      cursor: pointer;
+      flex-shrink: 0;
     }
-    .arch-mini {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.4rem;
-      margin: 1rem 0 1.25rem;
+    .tts-btn:hover {
+      background: #000;
+      color: #ff6bb5;
     }
-    .arch-mini div {
-      color: #fff;
-      font-weight: 800;
-      text-align: center;
-      padding: 0.65rem 0.35rem;
-      border-radius: 10px;
-      font-size: 0.88rem;
+    .tts-btn[aria-pressed="true"] {
+      box-shadow: 0 0 0 2px #ff2d95;
     }
-    .arch-mini .a { background: #ff2d95; }
-    .arch-mini .b { background: #7c4dff; }
-    .arch-mini .c { background: #00a3a1; }
-    .arch-mini .d { background: #f5a623; color: #1a2e42; }
-    @media (max-width: 640px) {
-      .arch-mini { grid-template-columns: 1fr 1fr; }
+    .tts-btn svg {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+    .tts-end {
+      display: flex;
+      justify-content: flex-end;
+      margin: 0.35rem 0 1.15rem;
     }
   </style>
 </head>
@@ -84,67 +66,141 @@
     <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
   </nav>
   <main class="vibe-main">
+    <img
+      class="vibe-hero"
+      src="../images/lec08/vibe-deploy-robot.jpg"
+      alt="Robot launching a chatbot website online"
+      width="1024"
+      height="1024"
+    >
     <div class="vibe-header">
       <h1>Lecture 8: Application Deployment</h1>
       <p class="meta">
         <a href="../slides/lec08-slides.html">← Slides</a>
         <a href="../../lectures.html">All lectures</a>
-        · 40 minutes in class
+        · In-class vibe coding
       </p>
     </div>
-    <div class="vibe-goal"><strong>In-class goal:</strong> Stand up a deploy-ready FastAPI stub (health check, <code>PORT</code>, CORS, env hygiene, smoke test, ephemeral-disk note) — the harness Homework 4’s College Street Music Hall app will sit in. Do not complete HW4 in this session.</div>
-    <p class="joke-banner">If it only runs on your laptop, it is a secret show. Today we print tickets (a URL) and hire a bouncer (CORS).</p>
-    <div class="vibe-clock">
-      <strong>40-minute clock</strong>
-      <ol>
-        <li>0–2 · Folder (optional zip or <code>lec08_deploy/</code>)</li>
-        <li>2–10 · Health + bind <code>0.0.0.0:$PORT</code></li>
-        <li>10–18 · CORS + echo</li>
-        <li>18–26 · Env hygiene</li>
-        <li>26–36 · Deploy notes, smoke test, ephemeral disk</li>
-        <li>36–40 · <code>AI_prompts.md</code></li>
-      </ol>
-    </div>
-    <div class="arch-mini" aria-hidden="true">
-      <div class="a">Guest UI</div>
-      <div class="b">Vite origin</div>
-      <div class="c">FastAPI</div>
-      <div class="d">/health</div>
-    </div>
-    <p class="vibe-download"><strong>Starter (optional):</strong> <a href="../../data/lec08/lec08_starter.zip">lec08_starter.zip</a> — or create a fresh folder <code>lec08_deploy/</code> in class.</p>
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 1</span> Health check that a host can ping <span class="vibe-mins">2–10 min</span></h2>
-      <p>Create a tiny FastAPI app that will survive Render’s “bind all interfaces, use our port” rule.</p>
-      <pre class="prompt">Create lec08_deploy/server.py as a FastAPI app. Add GET /health that returns JSON {"ok": true}. Read PORT from the environment (default 8000) and document running with: uvicorn server:app --host 0.0.0.0 --port $PORT. Add requirements.txt with fastapi and uvicorn. Add a README note: local homework uses 127.0.0.1:8000; production must use 0.0.0.0 and PORT.</pre>
-      <div class="vibe-check"><strong>Check:</strong> <code>uvicorn server:app --host 127.0.0.1 --port 8000</code> then <code>curl http://127.0.0.1:8000/health</code> returns <code>{"ok":true}</code>.</div>
-    </div>
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 2</span> CORS bouncer + echo route <span class="vibe-mins">10–18 min</span></h2>
-      <p>The Vite guest app (port 5173) is a different origin from FastAPI. Allow only that origin plus a placeholder production URL.</p>
-      <pre class="prompt">Enable CORS on the FastAPI app. Allow origins http://localhost:5173 and http://127.0.0.1:5173. Add POST /echo that accepts JSON {"text": "..."} and returns {"reply": "got it: ...", "channel": "web"}. Do not call OpenAI in this step. Explain in a README sentence why a random website should not be able to hit /echo.</pre>
-      <div class="vibe-check"><strong>Check:</strong> POST /echo with <code>{"text":"bag policy?"}</code> returns JSON. A request from a disallowed origin is blocked (browser CORS error or preflight fail).</div>
-    </div>
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 3</span> Secrets stay out of git <span class="vibe-mins">18–26 min</span></h2>
-      <p>Practice the hygiene HW4 needs when the real agent starts calling the model.</p>
-      <pre class="prompt">Add .env.example with OPENAI_API_KEY=sk-placeholder and VITE_API_URL=http://127.0.0.1:8000. Add .gitignore that ignores .env and __pycache__. Load dotenv in server.py but do not print the key. README: where local vs Render dashboard secrets live, and "if you paste a real key into chat or git, rotate it."</pre>
-      <div class="vibe-check"><strong>Check:</strong> <code>.env</code> is gitignored. <code>.env.example</code> has no real key. <code>git check-ignore -v .env</code> (or equivalent) confirms ignore.</div>
-    </div>
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 4</span> Deploy notes + smoke test + disk <span class="vibe-mins">26–36 min</span></h2>
-      <p>Write the production recipe even if you do not click Deploy yet. Name the ephemeral-disk trap.</p>
-      <pre class="prompt">Add render.yaml OR a README Deploy section: Python web service, buildCommand pip install -r requirements.txt, startCommand uvicorn server:app --host 0.0.0.0 --port $PORT, health path /health, env OPENAI_API_KEY sync: false. Write smoke_test.py that GETs /health and POSTs /echo and prints PASS/FAIL. Document ephemeral disks: a local SQLite file will vanish on free-tier restart — relevant to csmh.db in Homework 4.</pre>
-      <div class="vibe-check"><strong>Check:</strong> <code>python smoke_test.py</code> against the running local server prints PASS for health and echo. README names the start command with <code>0.0.0.0</code> and <code>$PORT</code>, and says a SQLite file on a free host does not survive restart.</div>
-      <p class="vibe-extend"><strong>Stretch (if you finish early):</strong> Deploy this stub to Render, paste the HTTPS /health URL in the README, and ping it once from your phone (not campus Wi-Fi only).</p>
-    </div>
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 5</span> AI_prompts.md <span class="vibe-mins">36–40 min</span></h2>
-      <p>Log what you actually typed — same habit as homework.</p>
-      <pre class="prompt">Add a Lecture 8 section to AI_prompts.md summarizing the four prompts above in your own words (health/bind, CORS+echo, env hygiene, deploy notes + smoke test + ephemeral disk). One sentence on what the first prompt missed if you needed a follow-up.</pre>
-      <div class="vibe-check"><strong>Check:</strong> AI_prompts.md has Lecture 8 with at least four prompt summaries in your own words.</div>
+
+    <div class="assignment-box">
+      <h2>Scenario</h2>
+      <p>
+        Open the <strong>Yale SOM course explorer</strong> you built in Lecture 7.
+        Today we’re updating that same app: swap the JSON file for a real database,
+        add user login, save each person’s chat history, and put the whole thing
+        online so someone else can open a URL and use it.
+      </p>
+      <p>
+        Download <a href="../data/lec08/data.zip">data.zip</a> and unzip next to your
+        project so you get <code>data/yale_som.db</code>. It already has a
+        <code>courses</code> table with the SOM course catalog (same info that used
+        to live in the JSON). You’ll add <code>users</code> and <code>chats</code>
+        tables as you build.
+      </p>
+      <div class="tts-end">
+        <button
+          type="button"
+          class="tts-btn"
+          data-tts="../audio/lec08/scenario.mp3?v=silence1"
+          aria-pressed="false"
+          aria-label="Play scenario reading"
+          title="Play scenario"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+        </button>
+      </div>
+
+      <h2>Task</h2>
+      <p>
+        Keep the React + FastAPI + PydanticAI shape you already have. The catalog
+        grid can still show courses — just load them from the database. The chat
+        agent’s course search tool should query the <code>courses</code> table
+        instead of reading the JSON file. Add a login / create-account screen in
+        front of the app. After someone signs in, their chat messages get saved
+        so they can come back to them. When it works on your laptop, push the
+        code to GitHub, move the database to Supabase, and deploy on Render.
+      </p>
+      <div class="tts-end">
+        <button
+          type="button"
+          class="tts-btn"
+          data-tts="../audio/lec08/task.mp3?v=silence1"
+          aria-pressed="false"
+          aria-label="Play task reading"
+          title="Play task"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+        </button>
+      </div>
+      <audio id="tts-audio" preload="none"></audio>
+
+      <h2>Software Details</h2>
+      <p>Work through these pieces with your vibe coder:</p>
+      <ul>
+        <li>Add <code>users</code> and <code>chats</code> tables to the database (keep the existing <code>courses</code> table)</li>
+        <li>Redo the class search tool so it searches the <code>courses</code> table instead of the JSON</li>
+        <li>Store passwords with <strong>bcrypt</strong> (salt is baked into the hash string)</li>
+        <li>Push the project to a GitHub repo</li>
+        <li>Put the database on <strong>Supabase</strong> and point the app at it with the connection string</li>
+        <li>Deploy on <strong>Render</strong> — one Web Service (backend) and one Static Site (frontend); deploy the backend first so you have its URL for the frontend</li>
+        <li>In Render’s environment variables, set <code>PORTKEY_API_KEY</code> and your Supabase connection string (never put those in the repo)</li>
+      </ul>
     </div>
   </main>
+  <script>
+    (() => {
+      const audio = document.getElementById("tts-audio");
+      const buttons = [...document.querySelectorAll(".tts-btn[data-tts]")];
+      if (!audio || !buttons.length) return;
+
+      let activeBtn = null;
+
+      function setPressed(btn, on) {
+        buttons.forEach((b) => b.setAttribute("aria-pressed", "false"));
+        if (btn) btn.setAttribute("aria-pressed", on ? "true" : "false");
+      }
+
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const src = btn.getAttribute("data-tts");
+          if (!src) return;
+
+          if (activeBtn === btn && !audio.paused) {
+            audio.pause();
+            setPressed(null, false);
+            activeBtn = null;
+            return;
+          }
+
+          if (audio.getAttribute("src") !== src) {
+            audio.setAttribute("src", src);
+            audio.load();
+          }
+          activeBtn = btn;
+          setPressed(btn, true);
+          audio.play().catch(() => {
+            setPressed(null, false);
+            activeBtn = null;
+          });
+        });
+      });
+
+      audio.addEventListener("ended", () => {
+        setPressed(null, false);
+        activeBtn = null;
+      });
+      audio.addEventListener("pause", () => {
+        if (!audio.ended && audio.paused && activeBtn) {
+          setPressed(null, false);
+        }
+      });
+    })();
+  </script>
   <script src="../../js/theme.js"></script>
-  <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
+  <script src="../../js/vibe-copy.js"></script>
 </body>
 </html>
