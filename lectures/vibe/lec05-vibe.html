@@ -163,79 +163,15 @@ PySide6-Addons==6.11.2</code></pre>
       </div>
 
       <p>
-        One desktop app holds a <strong>real browser</strong> and a <strong>Dash chat</strong> side by side.
-        <code>desktop.py</code> builds that window (starter below). When you run <code>python app.py</code>, it calls
-        <code>desktop.run_desktop()</code>, which starts the Dash chat on
-        <code>http://127.0.0.1:8050</code> in the background, then opens a native splitter window —
-        browser on the left, chat on the right (the right pane loads that localhost URL).
-        In class you build the <strong>PydanticAI</strong> agent in <code>agent.py</code> and its system prompt
-        in <code>prompts/prompt.md</code>, including a screenshot tool that uses the <code>mss</code> package
-        (via <code>screen_tools.py</code>). Copy the card below into your vibe coder so it wires those pieces correctly.
-      </p>
-
-      <div class="vibe-code-wrap" data-vibe-copy>
-        <div class="vibe-code-chrome">
-          <span class="vibe-code-label">How the app works (for your AI)</span>
-          <button type="button" class="vibe-code-copy" aria-label="Copy architecture notes">Copy</button>
-        </div>
-        <pre class="vibe-code vibe-prompt"><code>We're building an immersive browser agent in this folder.
-
-How it runs
-- Command: python app.py
-- app.py defines the Dash chat UI, then calls desktop.run_desktop()
-- desktop.py starts Dash on http://127.0.0.1:8050 in a background thread
-- desktop.py opens one native window (PySide6 / Qt WebEngine) with a horizontal splitter:
-  - LEFT: real Chromium browser (URL bar, any website or PDF)
-  - RIGHT: QWebEngineView pointed at http://127.0.0.1:8050 (the Dash chat)
-- Window title is "Browser agent" (keep that string — screen capture finds the window by title)
-- The chat uses a PydanticAI agent in agent.py. When the user sends a message, Dash calls run_agent(user_text)
-- agent.py includes a look_at_screen tool. When the question needs what's on screen, the agent calls that tool. screen_tools.py takes the screenshot with the mss package (plus Pillow). Keep the screenshot image in the agent message history so later turns can use it
-- prompts/prompt.md is the system prompt the agent loads (behavior / when to look — not the Python return shape)
-- output/audit_log.json can log each agent turn (optional)
-
-What app.py expects from agent.py
-- Define: def run_agent(user_text: str) -> dict
-- PydanticAI agent output_type should be str (plain text reply the user reads in chat)
-- run_agent must return a dict shaped like:
-  {
-    "text": "&lt;assistant reply string&gt;",
-    "tool_events": [{"name": "Look at screen"}],   # list; use [] if no tools this turn
-    "last_shot": {                                  # or None if no new screenshot
-      "captured_at": "&lt;iso timestamp&gt;",
-      "region": "window"                            # or "full"
-    }
-  }
-- app.py shows result["text"] in the chat, lists tool_events under the reply, and updates the "Last look" line from last_shot
-
-File tree for this project
-Lecture 5/
-  app.py                 # STARTER on the course page — Dash chat shell
-  desktop.py             # STARTER on the course page — browser left + chat right
-  agent.py               # BUILD in class — PydanticAI agent + look_at_screen + run_agent()
-  screen_tools.py        # BUILD with the agent — screenshot helper (mss + Pillow); required for the vision tool
-  audit_log.py           # Optional: append turns to output/audit_log.json
-  prompts/
-    prompt.md            # BUILD in class — agent system prompt
-  output/
-    audit_log.json       # Created at runtime if you log turns
-  requirements.txt
-  .venv/
-
-Keep PORTKEY_API_KEY in a .env at the class-folder root (parent of Lecture 5). Use model gpt-5.6-luna.</code></pre>
-      </div>
-
-      <p>
         Next, grab the two starters below — <code>app.py</code> and <code>desktop.py</code> — and put them in your
-        Lecture 5 folder. In class you’ll vibe-code <code>agent.py</code> and <code>prompts/prompt.md</code>,
-        plus <code>screen_tools.py</code> so <code>look_at_screen</code> works. Style the Dash UI yourself once
-        the window runs.
+        Lecture 5 folder. That saves class time so we can vibe-code the agent.
       </p>
       <p>
-        Here’s the lean <code>app.py</code> chat shell — plain layout on purpose. Run with
+        Here's the lean <code>app.py</code> chat shell — plain layout on purpose. Run with
         <code>python app.py</code> (<code>debug=False</code>, <code>use_reloader=False</code>).
       </p>
 
-      <div class="vibe-code-wrap" data-vibe-copy>
+<div class="vibe-code-wrap" data-vibe-copy>
         <div class="vibe-code-chrome">
           <span class="vibe-code-label">app.py</span>
           <button type="button" class="vibe-code-copy" aria-label="Copy app.py">Copy</button>
@@ -458,13 +394,13 @@ if __name__ == &quot;__main__&quot;:
         <a href="snippets/dash_chat_shell_lec05.py" download="app.py"><code>app.py</code></a>
       </p>
 
+      
       <p>
-        And here’s <code>desktop.py</code> — the native window with a real browser on the left and the
-        Dash chat on the right. Paste it as-is so you can focus class time on <code>agent.py</code> and
-        <code>prompts/prompt.md</code>.
+        And here's <code>desktop.py</code> — the native window with a real browser on the left and the
+        Dash chat on the right. Paste it as-is.
       </p>
 
-      <div class="vibe-code-wrap" data-vibe-copy>
+<div class="vibe-code-wrap" data-vibe-copy>
         <div class="vibe-code-chrome">
           <span class="vibe-code-label">desktop.py</span>
           <button type="button" class="vibe-code-copy" aria-label="Copy desktop.py">Copy</button>
@@ -656,7 +592,75 @@ def run_desktop() -&gt; None:
         <a href="snippets/desktop_lec05.py" download="desktop.py"><code>desktop.py</code></a>
       </p>
 
+      
       <p>
+        Now vibe-code <code>agent.py</code> and <code>prompts/prompt.md</code>, plus <code>screen_tools.py</code>
+        so <code>look_at_screen</code> works. Style the Dash UI yourself once the window runs.
+      </p>
+
+      <p>
+        With the starters in place, paste the card below into your vibe coder. One desktop app holds a
+        <strong>real browser</strong> and a <strong>Dash chat</strong> side by side. When you run
+        <code>python app.py</code>, it calls <code>desktop.run_desktop()</code>, which starts the Dash chat on
+        <code>http://127.0.0.1:8050</code> in the background, then opens a native splitter window —
+        browser on the left, chat on the right. In class you build the <strong>PydanticAI</strong> agent in
+        <code>agent.py</code> and its system prompt in <code>prompts/prompt.md</code>, including a screenshot
+        tool that uses the <code>mss</code> package (via <code>screen_tools.py</code>).
+      </p>
+
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">How the app works (for your AI)</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy architecture notes">Copy</button>
+        </div>
+        <pre class="vibe-code vibe-prompt"><code>We're building an immersive browser agent in this folder.
+
+How it runs
+- Command: python app.py
+- app.py defines the Dash chat UI, then calls desktop.run_desktop()
+- desktop.py starts Dash on http://127.0.0.1:8050 in a background thread
+- desktop.py opens one native window (PySide6 / Qt WebEngine) with a horizontal splitter:
+  - LEFT: real Chromium browser (URL bar, any website or PDF)
+  - RIGHT: QWebEngineView pointed at http://127.0.0.1:8050 (the Dash chat)
+- Window title is "Browser agent" (keep that string — screen capture finds the window by title)
+- The chat uses a PydanticAI agent in agent.py. When the user sends a message, Dash calls run_agent(user_text)
+- agent.py includes a look_at_screen tool. When the question needs what's on screen, the agent calls that tool. screen_tools.py takes the screenshot with the mss package (plus Pillow). Keep the screenshot image in the agent message history so later turns can use it
+- prompts/prompt.md is the system prompt the agent loads (behavior / when to look — not the Python return shape)
+- output/audit_log.json can log each agent turn (optional)
+
+What app.py expects from agent.py
+- Define: def run_agent(user_text: str) -> dict
+- PydanticAI agent output_type should be str (plain text reply the user reads in chat)
+- run_agent must return a dict shaped like:
+  {
+    "text": "&lt;assistant reply string&gt;",
+    "tool_events": [{"name": "Look at screen"}],   # list; use [] if no tools this turn
+    "last_shot": {                                  # or None if no new screenshot
+      "captured_at": "&lt;iso timestamp&gt;",
+      "region": "window"                            # or "full"
+    }
+  }
+- app.py shows result["text"] in the chat, lists tool_events under the reply, and updates the "Last look" line from last_shot
+
+File tree for this project
+Lecture 5/
+  app.py                 # STARTER on the course page — Dash chat shell
+  desktop.py             # STARTER on the course page — browser left + chat right
+  agent.py               # BUILD in class — PydanticAI agent + look_at_screen + run_agent()
+  screen_tools.py        # BUILD with the agent — screenshot helper (mss + Pillow); required for the vision tool
+  audit_log.py           # Optional: append turns to output/audit_log.json
+  prompts/
+    prompt.md            # BUILD in class — agent system prompt
+  output/
+    audit_log.json       # Created at runtime if you log turns
+  requirements.txt
+  .venv/
+
+Keep PORTKEY_API_KEY in a .env at the class-folder root (parent of Lecture 5). Use model gpt-5.6-luna.</code></pre>
+      </div>
+
+      
+<p>
         <strong>Mac — Screen Recording:</strong> the first time the agent screenshots, macOS may block capture
         until you allow <strong>Screen Recording</strong> for Terminal, Cursor, or Python
         (System Settings → Privacy &amp; Security → Screen Recording). Turn it on, then restart the app.
