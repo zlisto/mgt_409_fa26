@@ -141,9 +141,20 @@ tools_used should show an MCP catalogue tool, and the answer should match yale_s
 
       <p>
         <strong>Connect this MCP to your vibe coder</strong> (so you can ask catalogue
-        questions in chat, not only through the React app). Edit the
+        questions in chat, not only through the React app). First set up a Python
+        <code>venv</code> inside <code>mcp/</code> so the vibe coder can launch the
+        server with <code>fastmcp</code> installed:
+      </p>
+      <pre class="terminal">cd mcp
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt</pre>
+      <p>
+        What this is doing: creates a virtual environment in <code>mcp/</code>,
+        turns it on, and installs the MCP packages. Then edit the
         <code>mcpServers</code> part of the config and point
-        <code>args</code> at the full path to <code>mcp_server.py</code> on your machine.
+        <code>command</code> at that venv’s Python and <code>args</code> at
+        <code>mcp_server.py</code>.
       </p>
       <p>
         <strong>This project only</strong> — add or update a config file in the project
