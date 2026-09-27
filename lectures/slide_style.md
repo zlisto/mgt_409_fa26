@@ -26,6 +26,12 @@ Student-facing slide copy should **name the thing**, not define it by attacking 
 
 ---
 
+## Numbered lists
+
+When steps are numbered, use `<ol>` (or `list-style: decimal`) and show **numbers only**. Do **not** combine disc bullets with manual `1.` / `2.` labels.
+
+---
+
 ## Responsive figures (the cursor-founder pattern)
 
 **Goal:** Photos, screenshots, PNG charts, and diagrams should grow on larger viewports and fill available space in full-screen mode — same behavior as the **Cursor Founder** slide.

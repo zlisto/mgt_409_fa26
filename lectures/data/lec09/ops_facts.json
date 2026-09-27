@@ -1,0 +1,14 @@
+{
+  "desk": "Campus Customs Dispatch",
+  "rules": [
+    "Prefer in-stock SKUs",
+    "Never invent inventory counts",
+    "Escalate OOS to vendor lead_days"
+  ],
+  "sample_skus": [
+    "CC-HOOD-NAVY",
+    "CC-TEE-WHITE",
+    "CC-HAT-BLUE",
+    "CC-MUG-CREST"
+  ]
+}

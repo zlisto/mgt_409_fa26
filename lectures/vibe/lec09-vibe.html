@@ -8,50 +8,21 @@
   <link rel="stylesheet" href="../../css/vibe-session.css">
   <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
   <style>
-    .vibe-header h1 {
-      background: linear-gradient(90deg, #e11d48, #d97706, #7c3aed);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      font-size: 2rem;
-    }
-    .vibe-goal {
-      background: linear-gradient(90deg, #fff3d6, #ffe4f1);
-      border-left-color: #f43f5e;
-    }
-    .vibe-step .step-num { background: #e11d48; }
-    .vibe-joke {
-      margin: 0.75rem 0;
-      padding: 0.7rem 0.95rem;
-      background: #111827;
-      color: #fde68a;
-      border-radius: 10px;
-      font-weight: 600;
-    }
-    .vibe-clock {
-      margin: 0.85rem 0 0;
-      padding: 0.85rem 1rem;
-      background: #111827;
-      color: #fff;
+    .vibe-hero {
+      display: block;
+      width: 100%;
+      max-width: 640px;
+      max-height: 240px;
+      height: auto;
+      margin: 0 auto 1.25rem;
+      object-fit: contain;
+      object-position: center;
       border-radius: 12px;
     }
-    .vibe-clock h2 {
-      margin: 0 0 0.45rem;
-      font-size: 0.95rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #fde68a;
-    }
-    .vibe-clock ol { margin: 0; padding-left: 1.2rem; }
-    .vibe-clock li { margin: 0.25rem 0; font-size: 0.95rem; }
-    .step-time {
-      display: inline-block;
-      margin-left: 0.35rem;
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: #d97706;
-      letter-spacing: 0.02em;
-    }
+    .assignment-box h2 { text-align: center; }
+    .assignment-box p,
+    .assignment-box ul,
+    .assignment-box li { text-align: left; }
   </style>
 </head>
 <body>
@@ -66,72 +37,186 @@
     <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
   </nav>
   <main class="vibe-main">
+    <img
+      class="vibe-hero"
+      src="../images/lec09/robot-course-mcp.jpg"
+      alt="Robot at a desk with a Yale course catalogue and an MCP server"
+      width="1024"
+      height="1024"
+    >
     <div class="vibe-header">
       <h1>Lecture 9: MCP Servers</h1>
       <p class="meta">
         <a href="../slides/lec09-slides.html">← Slides</a>
         <a href="../../lectures.html">All lectures</a>
-        · 40 minutes in class
+        · In-class vibe coding
       </p>
     </div>
-    <div class="vibe-goal"><strong>In-class goal:</strong> Leave with a tiny MCP-style server that implements <code>list_tools()</code> and <code>call_tool()</code> over local JSON — the same contract Homework 5 uses for Peabody, without completing HW5. If time allows, one Python script that <em>imports</em> those two verbs. Do not build the Lecture 10 orchestrator.</div>
-    <p class="vibe-joke">Do <strong>not</strong> download the Peabody zip for this session. If your vibe coder starts writing <code>get_exhibit_info</code>, you accidentally started homework. Stop. Come back to scoops.</p>
 
-    <div class="vibe-clock">
-      <h2>40-minute clock</h2>
-      <ol>
-        <li><strong>0–8</strong> — Toy JSON + manifest (two tools, no LLM)</li>
-        <li><strong>8–22</strong> — <code>list_tools</code> + <code>call_tool</code> + honest error</li>
-        <li><strong>22–30</strong> — Catalog + one real sample per tool</li>
-        <li><strong>30–37</strong> — Tiny asker that <em>imports</em> the plug (not an orchestrator)</li>
-        <li><strong>37–40</strong> — <code>AI_prompts.md</code></li>
-      </ol>
-    </div>
+    <div class="assignment-box">
+      <h2>Scenario</h2>
+      <p>
+        Today we put MCP into practice. First you’ll connect your vibe coder to a useful
+        MCP server and test it out.
+        Then you’ll build an MCP server for the <strong>Yale SOM course catalogue</strong> app.  
+        Your server will have tools that read the real course database so the agent can answer questions
+        about the classes.  Oh, and the agent can either be the chatbot in the app or your vibe coder itself.
+      </p>
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 1</span> Toy shop JSON <span class="step-time">0–8 min</span></h2>
-      <p>Make two fake desks so the server has something honest to read. No OpenAI key yet.</p>
-      <pre class="prompt">Create lec09_mcp/ with tools/hours.json and tools/flavors.json for a fictional New Haven shop called Elm City Scoops. hours.json: weekly hours (closed Monday), address. flavors.json: at least 4 scoops with name, has_nuts, seasonal. Add mcp_manifest.json with two tools: get_hours (optional day) and get_flavors (optional query). README says this is a lecture toy, not Homework 5.</pre>
-      <div class="vibe-check"><strong>Check:</strong> Three JSON files exist; manifest tool names match the two files.</div>
-    </div>
+      <h2>Task</h2>
+      <p>
+        You will clone the repo for the Yale SOM course catalogue app from last time, but
+        now the chatbot uses an MCP server for its tools.  You will need to write the MCP server file.
+        After that, you can test the server by either running the app and asking the chatbot questions about the courses, or connect the server to your vibe coder (either just for this project or for all projects) and ask it the same questions.
+      </p>
+  
+      <h2>Software Details</h2>
+      <p>
+        Clone the following repo:
+        <a href="https://github.com/zlisto/yale_som_courses_mcp" target="_blank" rel="noopener noreferrer">https://github.com/zlisto/yale_som_courses_mcp</a>
+      </p>
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">Clone starter</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy git clone command">Copy</button>
+        </div>
+        <pre class="vibe-code" style="text-align: left;"><code>git clone https://github.com/zlisto/yale_som_courses_mcp.git</code></pre>
+      </div>
+      <p>
+        Have your vibe coder install the backend and front end packages.
+      </p>
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 2</span> list_tools + call_tool <span class="step-time">8–22 min</span></h2>
-      <p>USB-C is two verbs. Implement both. Unknown names must fail loudly. This is the whole lecture in code.</p>
-      <pre class="prompt">Create mcp_server.py that loads mcp_manifest.json and the files under tools/. Implement list_tools() returning name, description, input_schema for each tool. Implement call_tool(name, arguments) that reads the matching JSON (filter by day or query if provided). Unknown tool names return an error object {error, tool} — never invent flavors. CLI: python mcp_server.py --data-dir lec09_mcp --out-dir output. No OpenAI key needed for this step.</pre>
-      <div class="vibe-check"><strong>Check:</strong> Calling a fake tool name returns an error object. Calling get_hours returns hours from the file, not from memory.</div>
-    </div>
+      <p>
+        The starter already includes <code>mcp_server.py</code> at the project root,
+        but it only has a placeholder tool (<code>yo</code>). In class you’ll add real
+        catalogue tools that read <code>data/yale_som.db</code>.
+      </p>
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 3</span> Write the catalog and samples <span class="step-time">22–30 min</span></h2>
-      <p>Prove the plug works before any LLM shows up. Same shape as HW5 Problem 3.</p>
-      <pre class="prompt">When mcp_server.py runs, write output/tool_catalog.json from list_tools(). Also write output/tool_sample_hours.json and output/tool_sample_flavors.json, each with keys tool, arguments, result from a real call_tool. Include one extra output/tool_sample_unknown.json showing the error path.</pre>
-      <div class="vibe-check"><strong>Check:</strong> Four JSON files in output/. Catalog has exactly two tools. Unknown sample has an error key.</div>
-    </div>
+      <p>Then give your vibe coder this prompt:</p>
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 4</span> Tiny asker that uses the plug <span class="step-time">30–37 min</span></h2>
-      <p>One LLM call path is enough. Import the two verbs. Do <strong>not</strong> build a multi-tool loop, traces, or “refuse when tools disagree” — that is Lecture 10 / HW5 P4–P5.</p>
-      <pre class="prompt">Create ask_scoops.py that loads OPENAI_API_KEY from .env, imports list_tools and call_tool from mcp_server.py (do not copy the tool bodies), and answers one user question by: (1) listing tools, (2) calling one or two tools, (3) writing output/scoops_answer.json with query, answer, tool_trace. Prompt file prompts/scoops.md: only use tool results; if tools don't cover it, say you don't know. Example query: "Are you open Tuesday, and do you have a nut-free scoop?"</pre>
-      <div class="vibe-check"><strong>Check:</strong> scoops_answer.json has a tool_trace with real tool names from the manifest. Answer mentions a fact that appears in the JSON files. If the API call is slow, skip to Step 5 and finish later.</div>
-    </div>
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">How the app works (for your AI)</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy agent prompt">Copy</button>
+        </div>
+        <pre class="vibe-code vibe-prompt"><code>You already cloned https://github.com/zlisto/yale_som_courses_mcp.git into this folder.
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 5</span> AI_prompts.md <span class="step-time">37–40 min</span></h2>
-      <p>Course habit: log what you actually typed.</p>
-      <pre class="prompt">Add a Lecture 9 section to AI_prompts.md with the prompts above in your own words, plus one sentence on what broke after the first try if anything did.</pre>
-      <div class="vibe-check"><strong>Check:</strong> AI_prompts.md has Lecture 9 with at least four prompt summaries, not a paste of this page.</div>
-    </div>
+mcp_server.py is at the project root. It is a FastMCP server named yale-som-courses with one placeholder tool yo() that returns "yo". Keep that file — add catalogue tools to it. Do not invent courses, times, rooms, or faculty.
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Stretch</span> FastMCP or a third tool <span class="step-time">if you finish</span></h2>
-      <p>Optional. Homework 5 still accepts a local dispatcher. Do not start Peabody.</p>
-      <pre class="prompt">Either (A) add get_allergen_policy as a third tool with tools/allergens.json and update the manifest, or (B) wrap the same list_tools/call_tool contract with FastMCP and note the extra dependency in README. Do not start the Peabody assignment in this folder.</pre>
-      <div class="vibe-check"><strong>Check:</strong> Third tool or FastMCP path still returns errors for unknown names.</div>
-      <p class="vibe-extend"><strong>Stretch:</strong> Draw a 4-box HTML diagram (user → ask_scoops.py → mcp_server.py → JSON files) saved as output/pipeline.html. Preview of HW5 Problem 7, not a substitute.</p>
+Stack / keys
+- Model: gpt-5.6-luna via Portkey
+- PORTKEY_API_KEY=... in a .env (python-dotenv); may be in this folder OR the parent — load both
+- Packages: fastapi, uvicorn, pydantic-ai-slim[openai,mcp], fastmcp, python-dotenv, httpx
+
+Goal
+Add real MCP tools on mcp_server.py that read ONLY data/yale_som.db (SQLite table courses). The chat agent already attaches this server with MCPToolset — once the tools exist, the chatbot (or your vibe coder, if you connect the MCP) can answer catalogue questions from the database.
+
+Tools to add (examples — implement these three)
+1) search_courses(query: str, limit: int = 10) -&gt; dict
+   Keyword search across course_number, course_title, faculty_1, course_category, course_description. Return matching rows (number, title, faculty, day_time, room, short description, …). Cap results.
+2) get_course(course_number: str, section: str = "") -&gt; dict
+   Look up one course by number (e.g. "MGT 409"); optional section filter.
+3) list_courses_by_faculty(name: str, limit: int = 15) -&gt; dict
+   Courses where faculty_1 matches the name substring.
+
+Database rules
+- Path: data/yale_som.db (create/copy from Lecture 8 data.zip if missing)
+- Use sqlite3. Never invent rows — if nothing matches, say so in the tool return.
+- You can keep a small yo() tool or remove it after the real tools work.
+
+How to run / test
+1) Backend: cd backend → uvicorn main:app --port 8000
+2) Frontend: cd frontend → npm run dev → http://127.0.0.1:5173
+3) Ask the chat: “What does MGT 409 cover?” or “courses taught by Zaman”
+4) Optional: python mcp_server.py (stdio) or python mcp_server.py --http on 8001 and connect that MCP to your vibe coder
+
+Smoke check
+tools_used should show an MCP catalogue tool, and the answer should match yale_som.db.</code></pre>
+      </div>
+
+      <p>
+        <strong>Connect this MCP to your vibe coder</strong> (so you can ask catalogue
+        questions in chat, not only through the React app). Edit the
+        <code>mcpServers</code> part of the config and point
+        <code>args</code> at the full path to <code>mcp_server.py</code> on your machine.
+      </p>
+      <p>
+        <strong>This project only</strong> — add or update a config file in the project
+        folder:
+      </p>
+      <ul>
+        <li>Cursor: <code>.cursor/mcp.json</code></li>
+        <li>Claude Code: <code>.mcp.json</code></li>
+      </ul>
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">MCP config (project)</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy project MCP config">Copy</button>
+        </div>
+        <pre class="vibe-code"><code>{
+  "mcpServers": {
+    "yale-som-courses": {
+      "command": "python",
+      "args": [
+        "C:/Users/you/yale_som_courses_mcp/mcp_server.py"
+      ]
+    }
+  }
+}</code></pre>
+      </div>
+      <p>
+        Replace that path with <em>your</em> path to <code>mcp_server.py</code>.
+        Restart the vibe coder (or reload MCP) after you save.
+      </p>
+      <p>
+        <strong>All projects</strong> — same JSON, but in your vibe coder’s
+        <em>user / global</em> MCP config (the deep one that applies everywhere),
+        then merge it into the existing <code>mcpServers</code> object if other
+        servers are already listed:
+      </p>
+      <ul>
+        <li>Cursor: <code>~/.cursor/mcp.json</code> (Windows:
+          <code>C:\Users\you\.cursor\mcp.json</code>)</li>
+        <li>Claude Code: user MCP settings (often <code>~/.claude.json</code>)</li>
+      </ul>
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">MCP config (global — merge into mcpServers)</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy global MCP config snippet">Copy</button>
+        </div>
+        <pre class="vibe-code"><code>"yale-som-courses": {
+  "command": "python",
+  "args": [
+    "C:/Users/you/yale_som_courses_mcp/mcp_server.py"
+  ]
+}</code></pre>
+      </div>
+
+      <p>
+        <strong>Ports:</strong> FastAPI uses <code>8000</code>, Vite uses
+        <code>5173</code>, and optional MCP HTTP uses <code>8001</code>.
+        If a port is stuck on Windows:
+      </p>
+      <pre class="terminal">netstat -ano | findstr :8000
+taskkill /PID &lt;pid&gt; /F
+
+netstat -ano | findstr :5173
+taskkill /PID &lt;pid&gt; /F
+
+netstat -ano | findstr :8001
+taskkill /PID &lt;pid&gt; /F</pre>
+      <p>
+        What this is doing: finds whatever is holding each port and force-kills
+        that process so you can restart the backend, front end, or MCP server
+        cleanly.
+      </p>
+      <p>
+        In-process <code>MCPToolset</code> needs no extra MCP port — FastAPI
+        loads the tools when the agent runs. Prefer that for class.
+      </p>
     </div>
   </main>
   <script src="../../js/theme.js"></script>
-  <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
+  <script src="../../js/vibe-copy.js"></script>
 </body>
 </html>

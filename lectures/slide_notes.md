@@ -1,8 +1,8 @@
-# Slide notes — Lecture 1
+# Slide notes
 
-Instructor timing / pacing notes for `website/lectures/slides/lec01-slides.html`.
+Instructor timing / pacing notes for lecture slide decks in `website/lectures/slides/`.
 
-Update this file as you rehearse. Clock times assume start at **0:00**. Target block ~**80 min** (lecture + vibe lab).
+Update this file as you rehearse. Clock times assume start at **0:00**. Target block ~**80 min** (lecture + vibe lab) unless noted.
 
 ---
 
@@ -65,3 +65,37 @@ Lecture 2 - Extract data from unstructured text documents with vibe coding.
 20 minutes lecture (rest of time we vibe code)
 
 For htis lecture, I need to teach them about Python, packages, API keys and .env files, OpenAI API, ways to get data out of a PDF file (text extract, images and screenshots which i cover next week lecture 3), how to prompt Codex for python based tasks.  file types like .json, .py, .md, .env.  requirments.txt, README.md.  talk abot structure of json files, curly brackets, fields, show an example or 2.  termnal, running python code, dash apps, app frameworks.
+
+---
+
+## Lecture 9: MCP Servers
+
+Deck: `website/lectures/slides/lec09-slides.html`.
+
+| Checkpoint | Time (minutes) | Elapsed | Notes |
+| --- | --- | --- | --- |
+| Reach **MCP In Python** (through **MCP: Connect Or Build**) | **15** | **~15 min** | What MCP is, origins, agent + servers, request flow, examples, connect vs build — then start the Python / code block |
+| Rest of lecture + vibe | — | — | Expose / Tools Vs MCP / Claude Connectors / Outlook overview + steps 1–5 / Today → vibe lab |
+
+### Slide map (for reference)
+
+| # | Title |
+| --- | --- |
+| 1 | Title — MCP Servers |
+| 2 | What Is MCP? |
+| 3 | MCP Origins |
+| 4 | Agents and MCP Servers |
+| 5 | MCP Request Flow |
+| 6 | MCP Examples |
+| 7 | MCP: Connect Or Build ← ~0:15 — start **MCP In Python** next |
+| 8 | MCP In Python |
+| 9 | What An MCP Server Can Expose |
+| 10 | Tools Vs MCP |
+| 11 | Claude Code Connectors |
+| 12 | Building Your Own Outlook MCP Server (overview) |
+| 13 | 1. Create An Azure App |
+| 14 | 2. Put The Client ID In `.env` |
+| 15 | 3. Write `mcp_outlook_server.py` |
+| 16 | 4. Run Once, Login, Save Tokens |
+| 17 | 5. Add MCP Server To Claude Code |
+| 18 | Using and Building MCP Servers → vibe |
