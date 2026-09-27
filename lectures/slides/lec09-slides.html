@@ -1341,14 +1341,14 @@ def list_courses_by_faculty(name: str) -&gt; dict:
             <li><a href="https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade" target="_blank" rel="noopener noreferrer">Register an app</a> in Azure (click <strong>+New registration</strong>)</li>
             <li><strong>API permissions</strong> → <strong>Add a permission</strong> → <strong>Microsoft APIs</strong> → <strong>Microsoft Graph</strong>(it will be big icon at top of page)</li>
             <li>Pick <strong>Delegated permissions</strong></li>
-            <li>Check <code>User.Read</code>, <code>Mail.Read</code>, <code>Mail.Send</code></li>
+            <li>Check <code>User.Read</code> and <code>Mail.Send</code> (Yale SOM IT only allows these now)</li>
             <li>Click <strong>Add permissions</strong></li>
           </ul>
         </div>
         <img
           class="outlook-step-shot"
           src="../images/lec09/azure-mail-scopes.png"
-          alt="Azure Mail delegated scopes: Mail.Read, Mail.Send, and related permissions"
+          alt="Azure Mail delegated scopes: User.Read and Mail.Send"
           width="679"
           height="481"
         >
