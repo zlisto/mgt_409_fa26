@@ -87,9 +87,12 @@
       </p>
 
       <p>
-        The starter already includes <code>mcp_server.py</code> at the project root,
-        but it only has a placeholder tool (<code>yo</code>). In class you’ll add real
-        catalogue tools that read <code>data/yale_som.db</code>.
+        The starter already includes <code>mcp/mcp_server.py</code> (its own folder +
+        <code>requirements.txt</code>), but it only has a placeholder tool (<code>yo</code>).
+        In class you’ll add real catalogue tools that read <code>data/yale_som.db</code>.
+        The web app imports that MCP in-process — you don’t run a second MCP terminal
+        for the chatbot. For your vibe coder, make a venv inside <code>mcp/</code> and
+        point the MCP config at that Python + <code>mcp_server.py</code>.
       </p>
 
       <p>Then give your vibe coder this prompt:</p>
@@ -101,15 +104,16 @@
         </div>
         <pre class="vibe-code vibe-prompt"><code>You already cloned https://github.com/zlisto/yale_som_courses_mcp.git into this folder.
 
-mcp_server.py is at the project root. It is a FastMCP server named yale-som-courses with one placeholder tool yo() that returns "yo". Keep that file — add catalogue tools to it. Do not invent courses, times, rooms, or faculty.
+mcp/mcp_server.py is a FastMCP server named yale-som-courses with a placeholder tool yo() that returns "yo". Keep that file — add catalogue tools to it. Do not invent courses, times, rooms, or faculty.
 
 Stack / keys
 - Model: gpt-5.6-luna via Portkey
 - PORTKEY_API_KEY=... in a .env (python-dotenv); may be in this folder OR the parent — load both
-- Packages: fastapi, uvicorn, pydantic-ai-slim[openai,mcp], fastmcp, python-dotenv, httpx
+- Backend packages: fastapi, uvicorn, pydantic-ai-slim[openai,mcp], fastmcp, python-dotenv, httpx (backend/requirements.txt)
+- MCP packages: fastmcp (mcp/requirements.txt) — make mcp/.venv for vibe-coder stdio
 
 Goal
-Add real MCP tools on mcp_server.py that read ONLY data/yale_som.db (SQLite table courses). The chat agent already attaches this server with MCPToolset — once the tools exist, the chatbot (or your vibe coder, if you connect the MCP) can answer catalogue questions from the database.
+Add real MCP tools on mcp/mcp_server.py that read ONLY data/yale_som.db (SQLite table courses). The chat agent already attaches this server with MCPToolset in-process — you do NOT need to run mcp_server.py in a second terminal for the web app. Once the tools exist, the chatbot (or your vibe coder, if you connect the MCP) can answer catalogue questions from the database.
 
 Tools to add (examples — implement these three)
 1) search_courses(query: str, limit: int = 10) -&gt; dict
@@ -120,15 +124,16 @@ Tools to add (examples — implement these three)
    Courses where faculty_1 matches the name substring.
 
 Database rules
-- Path: data/yale_som.db (create/copy from Lecture 8 data.zip if missing)
+- Path: data/yale_som.db relative to the project root (create/copy from Lecture 8 data.zip if missing)
+- In mcp_server.py, DB path should be ROOT / "data" / "yale_som.db" (parent of the mcp/ folder)
 - Use sqlite3. Never invent rows — if nothing matches, say so in the tool return.
 - You can keep a small yo() tool or remove it after the real tools work.
 
 How to run / test
-1) Backend: cd backend → uvicorn main:app --port 8000
+1) Backend: cd backend → uvicorn main:app --port 8000  (imports mcp/ — no separate MCP process)
 2) Frontend: cd frontend → npm run dev → http://127.0.0.1:5173
 3) Ask the chat: “What does MGT 409 cover?” or “courses taught by Zaman”
-4) Optional: python mcp_server.py (stdio) or python mcp_server.py --http on 8001 and connect that MCP to your vibe coder
+4) Optional vibe-coder connect: cd mcp → venv + pip install -r requirements.txt; point MCP config at mcp/.venv Python and mcp/mcp_server.py
 
 Smoke check
 tools_used should show an MCP catalogue tool, and the answer should match yale_som.db.</code></pre>
@@ -156,17 +161,18 @@ tools_used should show an MCP catalogue tool, and the answer should match yale_s
         <pre class="vibe-code"><code>{
   "mcpServers": {
     "yale-som-courses": {
-      "command": "python",
+      "command": "C:/Users/you/yale_som_courses_mcp/mcp/.venv/Scripts/python.exe",
       "args": [
-        "C:/Users/you/yale_som_courses_mcp/mcp_server.py"
+        "C:/Users/you/yale_som_courses_mcp/mcp/mcp_server.py"
       ]
     }
   }
 }</code></pre>
       </div>
       <p>
-        Replace that path with <em>your</em> path to <code>mcp_server.py</code>.
-        Restart the vibe coder (or reload MCP) after you save.
+        Use <em>your</em> paths. Prefer the <code>mcp/.venv</code> Python so
+        <code>fastmcp</code> is installed. Restart the vibe coder (or reload MCP)
+        after you save.
       </p>
       <p>
         <strong>All projects</strong> — same JSON, but in your vibe coder’s
@@ -185,9 +191,9 @@ tools_used should show an MCP catalogue tool, and the answer should match yale_s
           <button type="button" class="vibe-code-copy" aria-label="Copy global MCP config snippet">Copy</button>
         </div>
         <pre class="vibe-code"><code>"yale-som-courses": {
-  "command": "python",
+  "command": "C:/Users/you/yale_som_courses_mcp/mcp/.venv/Scripts/python.exe",
   "args": [
-    "C:/Users/you/yale_som_courses_mcp/mcp_server.py"
+    "C:/Users/you/yale_som_courses_mcp/mcp/mcp_server.py"
   ]
 }</code></pre>
       </div>
