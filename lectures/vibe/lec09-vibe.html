@@ -140,33 +140,27 @@ tools_used should show an MCP catalogue tool, and the answer should match yale_s
       </div>
 
       <p>
-        <strong>Connect this MCP to your vibe coder</strong> (so you can ask catalogue
-        questions in chat, not only through the React app). First set up a Python
-        <code>venv</code> inside <code>mcp/</code> so the vibe coder can launch the
-        server with <code>fastmcp</code> installed:
-      </p>
-      <pre class="terminal">cd mcp
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt</pre>
-      <p>
-        What this is doing: creates a virtual environment in <code>mcp/</code>,
-        turns it on, and installs the MCP packages. Then edit the
+        <strong>Connect this MCP to your vibe coder</strong>. First set up a Python
+        <code>venv</code> and install the required packages inside the <code>mcp/</code> folder (ask your vibe coder to do this).  This makes it so the vibe coder can launch the
+        server in a self-contained, portable manner. Then edit the
         <code>mcpServers</code> part of the config and point
         <code>command</code> at that venv’s Python and <code>args</code> at
-        <code>mcp_server.py</code>.
+        <code>mcp_server.py</code> (ask your vibe coder to do this as well).
+        Next, you connect the vibe coder to the MCP server.  You can do this for this project only, or
+        for all of your projects.  Ask your vibe coder to help you with this.
       </p>
       <p>
-        <strong>This project only</strong> — add or update a config file in the project
+        <strong>This project only</strong> — add or update a local config file in the project
         folder:
       </p>
       <ul>
-        <li>Cursor: <code>.cursor/mcp.json</code></li>
         <li>Claude Code: <code>.mcp.json</code></li>
+        <li>Cursor: <code>.cursor/mcp.json</code></li>
+        <li>Codex (VS Code / IDE plugin): <code>.codex/config.toml</code> in the project (or use the Codex panel gear → <strong>MCP servers</strong> → <strong>Add server</strong>)</li>
       </ul>
       <div class="vibe-code-wrap" data-vibe-copy>
         <div class="vibe-code-chrome">
-          <span class="vibe-code-label">MCP config (project)</span>
+          <span class="vibe-code-label">MCP config (project — Claude / Cursor JSON)</span>
           <button type="button" class="vibe-code-copy" aria-label="Copy project MCP config">Copy</button>
         </div>
         <pre class="vibe-code"><code>{
@@ -180,21 +174,32 @@ pip install -r requirements.txt</pre>
   }
 }</code></pre>
       </div>
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">MCP config (project — Codex TOML)</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy Codex project MCP config">Copy</button>
+        </div>
+        <pre class="vibe-code"><code>[mcp_servers.yale-som-courses]
+command = "C:/Users/you/yale_som_courses_mcp/mcp/.venv/Scripts/python.exe"
+args = ["C:/Users/you/yale_som_courses_mcp/mcp/mcp_server.py"]</code></pre>
+      </div>
       <p>
         Use <em>your</em> paths. Prefer the <code>mcp/.venv</code> Python so
-        <code>fastmcp</code> is installed. Restart the vibe coder (or reload MCP)
-        after you save.
+        <code>fastmcp</code> is installed. Restart the vibe coder (or reload /
+        restart the Codex extension) after you save.
       </p>
       <p>
-        <strong>All projects</strong> — same JSON, but in your vibe coder’s
-        <em>user / global</em> MCP config (the deep one that applies everywhere),
-        then merge it into the existing <code>mcpServers</code> object if other
-        servers are already listed:
+        <strong>All projects</strong> — same settings, but in your vibe coder’s
+        <em>user / global</em> MCP config (the deep one that applies everywhere).
+        For JSON tools, merge into the existing <code>mcpServers</code> object
+        if other servers are already listed:
       </p>
       <ul>
+        <li>Claude Code: user MCP settings (often <code>~/.claude.json</code>)</li>
         <li>Cursor: <code>~/.cursor/mcp.json</code> (Windows:
           <code>C:\Users\you\.cursor\mcp.json</code>)</li>
-        <li>Claude Code: user MCP settings (often <code>~/.claude.json</code>)</li>
+        <li>Codex (VS Code / IDE plugin): <code>~/.codex/config.toml</code> (Windows:
+          <code>C:\Users\you\.codex\config.toml</code>) — same TOML block as above</li>
       </ul>
       <div class="vibe-code-wrap" data-vibe-copy>
         <div class="vibe-code-chrome">
@@ -208,29 +213,13 @@ pip install -r requirements.txt</pre>
   ]
 }</code></pre>
       </div>
-
       <p>
-        <strong>Ports:</strong> FastAPI uses <code>8000</code>, Vite uses
-        <code>5173</code>, and optional MCP HTTP uses <code>8001</code>.
-        If a port is stuck on Windows:
+        Codex tip: the VS Code Codex panel and the Codex CLI share the same
+        <code>config.toml</code>. You can also run
+        <code>codex mcp add yale-som-courses -- C:/Users/you/yale_som_courses_mcp/mcp/.venv/Scripts/python.exe C:/Users/you/yale_som_courses_mcp/mcp/mcp_server.py</code>
+        (use your real paths).
       </p>
-      <pre class="terminal">netstat -ano | findstr :8000
-taskkill /PID &lt;pid&gt; /F
 
-netstat -ano | findstr :5173
-taskkill /PID &lt;pid&gt; /F
-
-netstat -ano | findstr :8001
-taskkill /PID &lt;pid&gt; /F</pre>
-      <p>
-        What this is doing: finds whatever is holding each port and force-kills
-        that process so you can restart the backend, front end, or MCP server
-        cleanly.
-      </p>
-      <p>
-        In-process <code>MCPToolset</code> needs no extra MCP port — FastAPI
-        loads the tools when the agent runs. Prefer that for class.
-      </p>
     </div>
   </main>
   <script src="../../js/theme.js"></script>
