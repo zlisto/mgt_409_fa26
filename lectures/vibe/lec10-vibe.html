@@ -118,7 +118,7 @@ Already provided — do not rewrite unless asked:
 Your job: implement everything main.py imports so the API runs. Build models, retrieval helpers, Portkey config, prompts, and the PydanticAI boss + book specialist agents with a live event queue for SSE.
 
 Stack / keys
-- Model: gpt-5.6-luna via Portkey
+- Model: gpt-6-astra via Portkey
 - PORTKEY_API_KEY=... in a .env (python-dotenv); may be in this folder OR the parent — load both
 - Install from backend/requirements.txt (fastapi, uvicorn, pydantic-ai-slim[openai], python-dotenv, httpx, openai)
 
@@ -139,7 +139,7 @@ What main.py imports (implement these)
 - format_evidence(chunks) — join chunks into a prompt-ready string
 
 3) agents/config.py
-- BOSS_NAME (friendly display string), MODEL_NAME default gpt-5.6-luna
+- BOSS_NAME (friendly display string), MODEL_NAME default gpt-6-astra
 - require_api_key(), build_model() using AsyncOpenAI + Portkey base URL (same pattern as earlier lectures)
 
 4) agents/boss.py + prompts/boss.md
@@ -183,22 +183,8 @@ mult_agent_hp/
     (already built)
 
 .env reminder
-May also live one level up. Never commit a real key. Use gpt-5.6-luna for class budget.</code></pre>
+May also live one level up. Never commit a real key. Use gpt-6-astra.</code></pre>
       </div>
-
-      <p>
-        <strong>Ports.</strong> Backend is <code>8000</code>; front end is <code>5173</code>.
-        If a port is stuck on Windows:
-      </p>
-      <pre class="terminal">netstat -ano | findstr :8000
-taskkill /PID &lt;pid&gt; /F
-
-netstat -ano | findstr :5173
-taskkill /PID &lt;pid&gt; /F</pre>
-      <p>
-        If you must run the API on <code>8001</code>, set
-        <code>VITE_API_BASE=http://127.0.0.1:8001</code> in <code>frontend/.env</code>.
-      </p>
     </div>
   </main>
   <script src="../../js/theme.js"></script>
