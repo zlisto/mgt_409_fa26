@@ -3,139 +3,612 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lecture 10 Slides — Agent Orchestration</title>
+  <title>Lecture 10 Slides — Multi-Agent Systems</title>
   <link rel="stylesheet" href="../../css/style.css">
-  <link rel="stylesheet" href="../../css/slides.css?v=7">
+  <link rel="stylesheet" href="../../css/slides.css?v=13">
+  <link rel="stylesheet" href="../../css/vibe-session.css">
   <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
   <style>
-    body.slide-deck-body {
-      padding: 0;
+    .slide-deck-body {
+      --hot: #ff4d6d;
+      --teal: #00c2a8;
+      --gold: #ffc857;
+      --ink: #08111f;
       overflow: hidden;
     }
-    nav.site-nav {
-      position: relative;
-      flex-shrink: 0;
+    .slide-deck-body nav.site-nav { flex-shrink: 0; position: relative; }
+    .slide {
+      max-width: 980px;
+      max-height: calc(100vh - 210px);
     }
-    body.slide-deck-body.lec10 {
-      --yale-blue: #0b3d91;
-      --yale-blue-light: #1f8ef0;
-      --accent-hot: #ff3d7f;
-      --accent-teal: #00c2b8;
-      --accent-gold: #ffc53d;
-      --accent-violet: #7c5cff;
-    }
-    .lec10 .slide h1 {
-      font-size: clamp(2.15rem, 5.2vw, 3rem);
+    .slide > h1:first-child { margin-top: 0; }
+    .slide h1 {
+      font-size: clamp(1.85rem, 4.4vw, 2.65rem);
       line-height: 1.12;
     }
-    .lec10 .slide.title-slide h1 {
-      font-size: clamp(2.5rem, 6vw, 3.4rem);
-      background: linear-gradient(90deg, #0b3d91, #1f8ef0, #00c2b8);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    [data-theme="dark"] .lec10 .slide.title-slide h1 {
-      background: linear-gradient(90deg, #7ec8ff, #00c2b8, #ffc53d);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .lec10 .slide p, .lec10 .slide li {
-      font-size: clamp(1.12rem, 2.4vw, 1.38rem);
-    }
-    .lec10 .joke {
-      margin-top: 1rem;
-      padding: 0.9rem 1.15rem;
-      background: linear-gradient(90deg, #fff3c4, #ffe0ef);
-      border-left: 6px solid var(--accent-hot);
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: #1a2e42;
-    }
-    [data-theme="dark"] .lec10 .joke {
-      background: linear-gradient(90deg, #3d2a12, #3a1730);
-      color: #ffe9c7;
-    }
-    .lec10 .news-card {
-      border: 2px solid var(--accent-teal);
-      border-radius: 12px;
-      padding: 0.9rem 1.1rem;
-      margin: 0.7rem 0;
-      background: #f3fffd;
-    }
-    [data-theme="dark"] .lec10 .news-card { background: #0d2a2a; border-color: #00c2b8; }
-    .lec10 .news-card h3 { margin: 0 0 0.35rem; font-size: 1.15rem; color: #0b3d91; }
-    [data-theme="dark"] .lec10 .news-card h3 { color: #7ec8ff; }
-    .lec10 .news-card a { font-weight: 700; }
-    .lec10 img.hero {
+    .slide p, .slide li { font-size: clamp(1.08rem, 2.3vw, 1.28rem); }
+
+    .slide.title-slide {
+      background: #000;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      max-width: none;
       width: 100%;
-      max-height: 42vh;
-      object-fit: cover;
-      border-radius: 16px;
-      box-shadow: 0 14px 36px rgba(11, 61, 145, 0.28);
-      margin: 0.4rem 0 0.75rem;
+      text-align: center;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      max-height: calc(100vh - 170px);
+      box-sizing: border-box;
     }
-    .lec10 .stat-box { border-top: 5px solid var(--accent-teal); }
-    .lec10 .stat-box:nth-child(2) { border-top-color: var(--accent-gold); }
-    .lec10 .stat-box:nth-child(3) { border-top-color: var(--accent-hot); }
-    .lec10 .slide .takeaway {
-      background: linear-gradient(90deg, #e8f4ff, #e6fff9);
-      border-left-color: var(--accent-teal);
-      font-size: 1.15rem;
-    }
-    [data-theme="dark"] .lec10 .slide .takeaway {
-      background: #123044;
-    }
-    .lec10 .caption {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      margin-top: -0.35rem;
-    }
-    .lec10 .slide svg.flow-svg { max-height: 260px; }
-    .lec10 .instructor-banner {
-      display: inline-block;
-      background: #ff3d7f;
-      color: #fff;
-      font-weight: 800;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      font-size: 0.82rem;
-      padding: 0.35rem 0.8rem;
-      border-radius: 8px;
-      margin: 0 0 0.85rem;
-    }
-    .lec10 .pace-list {
-      list-style: none;
-      padding: 0;
-      margin: 0.35rem 0 0;
-    }
-    .lec10 .pace-list li {
+    .slide.title-slide.active {
       display: flex;
-      gap: 0.9rem;
-      align-items: baseline;
-      padding: 0.38rem 0;
-      border-bottom: 1px solid rgba(11, 61, 145, 0.12);
-      font-size: clamp(1.02rem, 2.1vw, 1.22rem);
+      padding: 1.1rem 1.25rem 1.35rem !important;
+      justify-content: center;
     }
-    [data-theme="dark"] .lec10 .pace-list li { border-bottom-color: rgba(126, 200, 255, 0.18); }
-    .lec10 .pace-list .t {
-      flex: 0 0 4.6rem;
+    .slide.title-slide .title-cluster {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: min(100%, 1180px);
+      margin: 0 auto;
+      flex: none;
+      min-height: 0;
+    }
+    .slide.title-slide h1 {
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      color: #fff;
+      text-transform: none;
+      letter-spacing: -0.03em;
+      margin: 0;
+      line-height: 1.05;
       font-weight: 800;
-      font-variant-numeric: tabular-nums;
-      color: #0b3d91;
+      border: none;
+      border-left: none;
+      padding: 0;
+      flex: none;
     }
-    [data-theme="dark"] .lec10 .pace-list .t { color: #7ec8ff; }
-    .lec10 .pace-total {
-      margin-top: 0.85rem;
+    [data-theme="dark"] .slide.title-slide h1 { color: #fff; }
+    .slide.title-slide .title-hero {
+      display: block;
+      width: min(52vh, 480px);
+      height: min(52vh, 480px);
+      max-width: min(100%, 480px);
+      max-height: min(52vh, 480px);
+      aspect-ratio: 1 / 1;
+      margin: 0 auto;
+      object-fit: cover;
+      object-position: center center;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      flex: none;
+      align-self: center;
+      min-height: 0;
+    }
+    .slide.title-slide .instructor-name {
+      margin: 0;
+      font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+      font-weight: 700;
+      color: #fff;
+      flex: none;
+    }
+
+    html:fullscreen .slide.active.title-slide,
+    html:-webkit-full-screen .slide.active.title-slide,
+    body.is-fullscreen-deck .slide.active.title-slide {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 1.4rem 2rem 1.6rem !important;
+      gap: 0 !important;
+      background: #000 !important;
+    }
+    html:fullscreen .slide.title-slide .title-cluster,
+    html:-webkit-full-screen .slide.title-slide .title-cluster,
+    body.is-fullscreen-deck .slide.title-slide .title-cluster {
+      gap: 0.55rem;
+      width: min(94vw, 1280px);
+      flex: none;
+      min-height: 0;
+      justify-content: center;
+    }
+    html:fullscreen .slide.title-slide h1,
+    html:-webkit-full-screen .slide.title-slide h1,
+    body.is-fullscreen-deck .slide.title-slide h1 {
+      font-size: clamp(3.4rem, 8vh, 6rem) !important;
+      margin: 0 !important;
+      flex: none !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+    html:fullscreen .slide.title-slide .title-hero,
+    html:-webkit-full-screen .slide.title-slide .title-hero,
+    body.is-fullscreen-deck .slide.title-slide .title-hero {
+      flex: none !important;
+      width: min(58vh, 520px) !important;
+      height: min(58vh, 520px) !important;
+      max-width: min(70vw, 520px) !important;
+      max-height: min(58vh, 520px) !important;
+      aspect-ratio: 1 / 1 !important;
+      margin: 0 auto !important;
+      object-fit: cover !important;
+      object-position: center center !important;
+      align-self: center !important;
+      min-height: 0 !important;
+    }
+    html:fullscreen .slide.title-slide .instructor-name,
+    html:-webkit-full-screen .slide.title-slide .instructor-name,
+    body.is-fullscreen-deck .slide.title-slide .instructor-name {
+      font-size: clamp(1.5rem, 3.2vh, 2.15rem) !important;
+      margin: 0 !important;
+      flex: none !important;
+    }
+
+    .hot-phrase {
+      color: var(--hot);
+      font-style: normal;
       font-weight: 800;
-      color: #0b3d91;
     }
-    [data-theme="dark"] .lec10 .pace-total { color: #ffc53d; }
+
+    .skills-split-slide { flex-direction: column; }
+    .slide.skills-split-slide.active { display: flex; }
+    .skills-split-slide h1 { flex-shrink: 0; }
+    .skills-split {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1rem;
+      align-items: center;
+      flex: 1;
+      min-height: 0;
+      margin-top: 0.35rem;
+      width: 100%;
+    }
+    .skills-split-copy ul {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+    .skills-split-copy li {
+      font-size: clamp(1.12rem, 2.4vw, 1.45rem) !important;
+      line-height: 1.35;
+    }
+    .skills-split-copy li > ul {
+      margin: 0.35rem 0 0.1rem;
+      padding-left: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      list-style: disc;
+    }
+    .skills-split-copy li > ul > li {
+      font-size: clamp(1rem, 2.1vw, 1.25rem) !important;
+      line-height: 1.3;
+      list-style-type: disc;
+    }
+
+    .skills-split-copy a.vibe-link {
+      font-size: inherit;
+      font-weight: inherit;
+      font-family: inherit;
+      line-height: inherit;
+      color: inherit;
+      text-decoration: underline;
+    }
+    .skills-split .square-shot {
+      width: min(100%, 380px);
+      height: auto;
+      aspect-ratio: 1 / 1;
+      max-height: min(54vh, 400px);
+      object-fit: cover;
+      border-radius: 12px;
+      margin: 0 auto;
+      display: block;
+    }
+    .skills-split .muse-device-shot {
+      width: min(100%, 340px);
+      height: auto;
+      aspect-ratio: 289 / 280;
+      max-height: min(52vh, 380px);
+      object-fit: contain;
+      object-position: center center;
+      border-radius: 12px;
+      margin: 0 auto;
+      display: block;
+      background: transparent;
+    }
+    .skills-split .emit-dashboard-shot {
+      width: min(100%, 560px);
+      height: auto;
+      aspect-ratio: 1400 / 1040;
+      max-height: min(56vh, 440px);
+      object-fit: contain;
+      object-position: center center;
+      border-radius: 12px;
+      margin: 0 auto;
+      display: block;
+      background: #12081c;
+    }
+    .skills-split .product-logo-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: center;
+      gap: 0.85rem;
+      width: min(100%, 340px);
+      margin: 0 auto;
+    }
+    .skills-split .product-logo-card {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      background: #fff;
+      border-radius: 12px;
+      padding: 0.85rem 1rem;
+      box-sizing: border-box;
+      border: 1px solid rgba(8, 17, 31, 0.08);
+    }
+    .skills-split .product-logo-card img {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      flex: none;
+    }
+    .skills-split .product-logo-card img.product-logo-wide {
+      width: 120px;
+      height: 34px;
+    }
+    .skills-split .product-logo-stack {
+      gap: 0.65rem;
+    }
+    .skills-split .product-logo-card {
+      padding: 0.7rem 0.9rem;
+    }
+    .skills-split .product-logo-card span {
+      font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+      font-weight: 700;
+      color: #08111f;
+      line-height: 1.2;
+    }
+    [data-theme="dark"] .skills-split .product-logo-card {
+      background: #fff;
+      border-color: rgba(8, 17, 31, 0.08);
+    }
+    .skills-split .grok-logo-shot {
+      width: min(100%, 420px);
+      height: auto;
+      aspect-ratio: 230 / 65;
+      max-height: min(22vh, 140px);
+      object-fit: contain;
+      object-position: center center;
+      margin: 0 auto;
+      display: block;
+      background: #fff;
+      border-radius: 12px;
+      padding: 1.1rem 1.25rem;
+      box-sizing: content-box;
+    }
+    [data-theme="dark"] .skills-split .grok-logo-shot {
+      background: #fff;
+    }
+    .skills-split-copy .product-url {
+      font-size: clamp(0.92rem, 1.9vw, 1.08rem) !important;
+      line-height: 1.35;
+      word-break: break-all;
+    }
+    .skills-split-copy .product-url a {
+      font-size: inherit;
+      font-weight: 600;
+      color: inherit;
+      text-decoration: underline;
+    }
+
+    .pipeline-slide { flex-direction: column; }
+    .slide.pipeline-slide.active { display: flex; }
+    .pipeline-slide h1 { flex-shrink: 0; margin-bottom: 0.25rem; }
+    .pipeline-slide > ul {
+      flex-shrink: 0;
+      margin: auto 0 0.55rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .pipeline-slide > ul > li {
+      font-size: clamp(1.2rem, 2.6vw, 1.5rem);
+      line-height: 1.32;
+    }
+    .pipe-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+      gap: 0.5rem;
+      align-items: center;
+      justify-items: stretch;
+      flex: none;
+      width: 100%;
+      margin: 0 0 auto;
+    }
+    .pipe-card {
+      background: linear-gradient(160deg, #00356b, #286dc0);
+      color: #fff;
+      border-radius: 14px;
+      padding: 0.95rem 0.8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.35rem;
+      width: 100%;
+      aspect-ratio: 5 / 4;
+      max-height: min(32vh, 250px);
+      box-sizing: border-box;
+    }
+    .pipe-card.hot { background: linear-gradient(160deg, #5a2040, #ff4d6d); }
+    .pipe-card.teal { background: linear-gradient(160deg, #0a5c54, #00c2a8); }
+    .pipe-card.gold { background: linear-gradient(160deg, #6b4e12, #ffc857); color: #1a1200; }
+    .pipe-card h3 { margin: 0; font-size: clamp(0.95rem, 1.8vw, 1.15rem); }
+    .pipe-card p { margin: 0; font-size: clamp(0.85rem, 1.5vw, 1.05rem); }
+    .pipe-arrow {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    [data-theme="dark"] .pipe-arrow { color: #e8eef8; }
+
+    .code-slide { flex-direction: column; }
+    .slide.code-slide.active { display: flex; }
+    .code-slide h1 { flex-shrink: 0; }
+    .code-slide > ul {
+      flex-shrink: 0;
+      margin: 0.25rem 0 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .code-slide > ul > li {
+      font-size: clamp(1.05rem, 2.2vw, 1.28rem);
+      line-height: 1.32;
+    }
+    .code-slide > ul > li > ul {
+      margin: 0.3rem 0 0.1rem;
+      padding-left: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      list-style: disc;
+    }
+    .code-slide > ul > li > ul > li {
+      font-size: clamp(0.98rem, 2vw, 1.18rem);
+      line-height: 1.3;
+      list-style-type: disc;
+    }
+    .code-slide .vibe-code-wrap {
+      flex: 1;
+      min-height: 0;
+      align-self: stretch;
+      margin: 0;
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .code-slide pre.vibe-code {
+      flex: 1;
+      min-height: 0;
+      max-height: none;
+      height: auto;
+      font-size: clamp(0.88rem, 1.7vw, 1.12rem);
+      line-height: 1.4;
+      overflow: auto;
+    }
+    .code-slide .code-note {
+      margin: 0.35rem 0 0;
+      font-size: clamp(0.95rem, 1.9vw, 1.12rem);
+      color: #5a6a7a;
+    }
+    [data-theme="dark"] .code-slide .code-note { color: #9aabbc; }
+
+    .code-slide .code-pair {
+      display: flex;
+      flex-direction: row;
+      gap: 1.05rem;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      align-items: stretch;
+    }
+    .code-slide .code-pair-col {
+      flex: 1;
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+    .code-slide .code-pair-col > ul {
+      flex-shrink: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .code-slide .code-pair-col > ul > li {
+      font-size: clamp(1.05rem, 2.15vw, 1.28rem);
+      line-height: 1.35;
+    }
+    .code-slide .code-pair .vibe-code-wrap {
+      flex: 1 1 auto;
+      min-height: 12.5rem;
+      align-self: stretch;
+      max-height: none;
+    }
+    .code-slide .code-pair .vibe-code-chrome {
+      padding: 0.42rem 0.75rem;
+    }
+    .code-slide .code-pair .vibe-code-label {
+      font-size: 0.88rem;
+    }
+    .code-slide .code-pair pre.vibe-code {
+      flex: 1 1 auto;
+      min-height: 11rem;
+      max-height: none;
+      font-size: clamp(0.8rem, 1.5vw, 1.02rem);
+      line-height: 1.4;
+      padding: 0.7rem 0.85rem;
+      overflow: auto;
+    }
+    .code-slide .code-pair pre.vibe-code strong,
+    .code-slide pre.vibe-code strong {
+      color: #ff4d6d;
+      font-weight: 700;
+    }
+    .code-slide .vibe-code-wrap.code-centered {
+      width: min(100%, 52rem);
+      max-width: 52rem;
+      margin-left: auto;
+      margin-right: auto;
+      align-self: center;
+    }
+    .code-slide .code-with-fig {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(160px, min(32vmin, 300px));
+      gap: 1rem;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      align-items: center;
+    }
+    .code-slide .code-with-fig .vibe-code-wrap {
+      min-width: 0;
+      min-height: 0;
+      width: 100%;
+      max-width: none;
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+    }
+    .code-slide .code-with-fig pre.vibe-code {
+      flex: 1;
+      min-height: 0;
+      max-height: none;
+      font-size: clamp(0.78rem, 1.45vw, 1.02rem);
+      line-height: 1.38;
+    }
+    .code-slide .code-with-fig .code-side-fig {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      max-height: min(48vh, 320px);
+      object-fit: contain;
+      border-radius: 14px;
+      background: #fff;
+      display: block;
+      margin: 0;
+      justify-self: center;
+    }
+    html:fullscreen .code-slide .code-with-fig .code-side-fig,
+    html:-webkit-full-screen .code-slide .code-with-fig .code-side-fig,
+    body.is-fullscreen-deck .code-slide .code-with-fig .code-side-fig {
+      flex: none !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      max-height: min(52vh, 360px) !important;
+      margin-top: 0 !important;
+    }
+    @media (max-width: 900px) {
+      .code-slide .code-pair {
+        flex-direction: column;
+      }
+      .code-slide .code-with-fig {
+        grid-template-columns: 1fr;
+      }
+      .code-slide .code-with-fig .code-side-fig {
+        width: min(52vmin, 260px);
+        max-height: min(40vh, 260px);
+      }
+    }
+
+    .bullets-slide { flex-direction: column; }
+    .slide.bullets-slide.active { display: flex; }
+    .bullets-slide h1 { flex-shrink: 0; }
+    .bullets-slide > ul {
+      flex: 1;
+      min-height: 0;
+      margin: 0.35rem 0 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.85rem;
+    }
+    .bullets-slide > ul > li {
+      font-size: clamp(1.22rem, 2.7vw, 1.6rem);
+      line-height: 1.35;
+    }
+
+    .maintain-slide { flex-direction: column; }
+    .slide.maintain-slide.active { display: flex; }
+    .maintain-slide h1 { flex-shrink: 0; }
+    .maintain-slide > ul {
+      flex-shrink: 0;
+      margin: 0.2rem 0 0.55rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .maintain-slide > ul > li {
+      font-size: clamp(1.1rem, 2.3vw, 1.35rem);
+      line-height: 1.32;
+    }
+    .maintain-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.55rem;
+      flex: 1;
+      min-height: 0;
+      align-content: stretch;
+      width: 100%;
+      margin: 0 0 auto;
+    }
+    .maintain-card {
+      background: linear-gradient(160deg, #0b1c33, #1a3a66);
+      color: #fff;
+      border-radius: 14px;
+      padding: 0.85rem 0.7rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.4rem;
+      min-height: min(28vh, 210px);
+      box-sizing: border-box;
+    }
+    .maintain-card:nth-child(2) { background: linear-gradient(160deg, #0a5c54, #00c2a8); }
+    .maintain-card:nth-child(3) { background: linear-gradient(160deg, #6b4e12, #ffc857); color: #1a1200; }
+    .maintain-card:nth-child(4) { background: linear-gradient(160deg, #5a2040, #ff4d6d); }
+    .maintain-card:nth-child(5) { background: linear-gradient(160deg, #00356b, #286dc0); }
+    .maintain-card h3 {
+      margin: 0;
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      line-height: 1.15;
+    }
+    .maintain-card p {
+      margin: 0;
+      font-size: clamp(0.92rem, 1.7vw, 1.1rem);
+      line-height: 1.3;
+      opacity: 0.95;
+    }
+
+    @media (max-width: 820px) {
+      .skills-split { grid-template-columns: 1fr; }
+      .pipe-row { grid-template-columns: 1fr; }
+      .pipe-arrow { display: none; }
+      .maintain-grid { grid-template-columns: 1fr 1fr; }
+      .code-slide .code-pair { flex-direction: column; }
+    }
   </style>
 </head>
-<body class="slide-deck-body lec10">
+<body class="slide-deck-body">
   <nav class="site-nav">
     <ul class="navbar">
       <li><a href="../../index.html">Home</a></li>
@@ -146,263 +619,515 @@
     </ul>
     <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
   </nav>
+
   <header class="slide-deck-header">
     <a href="../../lectures.html">← Lectures</a>
-    <span>Lecture 10: Agent Orchestration</span>    <div class="slide-deck-header-end">
+    <span>Lecture 10: Multi-Agent Systems</span>
+    <div class="slide-deck-header-end">
       <button type="button" id="present" class="slide-present-btn" aria-pressed="false" aria-label="Start presentation" title="Start presentation">
         <svg class="present-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M12 16v2.5M8 21h8M10 18.5h4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
       </button>
-      <span class="slide-counter">1 / 14</span>
+      <span class="slide-counter">1 / 20</span>
     </div>
   </header>
+
   <div class="slide-viewport">
 
-      <section class="slide active title-slide" data-slide="1">
-        <h1>Agent Orchestration</h1>
-        <p class="subtitle">MGT 409 · Lecture 10 · Tauhid Zaman</p>
-        <p class="subtitle">One LLM. Several MCP tools. Refuse when they clash.</p>
-        <p class="speaker-note">40 min talk, then 40 min coffee-cart vibe. Homework 5 is Peabody — do not solve it in class.</p>
-      </section>
+    <section class="slide active title-slide" data-slide="1">
+      <div class="title-cluster">
+        <h1>Multi-Agent Systems</h1>
+        <img
+          class="title-hero"
+          src="../images/lec10/title-orchestration.jpg"
+          alt="Terminator floor boss directing worker robots"
+          width="1024"
+          height="1024"
+        >
+        <p class="instructor-name">Tauhid Zaman</p>
+      </div>
+    </section>
 
-      <section class="slide" data-slide="2">
-        <p class="instructor-banner">Instructor outline — remove before class.</p>
-        <h1>40-minute story</h1>
-        <ul class="pace-list">
-          <li><span class="t">0–4</span> Cold open: last week’s plug vs today’s manager-agent</li>
-          <li><span class="t">4–10</span> One guest, three desks, architecture</li>
-          <li><span class="t">10–16</span> Two verbs + the loop you own</li>
-          <li><span class="t">16–24</span> Sunday + Burke (agree) then refuse on clash</li>
-          <li><span class="t">24–30</span> Traces as the receipt + what you decide</li>
-          <li><span class="t">30–35</span> Aug 2026 news: stateless MCP, Agent Plugins</li>
-          <li><span class="t">35–40</span> HW5 map (P4–P5) and vibe handoff</li>
-        </ul>
-        <p class="pace-total">Lecture ~40 min · vibe ~40 min · skip this slide in class</p>
-      </section>
+    <section class="slide skills-split-slide" data-slide="2">
+      <h1>Agents Can Do Tasks</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>An agent takes a job, uses tools, and works toward a result</li>
+            <li>You have already built agents that call APIs, read files, and draft replies</li>
+            <li>One agent is enough when the job fits in <em class="hot-phrase">one role</em> and one context</li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec10/single-agent-task.jpg"
+          alt="Single Terminator robot filling out an expense report at an office desk"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
 
-      <section class="slide" data-slide="3">
-        <h1>Last time vs today</h1>
-        <div class="two-col">
-          <div class="compare-box">
-            <h3>Lecture 9 — MCP servers</h3>
-            <p>Wrap each system as a tool with a schema. <code>list_tools</code> + <code>call_tool</code>. USB-C for agents.</p>
+    <section class="slide skills-split-slide" data-slide="3">
+      <h1>Some Tasks Need Multiple Agents</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>Real work often mixes roles — research, operations, writing, judgment</li>
+            <li>One agent holding every skill and every fact gets slow and messy</li>
+            <li>Complicated jobs need <em class="hot-phrase">multiple agents</em></li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec10/crew-office.jpg"
+          alt="Several robots in different office uniforms working together"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <section class="slide skills-split-slide" data-slide="4">
+      <h1>Agent Roles</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li><strong>Boss agent</strong> — owns the job, plans the work, and stitches the final answer</li>
+            <li><strong>Worker agent</strong> — holds a <strong>big prompt</strong> for one domain (catalog rules, policy, SKU facts) and gets a <em class="hot-phrase">focused task</em></li>
+            <li><strong>Smart boss + cheaper workers</strong>
+              <ul>
+                <li>Boss needs the brain to plan orchestration, workers do simpler tasks — a common practice (<a href="https://www.anthropic.com/engineering/multi-agent-research-system" target="_blank" rel="noopener noreferrer">Anthropic</a>)</li>
+              </ul>
+            </li>
+            <li><strong>Cheap boss + smarter workers</strong>
+              <ul>
+                <li>Less common — workers perform more complex tasks; boss mainly delegates and synthesizes</li>
+              </ul>
+            </li>
+            <li>Intelligence allocation <em class="hot-phrase">depends on the task</em></li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec10/agent-handoff.jpg"
+          alt="Boss handing a focused job to a worker agent"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    
+    <section class="slide skills-split-slide" data-slide="5">
+      <h1>Smart Boss</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>Anthropic tested multi-agent vs single-agent systems</li>
+            <li>Task: find board members for companies in the Information Technology S&amp;P 500</li>
+            <li>Opus 4 boss + Sonnet 4 workers beat single Opus 4 agent by <em class="hot-phrase">90.2%</em></li>
+            <li>Multi-agent system <strong>decomposed</strong> the job across workers; single agent stalled on slow sequential search</li>
+            <li class="product-url">Source: <a href="https://www.anthropic.com/engineering/multi-agent-research-system" target="_blank" rel="noopener noreferrer">anthropic.com/engineering/multi-agent-research-system</a></li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec10/mag7-orchestrator-tree.jpg"
+          alt="Giant robot-head orchestrator fanning out to seven worker robots over Mag 7 tickers"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+
+    <section class="slide skills-split-slide" data-slide="6">
+      <h1>Smart Workers</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>Some jobs need <em class="hot-phrase">smart workers</em></li>
+            <li>Example: <strong>making a video game</strong></li>
+            <li>Boss sketches the game structure and delegates each game level to a worker</li>
+            <li><strong>Worker</strong> — builds that level: layout, obstacles, art, and the feel of the world</li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec10/mario3-orchestrator-tree.jpg"
+          alt="Robot-head orchestrator with seven workers each building a Mario 3 style world screen"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <section class="slide skills-split-slide" data-slide="7">
+      <h1>Multi-Agent Architecture: Hierarchy</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>Common pattern: a <strong>boss agent</strong> owns the job</li>
+            <li>It delegates focused work to <strong>workers</strong></li>
+            <li>Workers report back; the boss agent stitches the answer together</li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec10/arch-boss-workers-tree.jpg"
+          alt="Boss agent robot head connected in a tree to seven labeled workers"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <section class="slide skills-split-slide" data-slide="8">
+      <h1>Multi-Agent Architecture: Peer To Peer</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>You can build a <em class="hot-phrase">richer graph</em> than a simple tree</li>
+            <li>Workers can ask other workers for information mid-job</li>
+            <li>Useful when one specialist needs another specialist’s facts before finishing</li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec10/arch-worker-mesh.jpg"
+          alt="Boss agent above workers linked in a mesh so workers can talk to each other"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <section class="slide skills-split-slide" data-slide="9">
+      <h1>Multi-Agent Systems At Work</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>Many real tasks are complex — they need different knowledge and skills</li>
+            <li>Breaking the job into smaller pieces makes it easier to get right</li>
+            <li>A boss manages the overall task; specialized workers each own a piece</li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec10/at-work-ops.jpg"
+          alt="Boss robot directing worker robots on a campus shop ops floor"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+
+    <section class="slide skills-split-slide" data-slide="10">
+      <h1>Restock a Product</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>A shop is out of a product in some sizes</li>
+            <li><strong>Boss agent</strong> — creates a task to restock the product</li>
+            <li><strong>Inventory agent</strong> — checks what is left on the shelf, by size</li>
+            <li><strong>Vendor agent</strong> — places the reorder with the supplier</li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec10/task-restock-hoodie.jpg"
+          alt="Two robots: one counting hoodies, one placing a supplier order"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <section class="slide skills-split-slide" data-slide="11">
+      <h1>Pricing a New Product</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>A company is launching a new product and needs to set its price</li>
+            <li><strong>Boss agent</strong> — owns the pricing decision and stitches the final recommendation</li>
+            <li><strong>Demand agent</strong> — researches what similar products sell for and how strong demand looks</li>
+            <li><strong>Cost agent</strong> — adds up production, shipping, and other costs for a cost floor</li>
+            <li><strong>Finance agent</strong> — checks overall company profit and margin targets</li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec10/task-price-merch.jpg"
+          alt="Three robots pricing summer merch with charts, costs, and copy"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <section class="slide skills-split-slide" data-slide="12">
+      <h1>Resolve A Double-Charge Complaint</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>A customer says they got charged twice</li>
+            <li><strong>Boss agent</strong> — owns the complaint and stitches the final resolution</li>
+            <li><strong>Billing agent</strong> — digs through payment and order records</li>
+            <li><strong>Shipping agent</strong> — checks whether the package actually shipped</li>
+            <li><strong>Customer agent</strong> — talks with the customer to resolve the issue</li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec10/task-double-charge.jpg"
+          alt="Three robots handling billing, shipping, and a customer reply"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <section class="slide skills-split-slide" data-slide="13">
+      <h1>Pick A Supplier</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>A company must choose a supplier for a product</li>
+            <li><strong>Boss agent</strong> — owns the decision and chooses the supplier</li>
+            <li><strong>Specs agent</strong> — writes quantity, requirements, and deadline</li>
+            <li><strong>Sourcing agent</strong> — finds suppliers and requests the quotes</li>
+            <li><strong>Quote agents</strong> — evaluate offers from each supplier</li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec10/task-mug-rfq.jpg"
+          alt="Robots comparing supplier quotes for a custom order"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <section class="slide skills-split-slide" data-slide="14">
+      <h1>Multi-Agent Products</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li><strong>Claude Code, Codex</strong> — spawn subagents for parallel work and merge their results</li>
+            <li><strong>Cursor</strong> — multitask feature lets you run multiple agents side by side on a job</li>
+            <li><strong>Grok Bot</strong> — create specialized agents and drop them in a chat so they can interact with each other to solve complex tasks</li>
+          </ul>
+        </div>
+        <div class="product-logo-stack" aria-label="Claude Code, Codex, Cursor, and Grok Bot">
+          <div class="product-logo-card">
+            <img src="../images/lec10/logo-claude.svg" alt="Claude logo" width="52" height="52">
+            <span>Claude Code</span>
           </div>
-          <div class="compare-box">
-            <h3>Lecture 10 — Orchestrator</h3>
-            <p>A manager-agent that <strong>chooses</strong> tools, <strong>orders</strong> them, reads results, and either answers or stops.</p>
+          <div class="product-logo-card">
+            <img src="../images/lec10/logo-openai.svg" alt="OpenAI Codex logo" width="52" height="52">
+            <span>Codex</span>
+          </div>
+          <div class="product-logo-card">
+            <img src="../images/lec10/logo-cursor.svg" alt="Cursor logo" width="52" height="52">
+            <span>Cursor</span>
+          </div>
+          <div class="product-logo-card">
+            <img class="product-logo-wide" src="../images/lec10/grok-bot-logo.png" alt="Grok Bot logo" width="120" height="34">
+            <span>Grok Bot</span>
           </div>
         </div>
-        <p class="takeaway">Lecture 4’s Riemann swarm ran hundreds of attempts in parallel and kept what survived. Today the orchestrator is sequential: pick the next desk, and if two desks contradict, refuse.</p>
-      </section>
+      </div>
+    </section>
 
-      <section class="slide" data-slide="4">
-        <h1>Why one tool is not enough</h1>
-        <img class="hero" src="../images/lec10/orchestrator-conductor.png" alt="Cartoon conductor in a museum hall directing three colorful information desks">
-        <p class="caption">Hours, exhibits, and policy still sit at separate desks. The model only decides whom to ask, and whether the answers are consistent.</p>
-        <ul>
-          <li><em>“If I come Sunday afternoon, can I still see Burke Hall of Dinosaurs?”</em> is hours <strong>plus</strong> exhibits.</li>
-          <li>Homework 5 exists because Peabody facts live on <strong>three desks</strong>, not one wiki. Course JSON is fiction — do not email the museum.</li>
-        </ul>
-        <p class="takeaway">A two-desk question answered from one tool is a confident wrong answer at the front desk.</p>
-      </section>
 
-      <section class="slide" data-slide="5">
-        <h1>Architecture: guest → orchestrator → MCP</h1>
-        <svg class="flow-svg" viewBox="0 0 640 210" aria-label="Guest to orchestrator to MCP tools">
-          <defs>
-            <marker id="l10a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-              <path d="M0,0 L6,3 L0,6 Z" class="arrow"/>
-            </marker>
-          </defs>
-          <rect class="box-light" x="12" y="78" width="110" height="50" rx="8"/>
-          <text x="67" y="100" text-anchor="middle" font-size="13" font-weight="700">Guest</text>
-          <text x="67" y="116" text-anchor="middle" font-size="10">messy question</text>
-          <line x1="122" y1="103" x2="158" y2="103" stroke="#1f8ef0" stroke-width="3" marker-end="url(#l10a)"/>
-          <rect class="box-dark" x="160" y="62" width="150" height="82" rx="8"/>
-          <text class="on-dark" x="235" y="90" text-anchor="middle" font-size="13" font-weight="700">Orchestrator</text>
-          <text class="on-dark" x="235" y="110" text-anchor="middle" font-size="11">LLM + loop</text>
-          <text class="on-dark" x="235" y="126" text-anchor="middle" font-size="10">answer or refuse</text>
-          <line x1="310" y1="103" x2="348" y2="103" stroke="#1f8ef0" stroke-width="3" marker-end="url(#l10a)"/>
-          <rect class="box-light" x="350" y="70" width="120" height="66" rx="8"/>
-          <text x="410" y="96" text-anchor="middle" font-size="12" font-weight="700">MCP server</text>
-          <text x="410" y="114" text-anchor="middle" font-size="10">list / call</text>
-          <line x1="470" y1="80" x2="508" y2="38" stroke="#00c2b8" stroke-width="3" marker-end="url(#l10a)"/>
-          <line x1="470" y1="103" x2="508" y2="103" stroke="#ffc53d" stroke-width="3" marker-end="url(#l10a)"/>
-          <line x1="470" y1="126" x2="508" y2="168" stroke="#ff3d7f" stroke-width="3" marker-end="url(#l10a)"/>
-          <rect class="box-light" x="510" y="12" width="118" height="40" rx="8"/>
-          <text x="569" y="37" text-anchor="middle" font-size="11">Hours / tickets</text>
-          <rect class="box-light" x="510" y="82" width="118" height="40" rx="8"/>
-          <text x="569" y="107" text-anchor="middle" font-size="11">Exhibits</text>
-          <rect class="box-light" x="510" y="152" width="118" height="40" rx="8"/>
-          <text x="569" y="177" text-anchor="middle" font-size="11">Visitor policy</text>
-        </svg>
-        <p class="takeaway">MCP is the plug. The orchestrator decides <em>which</em> plugs to use, in what order, and when to stop.</p>
-      </section>
 
-      <section class="slide" data-slide="6">
-        <h1>The only contract that matters</h1>
-        <table>
-          <tr><th>Call</th><th>You get</th><th>Manager use</th></tr>
-          <tr><td><code>list_tools()</code></td><td>Names, descriptions, JSON schemas</td><td>What can this agent even do?</td></tr>
-          <tr><td><code>call_tool(name, args)</code></td><td>Structured result from that desk</td><td>Evidence, not memory of peabody.yale.edu</td></tr>
-        </table>
-        <ul>
-          <li>Import those functions. Do not copy museum JSON into the agent file.</li>
-          <li>Unknown tool names return an error, not a guessed payload.</li>
-        </ul>
-        <p class="takeaway">If the answer is not in a tool result, it is not a museum fact. It is a hallucination with a visitor-facing tone.</p>
-      </section>
 
-      <section class="slide" data-slide="7">
-        <h1>Orchestrator loop</h1>
-        <svg class="flow-svg" viewBox="0 0 640 175" aria-label="Orchestrator observe decide act loop">
-          <defs>
-            <marker id="l10b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-              <path d="M0,0 L6,3 L0,6 Z" class="arrow"/>
-            </marker>
-          </defs>
-          <rect class="box-light" x="20" y="20" width="130" height="48" rx="8"/>
-          <text x="85" y="42" text-anchor="middle" font-size="12" font-weight="700">1. Observe</text>
-          <text x="85" y="58" text-anchor="middle" font-size="10">query + trace so far</text>
-          <line x1="150" y1="44" x2="188" y2="44" stroke="#1f8ef0" stroke-width="3" marker-end="url(#l10b)"/>
-          <rect class="box-dark" x="190" y="12" width="150" height="64" rx="8"/>
-          <text class="on-dark" x="265" y="38" text-anchor="middle" font-size="12" font-weight="700">2. Decide</text>
-          <text class="on-dark" x="265" y="56" text-anchor="middle" font-size="10">tool, answer, or refuse</text>
-          <line x1="340" y1="44" x2="378" y2="44" stroke="#1f8ef0" stroke-width="3" marker-end="url(#l10b)"/>
-          <rect class="box-light" x="380" y="20" width="130" height="48" rx="8"/>
-          <text x="445" y="42" text-anchor="middle" font-size="12" font-weight="700">3. Act</text>
-          <text x="445" y="58" text-anchor="middle" font-size="10">call_tool via MCP</text>
-          <line x1="510" y1="44" x2="548" y2="44" stroke="#1f8ef0" stroke-width="3" marker-end="url(#l10b)"/>
-          <rect class="box-light" x="550" y="20" width="78" height="48" rx="8"/>
-          <text x="589" y="50" text-anchor="middle" font-size="11">Append trace</text>
-          <line x1="265" y1="76" x2="265" y2="118" stroke="#ff3d7f" stroke-width="3" marker-end="url(#l10b)"/>
-          <rect class="box-dark" x="175" y="120" width="180" height="44" rx="8"/>
-          <text class="on-dark" x="265" y="147" text-anchor="middle" font-size="12">Stop: answer or refuse</text>
-        </svg>
-        <p>You own the loop. The model only proposes the next move. Cap the steps so it cannot wander forever.</p>
-      </section>
 
-      <section class="slide" data-slide="8">
-        <h1>Happy path: Sunday + Burke</h1>
-        <svg class="flow-svg" viewBox="0 0 640 195" aria-label="Multi-tool flow for Sunday Burke question">
-          <defs>
-            <marker id="l10c" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-              <path d="M0,0 L6,3 L0,6 Z" class="arrow"/>
-            </marker>
-          </defs>
-          <rect class="box-dark" x="20" y="70" width="120" height="54" rx="8"/>
-          <text class="on-dark" x="80" y="93" text-anchor="middle" font-size="11">Orchestrator</text>
-          <text class="on-dark" x="80" y="110" text-anchor="middle" font-size="10">reads query</text>
-          <line x1="140" y1="85" x2="188" y2="40" stroke="#00c2b8" stroke-width="3" marker-end="url(#l10c)"/>
-          <line x1="140" y1="110" x2="188" y2="150" stroke="#ffc53d" stroke-width="3" marker-end="url(#l10c)"/>
-          <rect class="box-light" x="190" y="12" width="170" height="54" rx="8"/>
-          <text x="275" y="34" text-anchor="middle" font-size="11" font-weight="700">get_hours_and_tickets</text>
-          <text x="275" y="52" text-anchor="middle" font-size="10">topic=hours, date=Sunday</text>
-          <rect class="box-light" x="190" y="128" width="170" height="54" rx="8"/>
-          <text x="275" y="150" text-anchor="middle" font-size="11" font-weight="700">get_exhibit_info</text>
-          <text x="275" y="168" text-anchor="middle" font-size="10">query=Burke Hall</text>
-          <line x1="360" y1="39" x2="418" y2="85" stroke="#00c2b8" stroke-width="3" marker-end="url(#l10c)"/>
-          <line x1="360" y1="155" x2="418" y2="110" stroke="#ffc53d" stroke-width="3" marker-end="url(#l10c)"/>
-          <rect class="box-dark" x="420" y="70" width="200" height="54" rx="8"/>
-          <text class="on-dark" x="520" y="93" text-anchor="middle" font-size="12">Compare results</text>
-          <text class="on-dark" x="520" y="110" text-anchor="middle" font-size="10">agree → answer · clash → refuse</text>
-        </svg>
-        <p>List tools first. Hours first is a good default: if you are closed, the gallery question is moot. If both desks agree, answer with both facts.</p>
-      </section>
-
-      <section class="slide" data-slide="9">
-        <h1>When tools disagree: refuse</h1>
-        <img class="hero" src="../images/lec10/tools-disagree.png" alt="Two clipboards colliding with a referee whistle between them">
-        <div class="stat-grid">
-          <div class="stat-box">
-            <div class="num">Agree</div>
-            <div class="label"><code>action: answer</code></div>
-          </div>
-          <div class="stat-box">
-            <div class="num">Clash</div>
-            <div class="label"><code>action: refuse</code></div>
-          </div>
-          <div class="stat-box">
-            <div class="num">Unsure</div>
-            <div class="label">Still refuse — no blend</div>
-          </div>
+    <section class="slide skills-split-slide" data-slide="15">
+      <h1>Hierarchy In PydanticAI</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>You can build the agent hierarchy pattern (or any pattern) in PydanticAI</li>
+            <li>Agents have tools for their own work — and tools that delegate work to other agents</li>
+            <li>When an agent delegates, it waits for the other agent to return a result</li>
+          </ul>
         </div>
-        <p class="joke">Do not split the difference. “Let me get a human” is a product feature. HW5 plants at least one clash; graders will check it.</p>
-      </section>
+        <img
+          class="square-shot"
+          src="../images/lec10/mario3-orchestrator-tree.jpg"
+          alt="Robot-head orchestrator with seven workers each building a Mario 3 style world screen"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
 
-      <section class="slide" data-slide="10">
-        <h1>If you did not trace it, it did not happen</h1>
-        <div class="diagram">{
-  "query": "...",
-  "action": "answer" | "refuse",
-  "answer": "visitor text or empty",
-  "tool_trace": [
-    { "name": "get_hours_and_tickets",
-      "arguments": { "topic": "hours" },
-      "result_summary": "Sunday close 5pm" }
-  ],
-  "conflict": { "detected": false, "summary": "" }
-}</div>
-        <p>Managers audit traces. Models rewrite history. Your <code>tool_trace</code> is the receipt. JSON also needs <code>conflict.detected</code> and a short <code>summary</code>.</p>
-      </section>
+    <section class="slide code-slide" data-slide="16">
+      <h1>The Boss Agent</h1>
+      <ul>
+        <li>Task: count words across many pages of text</li>
+        <li>The <strong>boss agent</strong> splits the book into pages and delegates each page</li>
+        <li>Workers return counts; the boss agent adds them up</li>
+      </ul>
+      <div class="code-with-fig">
+        <div class="vibe-code-wrap" data-vibe-copy>
+          <div class="vibe-code-chrome">
+            <span class="vibe-code-label">boss agent (word-count sketch)</span>
+            <button type="button" class="vibe-code-copy" aria-label="Copy boss agent sketch">Copy</button>
+          </div>
+          <pre class="vibe-code"><code>from pydantic_ai import Agent
 
-      <section class="slide" data-slide="11">
-        <h1>What you actually decide</h1>
-        <table>
-          <tr><th>Decision</th><th>Bad default</th><th>Better default</th></tr>
-          <tr><td>Who owns each tool?</td><td>One mega-wiki</td><td>One desk, one MCP tool, one owner</td></tr>
-          <tr><td>When tools clash?</td><td>Model “splits the difference”</td><td>Refuse + human</td></tr>
-          <tr><td>How do we audit?</td><td>Chat screenshot</td><td>Ordered <code>tool_trace</code></td></tr>
-          <tr><td>Where does the LLM live?</td><td>Inside every tool</td><td>Orchestrator only (tools stay dumb JSON)</td></tr>
-        </table>
-        <p class="takeaway">Buying an SDK does not buy agreement between Marketing’s PDF and Legal’s PDF. You still own refusal and traces.</p>
-      </section>
+boss = Agent(
+    model,
+    instructions=(
+        "You are the boss agent. Count words across many pages. "
+        "Delegate each page to a worker, then sum the counts."
+    ),
+)
 
-      <section class="slide" data-slide="12">
-        <h1>News: the plug got boring on purpose</h1>
-        <div class="news-card">
-          <h3>28 Jul 2026 — MCP spec <code>2026-07-28</code></h3>
-          <p>No <code>initialize</code> handshake, no <code>Mcp-Session-Id</code>. Each <code>tools/call</code> is a self-contained HTTP request.</p>
-          <p><a href="https://blog.modelcontextprotocol.io/posts/2026-07-28/" target="_blank" rel="noopener">blog.modelcontextprotocol.io/posts/2026-07-28</a></p>
+@boss.tool
+async def <strong>delegate_page</strong>(page_text: str) -&gt; int:
+    """Delegate one page to a worker; return that page's word count."""
+    result = await <strong>worker</strong>.run(
+        f"Count the words on this page:\n\n{page_text}"
+    )
+    return int(result.output)</code></pre>
         </div>
-        <div class="news-card">
-          <h3>6 Aug 2026 — Agent Plugins 1.0</h3>
-          <p>One folder: <code>plugin.json</code> + optional <code>mcp.json</code> + skills. ChatGPT, Codex, Cursor, Copilot, VS Code load the same package.</p>
-          <p><a href="https://vercel.com/blog/introducing-agent-plugins" target="_blank" rel="noopener">vercel.com/blog/introducing-agent-plugins</a> · <a href="https://agent-plugins.org/" target="_blank" rel="noopener">agent-plugins.org</a></p>
+        <img
+          class="code-side-fig"
+          src="../images/lec10/boss-delegate-edge.jpg"
+          alt="Boss agent head connected by one line to a single worker below"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
+
+    <section class="slide code-slide" data-slide="17">
+      <h1>The Worker Agent</h1>
+      <ul>
+        <li>One focused job: count words on the page it receives</li>
+        <li>Its tool does the counting; the worker returns the number to the boss agent</li>
+      </ul>
+      <div class="code-with-fig">
+        <div class="vibe-code-wrap" data-vibe-copy>
+          <div class="vibe-code-chrome">
+            <span class="vibe-code-label">worker agent (word-count sketch)</span>
+            <button type="button" class="vibe-code-copy" aria-label="Copy worker agent sketch">Copy</button>
+          </div>
+          <pre class="vibe-code"><code>from pydantic_ai import Agent
+
+worker = Agent(
+    model,
+    instructions=(
+        "You are a worker. Count words on the one page you are given. "
+        "Use your tool, then return the number."
+    ),
+)
+
+@worker.tool
+def count_words(text: str) -&gt; int:
+    """Count whitespace-separated words on this page."""
+    return len(text.split())
+
+# When the boss agent calls worker.run(...), the worker
+# uses count_words and returns the integer back upstream.</code></pre>
         </div>
-        <p class="takeaway">MCP looks like ordinary HTTP. The fight is who owns the tools, not who owns the chat window.</p>
-      </section>
+        <img
+          class="code-side-fig"
+          src="../images/lec10/worker-node.jpg"
+          alt="Single worker robot node"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
 
-      <section class="slide" data-slide="13">
-        <h1>Homework 5 · then vibe (~40 min)</h1>
-        <ul>
-          <li>P2–P3 — MCP server, catalog, one real call per tool (last week)</li>
-          <li>P4 — <code>orchestrator.py</code> imports MCP; multi-tool sample; refuse on clash</li>
-          <li>P5 — run every shipped supervisor case</li>
-          <li>P6–P7 — judgment calls + pipeline diagram</li>
-        </ul>
-        <p><a href="../../hw5/p1.html">Homework 5: Peabody MCP and Orchestrator →</a></p>
-        <p>Vibe is a toy coffee-cart so the museum pack stays for the assignment.</p>
-        <p><a href="../vibe/lec10-vibe.html">Open the 40-minute prompts →</a></p>
-      </section>
+    <section class="slide code-slide" data-slide="18">
+      <h1>Delegating With Async And Await</h1>
+      <ul>
+        <li><code>async</code>
+          <ul>
+            <li>Delegation tools are async</li>
+            <li>The boss can hand work to many workers without waiting for each one to finish first</li>
+          </ul>
+        </li>
+        <li><code>await</code>
+          <ul>
+            <li>Once this tool has delegated, it waits right here until that worker sends back a result</li>
+            <li>PydanticAI can still run many of these awaits in parallel</li>
+          </ul>
+        </li>
+      </ul>
+      <div class="vibe-code-wrap code-centered" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">delegate_page — async + await</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy delegate_page sketch">Copy</button>
+        </div>
+        <pre class="vibe-code"><code>@boss.tool
+<strong>async def</strong> <strong>delegate_page</strong>(page_text: str) -&gt; int:
+    """Delegate one page to a worker; return that page's word count."""
+    result = <strong>await worker.run</strong>(
+        f"Count the words on this page:\n\n{page_text}"
+    )
+    return int(result.output)</code></pre>
+      </div>
+    </section>
 
-      <section class="slide" data-slide="14">
-        <h1>Summary</h1>
-        <ul>
-          <li>MCP = standard plug. Orchestrator = who calls which tool, in what order.</li>
-          <li>Guest questions that span desks need <strong>more than one</strong> tool.</li>
-          <li>If two tools disagree: <code>refuse</code>. Never invent a blended policy.</li>
-          <li>Traces are the audit. August 2026: spec is stateless; plugins are portable.</li>
-        </ul>
-        <p>Next: <strong>security and guardrails</strong> — what happens when the guest is actually an attacker.</p>
-      </section>
+    <section class="slide skills-split-slide" data-slide="19">
+      <h1>Agent Tracking</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>To track agent actions, we can use Python's <strong>async queue</strong></li>
+            <li>We write code that puts each agent action into that queue</li>
+            <li>Frontend makes a request to the backend for queue data when a user task starts</li>
+            <li>Backend then sends each new queue event to the frontend to be shown on a pretty dashboard</li>
+          </ul>
+        </div>
+        <img
+          class="emit-dashboard-shot"
+          src="../images/lec10/hp-emit-tracking.jpg"
+          alt="Multi-agent dashboard showing the boss and Book 4–7 workers with a live Book 7 reply panel"
+          width="1400"
+          height="1040"
+        >
+      </div>
+    </section>
+
+
+    <section class="slide skills-split-slide" data-slide="20">
+      <h1>Building A Multi-Agent System</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>We can build a multi-agent system to complete complex tasks</li>
+            <li><strong>PydanticAI</strong>: agents delegate work, tools for doing the work, track agents with an event queue</li>
+            <li>Show the agents working together on a React dashboard app</li>
+            <li><a class="vibe-link" href="../vibe/lec10-vibe.html">Vibe coding session →</a></li>
+          </ul>
+        </div>
+        <img
+          class="square-shot"
+          src="../images/lec10/crew-hp-wizards.jpg"
+          alt="Dumbledore headmaster robot with a crew of wizard robots each holding a book"
+          width="1024"
+          height="1024"
+        >
+      </div>
+    </section>
 
   </div>
-  <p class="slide-hint">Swipe or use buttons to advance � projector icon for presentation</p>
+  <p class="slide-hint">Swipe or use buttons to advance · projector icon for presentation</p>
   <footer class="slide-deck-footer">
     <button type="button" id="prev" aria-label="Previous slide">← Previous</button>
     <button type="button" id="next" aria-label="Next slide">Next →</button>
   </footer>
-  <script src="../../js/slides.js?v=7"></script>
+  <script src="../../js/slides.js?v=13"></script>
   <script src="../../js/theme.js"></script>
+  <script src="../../js/vibe-copy.js"></script>
 </body>
 </html>
