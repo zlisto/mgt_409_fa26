@@ -23,6 +23,36 @@
     .assignment-box p,
     .assignment-box ul,
     .assignment-box li { text-align: left; }
+    .tts-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.4rem;
+      height: 2.4rem;
+      padding: 0;
+      border: none;
+      border-radius: 999px;
+      background: #111;
+      color: #ff2d95;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .tts-btn:hover {
+      background: #000;
+      color: #ff6bb5;
+    }
+    .tts-btn[aria-pressed="true"] {
+      box-shadow: 0 0 0 2px #ff2d95;
+    }
+    .tts-btn svg {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+    .tts-end {
+      display: flex;
+      justify-content: flex-end;
+      margin: 0.35rem 0 1.15rem;
+    }
   </style>
 </head>
 <body>
@@ -66,10 +96,24 @@
         A frontend for the app is provided for you already, along with a database of the books.  In class you will build the multi-agent backend
         system.
       </p>
+      <div class="tts-end">
+        <button
+          type="button"
+          class="tts-btn"
+          data-tts="../audio/lec10/scenario.mp3?v=silence1"
+          aria-pressed="false"
+          aria-label="Play scenario reading"
+          title="Play scenario"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+        </button>
+      </div>
 
       <h2>Task</h2>
       <p>
-        Clone the starter repo.  It contains the React front end and an empty Python FastAPI backend.  Build the PydanticAI multi-agent system where the boss agent can take a user question, delegate the work to the specialist worker agents, and synthesize their results for the user.
+        Clone the starter repo.  It contains the React front end and an empty Python FastAPI backend.  Build the PydanticAI multi-agent system where the boss agent can take a user question, delegate the work to the specialist worker agents, and synthesize their results for the user.  
       </p>
       <p>Pieces you’ll end up with:</p>
       <ul>
@@ -77,6 +121,21 @@
         <li><strong>Worker agents</strong> — one per book; retrieve chunks from the database, then do the delegated task</li>
         <li><strong>Event queue</strong> — each agent action goes on a queue so the front end can show live progress</li>
       </ul>
+      <div class="tts-end">
+        <button
+          type="button"
+          class="tts-btn"
+          data-tts="../audio/lec10/task.mp3?v=silence1"
+          aria-pressed="false"
+          aria-label="Play task reading"
+          title="Play task"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+        </button>
+      </div>
+      <audio id="tts-audio" preload="none"></audio>
 
       <h2>Software Details</h2>
       <p>
@@ -187,6 +246,55 @@ May also live one level up. Never commit a real key. Use gpt-6-astra.</code></pr
       </div>
     </div>
   </main>
+  <script>
+    (function () {
+      const audio = document.getElementById("tts-audio");
+      const buttons = [...document.querySelectorAll(".tts-btn[data-tts]")];
+      if (!audio || !buttons.length) return;
+
+      let activeBtn = null;
+
+      function setPressed(btn, on) {
+        buttons.forEach((b) => b.setAttribute("aria-pressed", "false"));
+        if (btn) btn.setAttribute("aria-pressed", on ? "true" : "false");
+      }
+
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const src = btn.getAttribute("data-tts");
+          if (!src) return;
+
+          if (activeBtn === btn && !audio.paused) {
+            audio.pause();
+            setPressed(null, false);
+            activeBtn = null;
+            return;
+          }
+
+          if (audio.getAttribute("src") !== src) {
+            audio.setAttribute("src", src);
+            audio.load();
+          }
+          activeBtn = btn;
+          setPressed(btn, true);
+          audio.play().catch(() => {
+            setPressed(null, false);
+            activeBtn = null;
+          });
+        });
+      });
+
+      audio.addEventListener("ended", () => {
+        setPressed(null, false);
+        activeBtn = null;
+      });
+      audio.addEventListener("pause", () => {
+        if (!audio.ended && audio.paused && activeBtn) {
+          setPressed(null, false);
+        }
+      });
+    })();
+  </script>
   <script src="../../js/theme.js"></script>
   <script src="../../js/vibe-copy.js"></script>
 </body>
