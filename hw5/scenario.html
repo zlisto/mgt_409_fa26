@@ -1,0 +1,64 @@
+<details class="hw-brief">
+  <summary>Scenario and data</summary>
+  <div class="assignment-box" data-problem-set="hw5">
+    <h2>Scenario</h2>
+    <p>
+      <strong>Campus Customs Multi-Agent Operations</strong> is the agentic team that runs the shop.
+      Open tickets land on a board — customer orders, rent, unpaid bills,
+      discount requests, whatever the shop has to handle. You will build three pieces that talk to each
+      other: an <strong>MCP server</strong>, a
+      <strong>FastAPI backend</strong> with a multi-agent team, and a
+      <strong>React dashboard</strong> so a human can watch the agents at work and approve requests.
+    </p>
+    <p>
+      Your agent team has <strong>full connectivity</strong> — any agent may delegate tasks to any other agent
+      for help. In this assignment you will build these agents:
+    </p>
+    <ul>
+      <li><strong>Boss</strong> — reads each ticket, decides who should work on it, and makes final calls</li>
+      <li><strong>Inventory</strong> — checks stock by SKU and size, spots shortfalls, and figures out which vendor can restock</li>
+      <li><strong>Accounting</strong> — watches cash and invoices, checks margins, and prepares payments or purchase orders for human approval</li>
+      <li><strong>Facilities</strong> — handles the shop space side (leases, rent, etc.)</li>
+      <li><strong>Customer Service</strong> — drafts messages for customers</li>
+    </ul>
+
+    <h2>Data</h2>
+    <p>
+      Download
+      <a href="../data/hw5/data.zip">data.zip</a>
+      and unzip so you have <code>data/campus_customs.db</code>. That file is the original shop
+      database. Tables include <code>desk</code>, <code>tickets</code>, <code>inventory</code>,
+      <code>pricing</code>, <code>vendors</code>, <code>leases</code>, <code>cash_accounts</code>,
+      <code>payments</code>, and <code>invoices</code>.
+    </p>
+    <p>
+      Your tools will update the database as tickets get resolved. Make a copy of the database file called
+      <code>data/campus_customs_new.db</code> and point your MCP server and backend at that working
+      copy. Keep <code>campus_customs.db</code> untouched so you can reset when you want to restart
+      resolving the tickets.
+    </p>
+    <h2>Rules of this shop</h2>
+    <ul>
+      <li>The field <code>desk.date_today</code> is “today” for the shop. Use this date to determine what is overdue.</li>
+      <li>Vendor lead times come from the <code>vendors</code> table</li>
+      <li>A vendor will not ship new product while they still have an open unpaid invoice</li>
+      <li>Human approval is required for any payments. Points will be deducted if this is not done. If payment is made, make sure to update the relevant table.</li>
+      <li>If there is not enough cash, the pay tool must refuse — no negative balances</li>
+      <li>Cash only goes out in this homework — we did not model revenue, so no money comes in</li>
+      <li>Before a full run to resolve the tickets, make sure to reset the database to the original values</li>
+      <li>Do <strong>not</strong> email customers or call real vendors. Drafts stay on the board</li>
+    </ul>
+    <p>
+      Use your <code>PORTKEY_API_KEY</code> for AI calls. For this assignment, use
+      <strong>only</strong> <code>gpt-6-luna</code> through Portkey for every agent.
+      Multi-agent chats burn tokens fast. Points will be deducted if any other model
+      shows up in your code or runs.
+    </p>
+    <p>
+      Work <strong>one problem at a time</strong> with your vibe coder. Type each problem in your
+      own words. Do not paste the page URL, and do not screenshot the problems to finish
+      everything. Final submission will be a <strong>public</strong> GitHub repo
+      (the last problem shows the file tree).
+    </p>
+  </div>
+</details>

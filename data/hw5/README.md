@@ -1,18 +1,20 @@
-# MGT 409 Homework 5 — Peabody visitor ops
+# Homework 5 data — Campus Customs
 
-Course mock of Yale Peabody Museum visitor-ops tools. Not official museum policy. **Do not** email or call the museum about these files.
+Download `data.zip` and unzip next to your project so you have:
 
-Public site (context only): https://peabody.yale.edu
+```
+data/
+└── campus_customs.db
+```
 
-## Files
+Copy to a working file before you run agents (tools will update the DB):
 
-| Path | Contents |
-|------|----------|
-| `briefing/visitor_ops_memo.md` | Why the tools are separate |
-| `mcp_manifest.json` | Tool catalog (names, descriptions, JSON schemas) |
-| `tools/hours_tickets.json` | Hours, admission, membership |
-| `tools/exhibits.json` | Galleries and public-program copy |
-| `tools/visitor_policy.json` | Bags, photography, after-hours rules |
-| `eval/supervisor_cases.json` | Front-desk tasks for the orchestrator (includes at least one planted conflict) |
+```
+copy data\campus_customs.db data\campus_customs_new.db
+```
 
-Call facts through your MCP tools. Do not treat the live museum site as the grader’s source of truth.
+Mac/Linux: `cp data/campus_customs.db data/campus_customs_new.db`
+
+Point your MCP server and backend at `data/campus_customs_new.db`.
+
+Include both `.db` files in your GitHub submission (see the last homework problem).
