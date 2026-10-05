@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CPU vs GPU Economics</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"
+    onerror="let s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js';document.head.appendChild(s)"></script>
+  <style>
+    :root {
+      --pink: #ff4d8d;
+      --pink-deep: #e11d74;
+      --pink-soft: rgba(255, 77, 141, 0.16);
+      --pink-bar: #ff4d8d;
+      --ink: #ffffff;
+      --muted: rgba(255, 255, 255, 0.82);
+      --card: #17101a;
+      --card-edge: rgba(255, 77, 141, 0.35);
+      --bg: transparent;
+      --font: "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font);
+      overflow: hidden;
+    }
+    .wrap {
+      width: 100%;
+      padding: 0.35rem 0.15rem 0.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+    .title-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .title-row h2 {
+      margin: 0;
+      font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+    .badge {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--ink);
+      background: var(--pink-soft);
+      border: 1px solid var(--card-edge);
+      border-radius: 999px;
+      padding: 0.25rem 0.65rem;
+      white-space: nowrap;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-edge);
+      border-radius: 12px;
+      padding: 0.7rem 0.85rem;
+      min-width: 0;
+    }
+    .card h3 {
+      margin: 0 0 0.55rem;
+      font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.35rem 0.75rem;
+      margin: 0 0 0.45rem;
+      font-size: clamp(0.95rem, 1.9vw, 1.12rem);
+      line-height: 1.3;
+    }
+    .chip-row .chip-name a {
+      color: var(--ink);
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .chip-row .chip-price {
+      color: var(--ink);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+    .controls label {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      font-weight: 700;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .controls select {
+      flex: 1;
+      min-width: 0;
+      appearance: none;
+      -webkit-appearance: none;
+      border: 1px solid var(--card-edge);
+      background: var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 12px center;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 0.55rem 2.4rem 0.55rem 0.95rem;
+      font: inherit;
+      font-weight: 650;
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      cursor: pointer;
+    }
+    .controls select:focus {
+      outline: 2px solid var(--pink);
+      outline-offset: 2px;
+    }
+    .chart-box {
+      position: relative;
+      width: 100%;
+      height: min(32vh, 220px);
+      border-radius: 12px;
+      border: 1px solid var(--card-edge);
+      background: var(--card);
+      padding: 0.35rem 0.5rem 0.2rem;
+      overflow: hidden;
+    }
+    .takeaways {
+      margin: 0.35rem 0 0;
+      padding-left: 1.2rem;
+    }
+    .takeaways li {
+      margin: 0 0 0.2rem;
+      font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+      font-weight: 650;
+      line-height: 1.35;
+      color: var(--ink);
+    }
+    .takeaways strong { font-weight: 900; }
+    @media (max-width: 640px) {
+      .cards { grid-template-columns: 1fr; }
+      .chart-box { height: 200px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="title-row">
+      <h2>AI Compute &amp; Hardware Economics</h2>
+      <span class="badge" id="hero-badge">150× compute</span>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <h3>CPU server</h3>
+        <div class="chip-row">
+          <span class="chip-name"><a href="https://www.intel.com/content/www/us/en/products/sku/241825/intel-xeon-6747p-processor-288m-cache-2-70-ghz/specifications.html" target="_blank" rel="noopener">Intel Xeon 6747P specs</a></span>
+          <span class="chip-price">~$5.4k</span>
+        </div>
+        <div class="chip-row">
+          <span class="chip-name"><a href="https://www.amd.com/en/products/processors/server/epyc/9005-series.html" target="_blank" rel="noopener">AMD EPYC 9575F specs</a></span>
+          <span class="chip-price">~$5.0k</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>GPU accelerator</h3>
+        <div class="chip-row">
+          <span class="chip-name"><a href="https://www.nvidia.com/en-us/data-center/h100/" target="_blank" rel="noopener">H100 specs</a></span>
+          <span class="chip-price">~$32k</span>
+        </div>
+        <div class="chip-row">
+          <span class="chip-name"><a href="https://www.nvidia.com/en-us/data-center/dgx-b200/" target="_blank" rel="noopener">B200 specs</a></span>
+          <span class="chip-price">~$30k–$40k</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <label for="metric-select">Metric</label>
+      <select id="metric-select">
+        <option value="tflops" selected>Peak throughput (TFLOPS)</option>
+        <option value="bandwidth">Memory bandwidth (GB/s)</option>
+        <option value="cost">Relative cost per 1M tokens ($)</option>
+      </select>
+    </div>
+
+    <div class="chart-box" id="chart-zone">
+      <canvas id="architectureChart"></canvas>
+    </div>
+    <ul class="takeaways">
+      <li><strong>Peak throughput</strong> — GPU is about <strong>150×</strong> higher than CPU</li>
+      <li><strong>Memory bandwidth</strong> — GPU is about <strong>11×</strong> higher than CPU</li>
+      <li><strong>Cost per 1M tokens</strong> — GPU is about <strong>60×</strong> lower than CPU</li>
+    </ul>
+  </div>
+
+  <script>
+    const PINK = "#ff4d8d";
+    const PINK_SOFT = "rgba(255, 77, 141, 0.22)";
+    const WHITE = "#ffffff";
+    const MUTED = "rgba(255, 255, 255, 0.82)";
+
+    const METRICS = {
+      tflops: {
+        badge: "150× compute",
+        unit: "TFLOPS",
+        cpuVal: 10,
+        gpuVal: 1500,
+        cpuStr: "10 TFLOPS (FP16)",
+        gpuStr: "1,500 TFLOPS (FP16 matrix)",
+        format: (v) => v.toLocaleString() + " TFLOPS",
+        label: "Peak tensor throughput"
+      },
+      bandwidth: {
+        badge: "11.2× bandwidth",
+        unit: "GB/s",
+        cpuVal: 300,
+        gpuVal: 3350,
+        cpuStr: "300 GB/s (DDR5)",
+        gpuStr: "3,350 GB/s (HBM3)",
+        format: (v) => v.toLocaleString() + " GB/s",
+        label: "Memory bandwidth"
+      },
+      cost: {
+        badge: "98% cheaper tokens",
+        unit: "$ / 1M tok",
+        cpuVal: 12.5,
+        gpuVal: 0.2,
+        cpuStr: "$12.50 / 1M tokens",
+        gpuStr: "$0.20 / 1M tokens",
+        format: (v) => "$" + v.toFixed(2),
+        label: "Relative cost per 1M tokens"
+      }
+    };
+
+    let chart = null;
+    let active = "tflops";
+
+    function paint() {
+      const cfg = METRICS[active];
+      document.getElementById("hero-badge").textContent = cfg.badge;
+
+      const canvas = document.getElementById("architectureChart");
+      if (!canvas || typeof Chart === "undefined") return;
+
+      const data = {
+        labels: ["Dual Xeon / EPYC CPU", "NVIDIA H100 GPU"],
+        datasets: [{
+          label: cfg.label,
+          data: [cfg.cpuVal, cfg.gpuVal],
+          backgroundColor: [PINK_SOFT, PINK],
+          borderColor: [PINK, PINK],
+          borderWidth: 1.5,
+          borderRadius: { topLeft: 10, topRight: 10, bottomLeft: 0, bottomRight: 0 },
+          maxBarThickness: 56
+        }]
+      };
+
+      if (chart) {
+        chart.data = data;
+        chart.options.scales.y.title.text = cfg.unit;
+        chart.options.plugins.tooltip.callbacks.label = (c) => " " + cfg.format(c.raw);
+        chart.update();
+        return;
+      }
+
+      chart = new Chart(canvas.getContext("2d"), {
+        type: "bar",
+        data,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 280 },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: "#17101a",
+              titleColor: WHITE,
+              bodyColor: WHITE,
+              borderColor: PINK,
+              borderWidth: 1,
+              callbacks: { label: (c) => " " + cfg.format(c.raw) }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              border: { display: false },
+              ticks: { color: WHITE, font: { weight: "700", size: 15 } }
+            },
+            y: {
+              grid: { color: "rgba(255, 255, 255, 0.12)" },
+              border: { display: false },
+              title: {
+                display: true,
+                text: cfg.unit,
+                color: WHITE,
+                font: { size: 14, style: "italic", weight: "600" }
+              },
+              ticks: { color: WHITE, maxTicksLimit: 5, font: { size: 14 } }
+            }
+          }
+        }
+      });
+    }
+
+    function boot() {
+      if (typeof Chart === "undefined") {
+        setTimeout(boot, 40);
+        return;
+      }
+      paint();
+    }
+
+    document.getElementById("metric-select").addEventListener("change", (e) => {
+      active = e.target.value;
+      paint();
+    });
+
+    window.addEventListener("message", (e) => {
+      if (e.data && (e.data.type === "set-theme" || e.data.type === "APPLY_THEME") && e.data.theme) {
+        document.documentElement.setAttribute("data-theme", e.data.theme);
+      }
+    });
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", boot);
+    } else {
+      boot();
+    }
+
+    (function resizePing() {
+      function notify() {
+        const c = document.querySelector(".wrap") || document.body;
+        const h = Math.ceil(Math.max(c.getBoundingClientRect().bottom, c.scrollHeight));
+        window.parent.postMessage({ type: "widget-resize", height: h }, "*");
+      }
+      window.addEventListener("load", () => setTimeout(notify, 80));
+      if (window.ResizeObserver) {
+        new ResizeObserver(notify).observe(document.querySelector(".wrap") || document.body);
+      }
+    })();
+  </script>
+</body>
+</html>
