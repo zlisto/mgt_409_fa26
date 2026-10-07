@@ -475,6 +475,26 @@
     html:-webkit-full-screen .two-col-pics img,
     body.is-fullscreen-deck .two-col-pics img { max-height: 30vh; }
 
+    /* Lisa audio button (same look as the vibe pages) */
+    .tts-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.2rem;
+      height: 2.2rem;
+      padding: 0;
+      border: none;
+      border-radius: 999px;
+      background: #111;
+      color: #ff2d95;
+      cursor: pointer;
+      vertical-align: middle;
+      margin-left: 0.35rem;
+    }
+    .tts-btn:hover { background: #000; color: #ff6bb5; }
+    .tts-btn[aria-pressed="true"] { box-shadow: 0 0 0 2px #ff2d95; }
+    .tts-btn svg { width: 1.15rem; height: 1.15rem; }
+
     /* fullscreen: cards keep a fixed height instead of stretching to the bottom */
     html:fullscreen .slide.active .two-col,
     html:-webkit-full-screen .slide.active .two-col,
@@ -707,6 +727,18 @@
             </li>
             <li><strong>Anthropic (2025)</strong> — an AI email agent learns it’s being replaced, and that the exec replacing it is having an affair
               <a href="https://www.anthropic.com/research/agentic-misalignment" target="_blank" rel="noopener">(Anthropic)</a>
+              <button
+                type="button"
+                class="tts-btn tts-inline"
+                data-tts="../audio/lec12/Lisa_blackmail_email.mp3"
+                aria-pressed="false"
+                aria-label="Play the AI's blackmail email"
+                title="Play the AI's blackmail email"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                </svg>
+              </button>
               <ul>
                 <li>Blackmail rates: Claude Opus 4 96%, Gemini 2.5 Flash 96%, GPT-4.1 80%</li>
               </ul>
@@ -1177,5 +1209,31 @@
   <script src="../../js/slides.js?v=13"></script>
   <script src="../../js/theme.js"></script>
   <script src="../../js/vibe-copy.js"></script>
+  <audio id="tts-audio" preload="none"></audio>
+  <script>
+    // Play/pause buttons for recorded audio (same behavior as the vibe pages).
+    (function () {
+      const audio = document.getElementById("tts-audio");
+      const buttons = [...document.querySelectorAll(".tts-btn[data-tts]")];
+      if (!audio || !buttons.length) return;
+      let activeBtn = null;
+      const reset = () => { buttons.forEach((b) => b.setAttribute("aria-pressed", "false")); activeBtn = null; };
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const src = btn.getAttribute("data-tts");
+          if (activeBtn === btn && !audio.paused) { audio.pause(); reset(); return; }
+          if (audio.getAttribute("src") !== src) { audio.setAttribute("src", src); audio.load(); }
+          reset(); activeBtn = btn; btn.setAttribute("aria-pressed", "true");
+          audio.play().catch(reset);
+        });
+      });
+      audio.addEventListener("ended", reset);
+      // Stop the audio when you move to another slide.
+      new MutationObserver(() => {
+        if (activeBtn && !activeBtn.closest(".slide.active")) { audio.pause(); reset(); }
+      }).observe(document.querySelector(".slide-viewport"), { subtree: true, attributes: true, attributeFilter: ["class"] });
+    })();
+  </script>
 </body>
 </html>
