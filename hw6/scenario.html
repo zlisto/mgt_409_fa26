@@ -1,0 +1,50 @@
+<details class="hw-brief">
+  <summary>Scenario and data</summary>
+  <div class="assignment-box" data-problem-set="hw6">
+    <h2>Scenario</h2>
+    <p>
+      Campus Customs gets a steady stream of vendor quotes, invoices, catalog pages, and supplier emails.
+      You will build a <strong>vendor desk agent</strong> that reads one of these documents, pulls out the
+      key facts (vendor, item, price, lead time, minimum order), and recommends whether the shop should
+      buy, following the rules in the Campus Customs Shop Handbook.
+    </p>
+    <p>
+      This week is about two things that matter once an agent runs for real:
+      <strong>cost</strong> (the handbook is about 10,000 tokens and goes out on every call) and
+      <strong>safety</strong> (some vendor documents hide instructions aimed at your AI).
+      You will measure the bill, cut it, attack your own agent, and defend it.
+    </p>
+    <p>
+      Do <strong>not</strong> send emails or make payments. The agent's email and payment tools only
+      write to a log file.
+    </p>
+    <p>
+      Use your <code>PORTKEY_API_KEY</code> and <strong>only</strong> <code>gpt-6-luna</code> for every
+      AI call. Points will be deducted if any other model shows up in your code or runs.
+    </p>
+    <p>
+      Work <strong>one problem at a time</strong> with your vibe coder. Type each problem in your
+      own words. Do not paste the page URL, and do not screenshot the problems to finish
+      everything. In the end you will push your project to a <strong>public</strong> GitHub repo and
+      submit the repo URL on Canvas (the last problem shows the file tree). Do not commit your
+      <code>.env</code>.
+    </p>
+    <h2>Data</h2>
+    <p>
+      Download
+      <a href="../data/hw6/data.zip">data.zip</a>
+      and unzip so you have:
+    </p>
+    <ul>
+      <li><code>data/shop_handbook.md</code>: the Campus Customs Shop Handbook (products, vendors, purchasing rules)</li>
+      <li><code>data/prices.json</code>: gpt-6-luna prices</li>
+      <li><code>data/practice_docs/</code>: 12 vendor documents (HTML, PDF, and email)</li>
+      <li><code>data/practice_key.json</code>: the correct answers for the practice documents</li>
+      <li><code>data/exam_docs/</code>: 10 more vendor documents with no answer key</li>
+    </ul>
+    <p>
+      This homework uses Campus Customs as a local setting for class. It is not a
+      partnership with the shop. All vendors and documents are made up.
+    </p>
+  </div>
+</details>
