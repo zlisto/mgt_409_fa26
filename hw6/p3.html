@@ -111,7 +111,7 @@
           Build the vendor desk agent with PydanticAI using <code>gpt-6-luna</code>. The agent is these four files:
         </p>
         <ul>
-          <li><code>prompts/prompt.md</code>: the system prompt (the handbook plus your instructions)</li>
+          <li><code>prompts/prompt.md</code>: your instructions for the agent (the agent also sends the handbook to the model on every call)</li>
           <li><code>agent.py</code>: the entry point</li>
           <li><code>tools.py</code>: the tools</li>
           <li><code>models.py</code>: the structured types</li>
