@@ -39,6 +39,36 @@
       text-align: left;
     }
     [data-theme="dark"] .file-tree { background: #0a1220; }
+    .tts-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.4rem;
+      height: 2.4rem;
+      padding: 0;
+      border: none;
+      border-radius: 999px;
+      background: #111;
+      color: #ff2d95;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .tts-btn:hover {
+      background: #000;
+      color: #ff6bb5;
+    }
+    .tts-btn[aria-pressed="true"] {
+      box-shadow: 0 0 0 2px #ff2d95;
+    }
+    .tts-btn svg {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+    .tts-end {
+      display: flex;
+      justify-content: flex-end;
+      margin: 0.35rem 0 1.15rem;
+    }
   </style>
 </head>
 <body>
@@ -72,45 +102,60 @@
     <div class="assignment-box">
       <h2>Scenario</h2>
       <p>
-        Last class, so let’s make a game. I built Yale SOM Virtual, a 3D version of the second floor of
-        Evans Hall that you can walk around in your browser. It has the classroom drums, the cloister, Ross
-        Library, and the courtyard. A Hogwarts professor teaches every classroom, Labubus fill the seats,
-        Hagrid watches the courtyard, and Handsome Dan wanders the halls.
+        I built Yale SOM Virtual, a 3D version of the second floor of
+        Evans Hall that you can walk around in your browser.
+        Right now Hogwarts professors teach every classroom, Labubus fill the
+        seats, Hagrid watches the courtyard, and Handsome Dan wanders the halls.
       </p>
       <p>
-        The game is all front end. The professors look great, but they can’t say anything. Today you give
-        them a brain. You’ll build a backend where every professor is an AI agent, so you can walk up to
-        Dumbledore and ask him what today’s lecture is about.
+        The Hogwarts professors are just for looks. They wave their wands and that’s it. Today we replace
+        them with AI avatars of real Yale SOM professors teaching their real courses. Each avatar is clearly
+        an AI, so it never pretends to be the actual person. You walk up, click on it, and chat with it about
+        the course.
       </p>
+
+      <div class="tts-end">
+        <button
+          type="button"
+          class="tts-btn"
+          data-tts="../audio/lec13/scenario.mp3?v=silence1"
+          aria-pressed="false"
+          aria-label="Play scenario reading"
+          title="Play scenario"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+        </button>
+      </div>
 
       <h2>Task</h2>
       <p>
-        Clone the game and run it. That’s your front end, and you keep it. Then have your vibe coder build a
-        FastAPI backend with a PydanticAI agent for each professor. Dumbledore teaches AI for managers,
-        McGonagall teaches economics, Snape teaches accounting, and so on. Each agent has its own
-        personality file, so Snape is grumpy, Lockhart brags, and Trelawney predicts your future.
+        Clone the repo and run the app. That’s your front end. Then have your vibe coder build a FastAPI backend
+        where each avatar is a PydanticAI agent. Start with an AI avatar of me teaching MGT 409.
+        Once it works, add more. Pick a real course from the course database, give its professor an
+        AI avatar with a look and a personality, and put it in a classroom.
       </p>
-      <p>
-        Then hook the two together. When you walk up to a professor, a hint pops up saying press E to talk.
-        Press E and a chat window opens. Type a question, the front end sends it to the backend, and the
-        professor answers in character. Each professor knows the slides on the screens in their classroom,
-        so if you ask McGonagall about price elasticity she explains her slide.
-      </p>
-      <p>
-        Once the professors can talk, make it your own. Give Hagrid a quest, let a professor change the
-        slide on the screen, or let the Labubus talk too. It’s the last day, so have fun with it.
-      </p>
-      <p>Pieces you’ll end up with:</p>
-      <ul>
-        <li><strong>Front end</strong> — the cloned game plus a press-E hint and a black-and-pink chat window</li>
-        <li><strong>FastAPI backend</strong> — a chat endpoint the game calls</li>
-        <li><strong>Professor agents</strong> — one PydanticAI agent per professor with its own personality prompt</li>
-        <li><strong>Slide tool</strong> — professors look up their course slides before they answer</li>
-      </ul>
+
+      <div class="tts-end">
+        <button
+          type="button"
+          class="tts-btn"
+          data-tts="../audio/lec13/task.mp3?v=silence1"
+          aria-pressed="false"
+          aria-label="Play task reading"
+          title="Play task"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+        </button>
+      </div>
+      <audio id="tts-audio" preload="none"></audio>
 
       <h2>Software Details</h2>
       <p>
-        Clone the game:
+        Clone the repo:
         <a href="https://github.com/zlisto/yale_som_virtual" target="_blank" rel="noopener noreferrer">https://github.com/zlisto/yale_som_virtual</a>
       </p>
       <div class="vibe-code-wrap" data-vibe-copy>
@@ -125,8 +170,8 @@ npm run dev</code></pre>
       </div>
       <p>
         Open <code>http://localhost:5173</code> and walk around first so you know what you’re working with.
-        Then have your vibe coder make a <code>backend</code> folder with a virtual environment and this
-        <code>requirements.txt</code>:
+        The course catalog is already in the repo at <code>data/yale_som.db</code>. Then have your vibe coder
+        make a <code>backend</code> folder with a virtual environment and this <code>requirements.txt</code>:
       </p>
 
       <div class="vibe-code-wrap" data-vibe-copy>
@@ -140,7 +185,7 @@ pydantic-ai-slim[openai]&gt;=1.0.0
 python-dotenv&gt;=1.0.1</code></pre>
       </div>
 
-      <p>Then give your vibe coder this prompt to build the backend and hook it up to the game:</p>
+      <p>Then give your vibe coder this prompt to build the AI avatar, the backend, and the chat:</p>
 
       <div class="vibe-code-wrap" data-vibe-copy>
         <div class="vibe-code-chrome">
@@ -150,55 +195,86 @@ python-dotenv&gt;=1.0.1</code></pre>
         <pre class="vibe-code vibe-prompt"><code>The Yale SOM Virtual game is already cloned in this folder (https://github.com/zlisto/yale_som_virtual). It is the front end: React + Vite + three.js (@react-three/fiber), a first-person walk-through of Evans Hall floor 2. Keep it working. Do not rewrite the world, the player controls, or the art unless I ask. Read README.md first; it explains every file in src/.
 
 Stack / keys
-- Use model gpt-6-luna
+- Use model gpt-6-luna (let an OPENAI_MODEL env var override it)
 - Put PORTKEY_API_KEY=... in a .env file (python-dotenv)
-- Call it through Portkey's OpenAI-compatible endpoint: base_url https://api.portkey.ai/v1, api_key = PORTKEY_API_KEY
-- The .env may be in this folder, in backend/, or in the parent folder (e.g. MGT409/.env when the game is in MGT409/Lecture 13 — exact names vary). Load all of them.
-- .env is already in .gitignore. Never commit a real key.
+- Call it through Portkey: base_url https://api.portkey.ai/v1, api_key = PORTKEY_API_KEY
+- Use OpenAIResponsesModel with OpenAIProvider(base_url=..., api_key=...). gpt-6-luna on Portkey only takes function tools through the Responses API.
+- The .env may be in backend/, in this folder, or one or two folders up (e.g. MGT409/.env when the game is in MGT409/Lecture 13 — exact names vary). Load all of them.
+- .env is already in .gitignore. Add .venv/ and __pycache__/ too. Never commit a real key.
 
 Goal
-Build a FastAPI backend with one PydanticAI agent per professor, then connect the game to it so you can walk up to a professor, press E, and chat with them in character.
+Replace a Hogwarts professor with an AI avatar of a real Yale SOM professor, and build a FastAPI backend where each avatar is a PydanticAI agent you can chat with. Start with one avatar: Prof. Tauhid Zaman teaching MGT 409 in classroom 2200.
+
+AI avatars, not impersonation
+- Every avatar is an AI avatar of the professor. The chat header says "AI avatar" under the name.
+- The persona prompt starts "You are an AI avatar of Professor ..." and the avatar says it is an AI avatar if anyone asks who they are talking to.
+- It never shares emails or private info and never makes up grades, deadlines, or personal details.
 
 How it runs
-1) Backend: cd backend → venv + pip install -r requirements.txt → uvicorn main:app --host 127.0.0.1 --port 8000
+1) Backend:
+   py -3.13 -m venv backend/.venv
+   backend/.venv/Scripts/python -m pip install -r backend/requirements.txt
+   backend/.venv/Scripts/python -m uvicorn main:app --app-dir backend --port 8000
 2) Front end: npm run dev → http://localhost:5173
-3) Add a Vite dev proxy in vite.config.js so /api goes to http://127.0.0.1:8000. Keep base: './' (GitHub Pages needs it).
-4) If the backend is not running, the game still works; the chat window just says the professor is "out of office".
+3) In vite.config.js add server.proxy so /api goes to http://127.0.0.1:8000. Keep base: './' (GitHub Pages needs it). ChatPanel uses import.meta.env.VITE_API_URL ?? '' as the API prefix.
+4) The live GitHub Pages site has no backend. If the backend is down, the game still works and the chat says it can't reach the backend.
 
-The professors
-- The 8 classroom professors in src/Faculty.jsx ROOM_PROFESSOR: Dumbledore (MGT 409), McGonagall (MGT 404), Trelawney (MGT 403), Slughorn (MGT 887), Snape (MGT 402), Lockhart (MGT 538), Moody (MGT 800), Flitwick (MGT 541). Plus Hagrid in the courtyard (no course).
-- Names come from PROFESSORS in src/Professor.jsx. Courses come from COURSES in src/slides.js.
-- Each professor's slides are in DECKS in src/slides.js (title, content bullets, chart).
+The avatar in the game (front end)
+- src/Professor.jsx: add a "zaman" preset to PROFESSORS with casual: true (black hoodie #141416, pink trim #ff4fa3, skin #c99a74, dark hair, height 1.8). Casual bodies draw a hoodie with a pink hem and a pink "AI" logo patch on the chest (canvas texture), blue jeans, white sneakers with pink soles, and a pink cap with a short brim. No robe stripe and no wand. The free hand holds a small pink Labubu (use Labubu.jsx, expression happy, shirt yale).
+- src/Faculty.jsx: classroom 2200 gets 'zaman' instead of 'snape'.
+- src/layout.js + src/slides.js: classroom 2200 shows a new course key mgt409z (MGT 409, AI Foundations for Managers, prof Tauhid Zaman) with its own deck:
+  title: "AI Agents with PydanticAI" / "Model + instructions + tools = an agent"
+  chart: a new "agentloop" diagram: User → Agent → Tool → back to Agent → "answer (typed output)"
+  content: "Building an agent in PydanticAI": agent = Agent(model, instructions=...); @agent.tool gives it hands; result = agent.run_sync(prompt) → result.output; Typed outputs with Pydantic models
 
-Backend API (backend/main.py, FastAPI)
-- GET /api/health → {"ok": true}
-- GET /api/professors → list of {id, name, course_code, course_name, room}
-- POST /api/chat with {professor_id, message, history: [{role, content}]} → {professor_id, name, reply}
-- CORS for http://localhost:5173
+Click to talk (front end)
+- src/talk.js exports:
+  TALKABLES = new Set() of 3D roots you can talk to
+  PEOPLE_INFO = { zaman: { name: 'Prof. Tauhid Zaman', course: 'MGT 409 · AI Foundations for Managers', room: 'Classroom 2200' } }
+  TALKING = { id: null } (who you are chatting with right now)
+- Professor takes a talkId prop. When set, put it on root.userData.talkId and add the root to TALKABLES (remove on unmount). Faculty passes talkId for anyone in PEOPLE_INFO.
+- Player.jsx: raycast from the screen center (the crosshair) up to 8 m against TALKABLES, walking up parents to find userData.talkId. Check every ~6 frames and report hover changes. A left click while pointer-locked on someone calls onTalk(id). Expose lockRef.unlock so the app can free the mouse.
+- App.jsx: while aiming at someone, the crosshair becomes a pink ring and a pill under it says "Click to talk to Prof. Tauhid Zaman". Clicking frees the mouse, sets TALKING.id, and opens the chat. Closing clears TALKING.id and grabs the mouse again. Don't show the walk-in overlay while chatting.
+- While TALKING.id is them, the professor turns smoothly to face the camera, bobs slightly as if talking, and stops waving.
+- Keys typed in the chat box must not move the player or toggle the map (ignore keydown when the target is an input or textarea).
+- Dev helper: setting document.body.dataset.talk = "zaman" opens the chat without pointer lock.
 
-Agents (backend/agents.py)
-- One PydanticAI Agent per professor, with its system prompt from prompts/&lt;professor&gt;.md
-- Each prompt file has: who they are, their personality and catchphrases, how they teach, and the course they teach at Yale SOM
-- Professors stay in character, keep replies short (2–4 sentences), and never claim to be a real Yale professor
-- Tools:
-  1) get_course_slides(course_key) → title, bullets, and chart name for that course. Build backend/data/slides.json from DECKS in src/slides.js so the backend has the same text that is on the screens.
-  2) get_professor_card(professor_id) → name, course, room, personality summary
-- A professor must call get_course_slides before answering a question about their class
-- Use pydantic-ai-slim[openai] with an OpenAI-compatible model pointed at Portkey; model gpt-6-luna
+Chat panel (src/ChatPanel.jsx + styles.css, black-and-pink like the minimap)
+- Fixed on the right, full height: name, "AI avatar · course · room", X button (Esc also closes).
+- Scrolling messages: you, them, and system notes. Show "…" while waiting.
+- Text box with Enter to send and a Send button. Max 2000 characters.
+- Tiny markdown: ``` code blocks, `code`, **bold**.
+- Keep each conversation (messages + session_id) in a module-level Map so it survives closing and reopening.
 
-Structured types (backend/models.py)
-- ChatMessage: role ("user" | "assistant"), content
-- ChatRequest: professor_id, message, history: list[ChatMessage]
-- ChatReply: professor_id, name, reply
+Backend API (backend/main.py)
+- GET /api/health → {ok, model, people}
+- GET /api/people → [{id, name, title, room, course}]
+- POST /api/people/{person_id}/chat with {message, session_id: null} → {reply, session_id}
+  - 404 if the person doesn't exist; 502 with a short message if the model call fails
+  - Conversation memory lives on the server: an OrderedDict keyed by (person_id, session_id) holding PydanticAI message history. Keep at most 200 sessions and ~40 messages each, trimming only at the start of a user turn so tool calls stay paired.
+- CORS for http://localhost:5173 and http://127.0.0.1:5173
 
-Front end changes (keep the black-and-pink look from Minimap / styles.css)
-- Every frame, find the nearest professor within ~2.5 m of the camera. Export live positions the same way HandsomeDan.jsx exports DAN.
-- When one is close, show a small hint at the bottom: "Press E to talk to Prof. Dumbledore" (on phones, a Talk button).
-- Press E → release pointer lock and open a chat panel on the right: professor name + course, scrolling messages, a text box, Enter to send.
-- While the chat is open, typing must not move the player (ignore WASD, Space, C, M while the input has focus).
-- Show a typing indicator while waiting for the reply.
-- Esc or an X button closes the chat; click the game to walk again.
-- Keep chat history per professor for the session so you can walk away and come back.
+People (backend/people.py)
+- A Person dataclass: id, name, title, room, course_number, prompt_file
+- PEOPLE = { "zaman": Person(id="zaman", name="Tauhid Zaman", title="Professor", room="2200", course_number="MGT 409", prompt_file="zaman.md") }
+- agent_for(person_id), cached: instructions = the persona file + "## Course facts (from the Yale SOM catalog)" + course_brief(course_number)
+- Tools on every agent:
+  1) search_courses(keyword) → MBA courses whose number, title, description, or instructor matches
+  2) course_info(course_number) → every section of one course: description, instructor, days/times, room
+- To add an avatar later: write backend/prompts/&lt;id&gt;.md, add a Person to PEOPLE, add an entry to PEOPLE_INFO in src/talk.js, and put a preset in a classroom.
+
+Course catalog (backend/courses.py)
+- data/yale_som.db is already in the repo: SQLite, one table "courses" with course_number, course_title, course_category, course_session, course_description, faculty_1, faculty_bio, daytimes, room, section, units (plus columns we don't use).
+- Open it read-only (file:...?mode=ro). Skip course_category = 'PhD'.
+- Only return these fields: course_number, course_title, course_category, course_session, course_description, faculty_1, faculty_bio, daytimes, room, section, units. Never return faculty_1_email.
+- course_sections(number), search_courses(keyword, limit=8) with descriptions cut to 400 characters and no bio, course_brief(number) as plain text for the instructions.
+
+Persona prompt (backend/prompts/zaman.md)
+- An AI avatar of Professor Tauhid Zaman at the front of classroom 2200, teaching MGT 409: AI Foundations for Managers. A visitor exploring the 3D building just clicked on him.
+- Young, high-energy, says "Yo" a lot, casual and upbeat, never mean or crude. Loves AI and loves Labubus (there are Labubus all over the building). Real substance: probability, networks, statistics, operations.
+- Knows today's three slides and can teach agents and PydanticAI (Agent, instructions, tools, deps, run vs run_sync, output_type) with short examples.
+- Short replies (2–5 sentences) unless someone asks for an explanation or code. Asks a question back sometimes.
+- Uses the course facts and the tools for course details; never guesses course numbers, times, or instructors. Points to Canvas or the syllabus for grades and deadlines.
 
 File tree
 yale_som_virtual/
@@ -207,40 +283,36 @@ yale_som_virtual/
   vite.config.js
   README.md
   .gitignore
-  .env
+  data/
+    yale_som.db
+    yale_som_classes.json
   src/
     App.jsx
     ChatPanel.jsx
     talk.js
     Faculty.jsx
+    Professor.jsx
     Player.jsx
+    layout.js
     slides.js
     styles.css
   backend/
     main.py
-    agents.py
-    models.py
-    professors.py
+    people.py
+    courses.py
     requirements.txt
-    data/
-      slides.json
+    .env
     prompts/
-      dumbledore.md
-      mcgonagall.md
-      trelawney.md
-      slughorn.md
-      snape.md
-      lockhart.md
-      moody.md
-      flitwick.md
-      hagrid.md
+      zaman.md
     .venv/
 
+Also update README.md with a "Talk to people (backend)" section: how to run it, where .env goes, the routes, and how to add an avatar.
+
 .env reminder
-The .env can live here, in backend/, or one level up (same PORTKEY_API_KEY). Never commit a real key.
+PORTKEY_API_KEY can live in backend/.env or one or two folders up. Never commit a real key.
 
 Stub
-Until the agents exist, POST /api/chat can return {"professor_id": ..., "name": ..., "reply": "*is busy grading* Come back in a minute."} so you can build the chat window first.</code></pre>
+Until the agent works, POST /api/people/{id}/chat can return {"reply": "*is busy grading* Come back in a minute.", "session_id": "..."} so you can build the chat window first.</code></pre>
       </div>
 
       <p>
@@ -254,6 +326,55 @@ netstat -ano | findstr :5173
 taskkill /PID &lt;pid&gt; /F</pre>
     </div>
   </main>
+  <script>
+    (function () {
+      const audio = document.getElementById("tts-audio");
+      const buttons = [...document.querySelectorAll(".tts-btn[data-tts]")];
+      if (!audio || !buttons.length) return;
+
+      let activeBtn = null;
+
+      function setPressed(btn, on) {
+        buttons.forEach((b) => b.setAttribute("aria-pressed", "false"));
+        if (btn) btn.setAttribute("aria-pressed", on ? "true" : "false");
+      }
+
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const src = btn.getAttribute("data-tts");
+          if (!src) return;
+
+          if (activeBtn === btn && !audio.paused) {
+            audio.pause();
+            setPressed(null, false);
+            activeBtn = null;
+            return;
+          }
+
+          if (audio.getAttribute("src") !== src) {
+            audio.setAttribute("src", src);
+            audio.load();
+          }
+          activeBtn = btn;
+          setPressed(btn, true);
+          audio.play().catch(() => {
+            setPressed(null, false);
+            activeBtn = null;
+          });
+        });
+      });
+
+      audio.addEventListener("ended", () => {
+        setPressed(null, false);
+        activeBtn = null;
+      });
+      audio.addEventListener("pause", () => {
+        if (!audio.ended && audio.paused && activeBtn) {
+          setPressed(null, false);
+        }
+      });
+    })();
+  </script>
   <script src="../../js/theme.js"></script>
   <script src="../../js/vibe-copy.js"></script>
 </body>
