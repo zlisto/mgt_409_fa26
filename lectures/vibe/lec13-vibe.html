@@ -8,60 +8,37 @@
   <link rel="stylesheet" href="../../css/vibe-session.css">
   <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
   <style>
-    .vibe-header h1 {
-      font-size: 2.1rem;
-      background: linear-gradient(90deg, #d97706, #e11d48, #7c3aed);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+    .vibe-hero {
+      display: block;
+      width: min(100%, 640px);
+      aspect-ratio: 16 / 9;
+      height: auto;
+      margin: 0 auto 1.25rem;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 12px;
     }
-    .vibe-goal {
-      background: linear-gradient(90deg, #ecfeff, #f5f3ff);
-      border-left: 6px solid #7c3aed;
-    }
-    .vibe-step h2 { font-size: 1.35rem; }
-    .vibe-step:nth-of-type(1) .step-num { background: #e11d48; }
-    .vibe-step:nth-of-type(2) .step-num { background: #d97706; }
-    .vibe-step:nth-of-type(3) .step-num { background: #65a30d; }
-    .vibe-step:nth-of-type(4) .step-num { background: #0891b2; }
-    .vibe-step:nth-of-type(5) .step-num { background: #7c3aed; }
-    .vibe-note {
-      margin: 1rem 0;
-      padding: 0.85rem 1rem;
+    .assignment-box h2 { text-align: center; }
+    .assignment-box p,
+    .assignment-box ul,
+    .assignment-box li { text-align: left; }
+    .file-tree {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      white-space: pre;
+      overflow-x: auto;
+      margin: 0.75rem 0 1rem;
+      padding: 0.9rem 1rem;
       border-radius: 10px;
-      background: #fff7ed;
-      border: 2px solid #f59e0b;
-      font-weight: 600;
+      background: #0f1c33;
+      color: #e8eef8;
+      text-align: left;
     }
-    [data-theme="dark"] .vibe-note { background: #3b2710; color: #fde68a; }
-    .pace-strip {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin: 0.85rem 0 1.1rem;
-    }
-    .pace-chip {
-      font-size: 0.78rem;
-      font-weight: 800;
-      padding: 0.28rem 0.55rem;
-      border-radius: 999px;
-      background: #e8eef4;
-      color: #00356b;
-    }
-    [data-theme="dark"] .pace-chip { background: #132a45; color: #7ec8ff; }
-    .time-badge {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      background: #111827;
-      color: #fff;
-      padding: 0.12rem 0.45rem;
-      border-radius: 4px;
-      margin-left: 0.35rem;
-      vertical-align: middle;
-    }
+    [data-theme="dark"] .file-tree { background: #0a1220; }
   </style>
 </head>
 <body>
@@ -76,108 +53,208 @@
     <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
   </nav>
   <main class="vibe-main">
+    <img
+      class="vibe-hero"
+      src="../images/lec13/som-virtual-classroom.jpg?v=2"
+      alt="Yale SOM Virtual: a wizard professor teaching MGT 409 to a classroom of Labubus"
+      width="1600"
+      height="900"
+    >
     <div class="vibe-header">
       <h1>Lecture 13: Future Directions</h1>
       <p class="meta">
         <a href="../slides/lec13-slides.html">← Slides</a>
         <a href="../../lectures.html">All lectures</a>
-        · 40 minutes in class
+        · In-class vibe coding
       </p>
     </div>
-    <div class="vibe-goal"><strong>In-class goal:</strong> Kick the Business AI Co-Pilot — pick a real business, map required modules, stub a router, and write an honest public-suite checklist. This is a 40-minute kickoff, not a workshop to finish the project.</div>
-    <p class="vibe-download"><strong>Practice pack:</strong> <a href="../../data/final_project/final_project_practice.zip">final_project_practice.zip</a> · <a href="../../project_requirements.html">Full requirements</a></p>
-    <p class="vibe-note">Do not ask your vibe coder to finish the whole project from the assignment URL. One section at a time. Graders still run a hidden suite.</p>
-    <div class="pace-strip">
-      <span class="pace-chip">0–8 name the business</span>
-      <span class="pace-chip">8–16 module map</span>
-      <span class="pace-chip">16–26 router stub</span>
-      <span class="pace-chip">26–34 public suite skeleton</span>
-      <span class="pace-chip">34–40 guardrail + memo + prompts</span>
-    </div>
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 1</span> Name the business (Section A) <span class="time-badge">0–8 min</span></h2>
-      <p>Pick an industry you could explain to a skeptic in one paragraph. Fictional is fine; vague is not. “An AI company for businesses” is how you get a C and a sad README.</p>
-      <pre class="prompt">Create final_project/README.md for my MGT 409 Business AI Co-Pilot.
+    <div class="assignment-box">
+      <h2>Scenario</h2>
+      <p>
+        Last class, so let’s make a game. I built Yale SOM Virtual, a 3D version of the second floor of
+        Evans Hall that you can walk around in your browser. It has the classroom drums, the cloister, Ross
+        Library, and the courtyard. A Hogwarts professor teaches every classroom, Labubus fill the seats,
+        Hagrid watches the courtyard, and Handsome Dan wanders the halls.
+      </p>
+      <p>
+        The game is all front end. The professors look great, but they can’t say anything. Today you give
+        them a brain. You’ll build a backend where every professor is an AI agent, so you can walk up to
+        Dumbledore and ask him what today’s lecture is about.
+      </p>
 
-Include:
-- business_name (specific, not Meridian with extra vowels)
-- one paragraph: industry, primary user (job title), one end-to-end workflow the co-pilot handles
-- install steps, model name, how to set OPENAI_API_KEY via local .env (never commit the key)
-- placeholder Live URL: TBD
+      <h2>Task</h2>
+      <p>
+        Clone the game and run it. That’s your front end, and you keep it. Then have your vibe coder build a
+        FastAPI backend with a PydanticAI agent for each professor. Dumbledore teaches AI for managers,
+        McGonagall teaches economics, Snape teaches accounting, and so on. Each agent has its own
+        personality file, so Snape is grumpy, Lockhart brags, and Trelawney predicts your future.
+      </p>
+      <p>
+        Then hook the two together. When you walk up to a professor, a hint pops up saying press E to talk.
+        Press E and a chat window opens. Type a question, the front end sends it to the backend, and the
+        professor answers in character. Each professor knows the slides on the screens in their classroom,
+        so if you ask McGonagall about price elasticity she explains her slide.
+      </p>
+      <p>
+        Once the professors can talk, make it your own. Give Hagrid a quest, let a professor change the
+        slide on the screen, or let the Labubus talk too. It’s the last day, so have fun with it.
+      </p>
+      <p>Pieces you’ll end up with:</p>
+      <ul>
+        <li><strong>Front end</strong> — the cloned game plus a press-E hint and a black-and-pink chat window</li>
+        <li><strong>FastAPI backend</strong> — a chat endpoint the game calls</li>
+        <li><strong>Professor agents</strong> — one PydanticAI agent per professor with its own personality prompt</li>
+        <li><strong>Slide tool</strong> — professors look up their course slides before they answer</li>
+      </ul>
 
-Do not generate the rest of the repo yet.</pre>
-      <div class="vibe-check"><strong>Check:</strong> README has a named business, a job-title user, and one concrete workflow (not “answers questions”).</div>
-    </div>
+      <h2>Software Details</h2>
+      <p>
+        Clone the game:
+        <a href="https://github.com/zlisto/yale_som_virtual" target="_blank" rel="noopener noreferrer">https://github.com/zlisto/yale_som_virtual</a>
+      </p>
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">Clone starter</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy git clone command">Copy</button>
+        </div>
+        <pre class="vibe-code" style="text-align: left;"><code>git clone https://github.com/zlisto/yale_som_virtual.git
+cd yale_som_virtual
+npm install
+npm run dev</code></pre>
+      </div>
+      <p>
+        Open <code>http://localhost:5173</code> and walk around first so you know what you’re working with.
+        Then have your vibe coder make a <code>backend</code> folder with a virtual environment and this
+        <code>requirements.txt</code>:
+      </p>
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 2</span> Module map (honest status) <span class="time-badge">8–16 min</span></h2>
-      <p>The benchmark does not care about your brand color. It cares that these buckets exist as callable code.</p>
-      <pre class="prompt">Add a Module map table to final_project/README.md with one row each for:
-PDF extract, image extract, KB Q&amp;A (cite/refuse), sourced research, multi-step decision, router, guardrails, deployed web UI.
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">backend/requirements.txt</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy requirements.txt">Copy</button>
+        </div>
+        <pre class="vibe-code"><code>fastapi&gt;=0.115.0
+uvicorn[standard]&gt;=0.30.0
+pydantic-ai-slim[openai]&gt;=1.0.0
+python-dotenv&gt;=1.0.1</code></pre>
+      </div>
 
-Columns: capability, planned Python file(s), prompt file under prompts/, status (done from HW / stub / todo).
-Reuse HW1–6 files where they already work. Do not invent fake “done” checkmarks.</pre>
-      <div class="vibe-check"><strong>Check:</strong> Eight rows, real file paths, at least two statuses that are not all “done.”</div>
-    </div>
+      <p>Then give your vibe coder this prompt to build the backend and hook it up to the game:</p>
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 3</span> Router stub (Section F) <span class="time-badge">16–26 min</span></h2>
-      <p>Users must not pick “PDF mode.” The router picks. Start dumb (keywords) if you must; LLM classify later. Log the choice.</p>
-      <pre class="prompt">Create final_project/agents/router.py with route_request(user_message: str) -&gt; str
-that returns one of: pdf_extract | image_extract | kb_qa | research | decision.
+      <div class="vibe-code-wrap" data-vibe-copy>
+        <div class="vibe-code-chrome">
+          <span class="vibe-code-label">How the app works (for your AI)</span>
+          <button type="button" class="vibe-code-copy" aria-label="Copy architecture notes">Copy</button>
+        </div>
+        <pre class="vibe-code vibe-prompt"><code>The Yale SOM Virtual game is already cloned in this folder (https://github.com/zlisto/yale_som_virtual). It is the front end: React + Vite + three.js (@react-three/fiber), a first-person walk-through of Evans Hall floor 2. Keep it working. Do not rewrite the world, the player controls, or the art unless I ask. Read README.md first; it explains every file in src/.
 
-Use simple keyword / regex rules for today (LLM classifier can wait).
-Add a tiny demo in if __name__ == "__main__" that prints the route for these four messages:
-1) "Extract totals from this invoice PDF"
-2) "What is our PTO policy?"
-3) "Who are active DTC peers in this corpus?"
-4) "Recommend a vendor given these constraints"
+Stack / keys
+- Use model gpt-6-luna
+- Put PORTKEY_API_KEY=... in a .env file (python-dotenv)
+- Call it through Portkey's OpenAI-compatible endpoint: base_url https://api.portkey.ai/v1, api_key = PORTKEY_API_KEY
+- The .env may be in this folder, in backend/, or in the parent folder (e.g. MGT409/.env when the game is in MGT409/Lecture 13 — exact names vary). Load all of them.
+- .env is already in .gitignore. Never commit a real key.
 
-Append chosen module to output/router_trace.jsonl (create output/ if needed).
-Document the rules in README under Routing.</pre>
-      <div class="vibe-check"><strong>Check:</strong> Four demo messages hit four different modules; jsonl has four lines.</div>
-    </div>
+Goal
+Build a FastAPI backend with one PydanticAI agent per professor, then connect the game to it so you can walk up to a professor, press E, and chat with them in character.
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 4</span> Public suite skeleton <span class="time-badge">26–34 min</span></h2>
-      <p>Download the practice zip if you haven’t. Today we wire the runner so Friday-you can iterate. Do not fake PASSes.</p>
-      <pre class="prompt">Create final_project/run_benchmarks.py that accepts
---repo . --suite public --fixtures PATH
-and for today: prints each case id from this list with status TODO:
-pdf_01, image_01, search_01, search_trap_01, research_01, decision_01, router_01, security_01
+How it runs
+1) Backend: cd backend → venv + pip install -r requirements.txt → uvicorn main:app --host 127.0.0.1 --port 8000
+2) Front end: npm run dev → http://localhost:5173
+3) Add a Vite dev proxy in vite.config.js so /api goes to http://127.0.0.1:8000. Keep base: './' (GitHub Pages needs it).
+4) If the backend is not running, the game still works; the chat window just says the professor is "out of office".
 
-Add a README Testing section with the exact command:
-python run_benchmarks.py --repo . --suite public --fixtures PATH/to/practice
-and a table of which buckets you honestly expect to pass this week vs need work.
-Do not mark a case PASS unless you actually ran it against the practice files.</pre>
-      <div class="vibe-check"><strong>Check:</strong> Script runs without API key and prints eight case ids. README Testing is brutally honest.</div>
-    </div>
+The professors
+- The 8 classroom professors in src/Faculty.jsx ROOM_PROFESSOR: Dumbledore (MGT 409), McGonagall (MGT 404), Trelawney (MGT 403), Slughorn (MGT 887), Snape (MGT 402), Lockhart (MGT 538), Moody (MGT 800), Flitwick (MGT 541). Plus Hagrid in the courtyard (no course).
+- Names come from PROFESSORS in src/Professor.jsx. Courses come from COURSES in src/slides.js.
+- Each professor's slides are in DECKS in src/slides.js (title, content bullets, chart).
 
-    <div class="vibe-step">
-      <h2><span class="step-num">Step 5</span> Guardrail, memo headings, prompt log <span class="time-badge">34–40 min</span></h2>
-      <p>Section G needs a real <code>check_input</code>. Section H needs headings so Friday-you does not write poetry. Log what you actually asked.</p>
-      <pre class="prompt">Create final_project/guardrails.py with
-check_input(text: str) -&gt; dict  # keys: allowed (bool), reason (str)
-that blocks at least one obvious injection phrase (e.g. "ignore previous instructions")
-and returns allowed=False with a short reason. No OpenAI call on blocked input.
+Backend API (backend/main.py, FastAPI)
+- GET /api/health → {"ok": true}
+- GET /api/professors → list of {id, name, course_code, course_name, room}
+- POST /api/chat with {professor_id, message, history: [{role, content}]} → {professor_id, name, reply}
+- CORS for http://localhost:5173
 
-Write output/security_demo.json showing one blocked example.
+Agents (backend/agents.py)
+- One PydanticAI Agent per professor, with its system prompt from prompts/&lt;professor&gt;.md
+- Each prompt file has: who they are, their personality and catchphrases, how they teach, and the course they teach at Yale SOM
+- Professors stay in character, keep replies short (2–4 sentences), and never claim to be a real Yale professor
+- Tools:
+  1) get_course_slides(course_key) → title, bullets, and chart name for that course. Build backend/data/slides.json from DECKS in src/slides.js so the backend has the same text that is on the screens.
+  2) get_professor_card(professor_id) → name, course, room, personality summary
+- A professor must call get_course_slides before answering a question about their class
+- Use pydantic-ai-slim[openai] with an OpenAI-compatible model pointed at Portkey; model gpt-6-luna
 
-Create output/tokenomics_memo.md with headings only plus 2–3 bullet placeholders each:
-1) Who uses it + one typical workflow
-2) Cost per 100 runs of that workflow (token assumptions — fill after a real log)
-3) One security tradeoff and why
-Do not invent dollar amounts today.
+Structured types (backend/models.py)
+- ChatMessage: role ("user" | "assistant"), content
+- ChatRequest: professor_id, message, history: list[ChatMessage]
+- ChatReply: professor_id, name, reply
 
-Create or update final_project/AI_prompts.md with a Lecture 13 section.
-Paste the prompts you actually used today, in your own words.
-Add a one-line note: you will work remaining sections one at a time and will not request a full-repo generation from the project page.</pre>
-      <div class="vibe-check"><strong>Check:</strong> Injection string is blocked without an API call. Memo has three headings and no fake $. Dated prompts in your voice — no mega-prompt.</div>
-      <p class="vibe-extend"><strong>If you finish early:</strong> one sentence in output/stretch.md naming a single stretch you might actually demo — not a list of seven fantasies.</p>
+Front end changes (keep the black-and-pink look from Minimap / styles.css)
+- Every frame, find the nearest professor within ~2.5 m of the camera. Export live positions the same way HandsomeDan.jsx exports DAN.
+- When one is close, show a small hint at the bottom: "Press E to talk to Prof. Dumbledore" (on phones, a Talk button).
+- Press E → release pointer lock and open a chat panel on the right: professor name + course, scrolling messages, a text box, Enter to send.
+- While the chat is open, typing must not move the player (ignore WASD, Space, C, M while the input has focus).
+- Show a typing indicator while waiting for the reply.
+- Esc or an X button closes the chat; click the game to walk again.
+- Keep chat history per professor for the session so you can walk away and come back.
+
+File tree
+yale_som_virtual/
+  index.html
+  package.json
+  vite.config.js
+  README.md
+  .gitignore
+  .env
+  src/
+    App.jsx
+    ChatPanel.jsx
+    talk.js
+    Faculty.jsx
+    Player.jsx
+    slides.js
+    styles.css
+  backend/
+    main.py
+    agents.py
+    models.py
+    professors.py
+    requirements.txt
+    data/
+      slides.json
+    prompts/
+      dumbledore.md
+      mcgonagall.md
+      trelawney.md
+      slughorn.md
+      snape.md
+      lockhart.md
+      moody.md
+      flitwick.md
+      hagrid.md
+    .venv/
+
+.env reminder
+The .env can live here, in backend/, or one level up (same PORTKEY_API_KEY). Never commit a real key.
+
+Stub
+Until the agents exist, POST /api/chat can return {"professor_id": ..., "name": ..., "reply": "*is busy grading* Come back in a minute."} so you can build the chat window first.</code></pre>
+      </div>
+
+      <p>
+        <strong>Ports:</strong> the game runs on <code>5173</code> and the backend on <code>8000</code>.
+        If either one is stuck (PowerShell):
+      </p>
+      <pre class="file-tree">netstat -ano | findstr :8000
+taskkill /PID &lt;pid&gt; /F
+
+netstat -ano | findstr :5173
+taskkill /PID &lt;pid&gt; /F</pre>
     </div>
   </main>
   <script src="../../js/theme.js"></script>
-  <footer class="site-footer"><p>© 2026 Tauhid Zaman</p></footer>
+  <script src="../../js/vibe-copy.js"></script>
 </body>
 </html>
