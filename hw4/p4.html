@@ -131,7 +131,15 @@
         <ul>
           <li>Email: <code>test@campuscustoms.yale.edu</code></li>
           <li>Password: <code>password</code></li>
-          <li>Hash function: <code>PBKDF2-HMAC-SHA256</code> (stored as <code>pbkdf2_sha256$salt$hash</code>)</li>
+          <li>Hash function: <code>PBKDF2-HMAC-SHA256</code>, <code>120,000</code> iterations (stored as <code>pbkdf2_sha256$salt$hash</code>)</li>
+        </ul>
+        <p>How login checks a password:</p>
+        <ul>
+          <li>You never un-hash the stored value. You re-hash what the user typed and compare.</li>
+          <li>Read the <strong>salt</strong> out of the stored string (the middle piece) — do not make a new one at login.</li>
+          <li>Hash the typed password with that same salt, then compare to the stored hash. Use a constant-time compare.</li>
+          <li>Signup and login must use the <strong>same hash settings</strong> (same function, same salt handling, same iteration count). If they differ, even the right password will not match.</li>
+          <li>Surest check: log in as the seeded test user <em>and</em> as a brand-new account you just created in your own app.</li>
         </ul>
         <p>
           Confirm you can log in as that user, and that a brand-new account you create also works.
