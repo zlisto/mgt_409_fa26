@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grading - AI Foundations for Managers</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .grade-split { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 2rem 0; }
+    .grade-card { border-radius: 12px; padding: 1.5rem 1rem; text-align: center; border: 1px solid var(--border); }
+    .grade-card .pct { display: block; font-size: clamp(2.2rem, 6vw, 3.2rem); font-weight: 800; line-height: 1.1; color: var(--text-primary); }
+    .grade-card .label { display: block; margin-top: 0.4rem; font-size: 18px; font-weight: 600; color: var(--text-primary); }
+    .grade-card.attendance { background: rgba(232, 168, 0, 0.14); }
+    .grade-card.homework   { background: rgba(40, 120, 220, 0.13); }
+    .grade-card.project    { background: rgba(30, 160, 100, 0.13); }
+    .grade-card a { font-size: 16px; }
+    @media (max-width: 600px) { .grade-split { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <ul class="navbar">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="instructions.html">Instructions</a></li>
+      <li><a href="lectures.html">Lectures</a></li>
+      <li><a href="homeworks.html">Homeworks</a></li>
+      <li><a href="project_requirements.html">Final Project</a></li>
+      <li><a href="grading.html">Grading</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
+  </nav>
+
+  <main class="main-narrow">
+    <h1 class="schedule-header">Grading</h1>
+    <p class="page-subtitle">How your course grade is made up.</p>
+
+    <div class="grade-split">
+      <div class="grade-card attendance">
+        <span class="pct">10%</span>
+        <span class="label">Attendance</span>
+      </div>
+      <div class="grade-card homework">
+        <span class="pct">40%</span>
+        <span class="label">Homework</span>
+        <a href="homeworks.html">See homeworks</a>
+      </div>
+      <div class="grade-card project">
+        <span class="pct">50%</span>
+        <span class="label">Final project</span>
+        <a href="project_requirements.html">See requirements</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/theme.js"></script>
+  <footer class="site-footer">
+    <p>© 2026 Tauhid Zaman</p>
+  </footer>
+</body>
+</html>

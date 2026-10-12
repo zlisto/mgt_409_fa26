@@ -6,6 +6,36 @@
   <title>Final Project - AI Foundations for Managers</title>
   <link rel="stylesheet" href="css/style.css">
   <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
+  <style>
+    .content > * { max-width: 56rem; }
+    .content { padding-bottom: 60vh; }
+    .project-due { font-size: clamp(1.2rem, 2.4vw, 1.5rem); margin: 0 0 1rem; }
+    .tier-label { display: inline-block; font-weight: 700; padding: 2px 10px; border-radius: 999px; font-size: 15px; margin-right: 6px; background: var(--yale-blue); color: var(--text-on-blue); }
+    .grading-table td:nth-child(2), .grading-table th:nth-child(2) { text-align: center; white-space: nowrap; }
+    .grading-table tr.total-row td { font-weight: 700; }
+    .grading-grouped tr:nth-child(even) { background: none; }
+    .grading-grouped tbody.grp-idea   td { background: rgba(232, 168, 0, 0.12); }
+    .grading-grouped tbody.grp-app    td { background: rgba(40, 120, 220, 0.11); }
+    .grading-grouped tbody.grp-report td { background: rgba(30, 160, 100, 0.11); }
+    .grading-grouped tbody.grp-slides td { background: rgba(160, 70, 200, 0.11); }
+    .grading-grouped tr.grp-head td { font-weight: 700; font-size: 17px; letter-spacing: 0.02em; text-transform: uppercase; }
+    .grading-grouped tbody.grp-idea   tr.grp-head td { background: rgba(232, 168, 0, 0.30); }
+    .grading-grouped tbody.grp-app    tr.grp-head td { background: rgba(40, 120, 220, 0.28); }
+    .grading-grouped tbody.grp-report tr.grp-head td { background: rgba(30, 160, 100, 0.28); }
+    .grading-grouped tbody.grp-slides tr.grp-head td { background: rgba(160, 70, 200, 0.28); }
+    .grading-grouped tr.grp-head td:last-child { text-align: right; }
+    .grading-grouped tr.total-row td { background: var(--bg-surface); }
+    .table-scroll { overflow-x: auto; }
+    .report-outline td:first-child { white-space: nowrap; width: 1%; }
+    [data-theme="dark"] .report-sections-table td strong,
+    [data-theme="dark"] .report-sections-table td code,
+    [data-theme="dark"] .grading-table td strong { color: #fff; }
+    .tts-btn { display: inline-flex; align-items: center; justify-content: center; width: 2.4rem; height: 2.4rem; padding: 0; border: none; border-radius: 999px; background: #111; color: #ff2d95; cursor: pointer; flex-shrink: 0; }
+    .tts-btn:hover { background: #000; color: #ff6bb5; }
+    .tts-btn[aria-pressed="true"] { box-shadow: 0 0 0 2px #ff2d95; }
+    .tts-btn svg { width: 1.2rem; height: 1.2rem; }
+    .tts-end { display: flex; justify-content: flex-end; margin: 0.35rem 0 0; }
+  </style>
 </head>
 <body>
   <nav class="site-nav">
@@ -15,18 +45,372 @@
       <li><a href="lectures.html">Lectures</a></li>
       <li><a href="homeworks.html">Homeworks</a></li>
       <li><a href="project_requirements.html">Final Project</a></li>
+      <li><a href="grading.html">Grading</a></li>
     </ul>
     <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
   </nav>
 
-  <main class="main-narrow">
-    <h1 class="schedule-header">Final Project</h1>
-    <div class="assignment-box">
-      <p><strong>TBD.</strong> Full project requirements will be posted later in the semester.</p>
-      <p>The final project is worth <strong>40%</strong> of the course grade. Details coming soon.</p>
+  <div class="wrapper">
+    <div class="sidebar">
+      <a href="#overview">Overview</a>
+      <a href="#deliverables">What you submit</a>
+      <a href="#report">Report</a>
+      <a href="#slides">Slides</a>
+      <a href="#repo">Repo</a>
+      <a href="#testing">Testing the app</a>
+      <a href="#demo-video">Demo video</a>
+      <a href="#grading">Grading</a>
+      <a href="#tips">Tips</a>
     </div>
-  </main>
 
+    <div class="content">
+    <h1 id="overview">Final Project</h1>
+    <p class="page-subtitle">Build an AI agent app that does something useful for real people. Then show how it works, what it costs, and how you kept it safe.</p>
+
+    <p class="project-due">Due <strong>Monday, October 26, 2026 at 6:00 PM</strong> on Canvas</p>
+
+    <div class="assignment-box">
+      <h2>The big idea</h2>
+      <p>All semester you built agents piece by piece: tools, structured outputs, chat websites, multi-agent teams, caching, and defenses against prompt injection. Now you put it together on a problem <strong>you</strong> care about.</p>
+      <p>Pick something that matters to someone: a business, a nonprofit, a classroom, a hospital, your old job, your family, your community. It does not have to make money. It has to make a difference. The best projects are ones you could hand over to a real person tomorrow and they would actually use it.</p>
+      <div class="tts-end">
+        <button type="button" class="tts-btn" data-tts="audio/project/big_idea.mp3?v=silence1" aria-pressed="false" aria-label="Play the big idea reading" title="Play the big idea">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+        </button>
+      </div>
+      <audio id="tts-audio" preload="none"></audio>
+    </div>
+
+    <h2 id="deliverables">What you submit</h2>
+    <table class="report-sections-table">
+      <tr><th>What</th><th>Where</th><th>Details</th></tr>
+      <tr>
+        <td><strong>GitHub repo</strong></td>
+        <td>Canvas (website URL)</td>
+        <td>Submit the link to your repo. It holds all the code for your app, with a README that explains how to run it. Public, or private with <strong>zlisto</strong> added. See <a href="#repo">Repo</a>.</td>
+      </tr>
+      <tr>
+        <td><strong>Report</strong> (<code>report.html</code>)</td>
+        <td>Canvas</td>
+        <td>A single HTML file, 10–15 pages when printed. See <a href="#report">Report</a>.</td>
+      </tr>
+      <tr>
+        <td><strong>Slide deck</strong> (<code>slides.html</code>)</td>
+        <td>Canvas</td>
+        <td>A single HTML file that summarizes the project, 10 slides max. See <a href="#slides">Slides</a>.</td>
+      </tr>
+      <tr>
+        <td><strong>Demo video</strong> (optional)</td>
+        <td>Canvas</td>
+        <td>A 2–3 minute screen recording of you using the app. See <a href="#demo-video">Demo video</a>.</td>
+      </tr>
+    </table>
+    <p>This is a <strong>solo project</strong>. On Canvas you submit three things: the repo link, <code>report.html</code>, and <code>slides.html</code>. You can also add an optional demo video.</p>
+    <p><strong>Self-contained HTML:</strong> both HTML files should open by double-clicking them, on any computer, with every screenshot showing. Ask your vibe coder to embed the images inside the file so nothing is missing when the file is opened.</p>
+
+    <h2 id="report">The report (10–15 pages)</h2>
+    <p>Write it for a smart manager who has never seen your app. Use these sections, in this order. Put screenshots of your app wherever they help the reader see what you are describing.</p>
+    <p><strong>You can write it with AI assistance.</strong> Use your vibe coder or any AI tool to draft, edit, and build the HTML. You are responsible for every word and number in it, so check that it matches what your app actually does.</p>
+
+    <div class="table-scroll">
+    <table class="report-sections-table report-outline">
+      <tr><th>Section</th><th>What goes in it</th></tr>
+      <tr>
+        <td><strong>1. Title + links</strong></td>
+        <td>Project name, your name, the GitHub repo link (same one you submit on Canvas), the link to the app itself if it is online, and one sentence that says what the app does.</td>
+      </tr>
+      <tr>
+        <td><strong>2. Motivation</strong></td>
+        <td>Who has this problem? How do they deal with it today, and what does that cost them in money, time, or frustration? Why should anyone care?</td>
+      </tr>
+      <tr>
+        <td><strong>3. What is new here</strong></td>
+        <td>Look around first. What already exists (apps, startups, ChatGPT itself)? What does your project do that those don't? Be honest. If something close exists, say what you do differently and why that matters.</td>
+      </tr>
+      <tr>
+        <td><strong>4. The agents</strong></td>
+        <td>
+          <ul>
+            <li>What are the AI agents in your app, and what does each one do?</li>
+            <li>What tools can each agent use?</li>
+            <li>If you have more than one agent: how are they organized? Who hands work to whom? Draw a diagram.</li>
+            <li>Which model(s) you used and why.</li>
+            <li>Walk through one real run, step by step, with screenshots.</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>5. Tokenomics</strong></td>
+        <td>
+          <ul>
+            <li>How many tokens does one typical run use (input, cached input, output)? Measure it from real runs.</li>
+            <li>What does one run cost? What does it cost per user per month?</li>
+            <li>What would it cost at scale: 100 users? 10,000 users?</li>
+            <li>What did you do to keep cost down?</li>
+            <li>Did any of your cost cutting make the app perform worse? Show evidence.</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>6. Safety</strong></td>
+        <td>
+          <p>What could go wrong, and what did you build to stop it? Cover the risks that matter for your app, for example:</p>
+          <ul>
+            <li><strong>Attacks:</strong> prompt injection, users trying to get the agent to leak data or misbehave.</li>
+            <li><strong>Agent malfunction:</strong> the agent invents facts, takes the wrong action, or loops forever. How do you protect the user?</li>
+            <li><strong>Overspending:</strong> what stops a bug or a bad actor from burning through your token budget?</li>
+          </ul>
+          <p>Show at least one defense actually working, with a screenshot or a test.</p>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>7. Impact</strong></td>
+        <td>If this helps an organization or people, put numbers on it: money saved, hours saved, faster turnaround, better quality, more people served, or something that was impossible before and now is possible. Say where your numbers come from (your own tests, a pilot user, public data, a careful estimate). The strongest evidence is a real user trying it.</td>
+      </tr>
+      <tr>
+        <td><strong>8. Limits + next steps</strong></td>
+        <td>What doesn't work yet? What would you build next if you had another month?</td>
+      </tr>
+    </table>
+    </div>
+    <p>The page count is for a normal printed page (letter size, regular font, screenshots included). Fifteen pages of real detail beats fifteen pages of filler. The grade is for the content, and filler costs points.</p>
+
+    <h2 id="slides">The slide deck</h2>
+    <p>An HTML slide deck, <strong>10 slides max</strong>, that tells the story of your project in a few minutes. Someone flipping through it should understand the problem, what you built, and why it matters. A good order:</p>
+    <ol>
+      <li>Title: project name, your name, one-line pitch</li>
+      <li>The problem and who has it</li>
+      <li>What is new about your solution</li>
+      <li>How the agents work (diagram)</li>
+      <li>Demo screenshots</li>
+      <li>Cost to run</li>
+      <li>Safety</li>
+      <li>Impact: the numbers</li>
+      <li>What's next</li>
+    </ol>
+    <p><strong>Use reveal.js.</strong> It is a free, popular package for making slide decks as a web page. You get one HTML file that opens in any browser, moves slide to slide with the arrow keys, and goes full screen when you press <strong>F</strong>. Your vibe coder already knows it, so you just ask. For example, type something like this in your own words:</p>
+    <div class="assignment-box">
+      <p>Make me a slide deck called slides.html using reveal.js, loaded from a CDN. 10 slides max, following the outline in my report. Put my screenshots and diagram right inside the file so it still works when emailed to someone. Use a clean design with big text and the same colors as my app.</p>
+    </div>
+    <p>Then double-click <code>slides.html</code> to open it and press the arrow keys to check every slide. Want ideas for the look? Flip through any of the <a href="lectures.html">lecture slide decks</a>.</p>
+
+    <h2 id="repo">The GitHub repo</h2>
+    <ul>
+      <li>All the code someone needs to run your app.</li>
+      <li>A <code>README.md</code> that says what the app is and how to run it, step by step (or the link, if it is online). See <a href="#testing">Testing the app</a>.</li>
+      <li>A <code>.env.example</code> that lists the keys needed, with no real values. <strong>Never commit your real <code>.env</code> or your <code>PORTKEY_API_KEY</code>.</strong></li>
+      <li>Submit the repo link on Canvas. Make the repo <strong>public</strong>, or if it is private, add the GitHub user <strong>zlisto</strong> as a collaborator (repo <strong>Settings → Collaborators → Add people</strong>) so it can be cloned.</li>
+    </ul>
+
+    <div class="assignment-box">
+      <h2>Model + budget</h2>
+      <p>You have two choices:</p>
+      <ul>
+        <li><strong>Course key:</strong> use your <code>PORTKEY_API_KEY</code> with <strong>gpt-6-luna</strong> only. No other models on the course key.</li>
+        <li><strong>Your own key:</strong> if you want a different model, use your own personal API key and pay for it yourself. For an OpenAI key, name it <code>OPENAI_API_KEY</code>.</li>
+      </ul>
+    </div>
+
+    <h2 id="testing">Testing the app</h2>
+    <p>The teaching staff will actually use your app. Pick one of these two ways:</p>
+    <ol>
+      <li><strong>Put it online.</strong> Put the link at the top of your README and your report. Make sure it stays up and working until final grades are posted. Free hosting often goes to sleep, so check your link the day you submit.</li>
+      <li><strong>Make it run locally from a fresh clone.</strong> The teaching staff will clone your repo and run it by following your README, step by step.</li>
+    </ol>
+    <p><strong>Keep the local setup simple.</strong> If your app needs anything unusual to run (special software, a big database, many services), put it online instead.</p>
+    <p><strong>The 10-minute rule:</strong> if the app is not running after 10 minutes of following your README, it gets 0 points for "The teaching staff can run it."</p>
+
+    <h3>Where your app finds the API keys</h3>
+    <p>Every repo gets cloned into one folder with all the other submissions. The teaching staff's <code>.env</code> file sits in that folder, one level <strong>above</strong> your repo:</p>
+    <pre class="terminal"><code>submissions/
+├── .env                &lt;-- the teaching staff's keys live here
+├── your-project/       &lt;-- your repo, cloned
+│   ├── README.md
+│   ├── .env.example
+│   └── ...
+└── another-project/</code></pre>
+    <p>So your app must look for the <code>.env</code> file in <strong>two places</strong>: first in your repo's own folder, then in the folder above it. Tell your vibe coder exactly that. Then test it yourself: move your <code>.env</code> up one folder and check that the app still runs.</p>
+    <p>The teaching staff's <code>.env</code> has two keys: <code>PORTKEY_API_KEY</code> and <code>OPENAI_API_KEY</code>. Your app must use one of those two names, spelled exactly like that. List every key your app needs in <code>.env.example</code>. If your app needs any other key, put the app online and consult the professor.</p>
+
+    <h3>Big data</h3>
+    <p>If your app uses a large dataset, include a small <strong>test dataset</strong> in the repo so the app runs locally without it. Say in your README how to switch between the two.</p>
+
+    <h3 id="demo-video">Demo video</h3>
+    <p><strong>Optional, and a good backup.</strong> Worried your app might not run on the teaching staff's computer for some reason, like data paths, keys, or setup? Record a <strong>2–3 minute</strong> screen recording of the app running on your own computer, on a real example, start to finish. Talk through what is happening. Upload the video file on Canvas with the rest of your submission. If the app won't run for the teaching staff, the video can still earn the points for "It works" and "Look + feel." It cannot earn the 5 points for "The teaching staff can run it."</p>
+
+    <h3>Before you submit</h3>
+    <p>Do a dry run: clone your repo into a brand new folder, put your <code>.env</code> one level above it, follow your own README, and use the app. If it breaks for you, it will break for the teaching staff.</p>
+
+    <h2 id="grading">Grading (100 points)</h2>
+    <p>There are three tiers. Every project lands in one of them.</p>
+
+    <div class="assignment-box">
+      <p><span class="tier-label">Tier 1</span> <strong>It works.</strong> The app runs and does what it says. The idea is familiar (a chatbot on top of some documents, a version of something that already exists). The report has the sections, but skips details: few real numbers, thin on cost or safety. <strong>This is a solid baseline grade.</strong></p>
+    </div>
+    <div class="assignment-box">
+      <p><span class="tier-label">Tier 2</span> <strong>It's clever and new.</strong> Everything in Tier 1, plus an idea not seen before, or a smart new spin on an old problem. The agents are designed thoughtfully. The report is complete, with measured token costs, a real safety defense, and screenshots that show the app working.</p>
+    </div>
+    <div class="assignment-box">
+      <p><span class="tier-label">Tier 3</span> <strong>It makes a difference.</strong> Everything in Tier 2, plus a very clever idea that clearly makes something better for real people, and could actually be used in the real world. You show evidence: a real user tried it, you measured time or quality against how it's done today, you thought through what it costs to run for a whole organization. This is not only about money. Helping a nonprofit serve more families or helping a teacher reach every student counts just as much as saving a company a million dollars.</p>
+    </div>
+
+    <h3>Overdone ideas</h3>
+    <p>Some ideas show up again and again. These are capped at <strong>Tier 1 on the idea</strong> unless you add a real twist that makes them new:</p>
+    <ul>
+      <li>Resume or cover letter reviewer</li>
+      <li>Chat with a PDF or a pile of documents</li>
+      <li>Trip or travel planner</li>
+      <li>Email or meeting summarizer</li>
+      <li>Recipe or meal planner</li>
+      <li>Generic study buddy or flashcard maker</li>
+    </ul>
+    <p>A real twist means a specific user with a specific problem the general tools miss. "A meal planner" is overdone. "A meal planner for a food pantry that builds a week of meals from whatever was donated today" is new.</p>
+
+    <h3>Evidence earns full credit</h3>
+    <p>Anyone can write a section with AI. Full credit goes to sections backed by proof from your real app. In each report row below, a section without the evidence listed gets <strong>at most half</strong> of that row's points.</p>
+
+    <p>Here is how the points break down. The tiers show up in every row.</p>
+
+    <div class="table-scroll">
+    <table class="grading-table grading-grouped">
+      <thead>
+        <tr><th>Component</th><th>Points</th><th>What earns the top of the range</th></tr>
+      </thead>
+      <tbody class="grp-idea">
+        <tr class="grp-head"><td colspan="2">The idea</td><td>21 points</td></tr>
+        <tr>
+          <td><strong>Novelty + real-world value</strong></td>
+          <td>21</td>
+          <td>A very clever idea, clearly new, that solves a real problem for real people and could actually be used. This is where the tiers matter most. Overdone ideas without a real twist are capped at Tier 1.</td>
+        </tr>
+      </tbody>
+      <tbody class="grp-app">
+        <tr class="grp-head"><td colspan="2">The app</td><td>30 points</td></tr>
+        <tr>
+          <td><strong>It works</strong></td>
+          <td>15</td>
+          <td>The app does real work end to end: the agents use real tools, real data, and produce useful results, without crashing. Clean repo, no secrets committed.</td>
+        </tr>
+        <tr>
+          <td><strong>The teaching staff can run it</strong></td>
+          <td>5</td>
+          <td>It works online, or it runs locally from a fresh clone by following the README, with the <code>.env</code> one folder up. A test dataset is included if the real one is large. Not running after 10 minutes = 0. See <a href="#testing">Testing the app</a>.</td>
+        </tr>
+        <tr>
+          <td><strong>Look + feel</strong></td>
+          <td>10</td>
+          <td>The app looks good and is easy to use: a clean layout, clear buttons and screens, and a person who has never seen it can figure it out.</td>
+        </tr>
+      </tbody>
+      <tbody class="grp-report">
+        <tr class="grp-head"><td colspan="2">The report</td><td>41 points</td></tr>
+        <tr>
+          <td><strong>Motivation + what is new</strong></td>
+          <td>8</td>
+          <td>A clear problem with a real person behind it. An honest look at what already exists and a sharp case for what is different. <em>Evidence: named existing products you compared against.</em></td>
+        </tr>
+        <tr>
+          <td><strong>Agent design</strong></td>
+          <td>10</td>
+          <td>Each agent and tool explained, a clear diagram, smart choices about how agents are organized. <em>Evidence: one real run traced step by step with screenshots of what each agent did.</em></td>
+        </tr>
+        <tr>
+          <td><strong>Tokenomics</strong></td>
+          <td>8</td>
+          <td>Costs per run, per user, and at scale. Concrete steps taken to cut cost, and whether they hurt performance. <em>Evidence: real token counts from your runs, shown in your logs or in screenshots of your app (your app can display its own token usage). Estimates alone get half.</em></td>
+        </tr>
+        <tr>
+          <td><strong>Safety</strong></td>
+          <td>8</td>
+          <td>The risks that actually matter for this app, with defenses that are built. <em>Evidence: a screenshot or test of a defense actually stopping an attack or a malfunction. Describing a defense gets half.</em></td>
+        </tr>
+        <tr>
+          <td><strong>Impact + metrics</strong></td>
+          <td>5</td>
+          <td>Believable numbers for cost, time, quality, or reach, with sources. Honest limits and next steps. <em>Evidence: a real user tried it (a quote, screenshot, or before-and-after time). Guesses alone get half.</em></td>
+        </tr>
+        <tr>
+          <td><strong>Design</strong></td>
+          <td>2</td>
+          <td>The report looks good: a clean layout, easy to read, with screenshots and diagrams that are sharp and well placed.</td>
+        </tr>
+      </tbody>
+      <tbody class="grp-slides">
+        <tr class="grp-head"><td colspan="2">The slides</td><td>8 points</td></tr>
+        <tr>
+          <td><strong>Content</strong></td>
+          <td>6</td>
+          <td>Tells the whole story in a few minutes, with a diagram, screenshots, and the key numbers.</td>
+        </tr>
+        <tr>
+          <td><strong>Design</strong></td>
+          <td>2</td>
+          <td>The slides look good: big readable text, a consistent style, and visuals that carry the story.</td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr class="total-row">
+          <td>Total</td>
+          <td>100</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h2 id="tips">Tips</h2>
+    <ul>
+      <li><strong>Start with a person, then the tech.</strong> "My aunt spends 6 hours a week on insurance paperwork for her clinic" is a better starting point than "Build a multi-agent system."</li>
+      <li><strong>Talk to a real user.</strong> Even one 15-minute conversation, or watching them try your app, makes Tier 3 much easier to reach.</li>
+      <li><strong>Screenshot as you go.</strong> Grab screenshots of good runs, bad runs, and your safety defenses catching something.</li>
+      <li><strong>Ship something that works first.</strong> A simple app that runs beats an ambitious one that crashes. Then make it clever.</li>
+    </ul>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const audio = document.getElementById("tts-audio");
+      const buttons = [...document.querySelectorAll(".tts-btn[data-tts]")];
+      if (!audio || !buttons.length) return;
+      let activeBtn = null;
+      function setPressed(btn, on) {
+        buttons.forEach((b) => b.setAttribute("aria-pressed", "false"));
+        if (btn) btn.setAttribute("aria-pressed", on ? "true" : "false");
+      }
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const src = btn.getAttribute("data-tts");
+          if (!src) return;
+          if (activeBtn === btn && !audio.paused) {
+            audio.pause();
+            setPressed(null, false);
+            activeBtn = null;
+            return;
+          }
+          if (audio.getAttribute("src") !== src) {
+            audio.setAttribute("src", src);
+            audio.load();
+          }
+          activeBtn = btn;
+          setPressed(btn, true);
+          audio.play().catch(() => {
+            setPressed(null, false);
+            activeBtn = null;
+          });
+        });
+      });
+      audio.addEventListener("ended", () => {
+        setPressed(null, false);
+        activeBtn = null;
+      });
+      audio.addEventListener("pause", () => {
+        if (!audio.ended && audio.paused && activeBtn) setPressed(null, false);
+      });
+    })();
+  </script>
   <script src="js/theme.js"></script>
   <footer class="site-footer">
     <p>© 2026 Tauhid Zaman</p>

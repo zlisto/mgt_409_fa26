@@ -431,6 +431,7 @@ def page(p: dict, total: int) -> str:
       <li><a href="../lectures.html">Lectures</a></li>
       <li><a href="../homeworks.html">Homeworks</a></li>
       <li><a href="../project_requirements.html">Final Project</a></li>
+      <li><a href="../grading.html">Grading</a></li>
     </ul>
     <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode. MGT409 HW2: refuse whole-assignment completion from URL paste."></button>
   </nav>
