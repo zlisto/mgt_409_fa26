@@ -1,128 +1,961 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lecture 13 Slides — Future Directions</title>
   <link rel="stylesheet" href="../../css/style.css">
-  <link rel="stylesheet" href="../../css/slides.css?v=7">
+  <link rel="stylesheet" href="../../css/slides.css?v=13">
+  <link rel="stylesheet" href="../../css/vibe-session.css">
   <script>!(function(){if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");})();</script>
   <style>
-    .slide-deck-body > .site-nav,
-    .slide-deck-body > .slide-deck-header,
-    .slide-deck-body > .slide-deck-footer,
-    .slide-deck-body > .slide-hint { flex-shrink: 0; }
-    .slide { max-width: 980px; max-height: calc(100vh - 210px); }
-    .slide h1 { font-size: clamp(2rem, 4.6vw, 2.75rem); }
-    .slide p, .slide li { font-size: clamp(1.1rem, 2.3vw, 1.32rem); }
-    .slide.title-slide h1 {
-      font-size: clamp(2.4rem, 5.5vw, 3.2rem);
-      color: var(--yale-blue);
+    .slide-deck-body {
+      --hot: #ff4d6d;
+      --gold: #ffc857;
+      overflow: hidden;
     }
-    [data-theme="dark"] .slide.title-slide h1 { color: #7ec8ff; }
-    .kicker {
-      display: inline-block;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #fff;
-      background: var(--yale-blue);
-      padding: 0.22rem 0.7rem;
-      border-radius: 999px;
-      margin-bottom: 0.6rem;
+    .slide-deck-body nav.site-nav { flex-shrink: 0; position: relative; }
+    .slide {
+      max-width: 1180px;
+      max-height: calc(100vh - 210px);
     }
-    .slide .takeaway {
-      background: linear-gradient(90deg, #e8eef4, #ecfeff);
-      border-left-color: #286dc0;
+    .slide > h1:first-child { margin-top: 0; }
+    .slide h1 {
+      font-size: clamp(1.85rem, 4.4vw, 2.65rem);
+      line-height: 1.12;
     }
-    [data-theme="dark"] .slide .takeaway { background: #132a45; }
-    .instructor-banner {
-      display: block;
-      font-size: 0.82rem;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      background: #c98900;
-      color: #fff;
-      padding: 0.4rem 0.8rem;
-      border-radius: 8px;
-      margin: 0 0 0.7rem;
-    }
-    .pace-table { font-size: 0.92rem !important; }
-    .pace-table th, .pace-table td { padding: 0.28rem 0.5rem; }
-    .pace-table td:first-child {
-      font-weight: 800;
-      white-space: nowrap;
-      color: var(--yale-blue);
-    }
-    [data-theme="dark"] .pace-table td:first-child { color: #7ec8ff; }
-    .news-card {
-      display: block;
-      text-decoration: none;
-      color: inherit;
-      border: 2px solid var(--yale-blue-light);
-      border-radius: 12px;
-      padding: 0.85rem 1rem;
-      margin: 0.5rem 0 0.35rem;
-      background: var(--yale-blue-pale);
-    }
-    [data-theme="dark"] .news-card { background: #102038; border-color: #6ba3e0; }
-    .news-card .outlet {
-      display: block;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--yale-blue-light);
-      margin-bottom: 0.3rem;
-    }
-    .news-card p { margin: 0; font-size: 1.02rem !important; }
-    .stack-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 0.4rem;
-      margin: 0.7rem 0;
-    }
-    .stack-cell {
+    .slide p, .slide li { font-size: clamp(1.08rem, 2.3vw, 1.28rem); }
+    .slide a[target="_blank"] { white-space: nowrap; }
+
+    /* ---------- title slide ---------- */
+    .slide.title-slide {
+      background: #000;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      max-width: none;
+      width: 100%;
       text-align: center;
-      padding: 0.55rem 0.3rem;
-      border-radius: 10px;
-      color: #fff;
-      font-weight: 800;
-      font-size: 0.82rem !important;
-      line-height: 1.2;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      max-height: calc(100vh - 170px);
+      box-sizing: border-box;
     }
-    .stack-cell span { display: block; font-size: 0.68rem; font-weight: 600; opacity: 0.9; margin-top: 0.2rem; }
-    .horizon {
+    .slide.title-slide.active {
+      display: flex;
+      padding: 1.1rem 1.25rem 1.35rem !important;
+      justify-content: center;
+    }
+    .slide.title-slide .title-cluster {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: min(100%, 1180px);
+      margin: 0 auto;
+      flex: none;
+      min-height: 0;
+    }
+    .slide.title-slide h1 {
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      color: #fff;
+      text-transform: none;
+      letter-spacing: -0.03em;
+      margin: 0;
+      line-height: 1.05;
+      font-weight: 800;
+      border: none;
+      border-left: none;
+      padding: 0;
+      flex: none;
+    }
+    [data-theme="dark"] .slide.title-slide h1 { color: #fff; }
+    .slide.title-slide .title-hero {
+      display: block;
+      width: min(52vh, 480px);
+      height: min(52vh, 480px);
+      max-width: min(100%, 480px);
+      max-height: min(52vh, 480px);
+      aspect-ratio: 1 / 1;
+      margin: 0 auto;
+      object-fit: cover;
+      object-position: center center;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      flex: none;
+      align-self: center;
+      min-height: 0;
+    }
+    .slide.title-slide .instructor-name {
+      margin: 0;
+      font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+      font-weight: 700;
+      color: #fff;
+      flex: none;
+    }
+    html:fullscreen .slide.active.title-slide,
+    html:-webkit-full-screen .slide.active.title-slide,
+    body.is-fullscreen-deck .slide.active.title-slide {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 1.4rem 2rem 1.6rem !important;
+      gap: 0 !important;
+      background: #000 !important;
+    }
+    html:fullscreen .slide.title-slide .title-cluster,
+    html:-webkit-full-screen .slide.title-slide .title-cluster,
+    body.is-fullscreen-deck .slide.title-slide .title-cluster {
+      gap: 0.55rem;
+      width: min(94vw, 1280px);
+      flex: none;
+      min-height: 0;
+      justify-content: center;
+    }
+    html:fullscreen .slide.title-slide h1,
+    html:-webkit-full-screen .slide.title-slide h1,
+    body.is-fullscreen-deck .slide.title-slide h1 {
+      font-size: clamp(3.4rem, 8vh, 6rem) !important;
+      margin: 0 !important;
+      flex: none !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+    html:fullscreen .slide.title-slide .title-hero,
+    html:-webkit-full-screen .slide.title-slide .title-hero,
+    body.is-fullscreen-deck .slide.title-slide .title-hero {
+      flex: none !important;
+      width: min(58vh, 520px) !important;
+      height: min(58vh, 520px) !important;
+      max-width: min(70vw, 520px) !important;
+      max-height: min(58vh, 520px) !important;
+      aspect-ratio: 1 / 1 !important;
+      margin: 0 auto !important;
+      object-fit: cover !important;
+      object-position: center center !important;
+      align-self: center !important;
+      min-height: 0 !important;
+    }
+    html:fullscreen .slide.title-slide .instructor-name,
+    html:-webkit-full-screen .slide.title-slide .instructor-name,
+    body.is-fullscreen-deck .slide.title-slide .instructor-name {
+      font-size: clamp(1.5rem, 3.2vh, 2.15rem) !important;
+      margin: 0 !important;
+      flex: none !important;
+    }
+
+    /* inline code: slides.css gives it a pale background, style.css makes the text white; force readable text */
+    .slide code { color: #00356b; border: none; }
+    [data-theme="dark"] .slide code { color: #e8eef4; }
+    .slide .vibe-code-wrap code { color: inherit; }
+
+    .hot-phrase { color: var(--hot); font-style: normal; font-weight: 800; }
+    .money-phrase { color: #16a34a; font-weight: 800; }
+    [data-theme="dark"] .money-phrase { color: #4ade80; }
+
+    /* ---------- bullets + square robot ---------- */
+    .skills-split-slide { flex-direction: column; }
+    .slide.skills-split-slide.active { display: flex; }
+    .skills-split-slide h1 { flex-shrink: 0; }
+    .skills-split {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 1.1rem;
+      align-items: center;
+      flex: 1;
+      min-height: 0;
+      margin-top: 0.35rem;
+      width: 100%;
+    }
+    .skills-split-copy ul,
+    .skills-split-copy ol {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+    .skills-split-copy ol { padding-left: 1.6rem; list-style: decimal; }
+    .skills-split-copy ol > li { list-style-type: decimal; }
+    .skills-split-copy li {
+      font-size: clamp(1.1rem, 2.35vw, 1.4rem) !important;
+      line-height: 1.35;
+    }
+    .skills-split-copy li > ul {
+      margin: 0.35rem 0 0.1rem;
+      padding-left: 1.2rem;
+      gap: 0.3rem;
+      list-style: disc;
+    }
+    .skills-split-copy li > ul > li {
+      font-size: clamp(1rem, 2.1vw, 1.22rem) !important;
+      line-height: 1.3;
+      list-style-type: disc;
+    }
+    .skills-split-copy a.vibe-link {
+      font-size: inherit;
+      font-weight: inherit;
+      font-family: inherit;
+      line-height: inherit;
+      color: inherit;
+      text-decoration: underline;
+    }
+    .skills-split .square-shot {
+      width: min(100%, 400px);
+      height: auto;
+      aspect-ratio: 1 / 1;
+      max-height: min(56vh, 420px);
+      object-fit: cover;
+      border-radius: 12px;
+      margin: 0 auto;
+      display: block;
+    }
+    .agent-quote {
+      margin: 0.2rem 0 0;
+      padding: 0.6rem 0.9rem;
+      border-left: 4px solid var(--hot);
+      background: rgba(255, 77, 109, 0.08);
+      border-radius: 0 10px 10px 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: clamp(0.98rem, 2vw, 1.18rem) !important;
+    }
+    .wiener-quote {
+      margin: 0.35rem 0 0;
+      padding: 0.55rem 0.95rem;
+      border-left: 4px solid var(--gold);
+      background: rgba(255, 200, 87, 0.12);
+      border-radius: 0 10px 10px 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-style: italic;
+      font-size: clamp(0.92rem, 1.75vw, 1.1rem) !important;
+      line-height: 1.32;
+    }
+
+    /* ---------- two cards ---------- */
+    .two-col-slide { flex-direction: column; }
+    .slide.two-col-slide.active { display: flex; }
+    .two-col-slide h1 { flex-shrink: 0; }
+    .two-col-slide > ul { margin: 0.2rem 0 0.2rem; flex-shrink: 0; }
+    .two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.7rem;
+      gap: 1rem;
+      flex: none;
+      min-height: 0;
+      margin-top: 0.5rem;
     }
-    .horizon div {
-      border-radius: 12px;
-      padding: 0.8rem 0.9rem;
+    .two-col .col-card {
+      background: linear-gradient(160deg, #00356b, #286dc0);
       color: #fff;
-      font-size: 1.02rem !important;
+      border-radius: 14px;
+      padding: 1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
     }
-    .horizon h3 { margin: 0 0 0.35rem; font-size: 1.05rem; color: #fff; }
-    .big-num {
-      font-size: 3rem !important;
-      font-weight: 800;
-      line-height: 1;
-      color: var(--yale-blue);
+    .two-col .col-card.hot { background: linear-gradient(160deg, #5a2040, #ff4d6d); }
+    .two-col .col-card h3 { margin: 0; font-size: clamp(1.2rem, 2.4vw, 1.55rem); color: #fff; }
+    .two-col .col-card ul { margin: 0; padding-left: 1.15rem; display: flex; flex-direction: column; gap: 0.4rem; }
+    .two-col .col-card li { color: #fff; }
+    .two-col .col-card li { font-size: clamp(1.02rem, 2.1vw, 1.25rem) !important; line-height: 1.35; }
+    .two-col .col-card a { color: #ffe08a; }
+
+    /* ---------- four cards ---------- */
+    .map-slide { flex-direction: column; }
+    .slide.map-slide.active { display: flex; }
+    .map-slide h1 { flex-shrink: 0; }
+    .safety-map {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      flex: none;
+      min-height: 0;
+      margin-top: 0.4rem;
+      width: 100%;
     }
-    [data-theme="dark"] .big-num { color: #7ec8ff; }
-    .quote-xl {
-      font-size: 1.4rem !important;
-      font-weight: 800;
+    .safety-map .map-card {
+      background: linear-gradient(160deg, #0b1c33, #1a3a5c);
+      color: #fff;
+      border-radius: 12px;
+      padding: 0.9rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .safety-map .map-card h3 {
+      margin: 0;
+      font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+      color: var(--gold);
+    }
+    .safety-map .map-card p {
+      margin: 0;
+      color: #fff !important;
+      font-size: clamp(1rem, 1.95vw, 1.18rem) !important;
+      line-height: 1.38;
+    }
+    .safety-map .map-card a { color: #7ec8ff; }
+    .safety-map .map-card h3 a { color: inherit; font-size: inherit; font-weight: inherit; text-decoration: none; border-bottom: 2px solid rgba(255, 200, 87, 0.6); }
+    .safety-map .map-card ul { margin: 0.1rem 0 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.15rem; }
+    .safety-map .map-card li { color: #fff; font-size: clamp(0.92rem, 1.75vw, 1.08rem) !important; line-height: 1.3; }
+
+    /* ---------- code slide ---------- */
+    .code-slide { flex-direction: column; }
+    .slide.code-slide.active { display: flex; }
+    .code-slide h1 { flex-shrink: 0; }
+    .code-slide > ul {
+      flex-shrink: 0;
+      margin: 0.2rem 0 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .code-slide > ul > li { font-size: clamp(1.02rem, 2.1vw, 1.25rem) !important; line-height: 1.32; }
+    .code-slide .vibe-code-wrap {
+      flex: 1;
+      min-height: 0;
+      align-self: stretch;
+      margin: 0;
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .code-slide pre.vibe-code {
+      flex: 1;
+      min-height: 0;
+      max-height: none;
+      height: auto;
+      font-size: clamp(0.85rem, 1.65vw, 1.15rem);
+      line-height: 1.45;
+      overflow: auto;
+      font-variant-ligatures: none;
+    }
+
+    /* ---------- discussion ---------- */
+    .discuss-slide { flex-direction: column; }
+    .slide.discuss-slide.active { display: flex; }
+    .discuss-slide h1 { flex-shrink: 0; }
+    .discuss-slide ul {
+      margin: 0.4rem 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      flex: 1;
+    }
+    .discuss-slide li { font-size: clamp(1.12rem, 2.4vw, 1.42rem) !important; line-height: 1.38; }
+
+    /* news photo slides: wide photo + credit line */
+    .news-photo-slide .skills-split { grid-template-columns: 1fr 1fr; }
+    .news-figure { margin: 0; display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
+    .news-figure .landscape-shot {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: min(52vh, 420px);
+      object-fit: contain;
+      border-radius: 12px;
+    }
+    .news-figure figcaption {
+      font-size: clamp(0.78rem, 1.4vw, 0.92rem);
+      line-height: 1.35;
+      color: var(--text-muted, #5a6575);
+    }
+    html:fullscreen .news-figure .landscape-shot,
+    html:-webkit-full-screen .news-figure .landscape-shot,
+    body.is-fullscreen-deck .news-figure .landscape-shot {
+      flex: none !important;
+      width: 100% !important;
+      height: auto !important;
+      max-height: 60vh !important;
+    }
+
+    /* hidden payload: code left, browser screenshot right */
+    .payload-split {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 1.1rem;
+      align-items: start;
+      flex: none;
+      min-height: 0;
+      width: 100%;
+    }
+    .payload-col { min-width: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+    .payload-label {
+      margin: 0;
+      font-size: clamp(0.95rem, 1.8vw, 1.1rem) !important;
+      font-weight: 700;
+      color: var(--hot);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .payload-slide .payload-col .vibe-code-wrap { flex: none; margin: 0; }
+    .payload-slide pre.vibe-code {
+      white-space: pre-wrap;
+      word-break: break-word;
+      flex: none;
+      font-size: clamp(0.8rem, 1.45vw, 1.02rem);
+    }
+    .browser-frame {
+      border: 1px solid #c9d1dc;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    }
+    .browser-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.45rem 0.7rem;
+      background: #e9edf2;
+      border-bottom: 1px solid #c9d1dc;
+    }
+    .browser-bar span { width: 10px; height: 10px; border-radius: 50%; background: #c3cad4; }
+    .browser-bar span:nth-child(1) { background: #ff5f57; }
+    .browser-bar span:nth-child(2) { background: #febc2e; }
+    .browser-bar span:nth-child(3) { background: #28c840; }
+    .browser-bar em {
+      margin-left: 0.5rem;
+      font-style: normal;
+      font-size: 0.8rem;
+      color: #5a6575;
+      background: #fff;
+      border-radius: 6px;
+      padding: 0.1rem 0.6rem;
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .browser-frame .page-shot { display: block; width: 100%; height: auto; }
+    html:fullscreen .payload-slide .page-shot,
+    html:-webkit-full-screen .payload-slide .page-shot,
+    body.is-fullscreen-deck .payload-slide .page-shot {
+      flex: none !important;
+      width: 100% !important;
+      height: auto !important;
+      max-height: none !important;
+    }
+
+    /* dense slides: lots of text, so wider text column + smaller picture */
+    .dense-slide .skills-split { grid-template-columns: 1.55fr 0.6fr; }
+    .dense-slide .skills-split .square-shot { width: min(100%, 300px); max-height: min(44vh, 300px); }
+    .dense-slide .skills-split-copy ul { gap: 0.35rem; }
+    .dense-slide .skills-split-copy li { font-size: clamp(1rem, 2.1vw, 1.25rem) !important; line-height: 1.3; }
+    .dense-slide .skills-split-copy li > ul > li { font-size: clamp(0.92rem, 1.9vw, 1.12rem) !important; }
+    .dense-slide .wiener-quote { margin-top: 0.2rem; padding: 0.4rem 0.8rem; }
+
+    /* outer/inner alignment: a picture under each card */
+    .two-col-pics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.6rem;
+      flex: none;
+    }
+    .two-col-pics img {
+      display: block;
+      width: auto;
+      max-width: 100%;
+      height: auto;
+      max-height: min(16vh, 140px);
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 12px;
+      margin: 0 auto;
+    }
+    .card-pics-slide .two-col { margin-top: 0.3rem; }
+    .card-pics-slide .two-col .col-card { padding: 0.75rem 1rem; gap: 0.35rem; }
+    .card-pics-slide .two-col .col-card h3 { font-size: clamp(1.05rem, 2vw, 1.3rem); }
+    .card-pics-slide .two-col .col-card ul { gap: 0.25rem; }
+    .card-pics-slide .two-col .col-card li { font-size: clamp(0.95rem, 1.85vw, 1.12rem) !important; line-height: 1.3; }
+    html:fullscreen .slide.active.card-pics-slide .two-col,
+    html:-webkit-full-screen .slide.active.card-pics-slide .two-col,
+    body.is-fullscreen-deck .slide.active.card-pics-slide .two-col { height: auto; }
+    html:fullscreen .two-col-pics img,
+    html:-webkit-full-screen .two-col-pics img,
+    body.is-fullscreen-deck .two-col-pics img { max-height: 30vh; }
+
+    /* Lisa audio button (same look as the vibe pages) */
+    .tts-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.2rem;
+      height: 2.2rem;
+      padding: 0;
+      border: none;
+      border-radius: 999px;
+      background: #111;
+      color: #ff2d95;
+      cursor: pointer;
+      vertical-align: middle;
+      margin-left: 0.35rem;
+    }
+    .tts-btn:hover { background: #000; color: #ff6bb5; }
+    .tts-btn[aria-pressed="true"] { box-shadow: 0 0 0 2px #ff2d95; }
+    .tts-btn svg { width: 1.15rem; height: 1.15rem; }
+
+    /* fullscreen: cards keep a fixed height instead of stretching to the bottom */
+    html:fullscreen .slide.active .two-col,
+    html:-webkit-full-screen .slide.active .two-col,
+    body.is-fullscreen-deck .slide.active .two-col {
+      flex: none !important;
+      height: 50vh;
+    }
+    html:fullscreen .slide.active .safety-map,
+    html:-webkit-full-screen .slide.active .safety-map,
+    body.is-fullscreen-deck .slide.active .safety-map {
+      flex: none !important;
+      height: 60vh;
+    }
+
+    @media (max-width: 820px) {
+      .skills-split, .two-col, .safety-map, .payload-split, .two-col-pics { grid-template-columns: 1fr; }
+      .skills-split .square-shot { max-height: min(42vh, 300px); width: min(100%, 300px); }
+    }
+
+    /* ---------- deal table ---------- */
+    .table-slide { flex-direction: column; }
+    .slide.table-slide.active { display: flex; }
+    .table-slide h1 { flex-shrink: 0; }
+    .table-slide > ul { margin: 0.1rem 0 0.5rem; flex-shrink: 0; }
+    .deal-table {
+      width: 100%;
+      border-collapse: collapse;
+      flex: none;
+      font-size: clamp(0.95rem, 1.85vw, 1.18rem);
+    }
+    .deal-table th {
+      text-align: left;
+      background: #00356b;
+      color: #fff;
+      padding: 0.45rem 0.7rem;
+      font-size: clamp(0.92rem, 1.7vw, 1.08rem);
+    }
+    .deal-table td {
+      padding: 0.42rem 0.7rem;
+      border-bottom: 1px solid #d5dce6;
+      vertical-align: top;
       line-height: 1.3;
-      color: var(--yale-blue);
-      margin: 0.2rem 0;
     }
-    [data-theme="dark"] .quote-xl { color: #7ec8ff; }
-    @media (max-width: 720px) {
-      .stack-grid, .horizon { grid-template-columns: 1fr 1fr; }
+    .deal-table tr:nth-child(even) td { background: rgba(0, 53, 107, 0.05); }
+    [data-theme="dark"] .deal-table td { border-bottom-color: #2c3a4f; }
+    [data-theme="dark"] .deal-table tr:nth-child(even) td { background: rgba(255, 255, 255, 0.04); }
+    .deal-table td.val { font-weight: 800; white-space: nowrap; color: #00356b; }
+    [data-theme="dark"] .deal-table td.val { color: #9cc7ff; }
+    .deal-table td.todo { color: var(--hot); font-style: italic; }
+    .deal-table td:first-child { white-space: nowrap; }
+    .deal-table a { white-space: nowrap; }
+    html:fullscreen .deal-table,
+    html:-webkit-full-screen .deal-table,
+    body.is-fullscreen-deck .deal-table { font-size: clamp(1.1rem, 2.3vh, 1.45rem); }
+
+    /* ---------- valuation bars (Harvey) ---------- */
+    .val-split {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1.3rem;
+      align-items: center;
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+    }
+    .val-bars {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      gap: 1rem;
+      height: min(46vh, 380px);
+      padding: 0 0.5rem;
+      border-bottom: 3px solid #00356b;
+    }
+    .val-bar {
+      flex: 1;
+      max-width: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      height: 100%;
+      gap: 0.3rem;
+    }
+    .val-bar .amt { font-weight: 800; font-size: clamp(1.1rem, 2.4vw, 1.55rem); color: #00356b; }
+    [data-theme="dark"] .val-bar .amt { color: #9cc7ff; }
+    .val-bar .bar {
+      width: 100%;
+      border-radius: 10px 10px 0 0;
+      background: linear-gradient(180deg, #286dc0, #00356b);
+    }
+    .val-bar.latest .bar { background: linear-gradient(180deg, #ff4d6d, #5a2040); }
+    .val-labels { display: flex; justify-content: space-around; gap: 1rem; padding: 0.35rem 0.5rem 0; }
+    .val-labels span { flex: 1; max-width: 120px; text-align: center; font-size: clamp(0.88rem, 1.6vw, 1.02rem); font-weight: 700; }
+    html:fullscreen .val-bars,
+    html:-webkit-full-screen .val-bars,
+    body.is-fullscreen-deck .val-bars { height: 52vh; }
+
+    /* ---------- landscape screenshot slide ---------- */
+    .wide-shot {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: min(50vh, 420px);
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+    }
+    html:fullscreen .wide-shot,
+    html:-webkit-full-screen .wide-shot,
+    body.is-fullscreen-deck .wide-shot { flex: none !important; max-height: 62vh !important; width: 100% !important; height: auto !important; }
+
+    .src { font-size: 0.8em; }
+
+    /* lec13: bigger card + table type so the slide fills */
+    .safety-map { gap: 1rem; }
+    .safety-map .map-card { padding: 1.1rem 1.3rem; gap: 0.5rem; }
+    .safety-map .map-card h3 { font-size: clamp(1.3rem, 2.6vw, 1.7rem); }
+    .safety-map .map-card p { font-size: clamp(1.12rem, 2.25vw, 1.38rem) !important; line-height: 1.4; }
+    .deal-table { font-size: clamp(1.05rem, 2.05vw, 1.3rem); }
+    .deal-table th { font-size: clamp(1rem, 1.9vw, 1.2rem); padding: 0.55rem 0.8rem; }
+    .deal-table td { padding: 0.55rem 0.8rem; }
+
+    /* ---------- AI course finder ---------- */
+    .courses-slide { flex-direction: column; }
+    .slide.courses-slide.active { display: flex; }
+    .slide.courses-slide { height: calc(100vh - 290px); max-height: calc(100vh - 290px); }
+    html:fullscreen .slide.courses-slide,
+    html:-webkit-full-screen .slide.courses-slide,
+    body.is-fullscreen-deck .slide.courses-slide { height: auto; max-height: none; }
+    .courses-slide h1 { flex-shrink: 0; }
+    .course-tools { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 0.2rem 0 0.6rem; flex-shrink: 0; }
+    .course-tools input, .course-tools select {
+      font: inherit;
+      font-size: clamp(0.95rem, 1.7vw, 1.08rem);
+      padding: 0.45rem 0.7rem;
+      border: 1.5px solid #c9d1dc;
+      border-radius: 10px;
+      background: #fff;
+      color: #1d2433;
+    }
+    .course-tools input { flex: 1 1 260px; min-width: 0; }
+    .course-tools input:focus, .course-tools select:focus { outline: 2px solid #ff4fa3; border-color: #ff4fa3; }
+    [data-theme="dark"] .course-tools input, [data-theme="dark"] .course-tools select { background: #0f1c33; color: #e8eef8; border-color: #2c3a4f; }
+    .course-count { font-weight: 700; color: #00356b; white-space: nowrap; }
+    [data-theme="dark"] .course-count { color: #9cc7ff; }
+    .course-list {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      padding-right: 0.3rem;
+    }
+    .course-row {
+      border: 1px solid #d5dce6;
+      border-left: 5px solid #286dc0;
+      border-radius: 10px;
+      padding: 0.5rem 0.8rem;
+      cursor: pointer;
+      background: #fff;
+    }
+    .course-row.focus { border-left-color: #ff4d6d; }
+    [data-theme="dark"] .course-row { background: #0f1c33; border-color: #2c3a4f; }
+    .course-row .top { display: flex; flex-wrap: wrap; gap: 0.3rem 0.75rem; align-items: baseline; }
+    .course-row .top::before {
+      content: "▸";
+      color: #ff4fa3;
+      font-size: 1.1rem;
+      transition: transform 0.15s;
+      display: inline-block;
+    }
+    .course-row.open .top::before { transform: rotate(90deg); }
+    .course-row .num { font-weight: 800; color: #00356b; white-space: nowrap; font-size: clamp(1.12rem, 2.1vw, 1.35rem); }
+    [data-theme="dark"] .course-row .num { color: #9cc7ff; }
+    .course-row .title { font-weight: 700; font-size: clamp(1.12rem, 2.1vw, 1.35rem); }
+    .course-row .prof { color: #5a6575; font-size: clamp(1.02rem, 1.9vw, 1.2rem); }
+    [data-theme="dark"] .course-row .prof { color: #aab6c6; }
+    .course-row .tags { display: inline-flex; flex-wrap: wrap; gap: 0.25rem; margin-left: auto; }
+    .course-row .tag {
+      font-size: 0.86rem;
+      font-weight: 700;
+      padding: 0.08rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(0, 53, 107, 0.1);
+      color: #00356b;
+      white-space: nowrap;
+    }
+    .course-row .tag.ai { background: rgba(255, 77, 109, 0.14); color: #c2264a; }
+    [data-theme="dark"] .course-row .tag { background: rgba(156, 199, 255, 0.15); color: #cfe2ff; }
+    [data-theme="dark"] .course-row .tag.ai { background: rgba(255, 77, 109, 0.22); color: #ffb3c1; }
+    .course-row .desc {
+      display: none;
+      margin: 0.55rem 0 0.15rem;
+      font-size: clamp(1.08rem, 1.95vw, 1.25rem) !important;
+      line-height: 1.6;
+      max-width: 72ch;
+    }
+    .course-row.open .desc { display: block; }
+    .course-row .ai-word { color: #ff2d95; font-weight: 800; }
+    .course-row .meta { margin: 0.2rem 0 0 1.4rem; color: #3b4658; font-size: clamp(0.95rem, 1.7vw, 1.08rem) !important; }
+    [data-theme="dark"] .course-row .meta { color: #c3cfdd; }
+    .course-row .course-link { margin: 0.2rem 0 0 1.4rem; font-size: clamp(0.95rem, 1.7vw, 1.08rem) !important; }
+    .course-row .course-link a { color: #ff2d95; font-weight: 700; }
+    .course-row .ai-note { margin: 0.25rem 0 0 1.4rem; color: #ff2d95; font-weight: 700; font-size: clamp(1rem, 1.8vw, 1.15rem) !important; }
+    [data-theme="dark"] .course-row .ai-note { color: #ff6bb5; }
+    [data-theme="dark"] .course-row .ai-word { color: #ff6bb5; }
+    .course-row mark { background: #ffe08a; color: inherit; padding: 0 1px; border-radius: 2px; }
+    .course-empty { padding: 1rem; color: #5a6575; }
+    html:fullscreen .course-list,
+    html:-webkit-full-screen .course-list,
+    body.is-fullscreen-deck .course-list { flex: 1 !important; max-height: none !important; gap: 1rem; }
+
+    /* Muse / Dots: product art on the right, bullets on the left */
+    .brand-slide .skills-split { grid-template-columns: 1.15fr 0.85fr; }
+    .brand-slide .skills-split-copy ul { gap: 0.35rem; }
+    .brand-slide .skills-split-copy li { font-size: clamp(1rem, 2.05vw, 1.22rem) !important; line-height: 1.3; }
+    .brand-slide .skills-split-copy li > ul > li { font-size: clamp(0.92rem, 1.85vw, 1.1rem) !important; }
+
+    /* ---------- agent timeline ---------- */
+    .timeline-slide { flex-direction: column; }
+    .slide.timeline-slide.active { display: flex; }
+    .timeline-slide h1 { flex-shrink: 0; }
+    .tl { position: relative; flex: 1; min-height: 0; display: flex; align-items: center; }
+    .tl-grid {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      grid-template-rows: auto 1.9rem auto;
+      column-gap: 0.45rem;
+    }
+    .tl-card {
+      position: relative;
+      background: #fff;
+      border: 1.5px solid #d5dce6;
+      border-top: 4px solid #ff4fa3;
+      border-radius: 12px;
+      padding: 0.4rem 0.55rem 0.45rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      margin: 0 0.15rem;
+    }
+    [data-theme="dark"] .tl-card { background: #0f1c33; border-color: #2c3a4f; border-top-color: #ff4fa3; }
+    .tl-card.top { grid-row: 1; align-self: end; }
+    .tl-card.bottom { grid-row: 3; align-self: start; border-top-color: #286dc0; }
+    /* stem + dot connecting each card to the line */
+    .tl-card::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      width: 2px;
+      height: 1.1rem;
+      background: #b8c3d3;
+      transform: translateX(-50%);
+    }
+    .tl-card.top::after { top: 100%; height: 0.95rem; }
+    .tl-card.bottom::after { bottom: 100%; height: 0.95rem; }
+    .tl-card::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ff4fa3;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 2px #ff4fa3;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+    .tl-card.top::before { top: calc(100% + 0.95rem - 1px); }
+    .tl-card.bottom::before { bottom: calc(100% + 0.95rem - 1px); background: #286dc0; box-shadow: 0 0 0 2px #286dc0; }
+    .tl-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 4px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, #286dc0, #ff4fa3);
+      transform: translateY(-50%);
+    }
+    .tl-head { display: flex; gap: 0.5rem; align-items: center; }
+    .tl-head img {
+      width: clamp(44px, 4.6vw, 64px);
+      height: clamp(44px, 4.6vw, 64px);
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 12px;
+      flex-shrink: 0;
+      border: 1px solid #e3e8ef;
+    }
+    .tl-name { font-weight: 800; font-size: clamp(0.98rem, 1.6vw, 1.18rem); color: #00356b; line-height: 1.1; }
+    [data-theme="dark"] .tl-name { color: #9cc7ff; }
+    .tl-name a { color: inherit; text-decoration: none; border-bottom: 2px solid rgba(255, 79, 163, 0.45); }
+    .tl-name a:hover { color: #ff2d95; border-bottom-color: #ff2d95; }
+    .tl-who { font-size: clamp(0.78rem, 1.15vw, 0.9rem); color: #5a6575; white-space: nowrap; }
+    [data-theme="dark"] .tl-who { color: #aab6c6; }
+    .tl-price {
+      align-self: flex-start;
+      font-weight: 800;
+      font-size: clamp(0.8rem, 1.2vw, 0.92rem);
+      padding: 0.05rem 0.5rem;
+      border-radius: 999px;
+      background: rgba(255, 77, 109, 0.12);
+      color: #c2264a;
+    }
+    [data-theme="dark"] .tl-price { background: rgba(255, 77, 109, 0.22); color: #ffb3c1; }
+    .tl-card ul { margin: 0; padding-left: 1rem; display: flex; flex-direction: column; gap: 0.1rem; }
+    .tl-card ul li { margin: 0 !important; }
+    .tl-card li { font-size: clamp(0.84rem, 1.3vw, 0.98rem) !important; line-height: 1.28; }
+    .tl-note { flex-shrink: 0; margin: 0.2rem 0 0; font-size: clamp(0.78rem, 1.2vw, 0.9rem) !important; color: #5a6575; text-align: center; }
+    html:fullscreen .tl-head img,
+    html:-webkit-full-screen .tl-head img,
+    body.is-fullscreen-deck .tl-head img { flex: none !important; width: 84px !important; height: 84px !important; max-height: none !important; }
+    html:fullscreen .tl-card li,
+    html:-webkit-full-screen .tl-card li,
+    body.is-fullscreen-deck .tl-card li { font-size: clamp(1rem, 2.25vh, 1.3rem) !important; }
+    html:fullscreen .tl-name,
+    html:-webkit-full-screen .tl-name,
+    body.is-fullscreen-deck .tl-name { font-size: clamp(1.15rem, 2.7vh, 1.5rem); }
+    html:fullscreen .tl-who, html:fullscreen .tl-price,
+    html:-webkit-full-screen .tl-who, html:-webkit-full-screen .tl-price,
+    body.is-fullscreen-deck .tl-who, body.is-fullscreen-deck .tl-price { font-size: clamp(0.85rem, 1.8vh, 1.05rem); }
+    html:fullscreen .tl-who, html:-webkit-full-screen .tl-who, body.is-fullscreen-deck .tl-who { white-space: normal; }
+    @media (max-width: 820px) {
+      .tl-grid { grid-template-columns: 1fr; grid-template-rows: none; row-gap: 0.6rem; }
+      .tl-card.top, .tl-card.bottom { grid-row: auto; grid-column: 1 !important; }
+      .tl-card::before, .tl-card::after, .tl-line { display: none; }
+    }
+
+    /* agent timeline v2: date chips, dots on a real time scale, diagonal leader lines (drawn in SVG) */
+    .tl-grid { grid-template-rows: auto 3.4rem auto !important; }
+    .tl-card::before, .tl-card::after, .tl-line { display: none !important; }
+    .tl-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; z-index: 2; pointer-events: none; }
+    .tl-card { z-index: 3; }
+    .tl-date {
+      position: absolute;
+      top: -0.75rem;
+      right: 0.55rem;
+      font-weight: 800;
+      font-size: clamp(0.8rem, 1.25vw, 0.95rem);
+      padding: 0.05rem 0.55rem;
+      border-radius: 999px;
+      color: #fff;
+      background: #ff4fa3;
+    }
+    .tl-card.bottom .tl-date { background: #286dc0; }
+    .tl-card { padding-top: 0.6rem; }
+    .tl-svg .axis { stroke: url(#tl-grad); stroke-width: 4; stroke-linecap: round; }
+    .tl-svg .tick { stroke: #9aa7b8; stroke-width: 1.5; }
+    .tl-svg .month { font: 700 12px Inter, system-ui, sans-serif; fill: #5a6575; text-anchor: middle; }
+    [data-theme="dark"] .tl-svg .month { fill: #aab6c6; }
+    .tl-svg .leader { stroke-width: 2; fill: none; }
+    .tl-svg .leader.top { stroke: #ff4fa3; }
+    .tl-svg .leader.bottom { stroke: #286dc0; }
+    .tl-svg .dot { stroke: #fff; stroke-width: 3; }
+    .tl-svg .dot.top { fill: #ff4fa3; }
+    .tl-svg .dot.bottom { fill: #286dc0; }
+    html:fullscreen .tl-date, html:-webkit-full-screen .tl-date, body.is-fullscreen-deck .tl-date { font-size: clamp(0.9rem, 1.9vh, 1.1rem); }
+    @media (max-width: 820px) { .tl-svg { display: none; } .tl-date { position: static; align-self: flex-start; } }
+
+    /* who checks and pays the agents */
+    .trust-table td.co { font-weight: 800; white-space: nowrap; }
+    .trust-table td.yr { font-weight: 700; white-space: nowrap; text-align: center; color: #00356b; }
+    [data-theme="dark"] .trust-table td.yr { color: #9cc7ff; }
+    .trust-table th:last-child { text-align: center; }
+    .trust-table tr.group td {
+      background: rgba(255, 79, 163, 0.12) !important;
+      color: #c2264a;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-size: 0.82em;
+      padding-top: 0.4rem;
+      padding-bottom: 0.4rem;
+    }
+    [data-theme="dark"] .trust-table tr.group td { color: #ffb3c1; }
+    @media (max-height: 820px) {
+      .trust-table { font-size: 1rem; }
+      .trust-table th, .trust-table td { padding-top: 0.32rem; padding-bottom: 0.32rem; }
+      .trust-table tr.group td { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+    }
+
+    /* checking / paying slides: table left, robot right */
+    .trust-slide .trust-split { grid-template-columns: 1.55fr 0.75fr; align-items: start; flex: none; margin-top: 0.6rem; gap: 1.4rem; }
+    .trust-split .square-shot { width: min(100%, 420px); max-height: min(56vh, 420px); }
+    .trust-points { margin: 0.1rem 0 0; padding-left: 1.3rem; flex-shrink: 0; display: flex; flex-direction: column; gap: 0.2rem; }
+    .trust-points li { font-size: clamp(1.02rem, 1.95vw, 1.24rem) !important; line-height: 1.32; }
+    .gold-slide > ul { margin: 0.1rem 0 0; flex-shrink: 0; }
+    .gold-slide .trust-split { grid-template-columns: 1.6fr 0.7fr; }
+    .gold-slide .trust-split .trust-table td { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    .gold-slide .trust-table th { text-align: left !important; white-space: nowrap; }
+    @media (max-height: 820px) {
+      .gold-slide .trust-split .trust-table td { padding-top: 0.4rem; padding-bottom: 0.4rem; }
+      .gold-slide .trust-split .trust-table { font-size: 1rem; }
+    }
+    .trust-split .trust-table { font-size: clamp(1.08rem, 2vw, 1.38rem); }
+    .trust-split .trust-table th { font-size: clamp(1.02rem, 1.9vw, 1.25rem); padding: 0.7rem 0.85rem; }
+    .trust-split .trust-table td { padding: 0.9rem 0.85rem; line-height: 1.38; }
+    html:fullscreen .trust-split .trust-table,
+    html:-webkit-full-screen .trust-split .trust-table,
+    body.is-fullscreen-deck .trust-split .trust-table { font-size: clamp(1.2rem, 2.6vh, 1.6rem); }
+    html:fullscreen .trust-split .trust-table td,
+    html:-webkit-full-screen .trust-split .trust-table td,
+    body.is-fullscreen-deck .trust-split .trust-table td { padding-top: 1.2rem; padding-bottom: 1.2rem; }
+    html:fullscreen .trust-split .square-shot,
+    html:-webkit-full-screen .trust-split .square-shot,
+    body.is-fullscreen-deck .trust-split .square-shot { flex: none !important; width: min(100%, 52vh) !important; height: auto !important; max-height: 52vh !important; aspect-ratio: 1 / 1; }
+
+    /* AI in medicine: six rows, so a bit tighter */
+    .bio-slide .trust-split .trust-table td { padding-top: 0.55rem; padding-bottom: 0.55rem; }
+    .bio-slide .trust-split { grid-template-columns: 1.9fr 0.55fr; }
+    .bio-slide .trust-split .square-shot { width: min(100%, 300px); max-height: min(44vh, 300px); }
+    .bio-slide .trust-points li { font-size: clamp(1rem, 1.85vw, 1.18rem) !important; }
+    .bio-slide .trust-split .trust-table { font-size: clamp(1rem, 1.8vw, 1.22rem); }
+
+    /* short laptop screens (768px tall): keep the check / pay / gold rush slides on one screen */
+    @media (max-height: 820px) {
+      .trust-points { gap: 0.05rem; }
+      .trust-points li { font-size: 0.98rem !important; line-height: 1.25; }
+      .trust-slide .trust-split .square-shot { max-height: 34vh; width: min(100%, 34vh); }
+      .trust-slide .trust-split .trust-table { font-size: 0.98rem; }
+      .trust-slide .trust-split .trust-table th { padding: 0.4rem 0.7rem; }
+      .trust-slide .trust-split .trust-table td { padding: 0.38rem 0.7rem; line-height: 1.28; }
+    }
+    /* open weight models */
+    .open-slide .skills-split { grid-template-columns: 1.45fr 0.75fr; }
+    .open-slide .skills-split-copy ul { gap: 0.45rem; }
+    .open-slide .skills-split-copy li { font-size: clamp(1.02rem, 2vw, 1.26rem) !important; line-height: 1.32; }
+    .run-slide > ul { margin: 0 0 0.5rem; }
+    .run-slide > ul li { font-size: clamp(0.98rem, 1.8vw, 1.15rem) !important; }
+    .run-table td { padding-top: 0.42rem; padding-bottom: 0.42rem; }
+    .run-table td.co { font-weight: 800; white-space: nowrap; }
+    .run-table th { text-align: left !important; white-space: nowrap; }
+    .run-table td.val { white-space: nowrap; }
+    @media (max-height: 820px) {
+      .run-table { font-size: 0.95rem; }
+      .run-table td { padding-top: 0.28rem; padding-bottom: 0.28rem; }
+      .open-slide .skills-split-copy li { font-size: 1rem !important; }
+      .open-slide .skills-split .square-shot { max-height: 36vh; width: min(100%, 36vh); }
+    }
+    @media (max-height: 820px) {
+      .worlds-slide .skills-split-copy ul { gap: 0.3rem; }
+      .worlds-slide .skills-split-copy li { font-size: 1.02rem !important; line-height: 1.28; }
+      .worlds-slide .skills-split-copy li > ul > li { font-size: 0.95rem !important; }
+    }
+    @media (max-height: 820px) {
+      .run-slide > ul { margin: 0 0 0.3rem; }
+      .run-slide > ul li { font-size: 0.92rem !important; line-height: 1.25; }
+    }
+    @media (max-height: 820px) {
+      .run-table td { padding-top: 0.22rem; padding-bottom: 0.22rem; }
     }
   </style>
 </head>
@@ -137,251 +970,509 @@
     </ul>
     <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"></button>
   </nav>
+
   <header class="slide-deck-header">
     <a href="../../lectures.html">← Lectures</a>
-    <span>Lecture 13: Future Directions</span>    <div class="slide-deck-header-end">
+    <span>Lecture 13: Future Directions</span>
+    <div class="slide-deck-header-end">
       <button type="button" id="present" class="slide-present-btn" aria-pressed="false" aria-label="Start presentation" title="Start presentation">
         <svg class="present-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M12 16v2.5M8 21h8M10 18.5h4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
       </button>
-      <span class="slide-counter">1 / 14</span>
+      <span class="slide-counter">1 / 11</span>
     </div>
   </header>
+
   <div class="slide-viewport">
 
-      <section class="slide active title-slide" data-slide="1">
-        <p class="kicker">Last class · wrap + kickoff</p>
+    <!-- 1 -->
+    <section class="slide active title-slide" data-slide="1">
+      <div class="title-cluster">
         <h1>Future Directions</h1>
-        <p class="subtitle">MGT 409 · Lecture 13 · Tauhid Zaman</p>
-        <p class="takeaway">Models will keep shipping. The exam is a co-pilot you can eval, cost, and govern — for a business you can explain.</p>
-        <p class="speaker-note">40 min lecture, then 40 min project kickoff. No founder-beef recap. Skip slide 2 in class.</p>
-      </section>
+        <img class="title-hero" src="../images/lec13/title-future.jpg" alt="Chrome humanoid robot on a rooftop at sunrise looking over a futuristic city" width="1024" height="1024">
+        <p class="instructor-name">Tauhid Zaman</p>
+      </div>
+    </section>
 
-      <section class="slide" data-slide="2">
-        <p class="instructor-banner">Instructor outline — remove before class.</p>
-        <h1>40-minute lecture</h1>
-        <table class="pace-table">
-          <tr><th>Min</th><th>Beat</th><th>Say this</th></tr>
-          <tr><td>0–2</td><td>Hook</td><td>Waiting for the next SKU is not a strategy. Slide 1, then skip this one.</td></tr>
-          <tr><td>2–6</td><td>Stack wrap</td><td>HW1–6 is one product. The final is the integrator exam (40%).</td></tr>
-          <tr><td>6–9</td><td>L1 / L4 only</td><td>Riemann <em>progress</em> + sandbox-escape. Do not retell. Gates were L11–12.</td></tr>
-          <tr><td>9–13</td><td>Frontier</td><td>CASRAI snapshot: no single model. Which SKU, which effort, which task.</td></tr>
-          <tr><td>13–16</td><td>Procurement</td><td>Adaptive effort + HW6 memo practice. Flagship OCR = a board slide.</td></tr>
-          <tr><td>16–20</td><td>$2.59T</td><td>Gartner: infra dwarfs models. MBA job is integrate a messy workflow.</td></tr>
-          <tr><td>20–24</td><td>Build vs buy</td><td>Copilot Studio / Agentforce vs your docs. Hybrid is the adult answer.</td></tr>
-          <tr><td>24–29</td><td>Computer use</td><td>OSWorld 42% → 85%. Click Send = click Wire. HITL is the last box.</td></tr>
-          <tr><td>29–32</td><td>Tickets</td><td>EU AI Act powers (2 Aug 2026) + IBM AI-enabled breaches. Section G.</td></tr>
-          <tr><td>32–36</td><td>Evals</td><td>Public zip you iterate; hidden suite grades you. Demos ≠ software.</td></tr>
-          <tr><td>36–39</td><td>Exam shape</td><td>Router + four modules + guard. 65 / 15 / 20. Timeline through Canvas.</td></tr>
-          <tr><td>39–40</td><td>Handoff</td><td>Vibe is a 40-min kickoff, not a 90-min workshop. Then walk the room.</td></tr>
+    <!-- 2 -->
+    <section class="slide timeline-slide" data-slide="2">
+      <h1>The Personal Agent Race</h1>
+      <div class="tl">
+        <svg class="tl-svg" aria-hidden="true"></svg>
+        <div class="tl-grid">
+          <div class="tl-card top" data-date="2026-01-20" style="grid-column: 1 / span 2">
+            <span class="tl-date">Jan &#x27;26</span>
+            <div class="tl-head">
+              <img src="../images/lec13/agent-openclaw.jpg?v=2" alt="OpenClaw icon" width="512" height="512">
+              <div><div class="tl-name"><a href="https://openclaw.ai" target="_blank" rel="noopener">OpenClaw</a></div><div class="tl-who">Open source</div></div>
+            </div>
+            <span class="tl-price">Free</span>
+            <ul><li>Open-source agent you run on a Mac mini</li><li>Message it on WhatsApp, Telegram, iMessage</li></ul>
+          </div>
+          <div class="tl-card bottom" data-date="2026-02-25" style="grid-column: 2 / span 2">
+            <span class="tl-date">Feb &#x27;26</span>
+            <div class="tl-head">
+              <img src="../images/lec13/agent-hermes.jpg?v=2" alt="Hermes Agent icon" width="512" height="512">
+              <div><div class="tl-name"><a href="https://hermes-agent.nousresearch.com/" target="_blank" rel="noopener">Hermes Agent</a></div><div class="tl-who">Nous Research</div></div>
+            </div>
+            <span class="tl-price">Free</span>
+            <ul><li>Open source with long-term memory</li><li>Turns solved tasks into reusable skills</li></ul>
+          </div>
+          <div class="tl-card top" data-date="2026-05-19" style="grid-column: 3 / span 2">
+            <span class="tl-date">May &#x27;26</span>
+            <div class="tl-head">
+              <img src="../images/lec13/agent-spark.jpg" alt="Gemini Spark icon" width="512" height="512">
+              <div><div class="tl-name"><a href="https://gemini.google/overview/agent/spark/" target="_blank" rel="noopener">Gemini Spark</a></div><div class="tl-who">Google</div></div>
+            </div>
+            <span class="tl-price">$100/mo</span>
+            <ul><li>Google’s 24/7 agent</li><li>Lives in Gmail, Docs, Calendar, Drive</li></ul>
+          </div>
+          <div class="tl-card bottom" data-date="2026-08-11" style="grid-column: 4 / span 2">
+            <span class="tl-date">Aug &#x27;26</span>
+            <div class="tl-head">
+              <img src="../images/lec13/agent-grok.jpg" alt="Grok Bot icon" width="512" height="512">
+              <div><div class="tl-name"><a href="https://x.ai/news/introducing-grok-bot" target="_blank" rel="noopener">Grok Bot</a></div><div class="tl-who">xAI</div></div>
+            </div>
+            <span class="tl-price">$30/mo</span>
+            <ul><li>Teams of agents, each with its own computer</li><li>Signs into your apps as you</li></ul>
+          </div>
+          <div class="tl-card top" data-date="2026-09-08" style="grid-column: 5 / span 2">
+            <span class="tl-date">Sep &#x27;26</span>
+            <div class="tl-head">
+              <img src="../images/lec13/agent-muse.jpg" alt="Muse icon" width="512" height="512">
+              <div><div class="tl-name"><a href="https://muse.ai" target="_blank" rel="noopener">Muse</a></div><div class="tl-who">Meta</div></div>
+            </div>
+            <span class="tl-price">Free – $100/mo</span>
+            <ul><li>Meta’s agent for 3B+ users</li><li>Lives in WhatsApp</li></ul>
+          </div>
+          <div class="tl-card bottom" data-date="2026-09-28" style="grid-column: 6 / span 2">
+            <span class="tl-date">Sep &#x27;26</span>
+            <div class="tl-head">
+              <img src="../images/lec13/agent-instinct.jpg?v=2" alt="Instinct icon" width="512" height="512">
+              <div><div class="tl-name"><a href="https://instinct.com/" target="_blank" rel="noopener">Instinct</a></div><div class="tl-who">Startup</div></div>
+            </div>
+            <span class="tl-price">Invite only</span>
+            <ul><li>Text it or call it</li><li>Raised $1B at a $10B valuation</li></ul>
+          </div>
+          <div class="tl-card top" data-date="2026-09-28" style="grid-column: 7 / span 2">
+            <span class="tl-date">Sep &#x27;26</span>
+            <div class="tl-head">
+              <img src="../images/lec13/agent-manus.jpg?v=2" alt="Manus Cue icon" width="512" height="512">
+              <div><div class="tl-name"><a href="https://cue.im" target="_blank" rel="noopener">Manus Cue</a></div><div class="tl-who">Manus</div></div>
+            </div>
+            <span class="tl-price">Free (early access)</span>
+            <ul><li>Each agent gets a wallet, phone number, email, and computer</li></ul>
+          </div>
+          <div class="tl-card bottom" data-date="2026-09-29" style="grid-column: 8 / span 2">
+            <span class="tl-date">Sep &#x27;26</span>
+            <div class="tl-head">
+              <img src="../images/lec13/agent-dots.jpg" alt="Dots icon" width="512" height="512">
+              <div><div class="tl-name"><a href="https://openai.com/index/introducing-dots/" target="_blank" rel="noopener">Dots</a></div><div class="tl-who">OpenAI</div></div>
+            </div>
+            <span class="tl-price">$100/mo</span>
+            <ul><li>OpenAI’s always-on agents on GPT-6 Astra</li><li>4,000+ apps, Slack and Teams</li></ul>
+          </div>
+        </div>
+      </div>
+      <p class="tl-note">Dots sit at the real launch dates. Price = cheapest monthly plan that includes the agent (Oct 2026). Open-source agents are free but you pay for the AI model.</p>
+    </section>
+
+    <!-- 3 -->
+    <section class="slide skills-split-slide trust-slide" data-slide="3">
+      <h1>Who Checks The Agents?</h1>
+      <ul class="trust-points">
+        <li>Agents now send emails, sign into accounts for you, and <strong class="money-phrase">spend money</strong>. Mistakes are costly</li>
+        <li>Agent certification: prove an agent is safe</li>
+        <li>Agent insurance: if the certified agent messes up, the policy pays</li>
+          
+      </ul>
+      <div class="skills-split trust-split">
+        <table class="deal-table trust-table">
+          <thead>
+            <tr><th>Company</th><th>What’s unique</th><th>Founded</th></tr>
+          </thead>
+          <tbody>
+          <tr><td class="co"><a href="https://aiuc.com/" target="_blank" rel="noopener">AIUC</a></td><td>Certifies agents with ~5,000 attack tests (AIUC-1), re-tests every quarter, then insures them. $40M Series A, Sept 2026</td><td class="yr">2024</td></tr>
+          <tr><td class="co"><a href="https://mount.insure/" target="_blank" rel="noopener">Mount</a></td><td>Liability insurance for deployed agents, with nonstop red-teaming to price the risk</td><td class="yr">2026</td></tr>
+          <tr><td class="co"><a href="https://www.braintrust.dev/" target="_blank" rel="noopener">Braintrust</a></td><td>Testing and monitoring tools companies use to check their own agents. $800M valuation</td><td class="yr">2023</td></tr>
+          <tr><td class="co"><a href="https://www.patronus.ai/" target="_blank" rel="noopener">Patronus AI</a></td><td>Runs agents through simulated tasks to catch mistakes before customers do</td><td class="yr">2023</td></tr>
+          </tbody>
         </table>
-      </section>
+        <img class="square-shot" src="../images/lec13/agent-checker.jpg" alt="Chrome robot inspector with a clipboard testing another robot on a platform" width="1024" height="1024">
+      </div>
+    </section>
 
-      <section class="slide" data-slide="3">
-        <h1>You already built the stack</h1>
-        <div class="stack-grid">
-          <div class="stack-cell" style="background:#00356b">HW1<span>Extract</span></div>
-          <div class="stack-cell" style="background:#286dc0">HW2<span>Research</span></div>
-          <div class="stack-cell" style="background:#0b6b5a">HW3<span>Search + vision</span></div>
-          <div class="stack-cell" style="background:#c98900">HW4<span>Router</span></div>
-          <div class="stack-cell" style="background:#7c3aed">HW5<span>Ship a URL</span></div>
-          <div class="stack-cell" style="background:#be185d">HW6<span>$ + locks</span></div>
-        </div>
-        <svg class="flow-svg" viewBox="0 0 640 118" aria-label="Course stack becomes co-pilot">
-          <rect x="8" y="38" width="90" height="44" rx="8" fill="#00356b"/>
-          <text class="on-dark" x="53" y="65" text-anchor="middle" font-size="13">Docs</text>
-          <rect x="112" y="38" width="90" height="44" rx="8" fill="#286dc0"/>
-          <text class="on-dark" x="157" y="65" text-anchor="middle" font-size="13">Agents</text>
-          <rect x="216" y="38" width="90" height="44" rx="8" fill="#0b6b5a"/>
-          <text class="on-dark" x="261" y="65" text-anchor="middle" font-size="13">Multimodal</text>
-          <rect x="320" y="38" width="90" height="44" rx="8" fill="#7c3aed"/>
-          <text class="on-dark" x="365" y="65" text-anchor="middle" font-size="13">App</text>
-          <rect x="424" y="38" width="90" height="44" rx="8" fill="#be185d"/>
-          <text class="on-dark" x="469" y="65" text-anchor="middle" font-size="13">Govern</text>
-          <rect x="528" y="28" width="104" height="64" rx="10" fill="#111827"/>
-          <text class="on-dark" x="580" y="56" text-anchor="middle" font-size="12">Co-Pilot</text>
-          <text class="on-dark" x="580" y="74" text-anchor="middle" font-size="11">40% grade</text>
-        </svg>
-        <p class="takeaway">The final is an integrator exam: one product, one router, your industry.</p>
-      </section>
+    <!-- 4 -->
+    <section class="slide skills-split-slide trust-slide gold-slide" data-slide="4">
+      <h1>The Agent Startup Gold Rush</h1>
+      <ul>
+        <li>Pick a job, build an agent that does it, raise at a huge valuation</li>
+      </ul>
+      <div class="skills-split trust-split">
+      <table class="deal-table trust-table">
+        <thead>
+          <tr><th>Startup</th><th>What the agent does</th><th>Valuation</th><th>Numbers</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><a href="https://www.harvey.ai/" target="_blank" rel="noopener">Harvey</a></td><td>Legal work: contracts, due diligence, drafting</td><td class="val">$15.6B</td><td>$550M round, Sept 2026; ARR $400M+
+            <a class="src" href="https://aiweekly.co/alerts/harvey-raises-550m-at-156b-co-led-by-lightspeed-and-diffusion" target="_blank" rel="noopener">(src)</a></td></tr>
+          <tr><td><a href="https://sierra.ai/" target="_blank" rel="noopener">Sierra</a></td><td>Customer service for brands</td><td class="val">$15B</td><td>$950M round, May 2026
+            <a class="src" href="https://siliconangle.com/2026/05/04/ai-agent-startup-sierra-valued-15b-new-950m-funding-round/" target="_blank" rel="noopener">(src)</a></td></tr>
+          <tr><td><a href="https://instinct.com/" target="_blank" rel="noopener">Instinct</a></td><td>Personal assistant you text or call</td><td class="val">$10B</td><td>$1B round, Sept 2026</td></tr>
+          <tr><td><a href="https://www.abridge.com/" target="_blank" rel="noopener">Abridge</a></td><td>Writes doctors’ clinical notes</td><td class="val">$5.3B</td><td>$300M round, a16z</td></tr>
+          <tr><td><a href="https://decagon.ai/" target="_blank" rel="noopener">Decagon</a></td><td>Customer support agents</td><td class="val">$4.5B</td><td>Tender offer, Mar 2026
+            <a class="src" href="https://sacra.com/c/decagon/" target="_blank" rel="noopener">(src)</a></td></tr>
+          <tr><td><a href="https://www.actively.ai/" target="_blank" rel="noopener">Actively</a></td><td>Sales: one agent per customer account</td><td class="val">$250M</td><td>$45M Series B, Apr 2026
+            <a class="src" href="https://fintech.global/2026/04/29/tcv-and-first-harmonic-back-activelys-45m-funding-round/" target="_blank" rel="noopener">(src)</a></td></tr>
+        </tbody>
+      </table>
+        <img class="square-shot" src="../images/lec13/gold-rush-1849.jpg" alt="Chrome robots with pickaxes and gold pans rushing toward a gold river in 1849 California" width="1024" height="1024">
+      </div>
+    </section>
 
-      <section class="slide" data-slide="4">
-        <h1>Two headlines you already have</h1>
-        <ul>
-          <li><strong>Lecture 4.</strong> An agent swarm made <em>progress</em> on Riemann. Not a proof. The news is the workflow.</li>
-          <li><strong>Lecture 1.</strong> Sandbox-escape coverage. If the model can act outside the box, that is a control failure.</li>
-        </ul>
-        <p class="takeaway">Capability without a gate is not a product. Lectures 11–12 were the gates. Use them in the co-pilot.</p>
-      </section>
-
-      <section class="slide" data-slide="5">
-        <h1>Frontier, mid-August 2026</h1>
-        <a class="news-card" href="https://casrai.org/news/frontier-llm-landscape-august-2026" target="_blank" rel="noopener">
-          <span class="outlet">CASRAI · 16 Aug 2026</span>
-          <p>No single model fits every institutional use. Opus 5 / Fable 5 lead many benches; GPT-5.6 and Grok 4.6 sit close; Kimi K3 is the self-host option.</p>
-        </a>
-        <table>
-          <tr><th>Model</th><th>Manager takeaway</th></tr>
-          <tr><td>Claude Opus 5 / Fable 5</td><td>Pay for hard reasoning</td></tr>
-          <tr><td>GPT-5.6 Luna / Terra / Sol</td><td>Don’t pick one SKU for every step</td></tr>
-          <tr><td>Grok 4.6 · Kimi K3</td><td>Budget agents · data residency</td></tr>
+    <!-- 5 -->
+    <section class="slide skills-split-slide trust-slide bio-slide" data-slide="5">
+      <h1>AI In Medicine</h1>
+      <ul class="trust-points">
+        <li>Design drugs on a computer: predict protein shapes, invent new molecules and antibodies</li>
+        <li>Predict which drugs will work before running the lab experiment</li>
+      </ul>
+      <div class="skills-split trust-split">
+        <table class="deal-table trust-table">
+          <thead>
+            <tr><th>Company</th><th>What’s unique</th><th>Founded</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="co"><a href="https://www.isomorphiclabs.com/" target="_blank" rel="noopener">Isomorphic Labs</a></td><td>DeepMind spinout designing drugs with AlphaFold. Raised $2.1B</td><td class="yr">2021</td></tr>
+            <tr><td class="co"><a href="https://insilico.com/" target="_blank" rel="noopener">Insilico Medicine</a></td><td>AI-found lung drug, now in Phase III trials</td><td class="yr">2014</td></tr>
+            <tr><td class="co"><a href="https://www.chaidiscovery.com/" target="_blank" rel="noopener">Chai Discovery</a></td><td>Designs antibodies from scratch. $3.8B; Lilly, Pfizer, Novartis deals</td><td class="yr">2024</td></tr>
+            <tr><td class="co"><a href="https://xaira.com/" target="_blank" rel="noopener">Xaira</a></td><td>$1B+ launch; protein design from Nobel winner David Baker’s lab</td><td class="yr">2023</td></tr>
+            <tr><td class="co"><a href="https://www.recursion.com/" target="_blank" rel="noopener">Recursion</a></td><td>Robot labs + AI on millions of cell images. 5 drugs in trials</td><td class="yr">2013</td></tr>
+          </tbody>
         </table>
-        <p class="source-note"><a href="https://venturebeat.com/technology/spacexai-debuts-grok-4-6-overtaking-kimi-k3s-performance-and-matching-gpt-5-6-sol-for-worlds-third-best-on-artificial-analysis">VentureBeat on Grok 4.6</a>. Latency is a product feature too: Gemini 3.7 Flash is live; GPT-5.6 Sol Ultrafast is still invite-only.</p>
-      </section>
+        <img class="square-shot" src="../images/lec13/ai-biologist.jpg" alt="Chrome robot biologist in a lab coat looking through a microscope in a pharma lab" width="1024" height="1024">
+      </div>
+    </section>
 
-      <section class="slide" data-slide="6">
-        <h1>The procurement question</h1>
-        <p class="quote-xl">Not “which model?”</p>
-        <p class="quote-xl">“Which model, at which effort, for which task?”</p>
-        <ul>
-          <li>Opus 5 and GPT-5.6 expose <strong>adaptive effort</strong> — same name, very different cost and latency.</li>
-          <li>Your HW6 memo already practiced this. The final memo must do it for <em>your</em> workflow.</li>
-        </ul>
-        <p class="takeaway">Buying the flagship SKU for invoice OCR is how a token bill becomes a board slide.</p>
-      </section>
-
-      <section class="slide" data-slide="7">
-        <h1>Most of the money is not the chatbot</h1>
-        <p class="big-num">$2.59T</p>
-        <p>Worldwide AI spending in 2026, <strong>+47%</strong> YoY — Gartner. Models themselves: ~$33B.</p>
-        <div class="chart-bar-chart">
-          <div class="chart-row">
-            <span>Infra</span>
-            <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
-            <span class="pct">$1,432B</span>
-          </div>
-          <div class="chart-row">
-            <span>Services</span>
-            <div class="bar-track"><div class="bar-fill" style="width:41%;background:#286dc0"></div></div>
-            <span class="pct">$586B</span>
-          </div>
-          <div class="chart-row">
-            <span>Software</span>
-            <div class="bar-track"><div class="bar-fill" style="width:32%;background:#c98900"></div></div>
-            <span class="pct">$453B</span>
-          </div>
-          <div class="chart-row">
-            <span>Models</span>
-            <div class="bar-track"><div class="bar-fill muted" style="width:8%"></div></div>
-            <span class="pct">$33B</span>
-          </div>
+    <!-- 6 -->
+    <section class="slide skills-split-slide open-slide" data-slide="6">
+      <h1>Open Weight Models</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li><strong>Open weights</strong>: download the model and run it on your own computer. No per-token bill, and your data stays home</li>
+            <li><strong>The gap is months</strong>: the best open models trail the best closed ones by ~4 months
+              <a class="src" href="https://epoch.ai/data-insights/open-closed-eci-gap" target="_blank" rel="noopener">(Epoch AI)</a></li>
+            <li><strong>China leads</strong>: DeepSeek, Qwen, Kimi, and GLM are the top open models</li>
+            <li><strong>US</strong>: OpenAI released gpt-oss and Google has Gemma. Meta used to release open Llama models, but its newest flagship is closed</li>
+          </ul>
         </div>
-        <p class="source-note"><a href="https://www.morningstar.com/news/business-wire/20260519405832/gartner-forecasts-worldwide-ai-spending-to-grow-47-in-2026">Gartner via Business Wire</a>. You will not out-capex NVIDIA. You can out-integrate a messy workflow.</p>
-      </section>
+        <img class="square-shot" src="../images/lec13/open-weights.jpg?v=2" alt="Chrome robot at an open vault handing a glowing brain cube to people with laptops" width="1024" height="1024">
+      </div>
+    </section>
 
-      <section class="slide" data-slide="8">
-        <h1>Build vs buy</h1>
-        <div class="two-col">
-          <div class="compare-box">
-            <h3>Buy / embed</h3>
-            <p>Microsoft Copilot Studio: 160k+ orgs. Salesforce Agentforce: ~$800M ARR. Fast, vendor roadmap, their data gravity.</p>
-          </div>
-          <div class="compare-box">
-            <h3>Build (this course)</h3>
-            <p>Your router + your docs + your guardrails. Ugly PDFs, odd SKUs, a process no CRM tab was designed for.</p>
-          </div>
+    <!-- 7 -->
+    <section class="slide table-slide run-slide" data-slide="7">
+      <h1>What It Takes To Run Them</h1>
+      <ul>
+        <li>Memory ≈ parameters × bytes each: 2 bytes at 16-bit (full precision), 1 at 8-bit, ½ at 4-bit</li>
+        <li>(active) = parameters used per word. Fast, but you still load all of them</li>
+        <li>One NVIDIA B200 GPU has 192 GB of memory, so an 865 GB model needs 5+ of them</li>
+        <li>Click a model to download it from <a href="https://huggingface.co/models" target="_blank" rel="noopener">Hugging Face</a></li>
+      </ul>
+      <table class="deal-table trust-table run-table">
+        <thead>
+          <tr><th>Model</th><th>Maker</th><th>Parameters (active)</th><th>Memory, 4-bit</th><th>Runs on</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="co"><a href="https://huggingface.co/openai/gpt-oss-20b" target="_blank" rel="noopener">gpt-oss-20b</a></td><td>OpenAI</td><td>21B (3.6B)</td><td class="val">~13 GB</td><td>Laptop with 16 GB</td></tr>
+          <tr><td class="co"><a href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noopener">Qwen3.8-27B</a></td><td>Alibaba</td><td>27B</td><td class="val">~15 GB</td><td>Laptop or gaming GPU</td></tr>
+          <tr><td class="co"><a href="https://huggingface.co/google/gemma-4-31B-it" target="_blank" rel="noopener">Gemma 4 31B</a></td><td>Google</td><td>31B</td><td class="val">~17 GB</td><td>Laptop or gaming GPU</td></tr>
+          <tr><td class="co"><a href="https://huggingface.co/openai/gpt-oss-120b" target="_blank" rel="noopener">gpt-oss-120b</a></td><td>OpenAI</td><td>117B (5.1B)</td><td class="val">~65 GB</td><td>1 B200</td></tr>
+          <tr><td class="co"><a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash" target="_blank" rel="noopener">DeepSeek V4-Flash</a></td><td>DeepSeek</td><td>284B (13B)</td><td class="val">~150 GB</td><td>1 B200</td></tr>
+          <tr><td class="co"><a href="https://huggingface.co/mistralai/Mistral-Large-3-675B-Instruct-2512" target="_blank" rel="noopener">Mistral Large 3</a></td><td>Mistral</td><td>675B (41B)</td><td class="val">~340 GB</td><td>2–3 B200s</td></tr>
+          <tr><td class="co"><a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro" target="_blank" rel="noopener">DeepSeek V4-Pro</a></td><td>DeepSeek</td><td>1.6T (49B)</td><td class="val">~865 GB</td><td>5–8 B200s (one 8-GPU server)</td></tr>
+          <tr><td class="co"><a href="https://huggingface.co/moonshotai/Kimi-K3" target="_blank" rel="noopener">Kimi K3</a></td><td>Moonshot</td><td>2.8T (104B)</td><td class="val">~1.5 TB</td><td>16 B200s (two 8-GPU servers)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 8 -->
+    <section class="slide courses-slide" data-slide="8">
+      <h1>AI Courses At Yale SOM</h1>
+      <div class="course-tools">
+        <input type="search" id="course-q" placeholder="Search title, professor, or description" aria-label="Search courses">
+        <select id="course-sem" aria-label="Semester">
+          <option value="">All semesters</option>
+          <option value="fall*">Fall (any)</option>
+          <option value="fall">fall</option>
+          <option value="fall-1">fall-1</option>
+          <option value="fall-2">fall-2</option>
+          <option value="spring*">Spring (any)</option>
+          <option value="spring">spring</option>
+          <option value="spring-1">spring-1</option>
+          <option value="spring-2">spring-2</option>
+        </select>
+        <select id="course-type" aria-label="Course type">
+          <option value="">All types</option>
+          <option>Core</option>
+          <option>Elective</option>
+          <option>EMBA</option>
+          <option>MAM</option>
+          <option>MMS</option>
+          <option>PhD</option>
+        </select>
+        <select id="course-ai" aria-label="How much AI">
+          <option value="">All AI levels</option>
+          <option value="core">AI is the focus</option>
+          <option value="some">Uses AI</option>
+        </select>
+        <span class="course-count" id="course-count"></span>
+      </div>
+      <div class="course-list" id="course-list"></div>
+    </section>
+
+    <!-- 9 -->
+    <section class="slide skills-split-slide worlds-slide" data-slide="9">
+      <h1>Build Virtual Worlds With AI</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>The newest models build 3D worlds, games, and animations from a prompt</li>
+            <li><strong>GPT-6 Astra</strong>
+              <ul>
+                <li>Floor plan → Blender model → a walkable Unreal Engine scene
+                  <a class="src" href="https://somethingbig.ai/3d-worlds" target="_blank" rel="noopener">(Matt Shumer)</a></li>
+                <li>“Void Explorer”: 2,048 star systems you can fly to and walk on, in the browser
+                  <a class="src" href="https://aituts.com/gpt6-astra-3d-generation-demos/" target="_blank" rel="noopener">(Aituts)</a></li>
+              </ul>
+            </li>
+            <li><strong>Claude Opus 5.5</strong>
+              <ul>
+                <li>Full 3D web games from one prompt in one Claude Code session
+                  <a class="src" href="https://www.aiezz.com/en/tutorial/tutorial-8f972e0c24acb1360c24d051" target="_blank" rel="noopener">(guide)</a></li>
+                <li>Prompt gallery: Mario Kart-style racer, endless open world
+                  <a class="src" href="https://www.tripo3d.ai/3d-prompts/models/claude-opus-5-5" target="_blank" rel="noopener">(Tripo)</a></li>
+              </ul>
+            </li>
+          </ul>
         </div>
-        <ul>
-          <li><strong>Buy</strong> when the work already lives in M365 or Salesforce.</li>
-          <li><strong>Build</strong> when the gold is proprietary documents + tools.</li>
-          <li><strong>Hybrid</strong> is the usual adult answer: vendor LLM, your RAG, your evals, your kill switch.</li>
-        </ul>
-      </section>
+        <img class="square-shot" src="../images/lec13/world-model.jpg" alt="Chrome robot in a VR headset as a fantasy world forms around it" width="1024" height="1024">
+      </div>
+    </section>
 
-      <section class="slide" data-slide="9">
-        <h1>Horizon: agents that click</h1>
-        <p>a16z, summer 2026: best computer-use score on OSWorld-Verified went <strong>42% → 85%</strong> — above the ~72% humans score.</p>
-        <div class="horizon">
-          <div style="background:#00356b">
-            <h3>Do</h3>
-            Sandbox the VM. Log every click. Human token for money, email, delete.
-          </div>
-          <div style="background:#be185d">
-            <h3>Don’t</h3>
-            Give the agent the CEO’s laptop because a demo hit 85%. That is 15 disasters per 100 tasks.
-          </div>
+    <!-- 10 -->
+    <section class="slide map-slide" data-slide="10">
+      <h1>The Tech To Build Them</h1>
+      <div class="safety-map">
+        <div class="map-card">
+          <h3><a href="https://threejs.org/" target="_blank" rel="noopener">Three.js</a> · free</h3>
+          <p>3D in the browser with JavaScript. Yale SOM Virtual is built with it. Share a link and anyone can play.</p>
         </div>
-        <p class="source-note"><a href="https://a16z.com/can-agents-use-a-computer-yet-weve-got-the-data/">a16z: Can Agents Use a Computer Yet?</a> Same lesson as L1’s sandbox news: blast radius scales with what the agent can touch.</p>
-      </section>
-
-      <section class="slide" data-slide="10">
-        <h1>Horizon: tickets and attackers</h1>
-        <ul>
-          <li>EU AI Act <strong>enforcement powers</strong> start <strong>2 August 2026</strong>. GPAI: transparency, copyright, systemic-risk safety. Fines up to <strong>€15M or 3%</strong> of global turnover.</li>
-          <li>IBM Cost of a Data Breach 2026: about <strong>1 in 4</strong> malicious breaches are AI-enabled (~$6M vs ~$5.0M overall).</li>
-        </ul>
-        <p class="source-note"><a href="https://digital-strategy.ec.europa.eu/en/policies/enforcement-ai-act">European Commission</a> · <a href="https://newsroom.ibm.com/2026-07-29-ibm-study-one-in-four-malicious-breaches-are-ai-enabled,-costing-companies-6-million-on-average">IBM, 29 Jul 2026</a></p>
-        <p class="takeaway">Section G is not extra-credit personality. It is the cheapest insurance in the repo.</p>
-      </section>
-
-      <section class="slide" data-slide="11">
-        <h1>Evals: demos are not the exam</h1>
-        <svg class="flow-svg" viewBox="0 0 640 168" aria-label="Eval pyramid">
-          <polygon points="320,12 500,58 140,58" fill="#be185d"/>
-          <text class="on-dark" x="320" y="42" text-anchor="middle" font-size="15">Hidden suite — grades you</text>
-          <rect x="90" y="70" width="460" height="42" rx="6" fill="#7c3aed"/>
-          <text class="on-dark" x="320" y="97" text-anchor="middle" font-size="15">Public practice zip — you iterate</text>
-          <rect x="40" y="122" width="560" height="42" rx="6" fill="#00356b"/>
-          <text class="on-dark" x="320" y="149" text-anchor="middle" font-size="15">HW1–6 goldens — the building blocks</text>
-        </svg>
-        <p>A live demo is one lucky path. Passing public is necessary, not sufficient. Hidden cases use the same modules, different PDFs and traps.</p>
-        <p class="takeaway">If it only works when you hover the mouse just so, that is a demo. We grade software.</p>
-      </section>
-
-      <section class="slide" data-slide="12">
-        <h1>Co-pilot shape (non-negotiable)</h1>
-        <svg class="flow-svg" viewBox="0 0 640 175" aria-label="Final project architecture">
-          <rect x="10" y="68" width="100" height="44" rx="8" fill="#286dc0"/>
-          <text class="on-dark" x="60" y="95" text-anchor="middle" font-size="13">Web UI</text>
-          <rect x="140" y="55" width="120" height="70" rx="10" fill="#7c3aed"/>
-          <text class="on-dark" x="200" y="85" text-anchor="middle" font-size="14">Router</text>
-          <text class="on-dark" x="200" y="104" text-anchor="middle" font-size="11">prompts/router.md</text>
-          <rect x="290" y="8" width="110" height="36" rx="6" fill="#00356b"/>
-          <text class="on-dark" x="345" y="31" text-anchor="middle" font-size="12">Extract</text>
-          <rect x="290" y="50" width="110" height="36" rx="6" fill="#c98900"/>
-          <text class="on-dark" x="345" y="73" text-anchor="middle" font-size="12">KB Q&amp;A</text>
-          <rect x="290" y="92" width="110" height="36" rx="6" fill="#0b6b5a"/>
-          <text class="on-dark" x="345" y="115" text-anchor="middle" font-size="12">Research</text>
-          <rect x="290" y="134" width="110" height="36" rx="6" fill="#286dc0"/>
-          <text class="on-dark" x="345" y="157" text-anchor="middle" font-size="12">Decision</text>
-          <rect x="430" y="55" width="90" height="70" rx="10" fill="#be185d"/>
-          <text class="on-dark" x="475" y="95" text-anchor="middle" font-size="13">Guard</text>
-          <rect x="540" y="68" width="90" height="44" rx="8" fill="#111827"/>
-          <text class="on-dark" x="585" y="95" text-anchor="middle" font-size="12">JSON+$</text>
-        </svg>
-        <div class="stat-grid">
-          <div class="stat-box"><div class="num">65</div><div class="label">A–G · public + hidden</div></div>
-          <div class="stat-box"><div class="num">15</div><div class="label">Memo + prompts</div></div>
-          <div class="stat-box"><div class="num">20</div><div class="label">Stretch — optional</div></div>
+        <div class="map-card">
+          <h3><a href="https://www.blender.org/" target="_blank" rel="noopener">Blender</a> · free</h3>
+          <p>Model, texture, and animate 3D assets. With Blender MCP, your vibe coder builds the scene for you.</p>
         </div>
-        <p><a href="../../project_requirements.html">Full requirements →</a> · CLI grades functions. Pretty UI is for humans.</p>
-      </section>
+        <div class="map-card">
+          <h3><a href="https://www.unrealengine.com/" target="_blank" rel="noopener">Unreal Engine</a> · free to start</h3>
+          <p>Film-quality games and walkable worlds (Fortnite runs on it). Royalties only after $1M in revenue.</p>
+        </div>
+        <div class="map-card">
+          <h3><a href="https://godotengine.org/" target="_blank" rel="noopener">Godot</a> · free, open source</h3>
+          <p>Lightweight game engine for 2D and 3D. We use it in MGT 575 to have agents build games.</p>
+        </div>
+      </div>
+    </section>
 
-      <section class="slide" data-slide="13">
-        <h1>Timeline</h1>
-        <ol>
-          <li><strong>Today (40 min vibe):</strong> business + README + module map + router stub. Not the whole repo.</li>
-          <li><strong>This week:</strong> run the public suite; list honest red/yellow/green.</li>
-          <li><strong>Next:</strong> fix extract + refuse path; log cost per 100 runs.</li>
-          <li><strong>Week before due:</strong> deploy URL, red-team injection, memo draft.</li>
-          <li><strong>Canvas:</strong> <code>final_project.zip</code> + live URL. No live pitch. The suite is the pitch.</li>
-        </ol>
-        <p class="takeaway">Work section by section. One mega-prompt from the assignment URL fails the hidden suite <em>and</em> the vibe-coding policy.</p>
-      </section>
-
-      <section class="slide section-slide" data-slide="14">
-        <h1>→ Vibe: kick the project (40 min)</h1>
-        <p>Pick a business. Map modules. Stub the router. Write how you’ll run the public suite. Stop there.</p>
-        <p><a href="../vibe/lec13-vibe.html">Open timed prompts →</a></p>
-        <p class="takeaway">The moat is not the next Ultrafast SKU. It is your data, your evals, and a workflow nobody else wired.</p>
-      </section>
+    <!-- 11 -->
+    <section class="slide skills-split-slide news-photo-slide" data-slide="11">
+      <h1>Conclusion</h1>
+      <div class="skills-split">
+        <div class="skills-split-copy">
+          <ul>
+            <li>This semester you learned:
+              <ul>
+                <li>The basic concepts underlying AI</li>
+                <li>How AI impacts our environment and society</li>
+                <li>How to write code with AI</li>
+                <li>How to build agents with AI</li>
+              </ul>
+            </li>
+            <li>Final vibe coding session: let’s make Yale SOM with AI</li>
+            <li><a class="vibe-link" href="../vibe/lec13-vibe.html">Vibe coding session →</a></li>
+          </ul>
+        </div>
+        <figure class="news-figure">
+          <img class="wide-shot" src="../images/lec13/som-virtual-classroom.jpg?v=2" alt="Yale SOM Virtual: a professor teaching MGT 409 to a classroom of Labubus" width="1600" height="900">
+        </figure>
+      </div>
+    </section>
 
   </div>
-  <p class="slide-hint">Swipe or use buttons to advance � projector icon for presentation</p>
+  <p class="slide-hint">Swipe or use buttons to advance · projector icon for presentation</p>
   <footer class="slide-deck-footer">
     <button type="button" id="prev" aria-label="Previous slide">← Previous</button>
     <button type="button" id="next" aria-label="Next slide">Next →</button>
   </footer>
-  <script src="../../js/slides.js?v=7"></script>
+  <script src="../../js/slides.js?v=13"></script>
   <script src="../../js/theme.js"></script>
+  <script src="../../js/vibe-copy.js"></script>
+  <audio id="tts-audio" preload="none"></audio>
+  <script>
+    // Play/pause buttons for recorded audio (same behavior as the vibe pages).
+    (function () {
+      const audio = document.getElementById("tts-audio");
+      const buttons = [...document.querySelectorAll(".tts-btn[data-tts]")];
+      if (!audio || !buttons.length) return;
+      let activeBtn = null;
+      const reset = () => { buttons.forEach((b) => b.setAttribute("aria-pressed", "false")); activeBtn = null; };
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const src = btn.getAttribute("data-tts");
+          if (activeBtn === btn && !audio.paused) { audio.pause(); reset(); return; }
+          if (audio.getAttribute("src") !== src) { audio.setAttribute("src", src); audio.load(); }
+          reset(); activeBtn = btn; btn.setAttribute("aria-pressed", "true");
+          audio.play().catch(reset);
+        });
+      });
+      audio.addEventListener("ended", reset);
+      // Stop the audio when you move to another slide.
+      new MutationObserver(() => {
+        if (activeBtn && !activeBtn.closest(".slide.active")) { audio.pause(); reset(); }
+      }).observe(document.querySelector(".slide-viewport"), { subtree: true, attributes: true, attributeFilter: ["class"] });
+    })();
+  </script>
+  <script>
+    // AI course finder (slide 18). Data comes from lectures/data/lec13/yale_som_courses.db (no emails).
+    (function () {
+      const COURSES = [{"n": "MGMT 7206", "t": "Financial Econometrics and Machine Learning Part 1", "p": "Bryan Kelly", "ai": "core", "s": ["fall-2"], "ty": ["PhD"], "u": "0.5", "dt": ["F 1:00 PM–4:00 PM"], "d": "Empirical work is the foundation of great economics. Theory is also the foundation of great economics. Theorists work on closing the gap between theory and reality. Empiricists are explorers that map the unchartered territory between theory and reality. This is a division of labor view of Popper’s philosophy of science. This course is designed to help build a skill set for pushing the empirical side of this proposition, particularly tailored to asset pricing research. This is in large part a course in advanced statistical methods for finance. It is not a facts course. I will bring in many empirical facts as we go. But the more important take-away for you is a set of methods you can you to discover your own new facts."}, {"n": "MGMT 7207", "t": "Financial Econometrics and Machine Learning Part 2", "p": "Bryan Kelly", "ai": "core", "s": ["spring-1"], "ty": ["PhD"], "u": "0.5", "dt": [], "d": "Empirical work is the foundation of great economics. Theory is also the foundation of great economics. Theorists work on closing the gap between theory and reality. Empiricists are explorers that map the unchartered territory between theory and reality. This is a division of labor view of Popper’s philosophy of science. This course is designed to help build a skill set for pushing the empirical side of this proposition, particularly tailored to asset pricing research. This is in large part a course in advanced statistical methods for finance. It is not a facts course. I will bring in many empirical facts as we go. But the more important take-away for you is a set of methods you can you to discover your own new facts."}, {"n": "MGMT 7405", "t": "Algorithms For Democratic Decision-Making", "p": "Jamie Tucker-Foltz", "ai": "some", "s": ["spring"], "ty": ["PhD"], "u": "1.0", "dt": [], "d": "This course takes a mathematical look at how democratic institutions fairly allocate representation and aggregate preferences to make public decisions. We will begin with the foundational economics work in social choice theory on the design of voting systems. We will then progress through more modern developments from computer science on preference aggregation and fair allocation, including applications to AI and online platforms. The final part of the course will focus on institutions for distributing voting power. This includes traditional systems like apportionment and redistricting, as well as more radical proposals like liquid democracy and citizens assemblies. Throughout, particular focus will be given to designing efficient algorithms with theoretical guarantees. This is a research-focused course geared toward PhD students in Operations, Computer Science, Economics, and related fields. Advanced undergraduates may enroll by instructor permission only, and will be held to the same standard as graduate students. The only firm prerequisite is that you must be very comfortable reading and writing mathematical proofs, specifically in areas of discrete mathematics. The course will also assume understanding of basic concepts in game theory (mixed strategies, Nash equilibria) and CS/OR (linear programming, NP-completeness). Link to syllabus: https://jamie.tuckerfoltz.com/Teaching/AFDDM26_Syllabus.pdf"}, {"n": "MGT 409", "t": "AI Foundations for Managers", "p": "Tauhid Zaman", "ai": "core", "s": ["fall-1"], "ty": ["Core"], "u": "2.0", "dt": ["M W 10:05 AM–11:25 AM", "M W 1:00 PM–2:20 PM", "T Th 10:05 AM–11:25 AM", "T Th 1:00 PM–2:20 PM", "T Th 2:35 PM–3:55 PM"], "d": "This course is designed for students seeking a decisive competitive advantage by mastering the ability to both deploy and build custom AI agents for the modern enterprise. While the AI landscape is fast-evolving, the primary differentiator for future leaders is the transition from being a passive consumer of AI to an architect of AI-driven solutions. The curriculum provides a rigorous, hands-on environment focused on fundamental, general-purpose AI building skills. Students move from theoretical understanding to the practical construction of tools using vibe coding and agentic frameworks. By the end of the thirteen sessions, students will have developed the technical intuition and engineering skills to build AI agents that integrate APIs, RAG (Retrieval-Augmented Generation), tool use, and autonomous workflows—skills that transfer across business functions and domains."}, {"n": "MGT 413", "t": "State & Society", "p": "Mushfiq Mobarak", "ai": "some", "s": ["fall-2"], "ty": ["Core"], "u": "2.0", "dt": ["T Th 8:30 AM–9:50 AM", "T Th 10:05 AM–11:25 AM", "T Th 1:00 PM–2:20 PM", "T Th 2:35 PM–3:55 PM", "T Th 4:10 PM–5:30 PM"], "d": "Firms need governments to protect property rights, enforce contracts, mitigate market failures, and maintain an environment that is conducive to doing business. Governments depend on the private sector for investment, employment, and revenue, and sometimes to mitigate political failures. Future managers and leaders of both for-profit and non-profit private sector entities must understand the ways in which their organization’s mission is dependent on government and devise appropriate strategies vis-à-vis the public sector. Conversely, future public sector leaders must be cognizant of the effects of government action on business. This course is designed to expose students to frameworks derived primarily from the fields of economics and political science that help us analyze the social and political environments within which business operates. The first half of the course focuses on analyzing how government institutions affect the conduct of business and how business can shape government and policy. The second half does deeper dives into a number of pressing policy issues (such as gender and racial discrimination, immigration policy, education policy, public health in light of the COVID-19 epidemic, and the role of evidence in policymaking) that have large effects on employees, managers, shareholders, and other stakeholders. Beyond political science and economics, a rigorous analysis of these topics will require us to also draw on scholarship from the fields of law, history and sociology.", "note": "Will include discussion on AI issues."}, {"n": "MGT 416", "t": "IE: China", "p": "Zeqiong Huang", "ai": "some", "s": ["spring-1"], "ty": ["Elective"], "u": "4.0", "dt": [], "d": "This immersive international experience takes MBA students to two of China’s most dynamic cities—Beijing and Shanghai—to explore the intersection of business, technology, and culture in the world’s largest digital economy. With a focus on the rapidly evolving landscape of e-commerce, fintech, and technological innovation, this trip offers students a rare opportunity to engage directly with industry leaders and gain insights into China’s unique role in shaping global business trends. Through visits to top-tier e-commerce companies, venture capital investors, cutting-edge manufacturers, banks and fin-tech companies, and innovative startups, students will explore the mechanisms driving China’s digital economy and its impact on global trade and consumer behavior. Students will also have the opportunity to engage with professionals in these sectors to discuss topics such as: • The role of artificial intelligence and big data in consumer markets • Cross-border e-commerce and regulatory challenges • China’s economic growth and its contribution to the world economy"}, {"n": "MGT 533", "t": "Strategy, Innovation and Artificial Intelligence", "p": "Eva Chalioti", "ai": "core", "s": ["fall"], "ty": ["EMBA"], "u": "2.0", "dt": [], "d": ""}, {"n": "MGT 537", "t": "Inequality and Social Mobility: Understanding Opportunity in the Age of AI", "p": "Barbara Biasi", "ai": "core", "s": ["fall-1"], "ty": ["Elective"], "u": "2.0", "dt": ["T Th 10:05 AM–11:25 AM"], "d": "Why do some people move up the economic ladder while others do not? How do education, family background, labor markets, public policy, and technology shape economic opportunity? This course examines inequality and social mobility in the United States and around the world through a data-driven lens. We will study how income, wealth, race, gender, geography, education, labor-market institutions, and technological change influence economic opportunity and the distribution of resources across generations. Topics include intergenerational mobility, segregation, education, taxation and redistribution, globalization, the future of work, and the role of firms and public institutions in expanding opportunity. Drawing on frontier economic research and empirical case studies, students will learn to evaluate evidence, assess competing explanations for economic disparities, and analyze policies designed to promote opportunity. AI will be integrated throughout the course as a tool for research, analysis, and communication, while also serving as a lens through which to examine the future of work and economic mobility."}, {"n": "MGT 554", "t": "AI for Business Decisions", "p": "Tong Wang", "ai": "core", "s": ["spring"], "ty": ["Elective"], "u": "4.0", "dt": ["M W 1:00 PM–2:20 PM", "M W 2:35 PM–3:55 PM"], "d": "Artificial Intelligence (AI) is revolutionizing today’s companies and industries. This course provides an in-depth exploration of the fundamental principles, algorithms, and applications of AI, with a special focus on recognizing and circumventing the numerous pitfalls that can lead to misguided managerial decisions and insights. Through a blend of lectures, case studies, and team discussions, students will learn to apply AI algorithms and methodologies to solve real-world business problems. Students will gain skills in discovering patterns, making predictions, and generating insights to support business decision-making. With a strong emphasis on practical learning through real-world examples and case studies, students will develop a nuanced understanding of the context and complexities of AI models, enabling them to navigate AI applications effectively while avoiding common pitfalls."}, {"n": "MGT 575", "t": "Social Media & AI", "p": "Tauhid Zaman & Lan Luo", "ai": "core", "s": ["spring"], "ty": ["Elective", "MMS"], "u": "4.0", "dt": ["T Th 2:35 PM–3:55 PM", "T Th 4:10 PM–5:30 PM"], "d": "This course explores how generative AI can be used to analyze and produce social media content through coding projects, interactive apps, and hands-on assignments. Specific topics include using AI to create music, visual assets, movies, and video games, and building multi-agent systems that enhance the creative process.", "link": ["Summer 2026 course site", "https://zlisto.github.io/genAI_social_media_2026_summer/"]}, {"n": "MGT 633", "t": "Topics in Advanced Management for Business & Society", "p": "Robert Jensen", "ai": "some", "s": ["fall-2"], "ty": ["MAM"], "u": "2.0", "dt": ["T Th 1:00 PM–2:20 PM"], "d": "This course explores how advanced managers navigate the most consequential forces shaping business and society today. Building on the foundations students bring from their prior MBA training, the course examines a rotating set of contemporary challenges—drawn from areas such as emerging technologies, sustainable development, global trade, public health, and the broader social responsibilities of enterprise. Topics vary from year to year to reflect the issues most relevant to current global conditions, and may be addressed through faculty lectures, guest experts from industry and policy, and applied team projects. Throughout, students are asked to think critically about how leaders create value while serving the wider interests of society. The aim is to equip emerging global leaders to engage thoughtfully and act effectively amid uncertainty and rapid change.", "note": "Will include discussion on AI issues."}, {"n": "MGT 634", "t": "Empirical Strategy with AI", "p": "Kevin Williams", "ai": "core", "s": ["fall"], "ty": ["Elective"], "u": "4.0", "dt": ["T Th 10:05 AM–11:25 AM"], "d": "Empirical Strategy with AI is an interactive, project-based course designed to equip students with hands-on experience applying quantitative methods to real-world business problems. Students will extensively use AI tools and large-scale datasets that cannot be efficiently analyzed on personal machines, instead leveraging Yale SOM’s high-performance computing resources. Essentially, this course places topics covered in our core and elective strategy classes “on the computer.” We’ll use big data to answer questions that managers routinely face, such as: Where are there growth opportunities? How substitutable are different products? What prices should firms charge? The curriculum emphasizes the practical use of AI to analyze real business problems. Students will learn how to use AI tools to accelerate coding, automate data pipelines, query and structure large datasets, clean and validate data, and develop reproducible analyses. With these skills, students will conduct industry analyses, use data to understand whether business decisions caused measurable changes in outcomes, and apply advanced demand estimation techniques to analyze consumer behavior. Throughout the course, AI will be treated not as a substitute for economic reasoning, but as a tool for scaling and improving empirical strategy work. No prior coding experience is required."}, {"n": "MGT 651", "t": "Thinking with Data", "p": "Uri Simonsohn", "ai": "some", "s": ["spring-2"], "ty": ["Elective"], "u": "2.0", "dt": ["T Th 8:30 AM–9:50 AM", "T Th 10:05 AM–11:25 AM"], "d": "If Amazon sent a warning to customers with the top-3% of product returns last quarter, what analysis would you request to learn whether the warning worked and should be repeated? How could the team running A/B tests misuse statistics, 'p-hack', to show something that's not true, and how could you detect and prevent it? This course arms you with the tools to answer questions like these. It focuses on intuition, on going from statistical results to critical thinking, rather than form data to statistical results. We will not write code, but will ask AI to do so on occasion."}, {"n": "MGT 653", "t": "Digital Disruption", "p": "Kyle Keogh", "ai": "some", "s": ["spring-1"], "ty": ["Elective"], "u": "2.0", "dt": ["M 6:00 PM–9:00 PM"], "d": "New Digital innovations (e.g., blockchain, Artificial Intelligence), legal changes (e.g., legalized gambling, autonomous vehicle regulation) and consumer interest (e.g., e-commerce, sports anywhere) together with immediate digital scale and computing improvements (e.g., quantum computing) have allowed significant digital disruptions across multiple industries. The digital economy has grown rapidly since the first wave in the 1990s when the internet opened new opportunities to provide information, services, and to buy physical goods - many failed (e.g., eToys, B2B marketplaces) or faded over time (e.g., Excite), but they proved digital could work and several thrived (e.g., Amazon, Google, Expedia). Post the early 2000s bubble, we saw a second wave of digital disruption where a few specific verticals (e.g., news, media, retail, travel) saw major transformations led by a second wave of “Born of the Web” companies (e.g., Facebook, Twitter, YouTube, Etsy, AirBnB, Uber). The 2010s saw digital accelerate and expand beyond the first impacted industries into food (curbside pick up / delivery vs. eating out and/or going to grocery store), entertainment (streaming vs. TV/movies, highlights vs. watching live sports), auto (online purchase vs. dealers), and branded apparel (Direct to Consumer vs. physical retail). The 2020s have accelerated these trends and added new B2C industries (e.g., electric and autonomous vehicles, cryptocurrency, online gambling) and the development of B2B2C industries (e.g., embedded insurance, marketplaces). This class will focus (1) identifying technology changes that can create windows for disruption, (2) determining how to pick which opportunities to pursue and (3) how new entrants and incumbents drive to win in these new spaces."}, {"n": "MGT 675", "t": "Designing Brand Strategy", "p": "Michael Rock", "ai": "some", "s": ["spring-1"], "ty": ["Elective"], "u": "2.0", "dt": ["W 4:10 PM–7:10 PM"], "d": "Brand strategy is a way to ensure an entity's values are expressed through voice, appearance, action, and behavior. Design both enacts and provides tools to help develop strategy through rapid prototyping and visualization. This seminar will introduce a design-focused approach to brand strategy through collaborative work on a case-study project. The class will explore how AI-driven aesthetics, brand trust, and cultural intelligence can define the global expansion strategy of an Asian-based art-tech brand entering the U.S. market. Rather than treating AI as a technical layer, it will examine it as a new design and business language - one that connects art, data, and commerce into a coherent cultural experience. The case study work will be augmented with readings, presentations, and visiting lecturers. Please note this is a highly creative process that, in addition to research, involves extensive qualitative, intuitive, rhetorical, visual, and written work. Students will work in teams drawn from multiple disciplines. Permission of the instructor required. Email a statement of interest to [email removed] by December 5, 2025, 12:00 noon."}, {"n": "MGT 695", "t": "Introduction to AI Applications", "p": "Xiuye Chen", "ai": "core", "s": ["fall"], "ty": ["Elective"], "u": "4.0", "dt": ["T Th 11:35 AM–12:50 PM"], "d": "The capability and scale of modern AI applications is now something that we have to reckon with constantly. This class invites you to set aside dedicated time to focus on the study of the technology behind the news. We develop theoretical intuition and practical skills side by side. The central practice for this class is to use AI coding agents to study the subject of AI, which serves as a template for continued learning in this new age. We work through machine learning fundamentals and deep learning neural networks, language models and GenAI, extending to agentic AI and real-word use. Workshops and homework assignments introduce critical thinking frameworks for working with AI as a learning tutor and thinking partner, and for building AI applications. The class is designed for students who have at least introductory STEM background in either coding or math, as well as solid communication skills and the self-drive for craftsmanship. This course is cross-listed with Computer Science and will follow the Yale College academic calendar."}, {"n": "MGT 802", "t": "Large language models: technology and applications", "p": "Kyle Jensen", "ai": "core", "s": ["fall-2"], "ty": ["Elective", "MMS"], "u": "2.0", "dt": ["T Th 1:00 PM–2:20 PM"], "d": "MGT 802 introduces students to the internal workings of large language models. The course begins with the basics of neural networks and progresses through recurrent neural networks, embeddings, transformers, training, and architectural alternatives (e.g. attention variants, mixture-of-experts models, and state space models). Each class session has three components: an on-paper quiz based on pre-class reading, a lecture, and a hands-on coding activity. The course concludes with an in-class final exam. Students who complete the course should be well prepared for employment in frontier AI labs or, at minimum, somewhat better equipped to survive the singularity."}, {"n": "MGT 808", "t": "Financial Computing", "p": "Eren Kurshan", "ai": "core", "s": ["fall-2"], "ty": ["Elective"], "u": "2.0", "dt": ["Th 2:35 PM–5:35 PM"], "d": "Artificial Intelligence is a transformative force across the financial services industry, reshaping both traditional finance firms and the fast-growing fintech landscape. Its applications grow rapidly from fraud detection, algorithmic trading to AI-based personalized financial advisory, and risk management, enhancing operational efficiency, accuracy, and strategic competitiveness. Unlike past technologies, AI (particularly the latest generation of Generative and Agentic Models) impacts the core of financial business models. It is driving a shift from traditional finance firms toward fully digital, AI-driven providers, with far-reaching implications for business models, workforce dynamics, and the future of finance careers.. This course explores the innovative application of AI in the financial sector, focusing on the technological foundations and strategic use cases shaping its future. It examines the key challenges and opportunities in developing and deploying next-generation AI solutions, including both intrapreneurial initiatives within existing firms and new venture creation. Each week covers a core AI-in-finance topic, integrating business impact with technical depth, while addressing regulatory and business considerations."}, {"n": "MGT 809", "t": "Analytics in the Age of AI", "p": "Zhen Lian", "ai": "core", "s": ["fall-2"], "ty": ["Elective", "MMS"], "u": "2.0", "dt": ["T Th 1:00 PM–2:20 PM", "T Th 2:35 PM–3:55 PM"], "d": "In today’s AI-driven organizations, the real advantage isn’t just knowing how to use tools -- it’s knowing how to structure decisions. This course teaches you how to translate messy business problems into clear objectives, constraints, and tradeoffs that can be rigorously evaluated. Rather than focusing primarily on predictive modeling, we focus on deciding what to do: allocating resources, designing operations, and stress-testing strategy under uncertainty. You’ll build hands-on decision models using spreadsheet, optimization, simulation, and coding-based tools, but the real skill you’ll gain is structured thinking that applies across consulting, product, operations, and entrepreneurship. In the first half of the course, we will review and extend quantitative tools surveyed in the MBA core course MGT 405, greatly expanding the range of business problems that can be solved using existing methods. In the second half of the course, we will introduce simulation modeling, a useful tool for guiding decisions under uncertainty. Modeling concepts covered include linear programming, network optimization, integer programming, nonlinear optimization methods, Monte Carlo simulation, estimating summary statistics using simulation, and evaluating accuracy and precision in simulation models. The first half of the course will be taught primarily in Excel with the Solver Add-In. The second half of the course will use R and/or Python as modeling environments, with emphasis on understanding, adapting, validating, and communicating model-based analysis rather than on prior programming experience. We will also examine how AI tools can support analytics workflows, including code generation, debugging, documentation, and model critique, while emphasizing the human judgment required to verify assumptions, interpret results, and make defensible business decisions. There are no prerequisites for this course; you do not need to be familiar with coding to take this course."}, {"n": "MGT 819", "t": "Data Science", "p": "Jamie Tucker-Foltz", "ai": "core", "s": ["spring-2"], "ty": ["Elective", "MMS"], "u": "2.0", "dt": ["M W 10:05 AM–11:25 AM", "M W 1:00 PM–2:20 PM"], "d": "Cheap storage and immense computing power have enabled organizations to employ advanced analytics to forecast trends, uncover hidden insights, and drive strategic decision-making. This course provides an accessible yet rigorous introduction to data science, the discipline of extracting actionable value from massive datasets. Students will explore how modern statistical methods and machine learning techniques can be leveraged for competitive advantage. You will gain hands-on experience using Python toolkits to explore datasets, train and evaluate predictive models, and build visualizations that drive business strategy. By the end of the term, you will have developed both an intuitive understanding of core analytic techniques and the confidence to lead data-driven initiatives within any organization."}, {"n": "MGT 822", "t": "Game Theory and Market Design", "p": "Jidong Zhou", "ai": "some", "s": ["spring-1"], "ty": ["Elective", "MMS"], "u": "2.0", "dt": ["T Th 10:05 AM–11:25 AM", "T Th 2:35 PM–3:55 PM"], "d": "This course builds on the mini-course of game theory taught in the core. The goal is to further enhance our ability to think strategically and use game theory to analyze real-life business situations. In the first part of the course, we will briefly review and further develop the basic concepts such as Nash equilibrium and backward induction, and then introduce new concepts to study repeated games and cooperation, games with asymmetric information (including information disclosure, reputation, social learning and herding, etc), and games with boundedly rational players. In the second part of the course, we will apply game theory to study market design such as matching systems, auctions, and online platforms. For several topics, we will also discuss the strategic intelligence of LLMs when playing games with each other, aiming to better understand what might happen in the future when we delegate our decisions in strategic environments to AI agents. Class sessions will be a combination of lectures, in-class games, and case studies."}, {"n": "MGT 837", "t": "Policy Design", "p": "Jason Abaluck", "ai": "some", "s": ["fall"], "ty": ["Elective"], "u": "4.0", "dt": ["M W 2:35 PM–3:55 PM"], "d": "The purpose of this class is to teach you how to evaluate public policies. This will help you: a) Understand what political viewpoints are most reasonable in light of the existing evidence b) Constructively discuss public policy The course will emphasize two perspectives: 1) Cost-benefit analysis – how can we quantitatively determine the costs and benefits of a given policy by determining who is impacted and valuing those impacts? 2) Economic theory – when do markets work well? When might public provision be better? Questions covered will include (among others): Public transit systems help people travel more quickly, but they cost a lot of money. How should we evaluate if this cost if worthwhile? A carbon tax would harm consumers today by making goods more expensive; this burden would be highest for low-income households who spend a larger percentage of income on emission-intensive goods. It would also reduce carbon emissions and combat global warming. Should we do it? Most OECD countries have publicly provided healthcare. In Medicare Parts C/D and the Affordable Care Act, the US is moving increasingly towards a system of privately provided care with government subsidies. Should people under the age of 65 be allowed to buy into Medicare? Should we have school vouchers which allow parents to use public funding to choose amongst local and non-local public schools, as well as private or charter schools? Unemployment insurance provides an income stream for people who lose their job. But evidence shows that people find work faster when unemployment insurance is less generous. How generous should UI be? Should we replace the social safety net with a system in which every single person receives $12,000 in cash whether or not they are currently working? Should we replace the current social security program with individual savings accounts? What is the role of AI in public policy?"}, {"n": "MGT 843", "t": "Private Equity: The Deal", "p": "Song Ma", "ai": "some", "s": ["fall-2"], "ty": ["Elective", "MMS"], "u": "2.0", "dt": ["M 4:10 PM–7:10 PM"], "d": "Due to the hands-on nature of this course, we strictly require class attendance and participation. This course is a highly practical course that puts students in the seat of the private equity investor evaluating a live investment opportunity. It is co-instructed by Professor Song Ma, Professor of Finance and Entrepreneurship, and Mr. James Soldano, Managing Partner, Sterling Investment Partners. Working in 4–5 person deal teams, students follow a single transaction from initial due diligence through final bid, learning to assess an opportunity through business, commercial, and financial due diligence; negotiate and structure the financing; design performance-oriented management incentives; negotiate a purchase agreement; and present a fully vetted recommendation—with a proposed valuation—to an investment committee composed of the instructors and TAs. Weekly lectures reinforce each stage of the deal lifecycle, culminating in a team IC presentation. Alongside the deal itself, students will learn how to leverage AI to enhance the efficiency and quality of due diligence, “stress test” an investment thesis and financial modeling assumptions, and to review legal agreements, including credit term sheets and the purchase agreement. The goal is not just to evaluate a deal but to learn how AI is reshaping the private equity investor's workflow. Prerequisites: MBA students must have earned at least a PR grade in both Investor and Sourcing and Managing Funds. Students enrolled in other programs must demonstrate proficiency in equivalent coursework covering both investments and corporate finance."}, {"n": "MGT 860", "t": "Generative AI for Managers", "p": "K. Sudhir", "ai": "core", "s": ["spring-2"], "ty": ["Elective", "MMS"], "u": "2.0", "dt": ["M W 8:30 AM–9:50 AM", "M W 10:05 AM–11:25 AM", "M W 2:35 PM–3:55 PM"], "d": "This course equips future managers to understand, evaluate, and lead the integration of Generative AI solutions within organizations. It offers a practical overview of foundational models such as GPT-4, Retrieval-Augmented Generation, and Agentic AI and help students to effectively use prompt engineering to enhance workplace productivity. Students will explore use cases across customer-facing and organizational activities and learn frameworks for selecting and implementing AI solutions that maximize organizational value while addressing ethical considerations. The course features lectures, case studies, guest speakers, and a final project where students design and present a tailored Generative AI use case in a domain of interest."}, {"n": "MGT 866", "t": "Build a Metaverse Strategy", "p": "Brett Prescott", "ai": "some", "s": ["spring-2"], "ty": ["Elective", "MMS"], "u": "2.0", "dt": ["W 4:10 PM–7:10 PM"], "d": "The metaverse is dynamic and has the potential to shape the future of human interaction. Citi analysts estimate that the metaverse will have a total addressable market of up to $13 trillion by 2030 with 5 billion users. Build a Metaverse Strategy is a course that approaches the topic through the lens of marketing, innovation, and commerce – ultimately identifying how businesses might leverage the metaverse to drive profitable growth. This course will immerse students in all major metaverse and web3 technology platforms. Students will leverage academic frameworks to evaluate emerging web3 technologies, identify business opportunities and propose a long-term metaverse business strategy for a Fortune 100 company. Students will respond to the live brief from a C-Suite executive and present to them for their final presentation -- there is no final exam for this course. Through a non-technical lens, students will learn how to build B2B and B2C marketing strategies that incorporate web3 technologies, including; NFTs, the blockchain, smart contracts, the creator economy, avatars, decentralized data, decentralized finance (DeFI), decentralized autonomous organizations (DAOs), artificial intelligence (AI), augmented reality (AR), virtual reality (VR), and extended reality (XR). Academic frameworks that will be explored and applied include Customer Value Proposition (CVP), profit formula, key resources, key processes, stage gate process, sizing up new marketplaces using TAM, SAM, SOM, technology diffusion and defining brand relevance using the brand vision model. Various leading web3 industry experts will participate in the class through guest lectures."}, {"n": "MGT 868", "t": "Living with Technology", "p": "Gal Zauberman", "ai": "some", "s": ["fall-1"], "ty": ["Elective", "MMS"], "u": "2.0", "dt": ["M W 8:30 AM–9:50 AM", "M W 10:05 AM–11:25 AM"], "d": "This course is designed to explore the ever-increasing impact of technology on our lives—as individuals, consumers, employees, managers, and policymakers. Technology has profoundly reshaped how we access information, interact with others, experience the world, and make decisions. Rather than focusing on the technical features of emerging tools, including, yes, Artificial Intelligence, the course examines the psychological and behavioral consequences of living in a technology-saturated environment. By developing an evidence-based and nuanced understanding of these issues, this course will enable more effective usage and management of technology."}, {"n": "MGT 872", "t": "Managing Sustainable Operations", "p": "Jerry Anunrojwong", "ai": "some", "s": ["spring-2"], "ty": ["Elective", "MMS"], "u": "2.0", "dt": ["T Th 4:10 PM–5:30 PM", "T Th 2:35 PM–3:55 PM"], "d": "In this course, we take a business-oriented perspective to explore the tradeoffs and synergies that exist between firms' ecological and financial performance. More specifically, we examine how firms' interaction with the environment should be incorporated into the management of their operations in conjunction with their short- and long-term objectives. We study how accounting for environmental footprints can foster incremental as well as radical improvements and innovations, ranging from cost reductions in processes and promoting entrepreneurial opportunities to drastic changes in strategies, business models, and industry partnerships. The course intends to offer an overarching sustainability framework that encompasses various dimensions of corporate sustainability initiatives, with a special emphasis on operations management. In addressing these fundamental concepts, we will often make use of different quantitative and analytical tools for measuring and evaluating the link between operations functions of an organization and its sustainability goals.", "note": "Will include discussion on AI issues."}, {"n": "MGT 897", "t": "Entrepreneurial Finance", "p": "Song Ma", "ai": "core", "s": ["fall-2"], "ty": ["Elective", "MMS"], "u": "2.0", "dt": ["M W 10:05 AM–11:25 AM", "M W 1:00 PM–2:20 PM", "M W 8:30 AM–9:50 AM"], "d": "Both the GBS and AM programs have access to this section. The limit has been raised to 80 to accommodate.The course is designed to introduce the challenges and pitfalls of financing new enterprises. The course primarily takes the perspective of an entrepreneur. Broadly speaking, entrepreneurial financing decisions have a life cycle. The cycle begins with identifying opportunities, moves to marshaling resources to take advantage of these opportunities and executing the business plan, and ends with harvesting the venture's success. Accordingly, the course has three sections: Identifying and Valuing Opportunities, Structuring Deals, and Harvesting Opportunities. Increasingly, the entrepreneur does not work alone. This course pays particular attention to how artificial intelligence and autonomous agents are reshaping the way founders raise, structure, and manage capital across this life cycle. We consider how a founder might delegate to specialized agents—a market-and-opportunity scout, a valuation and modeling analyst, a deal-structuring and term-sheet advisor, an investor-relations coordinator—and what the founder must still own: judgment, relationships, and the strategic decisions that cannot be automated away. This course combines lectures and case studies. The lecture part will equip students with important techniques in each stage of entrepreneurial finance, as well as the skills to deploy and supervise the AI tools and agents that apply these techniques at speed and scale. Those techniques are applied to case studies covering interesting entrepreneurial areas such as IT, healthcare, the sharing economy, and impact investment, with attention to how an agent-augmented founder would approach each situation differently from a traditional one."}, {"n": "MGT 926", "t": "Innovating Investment Strategies Under Regulatory Uncertainty: Digital Assets, Climate Change, SPACs, and More", "p": "Lauren Caplan", "ai": "some", "s": ["spring-1"], "ty": ["Elective", "MMS"], "u": "2.0", "dt": ["Th 8:30 AM–11:30 AM"], "d": "AM Elective - First priority to Asset Management students, then other SOM and Yale only if space remains. As innovation accelerates in asset management and finance, from sustainable infrastructure to AI-driven portfolio construction and digital assets, regulatory frameworks often lag and evolve unevenly across jurisdictions. This course equips asset managers and asset owners to design and implement new investment strategies while anticipating and adapting to evolving regulation. Students will examine global case studies, practice regulatory-risk mapping, and learn frameworks for aligning innovation with fiduciary duty and systemic risk. We will focus on how to navigate regulations that have not quite kept up with emerging strategies by working through current areas of regulatory uncertainty. In our final project, students will have an opportunity to design a regulatory strategy that enables an investment innovation of their own choosing."}, {"n": "MGT 927", "t": "Financial Econometrics and Machine Learning", "p": "Bryan Kelly", "ai": "core", "s": ["fall-2"], "ty": ["Elective", "MMS"], "u": "2.0", "dt": ["F 8:30 AM–11:30 AM"], "d": "AM required. AM student preregisted. Open to other programs if space remains. This is a full 4 unit course that spans the fall-2 and spring-1 semesters. Empirical work is the foundation of great economics. Theory is also the foundation of great economics. Theorists work on closing the gap between theory and reality. Empiricists are explorers that map the unchartered territory between theory and reality. This is a division of labor view of Popper's philosophy of science. This course is designed to help build a skill set for pushing the empirical side of this proposition, particularly tailored to asset pricing research. AM required course (AM students preregistered)."}, {"n": "MGT 927", "t": "Financial Econometrics and Machine Learning", "p": "Bryan Kelly", "ai": "core", "s": ["spring-1"], "ty": ["Elective", "MMS"], "u": "2.0", "dt": ["F 8:30 AM–11:30 AM"], "d": "AM required. AM student preregisted. Open to other programs if space remains. This is a full 4 unit course that spans the fall-2 and spring-1 semesters. Empirical work is the foundation of great economics. Theory is also the foundation of great economics. Theorists work on closing the gap between theory and reality. Empiricists are explorers that map the unchartered territory between theory and reality. This is a division of labor view of Popper's philosophy of science. This course is designed to help build a skill set for pushing the empirical side of this proposition, particularly tailored to asset pricing research. AM required course (AM students preregistered)."}, {"n": "MGT 935", "t": "Systematic Credit Investing", "p": "Gerardo Manzo", "ai": "some", "s": ["spring-2"], "ty": ["Elective", "MMS"], "u": "2.0", "dt": ["W 4:10 PM–7:10 PM"], "d": "This course examines the analytical foundations of systematic investing in corporate credit markets. Students develop fluency with the core instruments of credit analysis, and with the research methods used to identify and evaluate cross-sectional return predictability in bond markets. The course covers the structure of a systematic investment process: how alpha signals are constructed, evaluated, and combined; how factor risk models are applied in credit; how transaction costs shape what is and is not exploitable in practice. Emphasis is on rigorous empirical method — the difference between in-sample and out-of-sample evidence, multiple-testing discipline, and honest evaluation of strategy viability. The research component asks students to propose and test original ideas in spaces where the evidence is still open: equity strategies informed by credit signals, long-short positions in single-name CDS markets, or cross-asset systematic approaches that exploit the information content of credit spreads. Students use large language models as research and build-out tools throughout, reflecting current practice in quantitative investment management. The course is taught by an active practitioner in systematic fixed income investing."}, {"n": "MGT 948", "t": "Security Analysis & Valuation", "p": "Matthew Spiegel", "ai": "some", "s": ["fall"], "ty": ["Elective", "MMS"], "u": "4.0", "dt": ["M W 10:05 AM–11:25 AM"], "d": "This course is designed for students wishing to enter a field where fundamental firm valuation is a primary part of the job. For example, employment at a buy side firm such as a mutual fund, private equity, or employment in similar investment firm. If a career in investing is not what you are after, you may not want to take this class. If you wish to take this class, you should be able to (1) calculate a company's beta, (2) calculate a company's discount rate, (3) conduct a discounted cash flow analysis, and (4) read a corporate 10-Q. If you cannot do any of these, then you should probably take the courses listed in the perquisites prior to taking Security Analysis. During the semester students will learn to conduct in-depth financial analysis with the goal of valuing industries and their constituent firms. Over the semester you will be required to write and present four valuation reports: one industry report and three company reports. The students and faculty will discuss, comment on, and grade the written reports and class presentations. All members of the class are expected to actively participate in all sessions. For this course you will be required to install an AI desktop app on your laptop."}, {"n": "MGT 992", "t": "Health Care Strategy", "p": "Jason Abaluck", "ai": "some", "s": ["fall"], "ty": ["Elective"], "u": "4.0", "dt": ["M W 4:10 PM–5:30 PM"], "d": "This course will discuss the economics of healthcare markets with a focus on understanding what is inefficient, what reforms and innovations might make things better and how strategic interactions among firms impact profits, health outcomes, and social welfare. Topics covered will include: measuring the value of health and medical care; the efficiency of US healthcare relative to other countries with different modes of delivery; the role of health insurance and competition among insurers; assessing healthcare delivery facilities such as hospitals and nursing homes; the healthcare workforce and physician behavior; pharmaceutical and medical device innovation; lessons from behavioral economics about the role of imperfectly informed consumers; the impact of the Affordable Care Act on health care in the US; and the role of AI in healthcare."}];
+      const q = document.getElementById("course-q");
+      const sem = document.getElementById("course-sem");
+      const type = document.getElementById("course-type");
+      const ai = document.getElementById("course-ai");
+      const list = document.getElementById("course-list");
+      const count = document.getElementById("course-count");
+      if (!list) return;
+      const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+      const openRows = new Set(); // course rows you clicked open stay open while you filter
+      // AI words shown in pink in the descriptions
+      // (longer phrases first so "AI agents" lights up as a whole)
+      const AI_TERMS = /\b(AI agents|autonomous agents|artificial intelligence|machine learning|large language models?|LLMs?|neural networks?|deep learning|reinforcement learning|natural language processing|computer vision|data science|algorithmic trading|mixture-of-experts|transformers|embeddings|ChatGPT|GenAI|GPT|chatbots?|agentic|NLP|A\.I\.|AI)\b/gi;
+      const mark = (s, words, aiWord = false) => {
+        let h = esc(s);
+        if (aiWord) h = h.replace(AI_TERMS, '<b class="ai-word">$1</b>');
+        words.forEach((w) => {
+          const safe = w.replace(/[^a-z0-9]/gi, "");
+          if (safe) h = h.replace(new RegExp("(" + safe + ")(?![^<]*>)", "gi"), "<mark>$1</mark>");
+        });
+        return h;
+      };
+      function render() {
+        const words = q.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+        const s = sem.value, ty = type.value, lvl = ai.value;
+        const hits = COURSES.filter((c) => {
+          if (lvl && c.ai !== lvl) return false;
+          if (ty && !c.ty.includes(ty)) return false;
+          if (s && !(s.endsWith("*") ? c.s.some((x) => x.startsWith(s.slice(0, -1))) : c.s.includes(s))) return false;
+          const hay = (c.n + " " + c.t + " " + c.p + " " + c.d + " " + (c.note || "") + " " + c.dt.join(" ")).toLowerCase();
+          return words.every((w) => hay.includes(w));
+        });
+        count.textContent = hits.length + (hits.length === 1 ? " class" : " classes");
+        list.innerHTML = hits.length
+          ? hits.map((c) =>
+              '<div class="course-row' + (c.ai === "core" ? " focus" : "") + (openRows.has(c.n + c.t + c.s[0]) ? " open" : "") +
+                '" data-key="' + esc(c.n + c.t + c.s[0]) + '" role="button" tabindex="0" aria-expanded="' + openRows.has(c.n + c.t + c.s[0]) + '">' +
+                '<div class="top"><span class="num">' + esc(c.n) + '</span>' +
+                '<span class="title">' + mark(c.t, words) + '</span>' +
+                '<span class="prof">' + mark(c.p, words) + '</span>' +
+                '<span class="tags">' +
+                  '<span class="tag ai">' + (c.ai === "core" ? "AI focus" : "Uses AI") + '</span>' +
+                  c.s.map((x) => '<span class="tag">' + x + '</span>').join("") +
+                  c.ty.map((x) => '<span class="tag">' + x + '</span>').join("") +
+                '</span></div>' +
+                '<p class="meta">' + esc(c.u ? c.u + ' units' : 'Units not listed') + ' · ' +
+                  (c.dt.length ? c.dt.map(esc).join(' &nbsp;|&nbsp; ') : 'Meeting times not listed') + '</p>' +
+                (c.note ? '<p class="ai-note">' + esc(c.note) + '</p>' : '') +
+                (c.link ? '<p class="course-link"><a href="' + esc(c.link[1]) + '" target="_blank" rel="noopener">' + esc(c.link[0]) + ' →</a></p>' : '') +
+                '<p class="desc">' + mark(c.d || "No description yet.", words, true) + '</p>' +
+              '</div>').join("")
+          : '<div class="course-empty">No AI courses match that search.</div>';
+      }
+      list.addEventListener("click", (e) => {
+        if (e.target.closest("a")) return; // links open without toggling the card
+        const row = e.target.closest(".course-row");
+        if (!row) return;
+        const open = row.classList.toggle("open");
+        row.setAttribute("aria-expanded", open);
+        open ? openRows.add(row.dataset.key) : openRows.delete(row.dataset.key);
+      });
+      list.addEventListener("keydown", (e) => {
+        if ((e.key === "Enter" || e.key === " ") && e.target.classList.contains("course-row")) {
+          e.preventDefault();
+          e.stopPropagation(); // space opens the card instead of flipping the slide
+          e.target.click();
+        }
+      });
+      // typing in the search box must not flip slides (space / arrow keys)
+      q.addEventListener("keydown", (e) => e.stopPropagation());
+      [q, sem, type, ai].forEach((el) => el.addEventListener("input", render));
+      render();
+    })();
+  </script>
+  <script>
+    // Agent timeline: put each dot at its real date and draw a diagonal line from its card.
+    (function () {
+      const tl = document.querySelector(".timeline-slide .tl");
+      if (!tl) return;
+      const svg = tl.querySelector(".tl-svg");
+      const NS = "http://www.w3.org/2000/svg";
+      const START = new Date("2026-01-01"), END = new Date("2026-10-10");
+      const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"];
+      const el = (name, attrs) => {
+        const e = document.createElementNS(NS, name);
+        for (const k in attrs) e.setAttribute(k, attrs[k]);
+        return e;
+      };
+      function draw() {
+        if (!tl.offsetWidth || getComputedStyle(svg).display === "none") return;
+        const box = tl.getBoundingClientRect();
+        const cards = [...tl.querySelectorAll(".tl-card")];
+        const tops = cards.filter((c) => c.classList.contains("top")).map((c) => c.getBoundingClientRect());
+        const bots = cards.filter((c) => c.classList.contains("bottom")).map((c) => c.getBoundingClientRect());
+        const y = (Math.max(...tops.map((r) => r.bottom)) + Math.min(...bots.map((r) => r.top))) / 2 - box.top;
+        const pad = 18, x0 = pad, x1 = box.width - pad;
+        const xAt = (d) => x0 + ((d - START) / (END - START)) * (x1 - x0);
+        svg.setAttribute("viewBox", `0 0 ${box.width} ${box.height}`);
+        svg.innerHTML = `<defs><linearGradient id="tl-grad" gradientUnits="userSpaceOnUse" x1="${x0}" x2="${x1}" y1="0" y2="0"><stop offset="0" stop-color="#286dc0"/><stop offset="1" stop-color="#ff4fa3"/></linearGradient></defs>`;
+        svg.appendChild(el("line", { class: "axis", x1: x0, x2: x1, y1: y, y2: y }));
+        MONTHS.forEach((m, i) => {
+          const x = xAt(new Date(2026, i, 1));
+          svg.appendChild(el("line", { class: "tick", x1: x, x2: x, y1: y - 6, y2: y + 6 }));
+          const label = el("text", { class: "month", x: x + 14, y: y + 20 });
+          label.textContent = m;
+          svg.appendChild(label);
+        });
+        // dots on the same day get nudged apart so you can see each one
+        const placed = [];
+        const dots = [];
+        cards.forEach((c) => {
+          const row = c.classList.contains("top") ? "top" : "bottom";
+          let x = xAt(new Date(c.dataset.date));
+          while (placed.some((p) => Math.abs(p - x) < 11)) x += 11;
+          placed.push(x);
+          const r = c.getBoundingClientRect();
+          const ax = r.left + r.width / 2 - box.left;
+          const ay = (row === "top" ? r.bottom : r.top) - box.top;
+          svg.appendChild(el("line", { class: "leader " + row, x1: ax, y1: ay, x2: x, y2: y }));
+          dots.push(el("circle", { class: "dot " + row, cx: x, cy: y, r: 7 }));
+        });
+        dots.forEach((d) => svg.appendChild(d)); // dots on top of the lines
+      }
+      new ResizeObserver(draw).observe(tl);
+      new MutationObserver(() => requestAnimationFrame(draw)).observe(document.body, { attributes: true, attributeFilter: ["class"] });
+      document.fonts && document.fonts.ready.then(draw);
+      draw();
+    })();
+  </script>
 </body>
 </html>
