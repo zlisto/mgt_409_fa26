@@ -89,7 +89,7 @@
   <button id="play" aria-label="Play music" title="Play / pause (space)">▶</button>
 
   <script>
-    // Purple Rain, bars 18–27 (Bb major, 4/4, ~57 bpm) — Web Audio port of the OnlinePianist schedule.
+    // Purple Rain, bars 18–27 (Bb major, 4/4, 114 bpm = 2× the ballad feel) — Web Audio port of the OnlinePianist schedule.
     const btn = document.getElementById('play');
 
     const KEY_MIDI = {
@@ -125,7 +125,7 @@
       [37, '7', 3], [37, 'o', 3],
     ];
 
-    const BPM = 57, BEAT = 60 / BPM, END_BEAT = 41;
+    const BPM = 114, BEAT = 60 / BPM, END_BEAT = 41;
     const hz = m => 440 * Math.pow(2, (m - 69) / 12);
 
     let ctx, master, rainGain, endTimer, playing = false;
