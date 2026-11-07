@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Eval — MGT 409</title>
+  <style>
+    :root {
+      --bg: #0d0614;
+      --purple: #b46cff;
+      --pink: #ff4fa3;
+      --text: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      background: radial-gradient(ellipse at 30% 40%, #3a1460 0%, var(--bg) 70%);
+      color: var(--text);
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      overflow: hidden;
+    }
+    main {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5vw;
+      padding: 4vh 5vw;
+    }
+    img {
+      height: min(88vh, 50vw);
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 24px;
+      box-shadow: 0 0 80px rgba(180, 108, 255, 0.55);
+      transition: box-shadow 0.3s;
+    }
+    body.playing img { animation: pulse 2.6s ease-in-out infinite; }
+    @keyframes pulse {
+      50% { box-shadow: 0 0 140px rgba(255, 79, 163, 0.75); }
+    }
+    h1 {
+      font-size: clamp(3.5rem, 11vw, 13rem);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      background: linear-gradient(180deg, #fff 0%, var(--purple) 60%, var(--pink) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    #play {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px solid var(--purple);
+      background: rgba(20, 6, 34, 0.8);
+      color: #fff;
+      font-size: 1.6rem;
+      cursor: pointer;
+      box-shadow: 0 0 24px rgba(180, 108, 255, 0.5);
+    }
+    #play:hover { background: #2a0d45; }
+    #hint {
+      position: fixed;
+      right: 100px;
+      bottom: 44px;
+      font-size: 0.95rem;
+      opacity: 0.6;
+    }
+    body.playing #hint { display: none; }
+    @media (max-aspect-ratio: 1/1) {
+      body { overflow: auto; }
+      main { flex-direction: column; height: auto; min-height: 100vh; padding: 4vh 16px; gap: 4vh; }
+      img { height: auto; width: min(90vw, 60vh); }
+      h1 { text-align: center; font-size: clamp(3rem, 18vw, 9rem); }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <img src="images/labubu-purple-rain.jpg" alt="Labubu in a purple velvet coat playing guitar on a rainy stage">
+    <h1>Course<br>Eval</h1>
+  </main>
+  <span id="hint">press space or click ▶</span>
+  <button id="play" aria-label="Play music" title="Play / pause (space)">▶</button>
+
+  <script>
+    // Purple Rain, bars 18–27 (Bb major, 4/4, ~57 bpm) — Web Audio port of the OnlinePianist schedule.
+    const btn = document.getElementById('play');
+
+    const KEY_MIDI = {
+      q: 48, w: 50, '3': 51, r: 53, t: 55, '6': 56, y: 57, '7': 58,
+      i: 60, o: 62, '0': 63,
+      z: 65, x: 67, f: 70, b: 72, n: 74, j: 75,
+    };
+
+    const melody = [
+      [0.5, 'z', .5], [1, 'b', .25], [1.25, 'b', .25], [1.5, 'b', .25], [1.75, 'b', .25],
+      [2, 'b', .5], [2.5, 'b', .75], [3.25, 'b', .25], [3.5, 'f', .25], [3.75, 'x', .25],
+      [4, 'f', .5], [4.5, 'b', 1.5],
+      [11.5, 'z', .5],
+      [12, 'j', 1], [13, 'j', 1], [14, 'j', 1], [15, 'j', 1],
+      [16, 'j', 1], [17, 'j', 1], [18, 'j', 1], [19, 'j', 1],
+      [20, 'j', 1], [21, 'j', 1], [22, 'n', 1], [23, 'b', .5], [23.5, 'f', .5],
+      [24, 'f', 2], [26, 'f', 1], [27, 'b', .5], [27.5, 'f', .5],
+      [28, 'n', 2], [30, 'n', .5], [30.5, 'b', .5], [31, 'f', .5], [31.5, 'f', 1.5],
+    ];
+
+    const left = [
+      [0, '7', 2], [2, 'r', 1], [3, 'r', 1],
+      [4, 't', 1.5], [5.5, 'r', .5], [6, 't', 1.5], [7.5, 'w', .5],
+      [4, 'o', 2], [4, 'z', 2], [6, 'o', 2], [6, 'z', 2],
+      [8, 't', 1], [9, 't', .5], [9.5, '7', .5], [10, 'o', .5], [10.5, '7', .5], [11, 't', .5], [11.5, 'i', .5],
+      ...[12, 16, 20].flatMap(o => [
+        [o, 'r', 1.5], [o + 2.5, 'q', .5], [o + 3, 'r', 1],
+        [o, 'y', 2], [o, '0', 2], [o, 'x', 2], [o + 2, 'y', 2], [o + 2, '0', 2], [o + 2, 'x', 2],
+      ]),
+      [24, '7', 8], [24, 'i', 8], [24, 'z', 8],
+      [32, '3', 1], [33, 't', 1], [33, '7', 1], [32, '0', 2], [32, 'x', 2],
+      [36, 'r', .5], [36.5, 't', .5], [37, 'r', .5], [37.5, '6', 1], [38.5, 't', .5], [39, 'y', 1],
+      [37, '7', 3], [37, 'o', 3],
+    ];
+
+    const BPM = 57, BEAT = 60 / BPM, END_BEAT = 41;
+    const hz = m => 440 * Math.pow(2, (m - 69) / 12);
+
+    let ctx, master, rainGain, endTimer, playing = false;
+
+    function setup() {
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      master = ctx.createGain();
+      master.gain.value = 0;
+      const verb = ctx.createConvolver();
+      verb.buffer = impulse(3.2);
+      const wet = ctx.createGain(); wet.gain.value = 0.45;
+      master.connect(ctx.destination);
+      master.connect(verb); verb.connect(wet); wet.connect(ctx.destination);
+      startRain();
+    }
+
+    function impulse(sec) {
+      const len = ctx.sampleRate * sec, buf = ctx.createBuffer(2, len, ctx.sampleRate);
+      for (let c = 0; c < 2; c++) {
+        const d = buf.getChannelData(c);
+        for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.4);
+      }
+      return buf;
+    }
+
+    function startRain() {
+      const len = ctx.sampleRate * 2, buf = ctx.createBuffer(1, len, ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+      const src = ctx.createBufferSource(); src.buffer = buf; src.loop = true;
+      const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 2500; bp.Q.value = 0.6;
+      rainGain = ctx.createGain(); rainGain.gain.value = 0.045;
+      src.connect(bp); bp.connect(rainGain); rainGain.connect(master);
+      src.start();
+    }
+
+    function tone(midi, t, beats, vol, bright) {
+      const dur = Math.max(0.08, beats * BEAT);
+      const o1 = ctx.createOscillator(), o2 = ctx.createOscillator();
+      const f = ctx.createBiquadFilter(), g = ctx.createGain();
+      o1.type = 'triangle'; o2.type = 'sine';
+      o1.frequency.value = hz(midi); o2.frequency.value = hz(midi);
+      o2.detune.value = 6;
+      f.type = 'lowpass'; f.frequency.value = bright ? 3200 : 1400;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(vol * 0.55, t + Math.min(0.35, dur * 0.4));
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur + 0.12);
+      o1.connect(f); o2.connect(f); f.connect(g); g.connect(master);
+      o1.start(t); o2.start(t);
+      o1.stop(t + dur + 0.2); o2.stop(t + dur + 0.2);
+    }
+
+    function schedulePass() {
+      const t0 = ctx.currentTime + 0.12;
+      melody.forEach(([b, k, d]) => {
+        const m = KEY_MIDI[k];
+        if (m != null) tone(m, t0 + b * BEAT, d, 0.11, true);
+      });
+      left.forEach(([b, k, d]) => {
+        const m = KEY_MIDI[k];
+        if (m == null) return;
+        const bass = m < 60;
+        tone(bass ? m - 12 : m, t0 + b * BEAT, d, bass ? 0.14 : 0.045, false);
+      });
+      return END_BEAT * BEAT + 1.5;
+    }
+
+    function startSong() {
+      if (!ctx) setup();
+      ctx.resume();
+      master.gain.cancelScheduledValues(ctx.currentTime);
+      master.gain.setValueAtTime(0.001, ctx.currentTime);
+      master.gain.linearRampToValueAtTime(0.95, ctx.currentTime + 0.8);
+      const dur = schedulePass();
+      clearTimeout(endTimer);
+      endTimer = setTimeout(() => {
+        if (!playing) return;
+        playing = false;
+        document.body.classList.remove('playing');
+        btn.textContent = '▶';
+        master.gain.cancelScheduledValues(ctx.currentTime);
+        master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
+        master.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.5);
+      }, dur * 1000);
+    }
+
+    function stopSong() {
+      clearTimeout(endTimer);
+      if (!master) return;
+      master.gain.cancelScheduledValues(ctx.currentTime);
+      master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
+      master.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.8);
+    }
+
+    function toggle() {
+      playing = !playing;
+      document.body.classList.toggle('playing', playing);
+      btn.textContent = playing ? '❚❚' : '▶';
+      playing ? startSong() : stopSong();
+    }
+
+    btn.addEventListener('click', toggle);
+    document.addEventListener('keydown', e => {
+      if (e.code === 'Space') { e.preventDefault(); toggle(); }
+    });
+  </script>
+</body>
+</html>
